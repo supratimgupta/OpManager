@@ -43,6 +43,7 @@
     <Compile Include="Contracts\ICRUDSvc.cs" />
     <Compile Include="Contracts\IDbSvc.cs" />
     <Compile Include="Contracts\ILogSvc.cs" />
+    <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\Modules\IDepartmentSvc.cs" />
     <Compile Include="Contracts\Modules\IDesignationSvc.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Contracts\Modules\IProjectSvc.cs" />
     <Compile Include="Contracts\Modules\IUserEntitlementSvc.cs" />
     <Compile Include="Contracts\Modules\IUserSvc.cs" />
+    <Compile Include="DTOs\SessionDTO.cs" />
     <Compile Include="DTOs\StatusDTO.cs" />
     <Compile Include="DTOs\Users\ActionDTO.cs" />
     <Compile Include="DTOs\Users\DepartmentDTO.cs" />
