@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{31813560-3D31-4B02-B7FA-40D5C61050BB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpMgr.Common</RootNamespace>
+    <AssemblyName>OpMgr.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\IConfigSvc.cs" />
+    <Compile Include="Contracts\ICRUDSvc.cs" />
+    <Compile Include="Contracts\IDbSvc.cs" />
+    <Compile Include="Contracts\ILogSvc.cs" />
+    <Compile Include="Contracts\Modules\IActionSvc.cs" />
+    <Compile Include="Contracts\Modules\IDepartmentSvc.cs" />
+    <Compile Include="Contracts\Modules\IDesignationSvc.cs" />
+    <Compile Include="Contracts\Modules\IEntitlementActionSvc.cs" />
+    <Compile Include="Contracts\Modules\IEntitlementSvc.cs" />
+    <Compile Include="Contracts\Modules\IProjectSvc.cs" />
+    <Compile Include="Contracts\Modules\IUserEntitlementSvc.cs" />
+    <Compile Include="Contracts\Modules\IUserSvc.cs" />
+    <Compile Include="DTOs\StatusDTO.cs" />
+    <Compile Include="DTOs\Users\ActionDTO.cs" />
+    <Compile Include="DTOs\Users\DepartmentDTO.cs" />
+    <Compile Include="DTOs\Users\DesignationDTO.cs" />
+    <Compile Include="DTOs\Users\EmployeeDTO.cs" />
+    <Compile Include="DTOs\Users\EmployeeRoleDTO.cs" />
+    <Compile Include="DTOs\Users\ProjectDTO.cs" />
+    <Compile Include="DTOs\Users\EntitlementActionDTO.cs" />
+    <Compile Include="DTOs\Users\EntitlementDTO.cs" />
+    <Compile Include="DTOs\Users\SessionDTO.cs" />
+    <Compile Include="DTOs\Users\UserDTO.cs" />
+    <Compile Include="DTOs\Users\UserEntitlementDTO.cs" />
+    <Compile Include="DTOs\Users\WorkLocationDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
