@@ -62,7 +62,6 @@
     <Compile Include="DTOs\Users\ProjectDTO.cs" />
     <Compile Include="DTOs\Users\EntitlementActionDTO.cs" />
     <Compile Include="DTOs\Users\EntitlementDTO.cs" />
-    <Compile Include="DTOs\Users\SessionDTO.cs" />
     <Compile Include="DTOs\Users\UserDTO.cs" />
     <Compile Include="DTOs\Users\UserEntitlementDTO.cs" />
     <Compile Include="DTOs\Users\WorkLocationDTO.cs" />
