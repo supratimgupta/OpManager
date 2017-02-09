@@ -13,7 +13,7 @@ namespace OpMgr.Common.Contracts
 
         StatusDTO<O> Update(I data);
 
-        StatusDTO Delete(I data);
+        StatusDTO<O> Delete(I data);
 
         StatusDTO<List<O>> Select(I data);
 

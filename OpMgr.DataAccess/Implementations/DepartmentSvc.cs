@@ -173,55 +173,9 @@ namespace OpMgr.DataAccess.Implementations
             return status;
         }
 
-        public StatusDTO<DepartmentDTO> Select(int rowId)
+        public StatusDTO<List<DepartmentDTO>> Select(DepartmentDTO dept)
         {
-            StatusDTO<DepartmentDTO> status = new StatusDTO<DepartmentDTO>();
-            try
-            {
-                using (IDbSvc dbSvc = new DbSvc(_configSvc))
-                {
-                    dbSvc.OpenConnection();
-                    MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT D.RowId, D.Name, D.IsActive, D.Supervisor, E.FirstName, E.MiddleName, E.LastName FROM dbo.DIC_Department D, dbo.Employee E WHERE D.Supervisor=E.RowId AND D.RowId=@row_id";
-                    command.CommandType = CommandType.Text;
-                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    command.Parameters.Add("@row_id", MySqlDbType.Int32).Value = rowId;
-                    _dbData = new DataTable();
-                    _dbAdapter = new MySqlDataAdapter(command);
-                    _dbAdapter.Fill(_dbData);
-                    if(_dbData!=null && _dbData.Rows.Count>0)
-                    {
-                        status.IsSuccess = true;
-                        status.IsException = false;
-                        status.ReturnObj = new DepartmentDTO();
-                        status.ReturnObj.RowId = (int)_dbData.Rows[0]["RowId"];
-                        status.ReturnObj.Name = _dbData.Rows[0]["Name"].ToString();
-                        status.ReturnObj.IsActive = (bool)_dbData.Rows[0]["IsActive"];
-                        status.ReturnObj.SupervisorDetails = new EmployeeDTO();
-                        status.ReturnObj.SupervisorDetails.FirstName = _dbData.Rows[0]["FirstName"].ToString();
-                        status.ReturnObj.SupervisorDetails.MiddleName = _dbData.Rows[0]["MiddleName"].ToString();
-                        status.ReturnObj.SupervisorDetails.LastName = _dbData.Rows[0]["LastName"].ToString();
-                    }
-                    else
-                    {
-                        status.IsSuccess = false;
-                        status.IsException = false;
-                        status.FailureReason = "No data found";
-                        status.ReturnObj = null;
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                _logger.Log(exp);
-                status.ExceptionMessage = exp.Message;
-                status.HResult = exp.HResult.ToString();
-                status.IsException = true;
-                status.IsSuccess = false;
-                status.ReturnObj = null;
-                status.StackTrace = exp.StackTrace;
-            }
-            return status;
+            throw new NotImplementedException();
         }
 
         public StatusDTO<DepartmentDTO> Select(int rowId)
