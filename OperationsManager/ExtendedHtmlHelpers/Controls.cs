@@ -136,12 +136,12 @@ namespace OperationsManager.ExtendedHtmlHelpers
             {
                 new MvcHtmlString("");
             }
-            var editorLabel = new TagBuilder("div");
-            editorLabel.AddCssClass("editor-label");
+            var editorLabel = new TagBuilder("label");
+            //editorLabel.AddCssClass("editor-label");
             editorLabel.InnerHtml += labelContent;
 
             var editorField = new TagBuilder("div");
-            editorField.AddCssClass("editor-field");
+            //editorField.AddCssClass("editor-field");
             if(isDisabled)
             {
                 editorField.AddCssClass("disabledDiv");
@@ -149,6 +149,7 @@ namespace OperationsManager.ExtendedHtmlHelpers
             editorField.InnerHtml += fieldContent;
 
             var container = new TagBuilder("div");
+            container.AddCssClass("form-group");
             //if (htmlAttributes != null)
                 //container.MergeAttributes(new RouteValueDictionary(htmlAttributes));
             //container.AddCssClass("form-line");

@@ -1,0 +1,16 @@
+﻿.disabledDiv:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: ' ';
+    width: 100%; 
+    height: 100%;
+    cursor:not-allowed;
+}
+
+.grayed-control
+{
+    background-color:gray;
+    opacity:0.1;
+}
+

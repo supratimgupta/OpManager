@@ -18,5 +18,6 @@ namespace OpMgr.Common.Contracts
         StatusDTO<List<O>> Select(I data);
 
         StatusDTO<O> Select(int rowId);
+
     }
 }
