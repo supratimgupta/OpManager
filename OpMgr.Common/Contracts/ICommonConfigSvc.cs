@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.Contracts
 {
-    public interface IConfigSvc
+    public interface ICommonConfigSvc
     {
-        string GetConnectionString();
+        void PopulateDBConfig();
 
+        string GetConfigValue(string key);
     }
 }

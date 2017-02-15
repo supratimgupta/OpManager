@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpMgr.Common.DTOs.Users;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface IProjectSvc : ICRUDSvc<ProjectDTO, ProjectDTO>
+    public interface ITransactionLogSvc : ICRUDSvc<DTOs.TransactionLogDTO, DTOs.TransactionLogDTO>
     {
-
+        DataTable GetPendingTransactions();
     }
 }

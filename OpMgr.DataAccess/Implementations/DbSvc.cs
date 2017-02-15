@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.DTOs;
-using OpMgr.Common.DTOs.Users;
 using MySql.Data.MySqlClient;
 using System.Data;
 

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpMgr.Common.DTOs;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface IUserEntitlementSvc : ICRUDSvc<UserEntitlementDTO, UserEntitlementDTO>
+    public interface ITransactionRuleSvc : ICRUDSvc<DTOs.TransactionRuleDTO, DTOs.TransactionRuleDTO>
     {
-
+        DataTable GetAllRules();
     }
 }

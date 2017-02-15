@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48BFC7FB-8015-4A52-B404-5CFC383402BF}</ProjectGuid>
+    <ProjectGuid>{F7259DF2-DA9D-4A4F-8454-4416CF55A744}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpMgr.DataAccess</RootNamespace>
-    <AssemblyName>OpMgr.DataAccess</AssemblyName>
+    <RootNamespace>OpMgr.Configurations</RootNamespace>
+    <AssemblyName>OpMgr.Configurations</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,7 +34,9 @@
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,18 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\DbSvc.cs" />
-    <Compile Include="Implementations\LibraryTransactionSvc.cs" />
-    <Compile Include="Implementations\TransactionLogSvc.cs" />
-    <Compile Include="Implementations\TransactionMasterSvc.cs" />
-    <Compile Include="Implementations\TransactionRuleSvc.cs" />
-    <Compile Include="Implementations\UserTransactionSvc.cs" />
+    <Compile Include="Implementations\ConfigSvc.cs" />
+    <Compile Include="Implementations\CommonConfigSvc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpMgr.Common\OpMgr.Common.csproj">
       <Project>{31813560-3d31-4b02-b7fa-40d5c61050bb}</Project>
       <Name>OpMgr.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.DataAccess\OpMgr.DataAccess.csproj">
+      <Project>{48bfc7fb-8015-4a52-b404-5cfc383402bf}</Project>
+      <Name>OpMgr.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

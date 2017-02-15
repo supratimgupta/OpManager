@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpMgr.Common.DTOs.Users
+namespace OpMgr.Common.DTOs
 {
-    public class EntitlementDTO
+    public class UserEntitlementDTO
     {
         public int RowId { get; set; }
 
-        public string RoleName { get; set; }
+        public UserMasterDTO UserDetails { get; set; }
+
+        public EntitlementDTO RoleDetails { get; set; }
 
         public bool IsActive { get; set; }
     }
