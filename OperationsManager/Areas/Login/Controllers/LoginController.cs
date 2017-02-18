@@ -22,6 +22,8 @@ namespace OperationsManager.Areas.Login.Controllers
             _userSvc = userSvc;
             _logger = logger;
             _sessionSvc = sessionSvc;
+
+
         }
 
         // GET: Login/Login
