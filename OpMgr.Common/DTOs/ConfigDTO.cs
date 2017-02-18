@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.DTOs
 {
-    public class SessionDTO : DTOs.UserMasterDTO
+    public class ConfigDTO
     {
-        public List<ActionDTO> ActionList { get; set; }
+        public string ConfigKey { get; set; }
 
-        //public string CurrentRequestedPage { get; set; }
+        public string ConfigValue { get; set; }
     }
 }

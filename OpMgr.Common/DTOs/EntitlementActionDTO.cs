@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpMgr.Common.DTOs.Users
+namespace OpMgr.Common.DTOs
 {
-    /// <summary>
-    /// Maps employee role model
-    /// </summary>
-    public class EmployeeRoleDTO
+    public class EntitlementActionDTO
     {
         public int RowId { get; set; }
 
-        public string Name { get; set; }
+        public ActionDTO ActionDetails{ get; set; }
+
+        public EntitlementDTO RoleDetails { get; set; }
 
         public bool IsActive { get; set; }
     }

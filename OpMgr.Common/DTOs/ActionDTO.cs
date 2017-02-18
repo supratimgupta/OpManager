@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpMgr.Common.DTOs.Users
+namespace OpMgr.Common.DTOs
 {
     public class ActionDTO
     {
