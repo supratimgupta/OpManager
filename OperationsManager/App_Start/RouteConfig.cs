@@ -13,11 +13,14 @@ namespace OperationsManager
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
+            var route1 = routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "",
+                defaults: new { controller = "Login", action = "Login", id = UrlParameter.Optional},
+                namespaces: new [] { "OperationsManagers.Controllers" }
+                
             );
+            route1.DataTokens["area"] = "Login";
         }
     }
 }

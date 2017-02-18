@@ -79,7 +79,7 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operations Manager.
+        ///   Looks up a localized string similar to Please Log In.
         /// </summary>
         public static string PageHeader {
             get {
@@ -88,7 +88,7 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OpMgr.
+        ///   Looks up a localized string similar to St Augustine&apos;s School.
         /// </summary>
         public static string PageTitle {
             get {

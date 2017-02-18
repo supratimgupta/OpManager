@@ -126,11 +126,11 @@
     <comment>Brand name powered text</comment>
   </data>
   <data name="PageHeader" xml:space="preserve">
-    <value>Operations Manager</value>
+    <value>Please Log In</value>
     <comment>Header for the pages</comment>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>OpMgr</value>
+    <value>St Augustine's School</value>
     <comment>Common string in title of every page</comment>
   </data>
 </root>
