@@ -34,6 +34,8 @@ namespace OpMgr.Common.DTOs
 
         public string GuardianEmailId { get; set; }
 
+
+
         //public string GuardianContact
     }
 }
