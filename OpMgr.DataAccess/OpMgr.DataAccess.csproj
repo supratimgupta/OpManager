@@ -34,6 +34,7 @@
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\DropdownRepo.cs" />
     <Compile Include="Implementations\DbSvc.cs" />
     <Compile Include="Implementations\LibraryTransactionSvc.cs" />
+    <Compile Include="Implementations\RoleSvc.cs" />
     <Compile Include="Implementations\UserSvc.cs" />
     <Compile Include="Implementations\TransactionLogSvc.cs" />
     <Compile Include="Implementations\TransactionMasterSvc.cs" />

@@ -1,0 +1,38 @@
+﻿@using OperationsManager.Resources
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Login.Models.UserViewModel
+
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div >
+        <div>
+            <div class="panel-heading">@UserResource.PageHeader</div>
+            <div class="panel-body">
+                <form role="form">
+                    <fieldset>
+
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserName, UserResource.FName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input name="remember" type="checkbox" value="Remember Me">@LoginResource.RememberMe
+                            </label>
+                        </div>
+                        <a href="index.html" class="btn btn-primary">@LoginResource.loginButton</a>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.col-->
+</div>
+

@@ -710,7 +710,7 @@
 			}
 			if (this.focusDate && date.valueOf() === this.focusDate.valueOf())
 				cls.push('focused');
-			// Compare internal UTC date with local today, not UTC today
+			// Compare public UTC date with local today, not UTC today
 			if (this.o.todayHighlight &&
 				date.getUTCFullYear() === today.getFullYear() &&
 				date.getUTCMonth() === today.getMonth() &&
@@ -1354,7 +1354,7 @@
 	$.fn.datepicker = function(option){
 		var args = Array.apply(null, arguments);
 		args.shift();
-		var internal_return;
+		var public_return;
 		this.each(function(){
 			var $this = $(this),
 				data = $this.data('datepicker'),
@@ -1377,13 +1377,13 @@
 				}
 			}
 			if (typeof option === 'string' && typeof data[option] === 'function'){
-				internal_return = data[option].apply(data, args);
-				if (internal_return !== undefined)
+				public_return = data[option].apply(data, args);
+				if (public_return !== undefined)
 					return false;
 			}
 		});
-		if (internal_return !== undefined)
-			return internal_return;
+		if (public_return !== undefined)
+			return public_return;
 		else
 			return this;
 	};

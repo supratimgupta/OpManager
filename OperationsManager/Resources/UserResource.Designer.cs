@@ -22,14 +22,14 @@ namespace OperationsManager.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class IndexResource {
+    public class UserResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public IndexResource() {
+        public UserResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.IndexResource", typeof(IndexResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.UserResource", typeof(UserResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,47 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Label.
+        ///   Looks up a localized string similar to First Name.
         /// </summary>
-        public static string CustomControlLabel {
+        public static string FName {
             get {
-                return ResourceManager.GetString("CustomControlLabel", resourceCulture);
+                return ResourceManager.GetString("FName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo text.
+        ///   Looks up a localized string similar to Last Name.
         /// </summary>
-        public static string CustomControlPlaceHolder {
+        public static string LName {
             get {
-                return ResourceManager.GetString("CustomControlPlaceHolder", resourceCulture);
+                return ResourceManager.GetString("LName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo Index.
+        ///   Looks up a localized string similar to Location.
         /// </summary>
-        public static string PageTitle {
+        public static string Location {
             get {
-                return ResourceManager.GetString("PageTitle", resourceCulture);
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Middle Name.
+        /// </summary>
+        public static string MName {
+            get {
+                return ResourceManager.GetString("MName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register a User.
+        /// </summary>
+        public static string PageHeader {
+            get {
+                return ResourceManager.GetString("PageHeader", resourceCulture);
             }
         }
     }

@@ -17,16 +17,22 @@ namespace OperationsManager.Areas.Login.Controllers
 
         private ISessionSvc _sessionSvc;
 
-        public LoginController(IUserSvc userSvc, ILogSvc logger, ISessionSvc sessionSvc)
+        private IDropdownRepo _ddlRepo;
+
+        private Helpers.UIDropDownRepo _uiddlRepo;
+
+        
+        public LoginController()
         {
-            _userSvc = userSvc;
-            _logger = logger;
-            _sessionSvc = sessionSvc;
-
-
+            _userSvc = new OpMgr.DataAccess.Implementations.UserSvc();
+            _ddlRepo = new OpMgr.DataAccess.Implementations.DropdownRepo(new OpMgr.Configurations.Implementations.ConfigSvc());
+            _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
+            //_logger = logger;
+            // _sessionSvc = sessionSvc;
         }
 
         // GET: Login/Login
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -36,7 +42,7 @@ namespace OperationsManager.Areas.Login.Controllers
         public ActionResult Login(UserMasterDTO data)
         {
             StatusDTO<UserMasterDTO> status = _userSvc.Login(data);
-            if(status.IsSuccess)
+            if (status.IsSuccess)
             {
                 SessionDTO session = new SessionDTO();
                 session.UserName = status.ReturnObj.UserName;
@@ -45,7 +51,22 @@ namespace OperationsManager.Areas.Login.Controllers
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }
 
+
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult Welcome()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Register()
+        {
+            Models.UserViewModel uvModel = new Models.UserViewModel();
+            uvModel.LocationList = _uiddlRepo.getLocationDropDown();
+            return View(uvModel);
         }
     }
 }

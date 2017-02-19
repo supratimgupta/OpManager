@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpMgr.Common.Contracts
+namespace OpMgr.Common.Contracts.Modules
 {
-    public interface IConfigSvc
+    public interface IRoleSvc : ICRUDSvc<DTOs.RoleDTO, DTOs.RoleDTO>
     {
-        string GetConnectionString();
+
     }
 }
