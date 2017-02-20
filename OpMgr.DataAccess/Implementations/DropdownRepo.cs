@@ -21,7 +21,8 @@ namespace OpMgr.DataAccess.Implementations
             _configSvc = configSvc;
         }
 
-        public  DataTable Location()
+        
+        public List<LocationDTO> Location()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -32,9 +33,21 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandText = "select LocationId,LocationDescription from location where Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
-                    MySqlDataAdapter mda = new MySqlDataAdapter(command);
-                    mda.Fill(_dtData);
-                    return _dtData;
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<LocationDTO> lstLocation = new List<LocationDTO>();
+                    if(_dtData!=null && _dtData.Rows.Count>0)
+                    {
+                        LocationDTO locationDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            locationDTO = new LocationDTO();
+                            locationDTO.LocationId = (int)dr["LocationId"];
+                            locationDTO.LocationDescription = dr["LocationDescription"].ToString();
+                            lstLocation.Add(locationDTO);
+                        }
+                    }
+                    return lstLocation;                    
                 }
                 catch (Exception exp)
                 {

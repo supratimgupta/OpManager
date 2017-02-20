@@ -17,20 +17,10 @@ namespace OperationsManager.Helpers
         {
             _ddlRepo = ddlRepo;
         }
+
         public  SelectList getLocationDropDown()
         {
-            DataTable dtLocation = new DataTable();
-            dtLocation = _ddlRepo.Location();
-            
-            
-            List<LocationDTO> lDto = new List<LocationDTO>();
-            foreach(DataRow dr in dtLocation.Rows)
-            {
-                LocationDTO dto = new LocationDTO();
-                dto.LocationId = Convert.ToInt32(dr["LocationId"]);
-                dto.LocationDescription = dr["LocationDescription"].ToString();
-                lDto.Add(dto);
-            }
+            List<LocationDTO> lDto = _ddlRepo.Location();
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }
     }
