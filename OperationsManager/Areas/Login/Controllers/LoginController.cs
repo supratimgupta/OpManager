@@ -22,7 +22,7 @@ namespace OperationsManager.Areas.Login.Controllers
         private Helpers.UIDropDownRepo _uiddlRepo;
 
         
-        public LoginController()
+        public LoginController(IConfigSvc configSvc, IDropdownRepo ddlRepo)
         {
             _userSvc = new OpMgr.DataAccess.Implementations.UserSvc();
             _ddlRepo = new OpMgr.DataAccess.Implementations.DropdownRepo(new OpMgr.Configurations.Implementations.ConfigSvc());
@@ -64,9 +64,9 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            Models.UserViewModel uvModel = new Models.UserViewModel();
-            uvModel.LocationList = _uiddlRepo.getLocationDropDown();
-            return View(uvModel);
+            //Models.UserViewModel uvModel = new Models.UserViewModel();
+            //uvModel.LocationList = _uiddlRepo.getLocationDropDown();
+            return View();
         }
     }
 }

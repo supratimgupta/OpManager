@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<module name="configModule">
+<bind service="OpMgr.Common.Contracts.IConfigSvc, OpMgr.Common"
+  to="OpMgr.Configurations.Implementations.ConfigSvc, OpMgr.Configurations" />
+  
+<bind service="OpMgr.Common.Contracts.Modules.IDropdownRepo, OpMgr.Common"
+  to="OpMgr.DataAccess.Implementations.DropdownRepo, OpMgr.DataAccess" />
+</module>
+

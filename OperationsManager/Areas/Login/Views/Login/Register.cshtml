@@ -20,7 +20,7 @@
                             @Html.OpMgrTextBoxFor(m => m.UserName, UserResource.FName, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                            @*@Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })*@
                         </div>
 
                         <div class="checkbox">
@@ -29,6 +29,9 @@
                             </label>
                         </div>
                         <a href="index.html" class="btn btn-primary">@LoginResource.loginButton</a>
+                        @Html.OpMgrButton("submitButton", "my button label", new {onclick="alert('abc');", @class="btn btn-primary", id="myId1" })
+
+                        @Html.OpMgrSubmitButton("submitButton", "my submit button label", new { onclick = "alert('abc');", @class = "btn btn-primary", id="myId" })
                     </fieldset>
                 </form>
             </div>
