@@ -31,6 +31,7 @@ namespace OperationsManager.Helpers
         private void AddBindings()
         {
             ninjectKernel.Load(System.Configuration.ConfigurationManager.AppSettings["DIXMLPath"]);
+
         }
     }
 }
