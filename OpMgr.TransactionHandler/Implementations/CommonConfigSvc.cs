@@ -1,30 +1,32 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using OpMgr.Common.Contracts;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpMgr.Common.Contracts;
-using OpMgr.DataAccess.Implementations;
-using MySql.Data.MySqlClient;
-using System.Data;
 
-namespace OpMgr.Configurations.Implementations
+namespace OpMgr.TransactionHandler.Implementations
 {
     public class CommonConfigSvc : ICommonConfigSvc
     {
 
         private IDbSvc _dbSvc;
 
+        private DataTable _dtConfig;
+
         public CommonConfigSvc(IDbSvc dbSvc)
         {
             _dbSvc = dbSvc;
+            PopulateDBConfig();
         }
 
         public void PopulateDBConfig()
         {
             try
             {
-                if(System.Web.HttpContext.Current.Application["CONFIG"]==null)
+                if (_dtConfig == null)
                 {
                     MySqlCommand configSelectCommand = new MySqlCommand("SELECT CONF_KEY, CONF_VALUE FROM dbo.OpMgrConfig WHERE CONF_ACTIVE=1");
                     _dbSvc.OpenConnection();
@@ -32,10 +34,10 @@ namespace OpMgr.Configurations.Implementations
                     MySqlDataAdapter msDataAdap = new MySqlDataAdapter(configSelectCommand);
                     DataTable dtConfig = new DataTable();
                     msDataAdap.Fill(dtConfig);
-                    System.Web.HttpContext.Current.Application["CONFIG"] = dtConfig;
+                    _dtConfig = dtConfig;
                 }
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 throw exp;
             }
@@ -50,16 +52,15 @@ namespace OpMgr.Configurations.Implementations
             get
             {
                 string value = string.Empty;
-                if (System.Web.HttpContext.Current.Application["CONFIG"] == null)
+                if (_dtConfig == null)
                 {
                     this.PopulateDBConfig();
                 }
-                if (System.Web.HttpContext.Current.Application["CONFIG"] != null)
+                if (_dtConfig != null)
                 {
-                    DataTable dtConfig = (DataTable)System.Web.HttpContext.Current.Application["CONFIG"];
-                    if (dtConfig.Rows.Count > 0)
+                    if (_dtConfig.Rows.Count > 0)
                     {
-                        value = dtConfig.Select("CONF_KEY='" + key + "'")[0]["CONF_VALUE"].ToString();
+                        value = _dtConfig.Select("CONF_KEY='" + key + "'")[0]["CONF_VALUE"].ToString();
                     }
                 }
                 return value;
@@ -69,16 +70,15 @@ namespace OpMgr.Configurations.Implementations
         public string GetConfigValue(string key)
         {
             string value = string.Empty;
-            if(System.Web.HttpContext.Current.Application["CONFIG"]==null)
+            if (_dtConfig == null)
             {
                 this.PopulateDBConfig();
             }
-            if (System.Web.HttpContext.Current.Application["CONFIG"]!=null)
+            if (_dtConfig != null)
             {
-                DataTable dtConfig = (DataTable)System.Web.HttpContext.Current.Application["CONFIG"];
-                if(dtConfig.Rows.Count>0)
+                if (_dtConfig.Rows.Count > 0)
                 {
-                    value = dtConfig.Select("CONF_KEY='" + key + "'")[0]["CONF_VALUE"].ToString();
+                    value = _dtConfig.Select("CONF_KEY='" + key + "'")[0]["CONF_VALUE"].ToString();
                 }
             }
             return value;

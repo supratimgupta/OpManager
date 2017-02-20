@@ -44,6 +44,34 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
+        public StatusDTO UpdateTransLastRunNextRun(UserTransactionDTO userTrans)
+        {
+            StatusDTO status = new StatusDTO();
+            status.IsSuccess = false;
+            using(IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE dbo.UserTransaction SET LastAutoTransactionOn=@lastTransOn, NextAutoTransactionOn=@nextAutoTransOn WHERE UserTransactionId=@userTrans";
+                    command.Parameters.Add("@lastTransOn", MySqlDbType.Date).Value = userTrans.LastAutoTransactionOn;
+                    command.Parameters.Add("@nextAutoTransOn", MySqlDbType.Date).Value = userTrans.NextAutoTransactionOn;
+                    command.Parameters.Add("@userTrans", MySqlDbType.Int32).Value = userTrans.UserTransactionId;
+
+                    if(command.ExecuteNonQuery()>0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch(Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
         public IDataReader GetUserTransactions()
         {
             using(IDbSvc dbSvc = new DbSvc(_configSvc))
@@ -51,7 +79,10 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "";
+                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, S.ClassTypeId FROM dbo.UserTransaction UT" +
+                                            " LEFT JOIN dbo.UserMaster UM ON UM.UserMasterId = UT.UserMasterId LEFT JOIN dbo.StudentInfo SI ON UM.UserMasterId=SI.UserMasterId LEFT JOIN dbo.StandardSectionMap SSM ON SI.StandardSectionId = SSM.StandardSectionId" +
+                                            " LEFT JOIN dbo.Standard S ON SCM.StandardId = S.StandardId" +
+                                            " WHERE Active=1 AND (NextAutoTransactionOn IS NULL OR NextAutoTransactionOn<=CURDATE())";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     return command.ExecuteReader();
                 }

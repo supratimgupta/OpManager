@@ -11,5 +11,7 @@ namespace OpMgr.Common.Contracts
         void PopulateDBConfig();
 
         string GetConfigValue(string key);
+
+        string this[string key]{ get; }
     }
 }
