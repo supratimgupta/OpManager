@@ -1,0 +1,29 @@
+﻿@using OperationsManager.Resources
+@model OpMgr.Common.DTOs.UserMasterDTO
+
+
+@{
+    ViewBag.Title = "Welcome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Welcome</h2>
+<table>
+    <tr>
+        <td>@LoginResource.UserName</td>
+        <td>@Html.TextBoxFor(m => m.Role.RoleId, new { @class = "form-control" })</td>
+    </tr>
+</table>
+
+@*using (@Html.BeginForm())
+{ 
+@Html.ValidationSummary(true)
+<table>
+    <tr>
+        <td>@LoginResource.UserName</td>
+    </tr>
+</table>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@

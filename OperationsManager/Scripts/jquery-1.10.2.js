@@ -275,7 +275,7 @@ jQuery.fn = jQuery.prototype = {
 
 	// Execute a callback for every element in the matched set.
 	// (You can seed the arguments with an array of args, but this is
-	// only used internally.)
+	// only used publicly.)
 	each: function( callback, args ) {
 		return jQuery.each( this, callback, args );
 	},
@@ -315,7 +315,7 @@ jQuery.fn = jQuery.prototype = {
 		return this.prevObject || this.constructor(null);
 	},
 
-	// For internal use only.
+	// For public use only.
 	// Behaves like an Array's method, not like a jQuery method.
 	push: core_push,
 	sort: [].sort,
@@ -638,7 +638,7 @@ jQuery.extend({
 		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 	},
 
-	// args is for internal usage only
+	// args is for public usage only
 	each: function( obj, callback, args ) {
 		var value,
 			i = 0,
@@ -703,7 +703,7 @@ jQuery.extend({
 				( text + "" ).replace( rtrim, "" );
 		},
 
-	// results is for internal usage only
+	// results is for public usage only
 	makeArray: function( arr, results ) {
 		var ret = results || [];
 
@@ -782,7 +782,7 @@ jQuery.extend({
 		return ret;
 	},
 
-	// arg is for internal usage only
+	// arg is for public usage only
 	map: function( elems, callback, arg ) {
 		var value,
 			i = 0,
@@ -2820,7 +2820,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 		superMatcher;
 }
 
-compile = Sizzle.compile = function( selector, group /* Internal Use Only */ ) {
+compile = Sizzle.compile = function( selector, group /* public Use Only */ ) {
 	var i,
 		setMatchers = [],
 		elementMatchers = [],
@@ -3044,7 +3044,7 @@ jQuery.Callbacks = function( options ) {
 		firingLength,
 		// Index of currently firing callback (modified by remove if needed)
 		firingIndex,
-		// First callback to fire (used internally by add and fireWith)
+		// First callback to fire (used publicly by add and fireWith)
 		firingStart,
 		// Actual callback list
 		list = [],
@@ -3579,13 +3579,13 @@ jQuery.support = (function( support ) {
 var rbrace = /(?:\{[\s\S]*\}|\[[\s\S]*\])$/,
 	rmultiDash = /([A-Z])/g;
 
-function internalData( elem, name, data, pvt /* Internal Use Only */ ){
+function publicData( elem, name, data, pvt /* public Use Only */ ){
 	if ( !jQuery.acceptData( elem ) ) {
 		return;
 	}
 
 	var ret, thisCache,
-		internalKey = jQuery.expando,
+		publicKey = jQuery.expando,
 
 		// We have to handle DOM nodes and JS objects differently because IE6-7
 		// can't GC object references properly across the DOM-JS boundary
@@ -3597,7 +3597,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 
 		// Only defining an ID for JS objects if its cache already exists allows
 		// the code to shortcut on the same path as a DOM node with no cache
-		id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey;
+		id = isNode ? elem[ publicKey ] : elem[ publicKey ] && publicKey;
 
 	// Avoid doing any more work than we need to when trying to get data on an
 	// object that has no data at all
@@ -3609,9 +3609,9 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 		// Only DOM nodes need a new unique ID for each element since their data
 		// ends up in the global cache
 		if ( isNode ) {
-			id = elem[ internalKey ] = core_deletedIds.pop() || jQuery.guid++;
+			id = elem[ publicKey ] = core_deletedIds.pop() || jQuery.guid++;
 		} else {
-			id = internalKey;
+			id = publicKey;
 		}
 	}
 
@@ -3633,8 +3633,8 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 
 	thisCache = cache[ id ];
 
-	// jQuery data() is stored in a separate object inside the object's internal data
-	// cache in order to avoid key collisions between internal data and user-defined
+	// jQuery data() is stored in a separate object inside the object's public data
+	// cache in order to avoid key collisions between public data and user-defined
 	// data.
 	if ( !pvt ) {
 		if ( !thisCache.data ) {
@@ -3668,7 +3668,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 	return ret;
 }
 
-function internalRemoveData( elem, name, pvt ) {
+function publicRemoveData( elem, name, pvt ) {
 	if ( !jQuery.acceptData( elem ) ) {
 		return;
 	}
@@ -3735,7 +3735,7 @@ function internalRemoveData( elem, name, pvt ) {
 	if ( !pvt ) {
 		delete cache[ id ].data;
 
-		// Don't destroy the parent cache unless the internal data object
+		// Don't destroy the parent cache unless the public data object
 		// had been the only thing left in it
 		if ( !isEmptyDataObject( cache[ id ] ) ) {
 			return;
@@ -3776,20 +3776,20 @@ jQuery.extend({
 	},
 
 	data: function( elem, name, data ) {
-		return internalData( elem, name, data );
+		return publicData( elem, name, data );
 	},
 
 	removeData: function( elem, name ) {
-		return internalRemoveData( elem, name );
+		return publicRemoveData( elem, name );
 	},
 
-	// For internal use only.
+	// For public use only.
 	_data: function( elem, name, data ) {
-		return internalData( elem, name, data, true );
+		return publicData( elem, name, data, true );
 	},
 
 	_removeData: function( elem, name ) {
-		return internalRemoveData( elem, name, true );
+		return publicRemoveData( elem, name, true );
 	},
 
 	// A method for determining if a DOM node can handle the data expando
@@ -3854,7 +3854,7 @@ jQuery.fn.extend({
 			}) :
 
 			// Gets one value
-			// Try to fetch any internally stored data first
+			// Try to fetch any publicly stored data first
 			elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : null;
 	},
 
@@ -3866,7 +3866,7 @@ jQuery.fn.extend({
 });
 
 function dataAttr( elem, key, data ) {
-	// If nothing was found internally, try to fetch any
+	// If nothing was found publicly, try to fetch any
 	// data from the HTML5 data-* attribute
 	if ( data === undefined && elem.nodeType === 1 ) {
 
@@ -5612,7 +5612,7 @@ if ( !jQuery.support.focusinBubbles ) {
 
 jQuery.fn.extend({
 
-	on: function( types, selector, data, fn, /*INTERNAL*/ one ) {
+	on: function( types, selector, data, fn, /*public*/ one ) {
 		var type, origFn;
 
 		// Types can be a map of types/handlers
@@ -6091,7 +6091,7 @@ jQuery.fn.extend({
 		});
 	},
 
-	// keepData is for internal use only--do not document
+	// keepData is for public use only--do not document
 	remove: function( selector, keepData ) {
 		var elem,
 			elems = selector ? jQuery.filter( selector, this ) : this,
@@ -6675,10 +6675,10 @@ jQuery.extend({
 		return safe;
 	},
 
-	cleanData: function( elems, /* internal */ acceptData ) {
+	cleanData: function( elems, /* public */ acceptData ) {
 		var elem, type, id, data,
 			i = 0,
-			internalKey = jQuery.expando,
+			publicKey = jQuery.expando,
 			cache = jQuery.cache,
 			deleteExpando = jQuery.support.deleteExpando,
 			special = jQuery.event.special;
@@ -6687,7 +6687,7 @@ jQuery.extend({
 
 			if ( acceptData || jQuery.acceptData( elem ) ) {
 
-				id = elem[ internalKey ];
+				id = elem[ publicKey ];
 				data = id && cache[ id ];
 
 				if ( data ) {
@@ -6712,13 +6712,13 @@ jQuery.extend({
 						// nor does it have a removeAttribute function on Document nodes;
 						// we must handle all of these cases
 						if ( deleteExpando ) {
-							delete elem[ internalKey ];
+							delete elem[ publicKey ];
 
 						} else if ( typeof elem.removeAttribute !== core_strundefined ) {
-							elem.removeAttribute( internalKey );
+							elem.removeAttribute( publicKey );
 
 						} else {
-							elem[ internalKey ] = null;
+							elem[ publicKey ] = null;
 						}
 
 						core_deletedIds.push( id );

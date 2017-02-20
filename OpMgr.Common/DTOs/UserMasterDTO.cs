@@ -36,6 +36,10 @@ namespace OpMgr.Common.DTOs
 
         public string ResidentialAddress { get; set; }
 
+        public string UserName { get; set; }
+
+        public string Password { get; set; }
+
         public string ParmanentAddress { get; set; }
 
         public string ContactNo { get; set; }
@@ -43,11 +47,7 @@ namespace OpMgr.Common.DTOs
         public string AlContactNo { get; set; }
 
         public string BloodGroup { get; set; }
-
-        public string UserName { get; set; }
-
-        public string Password { get; set; }
-
+        
         public LocationDTO Location { get; set; }
 
         public RoleDTO Role { get; set; }
