@@ -7,7 +7,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using OperationsManager.Models;
 
-namespace OperationsManager 
+namespace OperationsManager
 {
     public partial class Startup
     {
