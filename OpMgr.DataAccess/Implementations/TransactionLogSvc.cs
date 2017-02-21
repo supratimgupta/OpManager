@@ -290,19 +290,40 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
-        public DataTable GetPendingTransactions()
+        public IDataReader GetPendingTransactions(DateTime? runDate)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "";
+                    command.CommandText = "SELECT TransactionLogId, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, UserMasterId, TransactionDate, TransactionDueDate, "+
+                                           "TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, AmountGiven, DueAmount, TransferMode, "+
+                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId FROM dbo.TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate>=@runDate";
+                    command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
-                    _dtResult = new DataTable("PENDING_TRANS");
-                    dataAdap.Fill(_dtResult);
-                    return _dtResult;
+                    return command.ExecuteReader();
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE dbo.TransactionLog SET HasPenalty=@hasPenalty WHERE TransactionLogId=@trnsLogId";
+                    command.Parameters.Add("@hasPenalty", MySqlDbType.Bit).Value = hasPenalty.Value;
+                    command.Parameters.Add("@trnsLogId", MySqlDbType.Int32).Value = trnsLogId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    return command.ExecuteNonQuery()>0;
                 }
                 catch (Exception exp)
                 {

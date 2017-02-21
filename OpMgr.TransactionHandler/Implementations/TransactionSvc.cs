@@ -215,10 +215,31 @@ namespace OpMgr.TransactionHandler.Implementations
             return calculatedAmt;
         }
 
+        private double CalculateFineAmount(object fineAmountOn, object fineAmount, double actualAmt)
+        {
+            double calFineAmount = 0.0;
+
+            if (fineAmountOn != null)
+            {
+                if (fineAmount != null)
+                {
+                    if (string.Equals("PERCENT", fineAmountOn.ToString(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        calFineAmount = ((actualAmt * (double)fineAmount) / 100);
+                    }
+                    else if (string.Equals("ACTUAL", fineAmountOn.ToString(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        calFineAmount = (double)fineAmount;
+                    }
+                }
+            }
+            return calFineAmount;
+        }
+
         public void AddRegularTransactions()
         {
-            IDataReader reader = _uTransSvc.GetUserTransactions();
             FillTransDetails();
+            IDataReader reader = _uTransSvc.GetUserTransactions(_runDate);
             if(reader!=null)
             {
                 while(reader.NextResult())
@@ -271,7 +292,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                    {
                                        trnsLogDto.StandardSectionMap = null;
                                    }
-                                   trnsLogDto.TransactionType = _commonConfig["TR_CREDIT_CODE"];
+                                   trnsLogDto.TransactionType = reader["TransactionType"].ToString();
                                    trnsLogDto.HasPenalty = false;
                                    trnsLogDto.TransactionRule = new TransactionRuleDTO();
                                    trnsLogDto.TransactionRule.TranRuleId = (int)rules[0]["TranRuleId"];
@@ -303,7 +324,74 @@ namespace OpMgr.TransactionHandler.Implementations
 
         public void CheckDuesAndAddFine()
         {
-            throw new NotImplementedException();
+            FillTransDetails();
+            IDataReader reader = _transLog.GetPendingTransactions(_runDate);
+            if (reader != null)
+            {
+                while (reader.NextResult())
+                {
+                    try
+                    {
+                        using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
+                        {
+                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["TranRuleId"].ToString());
+                            if(trnsRule!=null && trnsRule.Length>0)
+                            {
+                                TransactionLogDTO trnsLog = new TransactionLogDTO();
+                                trnsLog.Active = true;
+                                trnsLog.User = new UserMasterDTO();
+                                trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
+                                trnsLog.TransactionDate = _runDate;
+                                trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
+                                trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionPreviousDueDate"];
+                                trnsLog.ParentTransactionLogId = new TransactionLogDTO();
+                                trnsLog.ParentTransactionLogId.TransactionLogId = (int)reader["TransactionLogId"];
+                                trnsLog.IsCompleted = false;
+                                trnsLog.CompletedOn = null;
+                                trnsLog.AmountImposed = CalculateFineAmount(trnsRule[0]["PenaltyCalculatedIn"], trnsRule[0]["penaltyamount"], (double)reader["DueAmount"]);
+                                trnsLog.AmountGiven = null;
+                                trnsLog.DueAmount = trnsLog.AmountImposed;
+                                trnsLog.TransferMode = null;
+                                trnsLog.Location = null;
+                                if(reader["StandardSectionId"]==null || string.IsNullOrEmpty(reader["StandardSectionId"].ToString()))
+                                {
+                                    trnsLog.StandardSectionMap = null;
+                                }
+                                else
+                                {
+                                    trnsLog.StandardSectionMap = new StandardSectionMapDTO();
+                                    trnsLog.StandardSectionMap.StandardSectionId = (int)reader["StandardSectionId"];
+                                }
+                                trnsLog.TransactionType = trnsRule[0]["PenaltyTransactionType"]==null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTransactionType"].ToString())?reader["TransactionType"].ToString() : trnsRule[0]["PenaltyTransactionType"].ToString();
+                                trnsLog.HasPenalty = false;
+                                trnsLog.OriginalTransLog = new TransactionLogDTO();
+                                if(reader["OriginalTransactionLogId"]==null || string.IsNullOrEmpty(reader["OriginalTransactionLogId"].ToString()))
+                                {
+                                    trnsLog.OriginalTransLog.TransactionLogId = (int)reader["TransactionLogId"];
+                                }
+                                else
+                                {
+                                    trnsLog.OriginalTransLog.TransactionLogId = (int)reader["OriginalTransactionLogId"];
+                                }
+                                trnsLog.TransactionRule = new TransactionRuleDTO();
+                                trnsLog.TransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"] == null || string.IsNullOrEmpty(reader["PenaltyTranRuleId"].ToString()) ? (int)reader["TranRuleId"] : (int)trnsRule[0]["PenaltyTranRuleId"];
+                                StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
+                                if(status.IsSuccess)
+                                {
+                                    if(_transLog.UpdateHasPenaltyFlag((int)reader["TransactionLogId"], true))
+                                    {
+                                        ts.Complete();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+                        _logger.Log(exp);
+                    }
+                }
+            }
         }
 
         public void CheckLibraryDueAndAddFine()
