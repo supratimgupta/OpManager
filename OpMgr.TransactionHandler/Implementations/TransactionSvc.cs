@@ -8,6 +8,7 @@ using OpMgr.DataAccess.Implementations;
 using OpMgr.Common.Contracts;
 using System.Data;
 using System.Transactions;
+using OpMgr.Common.DTOs;
 
 namespace OpMgr.TransactionHandler.Implementations
 {
@@ -223,9 +224,59 @@ namespace OpMgr.TransactionHandler.Implementations
                                if(rules!=null)
                                {
                                    //Insert records as pending in trans log
+                                   TransactionLogDTO trnsLogDto = new TransactionLogDTO();
+                                   trnsLogDto.Active = true;
+                                   trnsLogDto.User = new UserMasterDTO();
+                                   trnsLogDto.User.UserMasterId = (int)reader["UserMasterId"];
+                                   trnsLogDto.TransactionDate = _runDate;
+
+                                   if (rules[0]["FirstDuedateAfterdays"] != null || !string.IsNullOrEmpty(rules[0]["FirstDuedateAfterdays"].ToString()))
+                                   {
+                                       trnsLogDto.TransactionDueDate = _runDate.AddDays((int)rules[0]["FirstDuedateAfterdays"]);
+                                   }
+                                   else
+                                   {
+                                       trnsLogDto.TransactionDueDate = null;
+                                   }
+
+                                   trnsLogDto.TransactionPreviousDueDate = null;
+                                   trnsLogDto.ParentTransactionLogId = null;
+                                   trnsLogDto.IsCompleted = false;
+                                   trnsLogDto.CompletedOn = null;
+                                   trnsLogDto.AmountImposed = (double)rules[0]["ActualAmount"];
+                                   trnsLogDto.AmountGiven = null;
+                                   trnsLogDto.DueAmount = trnsLogDto.AmountImposed;
+                                   trnsLogDto.TransferMode = null;
+                                   trnsLogDto.Location = null;
+                                   if(string.Equals(reader["RoleId"].ToString(), _commonConfig["STUD_ROLE_ID"]))
+                                   {
+                                       trnsLogDto.StandardSectionMap = new StandardSectionMapDTO();
+                                       trnsLogDto.StandardSectionMap.StandardSectionId = (int)reader["StandardSectionId"];
+                                   }
+                                   else
+                                   {
+                                       trnsLogDto.StandardSectionMap = null;
+                                   }
+                                   trnsLogDto.TransactionType = _commonConfig["TR_CREDIT_CODE"];
+                                   trnsLogDto.HasPenalty = false;
+                                   trnsLogDto.TransactionRule = new TransactionRuleDTO();
+                                   trnsLogDto.TransactionRule.TranRuleId = (int)rules[0]["TranRuleId"];
+
+                                   StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLogDto);
+                                   if(status.IsSuccess)
+                                   {
+                                       UserTransactionDTO uTrns = new UserTransactionDTO();
+                                       uTrns.LastAutoTransactionOn = lastDayOfRun;
+                                       uTrns.NextAutoTransactionOn = nextDayToRun;
+                                       uTrns.UserTransactionId = (int)reader["UserTransactionId"];
+                                       StatusDTO uTrnsStatus = _uTransSvc.UpdateTransLastRunNextRun(uTrns);
+                                       if (uTrnsStatus.IsSuccess)
+                                       {
+                                           ts.Complete();
+                                       }
+                                   }
                                }
                            }
-                           ts.Complete();
                        }
                     }
                     catch(Exception exp)

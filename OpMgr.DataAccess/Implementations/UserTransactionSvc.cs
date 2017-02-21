@@ -79,7 +79,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, S.ClassTypeId FROM dbo.UserTransaction UT" +
+                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, SSM.StandardSectionId, S.ClassTypeId, UM.RoleId FROM dbo.UserTransaction UT" +
                                             " LEFT JOIN dbo.UserMaster UM ON UM.UserMasterId = UT.UserMasterId LEFT JOIN dbo.StudentInfo SI ON UM.UserMasterId=SI.UserMasterId LEFT JOIN dbo.StandardSectionMap SSM ON SI.StandardSectionId = SSM.StandardSectionId" +
                                             " LEFT JOIN dbo.Standard S ON SCM.StandardId = S.StandardId" +
                                             " WHERE Active=1 AND (NextAutoTransactionOn IS NULL OR NextAutoTransactionOn<=CURDATE())";
