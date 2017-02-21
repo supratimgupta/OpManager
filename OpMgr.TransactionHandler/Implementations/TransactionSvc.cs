@@ -12,7 +12,7 @@ using OpMgr.Common.DTOs;
 
 namespace OpMgr.TransactionHandler.Implementations
 {
-    public class TransactionSvc //: ITransactionSvc, IDisposable
+    public class TransactionSvc : ITransactionSvc
     {
         private IUserTransactionSvc _uTransSvc;
 
@@ -47,6 +47,20 @@ namespace OpMgr.TransactionHandler.Implementations
             _libTrans = libTrans;
 
             FillTransDetails();
+        }
+
+        public void Dispose()
+        {
+            if(_dtTransMaster!=null)
+            {
+                _dtTransMaster.Dispose();
+                _dtTransMaster = null;
+            }
+            if(_dtTransRule!=null)
+            {
+                _dtTransRule.Dispose();
+                _dtTransRule = null;
+            }
         }
 
         private void FillTransDetails()
@@ -285,6 +299,16 @@ namespace OpMgr.TransactionHandler.Implementations
                     }
                 }
             }
+        }
+
+        public void CheckDuesAndAddFine()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CheckLibraryDueAndAddFine()
+        {
+            throw new NotImplementedException();
         }
     }
 }
