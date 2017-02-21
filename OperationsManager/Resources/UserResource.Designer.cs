@@ -29,7 +29,7 @@ namespace OperationsManager.Resources {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public UserResource() {
+        internal UserResource() {
         }
         
         /// <summary>
@@ -61,11 +61,56 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alternate Contact Number.
+        /// </summary>
+        public static string AltContactNo {
+            get {
+                return ResourceManager.GetString("AltContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact Number.
+        /// </summary>
+        public static string ContactNo {
+            get {
+                return ResourceManager.GetString("ContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Of Birth.
+        /// </summary>
+        public static string DateOfBirth {
+            get {
+                return ResourceManager.GetString("DateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EmailId.
+        /// </summary>
+        public static string EmailId {
+            get {
+                return ResourceManager.GetString("EmailId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FName {
             get {
                 return ResourceManager.GetString("FName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender.
+        /// </summary>
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
             }
         }
         
@@ -102,6 +147,60 @@ namespace OperationsManager.Resources {
         public static string PageHeader {
             get {
                 return ResourceManager.GetString("PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parmanent Address.
+        /// </summary>
+        public static string ParmanentAddress {
+            get {
+                return ResourceManager.GetString("ParmanentAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration No.
+        /// </summary>
+        public static string RegistrationNo {
+            get {
+                return ResourceManager.GetString("RegistrationNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Residential Address.
+        /// </summary>
+        public static string ResidentialAddress {
+            get {
+                return ResourceManager.GetString("ResidentialAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RollNo.
+        /// </summary>
+        public static string RollNo {
+            get {
+                return ResourceManager.GetString("RollNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Image.
+        /// </summary>
+        public static string UploadImage {
+            get {
+                return ResourceManager.GetString("UploadImage", resourceCulture);
             }
         }
     }

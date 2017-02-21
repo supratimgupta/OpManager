@@ -10,5 +10,7 @@ namespace OperationsManager.Areas.Login.Models
     public class UserViewModel : UserMasterDTO
     {
         public SelectList LocationList { get; set; }
+
+        public SelectList RoleList { get; set; }
     }
 }

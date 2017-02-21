@@ -66,6 +66,7 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
             uvModel.LocationList = _uiddlRepo.getLocationDropDown();
+            uvModel.RoleList = _uiddlRepo.getRoleDropDown();
             return View(uvModel);
         }
     }

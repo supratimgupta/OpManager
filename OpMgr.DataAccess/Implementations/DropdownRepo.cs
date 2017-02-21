@@ -55,5 +55,39 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<RoleDTO> Roles()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select RoleId,RoleDescription from roles where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<RoleDTO> lstRole = new List<RoleDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        RoleDTO roleDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            roleDTO = new RoleDTO();
+                            roleDTO.RoleId = (int)dr["RoleId"];
+                            roleDTO.RoleDescription = dr["RoleDescription"].ToString();
+                            lstRole.Add(roleDTO);
+                        }
+                    }
+                    return lstRole;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

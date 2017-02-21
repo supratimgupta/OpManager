@@ -11,5 +11,7 @@ namespace OpMgr.Common.Contracts.Modules
     public interface IDropdownRepo
     {
         List<LocationDTO> Location();
+
+        List<RoleDTO> Roles();
     }
 }

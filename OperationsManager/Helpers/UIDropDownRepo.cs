@@ -23,5 +23,11 @@ namespace OperationsManager.Helpers
             List<LocationDTO> lDto = _ddlRepo.Location();
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }
+
+        public SelectList getRoleDropDown()
+        {
+            List<RoleDTO> rDto = _ddlRepo.Roles();
+            return new SelectList(rDto, "RoleId", "RoleDescription");
+        }
     }
 }
