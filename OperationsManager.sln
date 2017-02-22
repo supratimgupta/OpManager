@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.Configurations", "OpM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.TransactionHandler", "OpMgr.TransactionHandler\OpMgr.TransactionHandler.csproj", "{4D95FA50-5330-46A9-9CBB-A803E0EA1667}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.TransactionHandler.Runner", "OpMgr.TransactionHandler.Runner\OpMgr.TransactionHandler.Runner.csproj", "{B8652D94-8F3E-4271-8377-1AEA3D66362D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.Logger", "OpMgr.Logger\OpMgr.Logger.csproj", "{C977AFEA-B959-4806-9FD3-6935813362B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{4D95FA50-5330-46A9-9CBB-A803E0EA1667}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D95FA50-5330-46A9-9CBB-A803E0EA1667}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D95FA50-5330-46A9-9CBB-A803E0EA1667}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8652D94-8F3E-4271-8377-1AEA3D66362D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8652D94-8F3E-4271-8377-1AEA3D66362D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8652D94-8F3E-4271-8377-1AEA3D66362D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8652D94-8F3E-4271-8377-1AEA3D66362D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C977AFEA-B959-4806-9FD3-6935813362B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C977AFEA-B959-4806-9FD3-6935813362B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C977AFEA-B959-4806-9FD3-6935813362B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C977AFEA-B959-4806-9FD3-6935813362B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
