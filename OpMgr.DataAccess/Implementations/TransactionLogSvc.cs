@@ -308,7 +308,7 @@ namespace OpMgr.DataAccess.Implementations
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "SELECT TransactionLogId, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, UserMasterId, TransactionDate, TransactionDueDate, "+
                                            "TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, AmountGiven, DueAmount, TransferMode, "+
-                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId FROM dbo.TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate>=@runDate";
+                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId FROM dbo.TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate<@runDate";
                     command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     return command.ExecuteReader();
