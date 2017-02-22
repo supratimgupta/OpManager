@@ -34,5 +34,7 @@ namespace OpMgr.Common.DTOs
 
         public TransactionLogDTO OriginalTransLog { get; set; }
         public StandardSectionMapDTO StandardSectionMap { get; set; }
+
+        public TransactionRuleDTO PenaltyTransactionRule { get; set; }
     }
 }

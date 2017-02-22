@@ -46,10 +46,10 @@ namespace OpMgr.DataAccess.Implementations
                         MySqlCommand command = new MySqlCommand();
                         command.CommandText = "INSERT INTO TransactionLog (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, Active, UserMasterId, TransactionDate, " +
                                                "TransactionDueDate, TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, " +
-                                               "AmountGiven, DueAmount, TransferMode, locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogiId, TranRuleId) VALUES " +
+                                               "AmountGiven, DueAmount, TransferMode, locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogiId, TranRuleId, PenaltyTransRuleId) VALUES " +
                                                "(@createdBy, @createdDate, @updatedBy, @updatedDate, @active, @userMasterId, @transactionDate, " +
                                                "@transactionDueDate, @transPrevDueDate, @parentTransLogId, @isCompleted, @completedOn, @amountImposed, " +
-                                               "@amountGiven, @dueAmount, @transferMode, @locationId, @standardSectionId, @transactionType, @hasPenalty, @originalTransLogId, @transRuleId)";
+                                               "@amountGiven, @dueAmount, @transferMode, @locationId, @standardSectionId, @transactionType, @hasPenalty, @originalTransLogId, @transRuleId, @penTrnsRuleId)";
 
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
@@ -249,6 +249,15 @@ namespace OpMgr.DataAccess.Implementations
                         else
                         {
                             command.Parameters.Add("@transRuleId", MySqlDbType.Int32).Value = DBNull.Value;
+                        }
+
+                        if(data.PenaltyTransactionRule!=null)
+                        {
+                            command.Parameters.Add("@penTrnsRuleId", MySqlDbType.Int32).Value = data.PenaltyTransactionRule.TranRuleId;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@penTrnsRuleId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
                         var retData = command.ExecuteScalar();

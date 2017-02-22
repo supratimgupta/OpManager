@@ -296,7 +296,8 @@ namespace OpMgr.TransactionHandler.Implementations
                                    trnsLogDto.HasPenalty = false;
                                    trnsLogDto.TransactionRule = new TransactionRuleDTO();
                                    trnsLogDto.TransactionRule.TranRuleId = (int)rules[0]["TranRuleId"];
-
+                                   trnsLogDto.PenaltyTransactionRule = new TransactionRuleDTO();
+                                   trnsLogDto.PenaltyTransactionRule.TranRuleId = trnsLogDto.TransactionRule.TranRuleId;
                                    StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLogDto);
                                    if(status.IsSuccess)
                                    {
@@ -334,7 +335,7 @@ namespace OpMgr.TransactionHandler.Implementations
                     {
                         using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                         {
-                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["TranRuleId"].ToString());
+                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransRuleId"].ToString());
                             if(trnsRule!=null && trnsRule.Length>0)
                             {
                                 TransactionLogDTO trnsLog = new TransactionLogDTO();
@@ -374,7 +375,9 @@ namespace OpMgr.TransactionHandler.Implementations
                                     trnsLog.OriginalTransLog.TransactionLogId = (int)reader["OriginalTransactionLogId"];
                                 }
                                 trnsLog.TransactionRule = new TransactionRuleDTO();
-                                trnsLog.TransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"] == null || string.IsNullOrEmpty(reader["PenaltyTranRuleId"].ToString()) ? (int)reader["TranRuleId"] : (int)trnsRule[0]["PenaltyTranRuleId"];
+                                trnsLog.TransactionRule.TranRuleId = (int)trnsRule[0]["TranRuleId"];
+                                trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
+                                trnsLog.PenaltyTransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"]==null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTranRuleId"].ToString())? (int)trnsRule[0]["TranRuleId"]: (int)trnsRule[0]["PenaltyTranRuleId"];
                                 StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
                                 if(status.IsSuccess)
                                 {
@@ -396,7 +399,59 @@ namespace OpMgr.TransactionHandler.Implementations
 
         public void CheckLibraryDueAndAddFine()
         {
-            throw new NotImplementedException();
+            FillTransDetails();
+            IDataReader reader = _libTrans.GetPendingTransactions(_runDate);
+            if (reader != null)
+            {
+                while (reader.NextResult())
+                {
+                    try
+                    {
+                        using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
+                        {
+                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + _commonConfig["TRNS_RULE_FOR_LIB_DUE"]);
+                            if (trnsRule != null && trnsRule.Length > 0)
+                            {
+                                TransactionLogDTO trnsLog = new TransactionLogDTO();
+                                trnsLog.Active = true;
+                                trnsLog.User = new UserMasterDTO();
+                                trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
+                                trnsLog.TransactionDate = _runDate;
+                                trnsLog.TransactionDueDate = (_runDate.AddDays((int)trnsRule[0]["FirstDuedateAfterdays"]));
+                                trnsLog.TransactionPreviousDueDate = null;
+                                trnsLog.ParentTransactionLogId = null;
+                                trnsLog.IsCompleted = false;
+                                trnsLog.CompletedOn = null;
+                                trnsLog.AmountImposed = (double)trnsRule[0]["ActualAmount"];
+                                trnsLog.AmountGiven = null;
+                                trnsLog.DueAmount = trnsLog.AmountImposed;
+                                trnsLog.TransferMode = null;
+                                trnsLog.Location = null;
+                                trnsLog.StandardSectionMap = null;
+                                trnsLog.TransactionType = _dtTransMaster.Select("TranMasterId=" + trnsRule[0]["TranMasterId"].ToString())[0]["TransactionType"].ToString();
+                                trnsLog.HasPenalty = false;
+                                trnsLog.OriginalTransLog = null;
+                                trnsLog.TransactionRule = new TransactionRuleDTO();
+                                trnsLog.TransactionRule.TranRuleId = (int)trnsRule[0]["TranRuleId"];
+                                trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
+                                trnsLog.PenaltyTransactionRule.TranRuleId = trnsLog.TransactionRule.TranRuleId;
+                                StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
+                                if (status.IsSuccess)
+                                {
+                                    if (_libTrans.MoveLibTransToCashTrans((int)reader["LibraryTranId"], true, status.ReturnObj.TransactionLogId))
+                                    {
+                                        ts.Complete();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+                        _logger.Log(exp);
+                    }
+                }
+            }
         }
     }
 }

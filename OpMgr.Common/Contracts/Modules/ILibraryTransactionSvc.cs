@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface ILibraryTransactionSvc : ICRUDSvc<DTOs.LibraryTransactionDTO, DTOs.LibraryTransactionDTO>
+    public interface ILibraryTransactionSvc : ICRUDSvc<DTOs.LibraryTransactionDTO, DTOs.LibraryTransactionDTO>, IDisposable
     {
-        DataTable GetPendingTransactions();
+        IDataReader GetPendingTransactions(DateTime? runDate);
+
+        bool MoveLibTransToCashTrans(int libTrnsId, bool? IsMovedToTransaction, int? cashTrnsId);
     }
 }
