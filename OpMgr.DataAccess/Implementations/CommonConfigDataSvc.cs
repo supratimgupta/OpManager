@@ -40,7 +40,7 @@ namespace OpMgr.DataAccess.Implementations
         {
             try
             {
-                MySqlCommand configSelectCommand = new MySqlCommand("SELECT CONF_KEY, CONF_VALUE FROM dbo.OpMgrConfig WHERE CONF_ACTIVE=1");
+                MySqlCommand configSelectCommand = new MySqlCommand("SELECT configurationkey, configurationvalue FROM dbo.Configuration");
                 _dbSvc.OpenConnection();
                 configSelectCommand.Connection = _dbSvc.GetConnection() as MySqlConnection;
                 MySqlDataAdapter msDataAdap = new MySqlDataAdapter(configSelectCommand);
@@ -51,7 +51,7 @@ namespace OpMgr.DataAccess.Implementations
                     _dbConfigData = new Dictionary<string, string>();
                     foreach (DataRow dr in _dtConfig.Rows)
                     {
-                        _dbConfigData.Add(dr["CONF_KEY"].ToString(), dr["CONF_VALUE"].ToString());
+                        _dbConfigData.Add(dr["configurationkey"].ToString(), dr["configurationvalue"].ToString());
                     }
                 }
                 return _dbConfigData;
