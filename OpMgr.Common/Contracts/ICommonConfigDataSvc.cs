@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.Contracts
 {
-    public interface ICommonConfigSvc
+    public interface ICommonConfigDataSvc : IDisposable
     {
-        void PopulateDBConfig();
-
-        string GetConfigValue(string key);
-
-        string this[string key]{ get; }
+        Dictionary<string, string> GetCommonConfigData();
     }
 }

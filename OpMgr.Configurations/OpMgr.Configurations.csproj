@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\AppCommonConfigSvc.cs" />
     <Compile Include="Implementations\ConfigSvc.cs" />
-    <Compile Include="Implementations\CommonConfigSvc.cs" />
+    <Compile Include="Implementations\WebCommonConfigSvc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -46,6 +46,7 @@
     <Compile Include="Contracts\ILogSvc.cs" />
     <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
+    <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
     <Compile Include="Contracts\Modules\IDropdownRepo.cs" />
     <Compile Include="Contracts\Modules\IEntitlementActionSvc.cs" />
     <Compile Include="Contracts\Modules\IEntitlementSvc.cs" />

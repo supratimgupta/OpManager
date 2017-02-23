@@ -27,6 +27,70 @@ namespace OperationsManager.ExtendedHtmlHelpers
             return value;
         }
 
+        //Use the below code from cshtml view to get the submit button
+        //@Html.OpMgrSubmitButton("submitButton", "my submit button label", new { onclick = "alert('abc');", @class = "btn btn-primary", id="myId" })
+        public static MvcHtmlString OpMgrSubmitButton(this HtmlHelper helper, string name, string label, object htmlAttributes)
+        {
+            string controlText = helper.TextBox(name, label, htmlAttributes).ToString();
+            controlText = controlText.Replace("type=\"text\"", "type=\"submit\"");
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        var editorField = new TagBuilder("span");
+                        editorField.AddCssClass("disabledDiv");
+                        editorField.InnerHtml += controlText;
+
+                        return MvcHtmlString.Create(editorField.ToString());
+                    }
+                }
+            }
+            return MvcHtmlString.Create(controlText);
+        }
+
+        //Use the below code to add the normal button in cshtml view
+        //@Html.OpMgrButton("submitButton", "my button label", new {onclick="alert('abc');", @class="btn btn-primary", id="myId1" })
+        public static MvcHtmlString OpMgrButton(this HtmlHelper helper, string name, string label, object htmlAttributes)
+        {
+            string controlText = helper.TextBox(name, label, htmlAttributes).ToString();
+            controlText = controlText.Replace("type=\"text\"", "type=\"button\"");
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        var editorField = new TagBuilder("span");
+                        editorField.AddCssClass("disabledDiv");
+                        editorField.InnerHtml += controlText;
+
+                        return MvcHtmlString.Create(editorField.ToString());
+                    }
+                }
+            }
+            return MvcHtmlString.Create(controlText);
+        }
+
         public static MvcHtmlString OpMgrDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList, string labelText, object htmlAttributes = null)
         {
             if (htmlAttributes != null)
