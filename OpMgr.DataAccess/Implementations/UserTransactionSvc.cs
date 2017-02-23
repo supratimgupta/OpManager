@@ -72,17 +72,18 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public IDataReader GetUserTransactions()
+        public IDataReader GetUserTransactions(DateTime? runDate)
         {
             using(IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, S.ClassTypeId FROM dbo.UserTransaction UT" +
+                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, SSM.StandardSectionId, S.ClassTypeId, UM.RoleId, TM.TransactionType FROM dbo.UserTransaction UT" +
                                             " LEFT JOIN dbo.UserMaster UM ON UM.UserMasterId = UT.UserMasterId LEFT JOIN dbo.StudentInfo SI ON UM.UserMasterId=SI.UserMasterId LEFT JOIN dbo.StandardSectionMap SSM ON SI.StandardSectionId = SSM.StandardSectionId" +
-                                            " LEFT JOIN dbo.Standard S ON SCM.StandardId = S.StandardId" +
-                                            " WHERE Active=1 AND (NextAutoTransactionOn IS NULL OR NextAutoTransactionOn<=CURDATE())";
+                                            " LEFT JOIN dbo.Standard S ON SCM.StandardId = S.StandardId LEFT JOIN dbo.TransactionMaster TM ON UT.TranMasterId=TM.TranMasterId" +
+                                            " WHERE Active=1 AND ((NextAutoTransactionOn IS NULL AND LastAutoTransactionOn IS NULL) OR NextAutoTransactionOn<=@runDate)";
+                    command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     return command.ExecuteReader();
                 }

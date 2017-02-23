@@ -13,14 +13,14 @@ namespace OpMgr.Common.DTOs
         public DateTime? CreatedDate { get; set; }
         public UserMasterDTO UpdatedBy { get; set; }
         public DateTime? UpdatedDate{ get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         public UserMasterDTO User { get; set; }
         public DateTime? TransactionDate { get; set; }
         public DateTime? TransactionDueDate { get; set; }
         public DateTime? TransactionPreviousDueDate { get; set; }
         public TransactionLogDTO ParentTransactionLogId { get; set; }
-        public bool IsCompleted { get; set; }
-        public TransactionMasterDTO TranMaster { get; set; }
+        public bool? IsCompleted { get; set; }
+        public TransactionRuleDTO TransactionRule { get; set; }
         public DateTime? CompletedOn { get; set; }
         public double? AmountImposed { get; set; }
         public double? AmountGiven { get; set; }
@@ -28,6 +28,13 @@ namespace OpMgr.Common.DTOs
         public string TransferMode { get; set; }
         public LocationDTO Location { get; set; }
 
-        public StudentClassMapDTO StudentClassMap { get; set; }
+        public string TransactionType { get; set; }
+
+        public bool? HasPenalty { get; set; }
+
+        public TransactionLogDTO OriginalTransLog { get; set; }
+        public StandardSectionMapDTO StandardSectionMap { get; set; }
+
+        public TransactionRuleDTO PenaltyTransactionRule { get; set; }
     }
 }

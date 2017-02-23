@@ -9,7 +9,7 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface IUserTransactionSvc : ICRUDSvc<DTOs.UserTransactionDTO, DTOs.UserTransactionDTO>
     {
-        IDataReader GetUserTransactions();
+        IDataReader GetUserTransactions(DateTime? runDate);
 
         DTOs.StatusDTO UpdateTransLastRunNextRun(DTOs.UserTransactionDTO userTrans);
     }

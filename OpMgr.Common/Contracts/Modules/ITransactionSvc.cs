@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface ITransactionSvc
+    public interface ITransactionSvc : IDisposable
     {
         void AddRegularTransactions();
 

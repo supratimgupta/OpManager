@@ -13,5 +13,10 @@ namespace OpMgr.Configurations.Implementations
         {
             return System.Configuration.ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
         }
+
+        public string GetLogPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["LogPath"];
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace OpMgr.Common.Contracts
     public interface IConfigSvc
     {
         string GetConnectionString();
+
+        string GetLogPath();
     }
 }

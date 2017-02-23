@@ -9,6 +9,8 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface ITransactionLogSvc : ICRUDSvc<DTOs.TransactionLogDTO, DTOs.TransactionLogDTO>
     {
-        DataTable GetPendingTransactions();
+        IDataReader GetPendingTransactions(DateTime? runDate);
+
+        bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty);
     }
 }
