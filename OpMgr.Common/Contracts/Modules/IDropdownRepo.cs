@@ -13,5 +13,19 @@ namespace OpMgr.Common.Contracts.Modules
         List<LocationDTO> Location();
 
         List<RoleDTO> Roles();
+
+        List<HouseTypeDTO> House();
+
+        List<ClassTypeDTO> ClassType();
+
+        List<SectionDTO> Section();
+
+        List<BookCategoryDTO> BookCategry();
+
+        List<DepartmentDTO> Department();
+
+        List<DesignationDTO> Designation();
+
+        List<StandardDTO> Standard(ClassTypeDTO classTypeDTO);
     }
 }

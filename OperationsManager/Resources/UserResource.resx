@@ -117,9 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdmissionDate" xml:space="preserve">
+    <value>Admission Date</value>
+    <comment>Admission Date of a Student</comment>
+  </data>
   <data name="AltContactNo" xml:space="preserve">
     <value>Alternate Contact Number</value>
     <comment>Alternate Contact number of user</comment>
+  </data>
+  <data name="ClassType" xml:space="preserve">
+    <value>Class Type</value>
+    <comment>Class Type of Student</comment>
   </data>
   <data name="ContactNo" xml:space="preserve">
     <value>Contact Number</value>
@@ -140,6 +148,22 @@
   <data name="Gender" xml:space="preserve">
     <value>Gender</value>
     <comment>Gender of user</comment>
+  </data>
+  <data name="GuardianContactNo" xml:space="preserve">
+    <value>Guardian Contact No</value>
+    <comment>Contact Number of Guardian</comment>
+  </data>
+  <data name="GuardianEmailId" xml:space="preserve">
+    <value>Guardian Email Id</value>
+    <comment>Email Id of Guardian</comment>
+  </data>
+  <data name="GuardianName" xml:space="preserve">
+    <value>Gurdian Name</value>
+    <comment>Name of Guardian</comment>
+  </data>
+  <data name="HouseName" xml:space="preserve">
+    <value>House Name</value>
+    <comment>House Name of Student</comment>
   </data>
   <data name="LName" xml:space="preserve">
     <value>Last Name</value>
@@ -176,6 +200,14 @@
   <data name="RollNo" xml:space="preserve">
     <value>RollNo</value>
     <comment>RollNo of student</comment>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Section</value>
+    <comment>Section of Student</comment>
+  </data>
+  <data name="Standard" xml:space="preserve">
+    <value>Standard</value>
+    <comment>Standard of Student</comment>
   </data>
   <data name="UploadImage" xml:space="preserve">
     <value>Upload Image</value>

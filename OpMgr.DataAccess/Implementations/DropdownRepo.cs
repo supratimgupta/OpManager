@@ -89,5 +89,243 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<HouseTypeDTO> House()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select HouseTypeId,HouseTypeDescription from housetype where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<HouseTypeDTO> lstHouse = new List<HouseTypeDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        HouseTypeDTO houseDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            houseDTO = new HouseTypeDTO();
+                            houseDTO.HouseTypeId = (int)dr["HouseTypeId"];
+                            houseDTO.HouseTypeDescription = dr["HouseTypeDescription"].ToString();
+                            lstHouse.Add(houseDTO);
+                        }
+                    }
+                    return lstHouse;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<ClassTypeDTO> ClassType()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select ClassTypeId,ClassTypeName from classtype where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<ClassTypeDTO> lstClassType = new List<ClassTypeDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        ClassTypeDTO classDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            classDTO = new ClassTypeDTO();
+                            classDTO.ClassTypeId = (int)dr["ClassTypeId"];
+                            classDTO.ClassTypeName = dr["ClassTypeName"].ToString();
+                            lstClassType.Add(classDTO);
+                        }
+                    }
+                    return lstClassType;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<SectionDTO> Section()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select SectionId,SectionName from section where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<SectionDTO> lstSection = new List<SectionDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        SectionDTO sectionDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            sectionDTO = new SectionDTO();
+                            sectionDTO.SectionId = (int)dr["SectionId"];
+                            sectionDTO.SectionName = dr["SectionName"].ToString();
+                            lstSection.Add(sectionDTO);
+                        }
+                    }
+                    return lstSection;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<BookCategoryDTO> BookCategry()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select BookCategoryId,BookCategory from bookcategory where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<BookCategoryDTO> lstBookCategory = new List<BookCategoryDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        BookCategoryDTO bookcategoryDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            bookcategoryDTO = new BookCategoryDTO();
+                            bookcategoryDTO.BookCategoryId = (int)dr["BookCategoryId"];
+                            bookcategoryDTO.BookCategory = dr["BookCategory"].ToString();
+                            lstBookCategory.Add(bookcategoryDTO);
+                        }
+                    }
+                    return lstBookCategory;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<DepartmentDTO> Department()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select DepartmentId,DepartmentName from department where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<DepartmentDTO> lstDepartment = new List<DepartmentDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        DepartmentDTO departmentDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            departmentDTO = new DepartmentDTO();
+                            departmentDTO.DepartmentId = (int)dr["DepartmentId"];
+                            departmentDTO.DepartmentName = dr["DepartmentName"].ToString();
+                            lstDepartment.Add(departmentDTO);
+                        }
+                    }
+                    return lstDepartment;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<DesignationDTO> Designation()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select DesignationId,DesignationDescription from designation where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<DesignationDTO> lstDesignation = new List<DesignationDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        DesignationDTO designationDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            designationDTO = new DesignationDTO();
+                            designationDTO.DesignationId = (int)dr["DesignationId"];
+                            designationDTO.DesignationDescription = dr["DesignationDescription"].ToString();
+                            lstDesignation.Add(designationDTO);
+                        }
+                    }
+                    return lstDesignation;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<StandardDTO> Standard(ClassTypeDTO classTypeDTO)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select StandardId,StandardName from standard where Active=1 and ClassTypeId = '" + classTypeDTO.ClassTypeId + "'";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<StandardDTO> lstStandard = new List<StandardDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        StandardDTO standardDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            standardDTO = new StandardDTO();
+                            standardDTO.StandardId = (int)dr["StandardId"];
+                            standardDTO.StandardName = dr["StandardName"].ToString();
+                            lstStandard.Add(standardDTO);
+                        }
+                    }
+                    return lstStandard;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

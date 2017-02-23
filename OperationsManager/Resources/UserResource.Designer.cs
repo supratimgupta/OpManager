@@ -61,11 +61,29 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admission Date.
+        /// </summary>
+        public static string AdmissionDate {
+            get {
+                return ResourceManager.GetString("AdmissionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alternate Contact Number.
         /// </summary>
         public static string AltContactNo {
             get {
                 return ResourceManager.GetString("AltContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class Type.
+        /// </summary>
+        public static string ClassType {
+            get {
+                return ResourceManager.GetString("ClassType", resourceCulture);
             }
         }
         
@@ -111,6 +129,42 @@ namespace OperationsManager.Resources {
         public static string Gender {
             get {
                 return ResourceManager.GetString("Gender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Contact No.
+        /// </summary>
+        public static string GuardianContactNo {
+            get {
+                return ResourceManager.GetString("GuardianContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Email Id.
+        /// </summary>
+        public static string GuardianEmailId {
+            get {
+                return ResourceManager.GetString("GuardianEmailId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gurdian Name.
+        /// </summary>
+        public static string GuardianName {
+            get {
+                return ResourceManager.GetString("GuardianName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to House Name.
+        /// </summary>
+        public static string HouseName {
+            get {
+                return ResourceManager.GetString("HouseName", resourceCulture);
             }
         }
         
@@ -192,6 +246,24 @@ namespace OperationsManager.Resources {
         public static string RollNo {
             get {
                 return ResourceManager.GetString("RollNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section.
+        /// </summary>
+        public static string Section {
+            get {
+                return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard.
+        /// </summary>
+        public static string Standard {
+            get {
+                return ResourceManager.GetString("Standard", resourceCulture);
             }
         }
         
