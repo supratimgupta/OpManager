@@ -75,8 +75,8 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
-            //supratim see this
-            //uvModel.StandardList = _uiddlRepo.getStandardDropDown(uvModel.ClassTypeList.DataValueField);
+            
+            uvModel.StandardList = _uiddlRepo.getStandardDropDown(uvModel.ClassType);
 
             return View(uvModel);
         }
