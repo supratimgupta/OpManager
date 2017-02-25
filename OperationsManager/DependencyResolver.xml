@@ -5,5 +5,11 @@
   
 <bind service="OpMgr.Common.Contracts.Modules.IDropdownRepo, OpMgr.Common"
   to="OpMgr.DataAccess.Implementations.DropdownRepo, OpMgr.DataAccess" />
+
+
+<bind service="OpMgr.Common.Contracts.Modules.IUserSvc, OpMgr.Common"
+  to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
+
+
 </module>
 

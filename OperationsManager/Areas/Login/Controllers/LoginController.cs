@@ -22,13 +22,15 @@ namespace OperationsManager.Areas.Login.Controllers
         private Helpers.UIDropDownRepo _uiddlRepo;
 
         
-        public LoginController(IConfigSvc configSvc, IDropdownRepo ddlRepo)
+        public LoginController(IUserSvc userSvc,  IDropdownRepo ddlRepo)
         {
-            _userSvc = new OpMgr.DataAccess.Implementations.UserSvc();
-            _ddlRepo = new OpMgr.DataAccess.Implementations.DropdownRepo(new OpMgr.Configurations.Implementations.ConfigSvc());
+            _userSvc = userSvc;
+            _ddlRepo = ddlRepo;
+                //new OpMgr.DataAccess.Implementations.DropdownRepo(new OpMgr.Configurations.Implementations.ConfigSvc());
             _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
             //_logger = logger;
-            // _sessionSvc = sessionSvc;
+
+            //_sessionSvc = sessionSvc;
         }
 
         // GET: Login/Login
@@ -64,9 +66,19 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            //Models.UserViewModel uvModel = new Models.UserViewModel();
-            //uvModel.LocationList = _uiddlRepo.getLocationDropDown();
-            return View();
+            Models.UserViewModel uvModel = new Models.UserViewModel();
+            uvModel.LocationList = _uiddlRepo.getLocationDropDown();
+            uvModel.RoleList = _uiddlRepo.getRoleDropDown();
+            uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            uvModel.SectionList = _uiddlRepo.getSectionDropDown();
+            uvModel.HouseList = _uiddlRepo.getHouseDropDown();
+            uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
+            uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
+            uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
+            
+            uvModel.StandardList = _uiddlRepo.getStandardDropDown(uvModel.ClassType);
+
+            return View(uvModel);
         }
     }
 }

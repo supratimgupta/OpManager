@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpMgr.Common.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,6 +10,22 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface IDropdownRepo
     {
-        DataTable Location();
+        List<LocationDTO> Location();
+
+        List<RoleDTO> Roles();
+
+        List<HouseTypeDTO> House();
+
+        List<ClassTypeDTO> ClassType();
+
+        List<SectionDTO> Section();
+
+        List<BookCategoryDTO> BookCategry();
+
+        List<DepartmentDTO> Department();
+
+        List<DesignationDTO> Designation();
+
+        List<StandardDTO> Standard(ClassTypeDTO classTypeDTO);
     }
 }

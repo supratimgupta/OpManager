@@ -20,6 +20,8 @@ namespace OpMgr.Common.DTOs
 
         public bool Active { get; set; }
 
+        public string StandardName { get; set; }
+
         public ClassTypeDTO ClassType { get; set; }
     }
 }

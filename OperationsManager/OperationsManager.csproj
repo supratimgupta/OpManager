@@ -185,7 +185,10 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
+    <Compile Include="Areas\Library\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Library\LibraryAreaRegistration.cs" />
     <Compile Include="Areas\Login\Controllers\LoginController.cs" />
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
@@ -255,6 +258,9 @@
     <Content Include="Areas\Login\Views\Login\Welcome.cshtml" />
     <Content Include="Areas\Login\Views\Login\Register.cshtml" />
     <Content Include="Mvc.sitemap" />
+    <Content Include="Areas\Library\Views\Library\RegisterBooks.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Admin\AddMasterData.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -351,10 +357,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Employee\Controllers\" />
     <Folder Include="Areas\Employee\Models\" />
     <Folder Include="Areas\Employee\Views\Shared\" />
-    <Folder Include="Areas\Library\Controllers\" />
     <Folder Include="Areas\Library\Models\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Controllers\" />
@@ -399,7 +406,7 @@
       <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\UserResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
