@@ -195,6 +195,7 @@
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
+    <Compile Include="Attributes\Encryption.cs" />
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -299,6 +300,8 @@
     <Content Include="template\js\easypiechart.js" />
     <Content Include="template\js\html5shiv.min.js" />
     <Content Include="template\js\jquery-1.11.1.min.js" />
+    <Content Include="template\js\jquery.datepicker.js" />
+    <Content Include="template\js\jquery.datepicker.min.js" />
     <Content Include="template\js\lumino.glyphs.js" />
     <Content Include="template\js\respond.min.js" />
     <Content Include="template\login.html" />

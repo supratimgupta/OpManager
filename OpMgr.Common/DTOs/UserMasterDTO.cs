@@ -40,6 +40,8 @@ namespace OpMgr.Common.DTOs
 
         public string Password { get; set; }
 
+        public string ConfirmPassword { get; set; }
+
         public string ParmanentAddress { get; set; }
 
         public string ContactNo { get; set; }

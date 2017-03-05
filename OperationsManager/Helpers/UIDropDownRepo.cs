@@ -71,5 +71,19 @@ namespace OperationsManager.Helpers
             List<StandardDTO> rDto = _ddlRepo.Standard(classTypeDTO);
             return new SelectList(rDto, "StandardId", "StandardName");
         }
+
+        // return standardlist not based on classtype
+        public SelectList getStandardDropDown()
+        {
+            List<StandardDTO> rDto = _ddlRepo.Standard();
+            return new SelectList(rDto, "StandardId", "StandardName");
+        }
+
+        // return standard Section List
+        public SelectList getStandardSectionDropDown()
+        {
+            List<StandardSectionMapDTO> rDto = _ddlRepo.StandardSection();
+            return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
+        }
     }
 }

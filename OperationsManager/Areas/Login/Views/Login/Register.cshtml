@@ -8,19 +8,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    $(document).ready(function () {
+        alert("hi");
+        var roleId = $("select[id$=Role_RoleId]").val();
+        if (roleId == 1) {
+            $(".divStudent").show();
+            alert("1");
+        }
+        else {
+            $(".divStudent").hide();
+        }
+
+        if (roleId == 3 || roleId == 4) {
+            $(".divStaff").show();
+            alert("3");
+        }
+        else {
+            $(".divStaff").hide();
+        }
+
+        $("#Role_RoleId").change(function () {
+
+            var roleId = $("select[id$=Role_RoleId]").val();
+            if (roleId == 1) {
+                $(".divStudent").show();
+                alert("1");
+            }
+            else {
+                $(".divStudent").hide();
+            }
+
+            if (roleId == 3 || roleId == 4) {
+                $(".divStaff").show();
+                alert("3");
+            }
+            else {
+                $(".divStaff").hide();
+            }
+            return false;
+        });
+
+    });
+</script>
 <div class="row">
     <div>
         <div>
             <div class="panel-heading">@UserResource.PageHeader</div>
             <div class="panel-body">
-                <form role="form">
-                    <fieldset>
 
+                <form role="form" action="Login/Login/Register" method="post">
+                    <fieldset>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserName, UserResource.FName, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                           @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control" })
@@ -34,7 +77,7 @@
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control" })
                         </div>
-                        
+
                         <div class="col-lg-5">
                             @Html.OpMgrTextAreaFor(m => m.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
                         </div>
@@ -44,10 +87,10 @@
                         <div class="col-lg-5">
                             @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
                         </div>
-                        <div class="col-lg-5">                            
-                            @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Location, new { @class = "form-control" })
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
                         </div>
-                        <div>
+                        <div id="divStudent" >
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.Student.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control" })
                             </div>
@@ -67,12 +110,41 @@
                                 @Html.OpMgrTextBoxFor(m => m.Student.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Student.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Location, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Student.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
                             </div>
                         </div>
+                        <div id="divStaff" style="display:none">
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.EmployeeDetails.DateOfJoining, UserResource.DateOfJoining, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.EmployeeDetails.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.EmployeeDetails.EducationalQualification, UserResource.EducationQualification, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.EmployeeDetails.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.EmployeeDetails.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div id="divcredentials">
+                            <div class="col-lg-10">
+                                @Html.OpMgrTextBoxFor(m => m.UserName, UserResource.UserName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-10">
+                                @Html.OpMgrTextBoxFor(m => m.Password, UserResource.Password, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-10">
+                                @Html.OpMgrTextBoxFor(m => m.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control" })
+                            </div>
+                        </div>
+
                         <div class="col-lg-10">
                             <div class="checkbox">
                                 <label>

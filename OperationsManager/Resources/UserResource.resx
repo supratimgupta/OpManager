@@ -125,9 +125,17 @@
     <value>Alternate Contact Number</value>
     <comment>Alternate Contact number of user</comment>
   </data>
+  <data name="Class" xml:space="preserve">
+    <value>StandardSection</value>
+    <comment>Class of Student</comment>
+  </data>
   <data name="ClassType" xml:space="preserve">
     <value>Class Type</value>
     <comment>Class Type of Student</comment>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+    <comment>Confirm Your password</comment>
   </data>
   <data name="ContactNo" xml:space="preserve">
     <value>Contact Number</value>
@@ -136,6 +144,22 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Date Of Birth</value>
     <comment>Date of Birth of User</comment>
+  </data>
+  <data name="DateOfJoining" xml:space="preserve">
+    <value>Date Of Joining</value>
+    <comment>Date Of Joining of Employee</comment>
+  </data>
+  <data name="DepartmentId" xml:space="preserve">
+    <value>Department</value>
+    <comment>Department  of Employee</comment>
+  </data>
+  <data name="DesignationId" xml:space="preserve">
+    <value>Designation</value>
+    <comment>Designation  of Employee</comment>
+  </data>
+  <data name="EducationQualification" xml:space="preserve">
+    <value>Education Qualification</value>
+    <comment>Education Qualification Of Employee</comment>
   </data>
   <data name="EmailId" xml:space="preserve">
     <value>EmailId</value>
@@ -185,6 +209,10 @@
     <value>Parmanent Address</value>
     <comment>Parmanent Address of user</comment>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Provide Password</comment>
+  </data>
   <data name="RegistrationNo" xml:space="preserve">
     <value>Registration No</value>
     <comment>Registration no of student</comment>
@@ -198,12 +226,16 @@
     <comment>Role of User</comment>
   </data>
   <data name="RollNo" xml:space="preserve">
-    <value>RollNo</value>
+    <value>Roll No</value>
     <comment>RollNo of student</comment>
   </data>
   <data name="Section" xml:space="preserve">
     <value>Section</value>
     <comment>Section of Student</comment>
+  </data>
+  <data name="StaffEmployeeId" xml:space="preserve">
+    <value>Employee Id</value>
+    <comment>Employee Id</comment>
   </data>
   <data name="Standard" xml:space="preserve">
     <value>Standard</value>
@@ -212,5 +244,9 @@
   <data name="UploadImage" xml:space="preserve">
     <value>Upload Image</value>
     <comment>Image of User</comment>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>UserName</value>
+    <comment>Username of User</comment>
   </data>
 </root>

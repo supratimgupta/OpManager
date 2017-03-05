@@ -21,12 +21,12 @@ namespace OperationsManager.Areas.Login.Controllers
 
         private Helpers.UIDropDownRepo _uiddlRepo;
 
-        
-        public LoginController(IUserSvc userSvc,  IDropdownRepo ddlRepo)
+
+        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo)
         {
             _userSvc = userSvc;
             _ddlRepo = ddlRepo;
-                //new OpMgr.DataAccess.Implementations.DropdownRepo(new OpMgr.Configurations.Implementations.ConfigSvc());
+            //new OpMgr.DataAccess.Implementations.DropdownRepo(new OpMgr.Configurations.Implementations.ConfigSvc());
             _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
             //_logger = logger;
 
@@ -75,10 +75,27 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
-            
-            uvModel.StandardList = _uiddlRepo.getStandardDropDown(uvModel.ClassType);
+            uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+
+            if (uvModel.ClassType != null)
+            {
+                uvModel.StandardList = _uiddlRepo.getStandardDropDown(uvModel.ClassType);
+            }
+            else
+            {
+                //retun list of standard when classtype is empty
+                uvModel.StandardList = _uiddlRepo.getStandardDropDown();
+            }
 
             return View(uvModel);
+        }
+
+        [HttpPost]
+        public ActionResult Register(Models.UserViewModel userview)
+        {
+            _userSvc.Insert(userview);
+
+            return View(userview);
         }
     }
 }

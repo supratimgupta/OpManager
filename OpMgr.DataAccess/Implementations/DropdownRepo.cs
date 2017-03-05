@@ -327,5 +327,75 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+
+        //below code will fetch only Standard LIst not based on classtype
+        public List<StandardDTO> Standard()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select StandardId,StandardName from standard where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<StandardDTO> lstStandard = new List<StandardDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        StandardDTO standardDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            standardDTO = new StandardDTO();
+                            standardDTO.StandardId = (int)dr["StandardId"];
+                            standardDTO.StandardName = dr["StandardName"].ToString();
+                            lstStandard.Add(standardDTO);
+                        }
+                    }
+                    return lstStandard;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<StandardSectionMapDTO> StandardSection()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select StandardSectionId,concat(StandardName,' ', SectionName) as StandardSectionDesc from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<StandardSectionMapDTO> lstStandardSection = new List<StandardSectionMapDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        StandardSectionMapDTO standardSectionMapDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            standardSectionMapDTO = new StandardSectionMapDTO();
+                            standardSectionMapDTO.StandardSectionId = (int)dr["StandardSectionId"];
+                            standardSectionMapDTO.StandardSectionDesc = dr["StandardSectionDesc"].ToString();
+                            lstStandardSection.Add(standardSectionMapDTO);
+                        }
+                    }
+                    return lstStandardSection;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

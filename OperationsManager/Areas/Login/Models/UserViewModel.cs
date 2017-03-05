@@ -27,8 +27,14 @@ namespace OperationsManager.Areas.Login.Models
 
         public SelectList StandardList { get; set; }
 
+        public SelectList StandardSectionList { get; set; }
+
         public StudentDTO Student { get; set; }
 
         public ClassTypeDTO ClassType { get; set; }
+
+        public StandardSectionMapDTO StandardSection { get; set; }
+
+        public EmployeeDetailsDTO EmployeeDetails { get; set; }
     }
 }
