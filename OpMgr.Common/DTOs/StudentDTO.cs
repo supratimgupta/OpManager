@@ -38,6 +38,6 @@ namespace OpMgr.Common.DTOs
 
         public HouseTypeDTO HouseTypeId { get; set; }
 
-        //public string GuardianContact
+        
     }
 }
