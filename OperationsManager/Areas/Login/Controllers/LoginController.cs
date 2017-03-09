@@ -67,6 +67,7 @@ namespace OperationsManager.Areas.Login.Controllers
         public ActionResult Register()
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
+            uvModel.GenderList = _uiddlRepo.getGenderDropDown();
             uvModel.LocationList = _uiddlRepo.getLocationDropDown();
             uvModel.RoleList = _uiddlRepo.getRoleDropDown();
             uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();

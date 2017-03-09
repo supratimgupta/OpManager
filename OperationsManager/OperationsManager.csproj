@@ -223,6 +223,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Library.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Library.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\LoginResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -403,6 +408,10 @@
     <EmbeddedResource Include="Resources\IndexResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>IndexResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Library.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Library.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\LoginResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -11,6 +11,8 @@ namespace OperationsManager.Areas.Login.Models
     {
         public SelectList LocationList { get; set; }
 
+        public SelectList GenderList { get; set; }
+
         public SelectList RoleList { get; set; }
 
         public SelectList HouseList { get; set; }
@@ -36,5 +38,7 @@ namespace OperationsManager.Areas.Login.Models
         public StandardSectionMapDTO StandardSection { get; set; }
 
         public EmployeeDetailsDTO EmployeeDetails { get; set; }
+
+        public BookMasterDTO BookMaster { get; set; }
     }
 }

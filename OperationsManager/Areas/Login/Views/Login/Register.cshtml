@@ -85,9 +85,12 @@
                             @Html.OpMgrTextAreaFor(m => m.ParmanentAddress, UserResource.ParmanentAddress, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                            @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-10">
                             @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
                         </div>
                         <div id="divStudent" >

@@ -85,5 +85,17 @@ namespace OperationsManager.Helpers
             List<StandardSectionMapDTO> rDto = _ddlRepo.StandardSection();
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
+
+        public SelectList getGenderDropDown()
+        {
+            SelectList gender = new SelectList((new[] 
+                                            {
+                                              new {ID="1",Name="Male"},
+                                              new{ID="2",Name="Female"},
+                                              new{ID="3",Name="Others"},
+                                            }),
+                            "ID", "Name", 1);
+            return new SelectList(gender, "ID", "Name");
+        }
     }
 }
