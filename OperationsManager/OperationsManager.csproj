@@ -190,6 +190,8 @@
     <Compile Include="Areas\Login\Controllers\LoginController.cs" />
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
+    <Compile Include="Areas\Student\Controllers\StudentController.cs" />
+    <Compile Include="Areas\Student\Models\StudentVM.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
@@ -224,6 +226,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\StudentResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\UserResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,6 +262,9 @@
     <Content Include="Areas\Login\Views\Login\Welcome.cshtml" />
     <Content Include="Areas\Login\Views\Login\Register.cshtml" />
     <Content Include="Mvc.sitemap" />
+    <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Student\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Search.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -357,9 +367,6 @@
     <Folder Include="Areas\Library\Controllers\" />
     <Folder Include="Areas\Library\Models\" />
     <Folder Include="Areas\Library\Views\Shared\" />
-    <Folder Include="Areas\Student\Controllers\" />
-    <Folder Include="Areas\Student\Models\" />
-    <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Areas\Transaction\Controllers\" />
     <Folder Include="Areas\Transaction\Models\" />
     <Folder Include="Areas\Transaction\Views\Shared\" />
@@ -384,6 +391,10 @@
       <Project>{48bfc7fb-8015-4a52-b404-5cfc383402bf}</Project>
       <Name>OpMgr.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Logger\OpMgr.Logger.csproj">
+      <Project>{c977afea-b959-4806-9fd3-6935813362b4}</Project>
+      <Name>OpMgr.Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CommonResource.resx">
@@ -397,6 +408,10 @@
     <EmbeddedResource Include="Resources\LoginResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StudentResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StudentResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\UserResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

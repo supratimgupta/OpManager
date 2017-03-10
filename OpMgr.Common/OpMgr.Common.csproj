@@ -52,6 +52,7 @@
     <Compile Include="Contracts\Modules\IEntitlementSvc.cs" />
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
+    <Compile Include="Contracts\Modules\IStudentSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionLogSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionMasterSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionRuleSvc.cs" />

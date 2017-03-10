@@ -10,6 +10,10 @@
 <bind service="OpMgr.Common.Contracts.Modules.IUserSvc, OpMgr.Common"
   to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
 
+  <bind service="OpMgr.Common.Contracts.Modules.IStudentSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.StudentSvc, OpMgr.DataAccess" />
 
+  <bind service="OpMgr.Common.Contracts.ILogSvc, OpMgr.Common"
+    to="OpMgr.Logger.Implementations.TextLogSvc, OpMgr.Logger" />
 </module>
 
