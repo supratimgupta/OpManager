@@ -31,14 +31,14 @@ namespace OperationsManager.Areas.Login.Models
 
         public SelectList StandardSectionList { get; set; }
 
-        public StudentDTO Student { get; set; }
+        //public StudentDTO Student { get; set; }
 
-        public ClassTypeDTO ClassType { get; set; }
+        //public ClassTypeDTO ClassType { get; set; }
 
-        public StandardSectionMapDTO StandardSection { get; set; }
+        //public StandardSectionMapDTO StandardSection { get; set; }
 
         public EmployeeDetailsDTO EmployeeDetails { get; set; }
 
-        public BookMasterDTO BookMaster { get; set; }
+        //public BookMasterDTO BookMaster { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using OperationsManager.Attributes;
 
 namespace OperationsManager.Areas.Login.Controllers
 {
@@ -20,6 +21,8 @@ namespace OperationsManager.Areas.Login.Controllers
         private IDropdownRepo _ddlRepo;
 
         private Helpers.UIDropDownRepo _uiddlRepo;
+
+        Encryption encrypt = new Encryption();
 
 
         public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo)
@@ -43,7 +46,9 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpPost]
         public ActionResult Login(UserMasterDTO data)
         {
-            StatusDTO<UserMasterDTO> status = _userSvc.Login(data);
+            List<EntitlementDTO> lstEntitleMent = new List<EntitlementDTO>();
+            List<ActionDTO> lstAction = new List<ActionDTO>();
+            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent,out lstAction);
             if (status.IsSuccess)
             {
                 SessionDTO session = new SessionDTO();
@@ -78,25 +83,35 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
-            if (uvModel.ClassType != null)
-            {
-                uvModel.StandardList = _uiddlRepo.getStandardDropDown(uvModel.ClassType);
-            }
-            else
-            {
-                //retun list of standard when classtype is empty
-                uvModel.StandardList = _uiddlRepo.getStandardDropDown();
-            }
+            
 
             return View(uvModel);
         }
 
         [HttpPost]
-        public ActionResult Register(Models.UserViewModel userview)
+        public ActionResult Register(Models.UserViewModel uvModel)
         {
-            _userSvc.Insert(userview);
+            //if(ModelState.IsValid)
+            //{
+                string pass = encrypt.encryption(uvModel.Password);
+                uvModel.Password = pass;
+                _userSvc.Insert(uvModel);
+            //}
 
-            return View(userview);
+            uvModel.GenderList = _uiddlRepo.getGenderDropDown();
+            uvModel.LocationList = _uiddlRepo.getLocationDropDown();
+            uvModel.RoleList = _uiddlRepo.getRoleDropDown();
+            uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            uvModel.SectionList = _uiddlRepo.getSectionDropDown();
+            uvModel.HouseList = _uiddlRepo.getHouseDropDown();
+            uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
+            uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
+            uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
+            uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+
+           
+
+            return View(uvModel);
         }
     }
 }

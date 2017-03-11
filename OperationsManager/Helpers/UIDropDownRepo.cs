@@ -88,14 +88,12 @@ namespace OperationsManager.Helpers
 
         public SelectList getGenderDropDown()
         {
-            SelectList gender = new SelectList((new[] 
-                                            {
-                                              new {ID="1",Name="Male"},
-                                              new{ID="2",Name="Female"},
-                                              new{ID="3",Name="Others"},
-                                            }),
-                            "ID", "Name", 1);
-            return new SelectList(gender, "ID", "Name");
+            Dictionary<string, string> dicGender = new Dictionary<string, string>();
+
+            dicGender.Add("1", "Male");
+            dicGender.Add("2", "Female");
+            dicGender.Add("3", "Other");
+            return new SelectList(dicGender, "key", "value");
         }
     }
 }

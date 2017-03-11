@@ -79,6 +79,15 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blood Group.
+        /// </summary>
+        public static string BloodGrp {
+            get {
+                return ResourceManager.GetString("BloodGrp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to StandardSection.
         /// </summary>
         public static string Class {
@@ -273,6 +282,15 @@ namespace OperationsManager.Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterButton {
+            get {
+                return ResourceManager.GetString("RegisterButton", resourceCulture);
             }
         }
         

@@ -34,9 +34,9 @@ namespace OpMgr.Common.DTOs
 
         public string GuardianEmailId { get; set; }
 
-        public StandardSectionMapDTO StandardSectionId { get; set; }
+        public StandardSectionMapDTO StandardSectionMap { get; set; }
 
-        public HouseTypeDTO HouseTypeId { get; set; }
+        public HouseTypeDTO HouseType { get; set; }
 
         
     }

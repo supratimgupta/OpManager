@@ -125,6 +125,10 @@
     <value>Alternate Contact Number</value>
     <comment>Alternate Contact number of user</comment>
   </data>
+  <data name="BloodGrp" xml:space="preserve">
+    <value>Blood Group</value>
+    <comment>Blood Group</comment>
+  </data>
   <data name="Class" xml:space="preserve">
     <value>StandardSection</value>
     <comment>Class of Student</comment>
@@ -212,6 +216,10 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
     <comment>Provide Password</comment>
+  </data>
+  <data name="RegisterButton" xml:space="preserve">
+    <value>Register</value>
+    <comment>Register Button</comment>
   </data>
   <data name="RegistrationNo" xml:space="preserve">
     <value>Registration No</value>

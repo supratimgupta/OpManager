@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace OpMgr.Common.DTOs
 
         public bool Active { get; set; }
 
+        [Required(ErrorMessage ="Name is required")]
         public string FName { get; set; }
 
         public string MName { get; set; }
@@ -42,7 +44,7 @@ namespace OpMgr.Common.DTOs
 
         public string ConfirmPassword { get; set; }
 
-        public string ParmanentAddress { get; set; }
+        public string PermanentAddress { get; set; }
 
         public string ContactNo { get; set; }
 
@@ -53,5 +55,9 @@ namespace OpMgr.Common.DTOs
         public LocationDTO Location { get; set; }
 
         public RoleDTO Role { get; set; }
+
+        public StudentDTO Student { get; set; }
+
+        public EmployeeDetailsDTO Employee { get; set; }
     }
 }
