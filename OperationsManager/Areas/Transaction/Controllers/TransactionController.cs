@@ -35,15 +35,15 @@ namespace OperationsManager.Areas.Transaction.Controllers
             return View(trViewModel);
         }
 
-        [HttpPost]
-        public JsonResult IsUserAStudent(int userMasterId)
-        {
-            string userRole = _userSvc.GetUserRole(userMasterId);
-            if(string.Equals(userRole, _commonConfig["STUD_ROLE_ID"]))
-            {
-                return Json(new { isStud = true }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { isStud = false }, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpPost]
+        //public JsonResult IsUserAStudent(int userMasterId)
+        //{
+        //    string userRole = _userSvc.GetUserRole(userMasterId);
+        //    if(string.Equals(userRole, _commonConfig["STUD_ROLE_ID"]))
+        //    {
+        //        return Json(new { isStud = true }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return Json(new { isStud = false }, JsonRequestBehavior.AllowGet);
+        //}
     }
 }

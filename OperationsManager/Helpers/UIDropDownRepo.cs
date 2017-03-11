@@ -95,5 +95,25 @@ namespace OperationsManager.Helpers
             dicGender.Add("3", "Other");
             return new SelectList(dicGender, "key", "value");
         }
+
+        public SelectList getUserDropDown()
+        {
+            return new SelectList(_ddlRepo.GetAllActiveUsers(), "UserMasterId", "FName");
+        }
+
+        public SelectList getTransactionTypes()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("1", "Debit");
+            dicTrTypes.Add("2", "Credit");
+            dicTrTypes.Add("3", "NA");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
+
+        public SelectList getTransactionRules()
+        {
+            return new SelectList(_ddlRepo.GetActiveTrRules(), "TranRuleId", "RuleName");
+        }
     }
 }

@@ -397,5 +397,85 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<UserMasterDTO> GetAllActiveUsers()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select UserMasterId,FName,MName,LName,UserId from usermaster where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<UserMasterDTO> lstUserMaster = new List<UserMasterDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        UserMasterDTO userMasterDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            userMasterDTO = new UserMasterDTO();
+                            if(!string.IsNullOrEmpty(dr["FName"].ToString()))
+                            {
+                                userMasterDTO.FName = dr["FName"].ToString();
+                            }
+                            if (!string.IsNullOrEmpty(dr["MName"].ToString()))
+                            {
+                                userMasterDTO.FName = userMasterDTO.FName + " " +dr["MName"].ToString();
+                            }
+                            if (!string.IsNullOrEmpty(dr["LName"].ToString()))
+                            {
+                                userMasterDTO.FName = userMasterDTO.FName + " " + dr["LName"].ToString();
+                            }
+                            userMasterDTO.FName = userMasterDTO.FName + " - " + dr["UserId"].ToString();
+                            userMasterDTO.UserMasterId = (int)dr["UserMasterId"];
+                            lstUserMaster.Add(userMasterDTO);
+                        }
+                    }
+                    return lstUserMaster;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> GetActiveTrRules()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select TranRuleId, RuleName from transactionrule where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<TransactionRuleDTO> lstTrRule = new List<TransactionRuleDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        TransactionRuleDTO trRule = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            trRule = new TransactionRuleDTO();
+                            trRule.TranRuleId = (int)dr["TranRuleId"];
+                            trRule.RuleName = dr["RuleName"].ToString();
+                            lstTrRule.Add(trRule);
+                        }
+                    }
+                    return lstTrRule;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }
