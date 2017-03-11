@@ -194,6 +194,8 @@
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
+    <Compile Include="Areas\Transaction\Controllers\TransactionController.cs" />
+    <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -226,6 +228,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\TransactionLogAdd.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionLogAdd.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\UserResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -261,6 +268,9 @@
     <Content Include="Areas\Library\Views\Library\RegisterBooks.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Admin\AddMasterData.cshtml" />
+    <Content Include="Areas\Transaction\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Transaction\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Transaction\Views\Transaction\AddTransaction.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -367,9 +377,6 @@
     <Folder Include="Areas\Student\Controllers\" />
     <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Student\Views\Shared\" />
-    <Folder Include="Areas\Transaction\Controllers\" />
-    <Folder Include="Areas\Transaction\Models\" />
-    <Folder Include="Areas\Transaction\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -404,6 +411,10 @@
     <EmbeddedResource Include="Resources\LoginResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TransactionLogAdd.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TransactionLogAdd.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\UserResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

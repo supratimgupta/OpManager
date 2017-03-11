@@ -27,5 +27,11 @@ namespace OpMgr.Common.Contracts.Modules
         List<DesignationDTO> Designation();
 
         List<StandardDTO> Standard(ClassTypeDTO classTypeDTO);
+
+        List<UserMasterDTO> Users();
+
+        List<TransactionRuleDTO> TransactionRules();
+
+        Dictionary<string, string> TransactionTypes();
     }
 }

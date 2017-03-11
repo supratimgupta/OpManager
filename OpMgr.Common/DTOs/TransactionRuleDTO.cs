@@ -10,6 +10,8 @@ namespace OpMgr.Common.DTOs
     {
         public int TranRuleId { get; set; }
 
+        public string RuleName { get; set; }
+
         public UserMasterDTO CreatedBy { get; set; }
 
         public DateTime? CreatedDate { get; set; }

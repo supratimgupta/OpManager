@@ -1,0 +1,74 @@
+﻿@using OperationsManager.Resources
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.TransactionViewModel
+
+
+@{
+    ViewBag.Title = "Add Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div>
+        <div>
+            <div class="panel-heading">@TransactionLogAdd.PageHeader</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.User.UserMasterId, Model.UserList, TransactionLogAdd.UserSelectLabel, new { @class = "form-control", onchange="checkIsStudent(this);" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDate, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control", id="ddlTransactionDate" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.TransactionRule.TranRuleId, Model.TransactionRuleList, TransactionLogAdd.TransactionRuleLabel, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDueDate, TransactionLogAdd.TransactionDueDateLabel, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.AmountImposed, TransactionLogAdd.AmountImposedLabel, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, TransactionLogAdd.LocationLabel, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.TransactionType, Model.TransactionTypeList, TransactionLogAdd.TransactionTypeLabel, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5" id="standardSectionDiv">
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, TransactionLogAdd.StandardSectionLabel, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div><!-- /.col-->
+</div>
+
+<script language="javascript" type="text/javascript">
+    function checkIsStudent(ddlUser)
+    {
+        var uId = ddlUser.options[ddlUser.selectedIndex].value;
+        if(uId && uId.length>0)
+        {
+
+        }
+    }
+</script>
+

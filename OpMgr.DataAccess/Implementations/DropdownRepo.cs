@@ -327,5 +327,93 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<UserMasterDTO> Users()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select UserMasterId,Fname,Mname,Lname from UserMaster where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<UserMasterDTO> lstUsers = new List<UserMasterDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        UserMasterDTO userDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            userDTO = new UserMasterDTO();
+                            userDTO.UserMasterId = (int)dr["UserMasterId"];
+                            userDTO.FName = dr["Fname"].ToString();
+                            userDTO.MName = dr["Mname"].ToString();
+                            userDTO.LName = dr["Lname"].ToString();
+                            if(!string.IsNullOrEmpty(userDTO.MName.Trim()))
+                            {
+                                userDTO.FName = userDTO.FName + " " + userDTO.MName;
+                            }
+                            if(!string.IsNullOrEmpty(userDTO.LName.Trim()))
+                            {
+                                userDTO.FName = userDTO.FName + " " + userDTO.LName;
+                            }
+                            lstUsers.Add(userDTO);
+                        }
+                    }
+                    return lstUsers;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> TransactionRules()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select TranRuleId,RuleName from TransactionRule where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<TransactionRuleDTO> lstRules = new List<TransactionRuleDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        TransactionRuleDTO ruleDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            ruleDTO = new TransactionRuleDTO();
+                            ruleDTO.TranRuleId = (int)dr["TranRuleId"];
+                            ruleDTO.RuleName = dr["RuleName"].ToString();
+
+                            lstRules.Add(ruleDTO);
+                        }
+                    }
+                    return lstRules;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public Dictionary<string, string> TransactionTypes()
+        {
+            Dictionary<string, string> dicTransactionTypes = new Dictionary<string, string>();
+            dicTransactionTypes.Add("D", "Debit");
+            dicTransactionTypes.Add("C", "Credit");
+            dicTransactionTypes.Add("NA", "Not Applicable");
+            return dicTransactionTypes;
+        }
     }
 }

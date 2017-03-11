@@ -71,5 +71,23 @@ namespace OperationsManager.Helpers
             List<StandardDTO> rDto = _ddlRepo.Standard(classTypeDTO);
             return new SelectList(rDto, "StandardId", "StandardName");
         }
+
+        public SelectList getUserDropDown()
+        {
+            List<UserMasterDTO> uDto = _ddlRepo.Users();
+            return new SelectList(uDto, "UserMasterId", "FName");
+        }
+
+        public SelectList getTransactionRules()
+        {
+            List<TransactionRuleDTO> trDto = _ddlRepo.TransactionRules();
+            return new SelectList(trDto, "TranRuleId", "RuleName");
+        }
+
+        public SelectList getTransactionTypes()
+        {
+            Dictionary<string, string> trTypes = _ddlRepo.TransactionTypes();
+            return new SelectList(trTypes, "Key", "Value");
+        }
     }
 }

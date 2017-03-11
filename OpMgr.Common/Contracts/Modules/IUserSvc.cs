@@ -10,5 +10,7 @@ namespace OpMgr.Common.Contracts.Modules
     public interface IUserSvc : ICRUDSvc<UserMasterDTO, UserMasterDTO>
     {
         StatusDTO<UserMasterDTO> Login(UserMasterDTO data);
+
+        string GetUserRole(int userId);
     }
 }
