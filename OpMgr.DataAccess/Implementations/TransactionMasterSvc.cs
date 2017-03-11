@@ -66,7 +66,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT TranMasterId, TransactionType, IsPenalty, Frequency, DayToRun, YearlyDayToRun, IsdifferentTo FROM dbo.TransactionMaster WHERE Active=1";
+                    command.CommandText = "SELECT TranMasterId, TransactionType, IsPenalty, Frequency, DayToRun, YearlyDayToRun, IsdifferentTo FROM transactionmaster WHERE Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
                     _dtResult = new DataTable("TRANS_MASTER");

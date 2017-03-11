@@ -43,6 +43,7 @@ namespace OpMgr.DataAccess.Implementations
                     StatusDTO<TransactionLogDTO> status = new StatusDTO<TransactionLogDTO>();
                     if(data!=null)
                     {
+                        dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
                         command.CommandText = "INSERT INTO TransactionLog (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, Active, UserMasterId, TransactionDate, " +
                                                "TransactionDueDate, TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, " +
@@ -261,7 +262,7 @@ namespace OpMgr.DataAccess.Implementations
                         }
 
                         var retData = command.ExecuteScalar();
-                        if(retData!=null)
+                        if(retData != null)
                         {
                             data.TransactionLogId = (int)retData;
                             status.IsSuccess = true;
@@ -308,7 +309,7 @@ namespace OpMgr.DataAccess.Implementations
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "SELECT TransactionLogId, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, UserMasterId, TransactionDate, TransactionDueDate, "+
                                            "TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, AmountGiven, DueAmount, TransferMode, "+
-                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId FROM dbo.TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate<@runDate";
+                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId FROM TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate<@runDate";
                     command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     return command.ExecuteReader();
@@ -328,7 +329,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE dbo.TransactionLog SET HasPenalty=@hasPenalty WHERE TransactionLogId=@trnsLogId";
+                    command.CommandText = "UPDATE TransactionLog SET HasPenalty=@hasPenalty WHERE TransactionLogId=@trnsLogId";
                     command.Parameters.Add("@hasPenalty", MySqlDbType.Bit).Value = hasPenalty.Value;
                     command.Parameters.Add("@trnsLogId", MySqlDbType.Int32).Value = trnsLogId;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;

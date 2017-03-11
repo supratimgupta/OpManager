@@ -406,7 +406,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select UserMasterId,FName,MName,LName,UserId from usermaster where Active=1";
+                    command.CommandText = "select UserMasterId,FName,MName,LName,UserName from usermaster where Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);
@@ -430,7 +430,7 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 userMasterDTO.FName = userMasterDTO.FName + " " + dr["LName"].ToString();
                             }
-                            userMasterDTO.FName = userMasterDTO.FName + " - " + dr["UserId"].ToString();
+                            userMasterDTO.FName = userMasterDTO.FName + " - " + dr["UserName"].ToString();
                             userMasterDTO.UserMasterId = (int)dr["UserMasterId"];
                             lstUserMaster.Add(userMasterDTO);
                         }

@@ -11,5 +11,13 @@
   to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
 
 
+<bind service="OpMgr.Common.Contracts.ICommonConfigSvc, OpMgr.Common"
+  to="OpMgr.Configurations.Implementations.WebCommonConfigSvc, OpMgr.Configurations" />
+
+<bind service="OpMgr.Common.Contracts.ICommonConfigDataSvc, OpMgr.Common"
+  to="OpMgr.DataAccess.Implementations.CommonConfigDataSvc, OpMgr.DataAccess" />
+
+<bind service="OpMgr.Common.Contracts.IDbSvc, OpMgr.Common"
+to="OpMgr.DataAccess.Implementations.DbSvc, OpMgr.DataAccess" />
 </module>
 

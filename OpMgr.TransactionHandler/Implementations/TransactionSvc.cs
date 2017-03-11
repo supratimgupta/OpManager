@@ -204,11 +204,11 @@ namespace OpMgr.TransactionHandler.Implementations
                 {
                     if (string.Equals("PERCENT", graceAmtOn.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        calculatedAmt = actualAmt - ((actualAmt * (double)graceAmt) / 100);
+                        calculatedAmt = actualAmt - ((actualAmt * double.Parse(graceAmt.ToString())) / 100);
                     }
                     else if (string.Equals("ACTUAL", graceAmtOn.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        calculatedAmt = actualAmt - (double)graceAmt;
+                        calculatedAmt = actualAmt - double.Parse(graceAmt.ToString());
                     }
                 }
             }
@@ -239,10 +239,10 @@ namespace OpMgr.TransactionHandler.Implementations
         public void AddRegularTransactions()
         {
             FillTransDetails();
-            IDataReader reader = _uTransSvc.GetUserTransactions(_runDate);
-            if(reader!=null)
+            DataTable dtReader = _uTransSvc.GetUserTransactions(_runDate);
+            if(dtReader != null)
             {
-                while(reader.NextResult())
+                foreach(DataRow reader in dtReader.Rows)
                 {
                     try
                     {
@@ -252,7 +252,7 @@ namespace OpMgr.TransactionHandler.Implementations
                            DateTime? nextDayToRun = null;
                            string isDiffTo = string.Empty;
                            int transMasterId = (int)reader["TranMasterId"];
-                           if (IsTransactionRequired(transMasterId, reader["NextAutoTransactionOn"], reader["LastAutoTransactionOn"], out lastDayOfRun, out nextDayToRun, out isDiffTo))
+                           if (IsTransactionRequired(transMasterId, string.IsNullOrEmpty(reader["NextAutoTransactionOn"].ToString())?null: reader["NextAutoTransactionOn"], string.IsNullOrEmpty(reader["LastAutoTransactionOn"].ToString())?null: reader["LastAutoTransactionOn"], out lastDayOfRun, out nextDayToRun, out isDiffTo))
                            {
                                DataRow[] rules = GetRuleRow(transMasterId, isDiffTo, reader["StandardId"], reader["SectionId"], reader["UserMasterId"], reader["ClassTypeId"]);
 
@@ -278,7 +278,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                    trnsLogDto.ParentTransactionLogId = null;
                                    trnsLogDto.IsCompleted = false;
                                    trnsLogDto.CompletedOn = null;
-                                   trnsLogDto.AmountImposed = (double)rules[0]["ActualAmount"];
+                                   trnsLogDto.AmountImposed = CalculateAmount(string.IsNullOrEmpty(reader["GraceAmountOn"].ToString())?null: reader["GraceAmountOn"], string.IsNullOrEmpty(reader["GraceAmount"].ToString())?null: reader["GraceAmount"], double.Parse(rules[0]["ActualAmount"].ToString()));
                                    trnsLogDto.AmountGiven = null;
                                    trnsLogDto.DueAmount = trnsLogDto.AmountImposed;
                                    trnsLogDto.TransferMode = null;
@@ -320,6 +320,12 @@ namespace OpMgr.TransactionHandler.Implementations
                         _logger.Log(exp);
                     }
                 }
+                _uTransSvc.Dispose();
+            }
+            if(dtReader!=null)
+            {
+                dtReader.Dispose();
+                dtReader = null;
             }
         }
 

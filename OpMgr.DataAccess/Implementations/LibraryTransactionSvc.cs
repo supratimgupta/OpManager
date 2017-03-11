@@ -66,7 +66,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE dbo.LibraryTransaction SET IsMovedToTransaction=@isMoved, TransactionIdForDue=@trnsIdForDue WHERE LibraryTranId=@libTrnsId";
+                    command.CommandText = "UPDATE LibraryTransaction SET IsMovedToTransaction=@isMoved, TransactionIdForDue=@trnsIdForDue WHERE LibraryTranId=@libTrnsId";
 
                     command.Parameters.Add("@isMoved", MySqlDbType.Bit).Value = IsMovedToTransaction;
                     command.Parameters.Add("@trnsIdForDue", MySqlDbType.Int32).Value = cashTrnsId;
@@ -91,7 +91,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT LibraryTranId, UserMasterId, DueDate, IsRemindedSubmission, IsReturned, IsMovedToTransaction FROM dbo.LibraryTransaction WHERE Active=1 AND IsRemindedSubmission=1 AND IsReturned<>1 AND IsMovedToTransaction AND TransactionIdForDue IS NULL AND DueDate<@runDate";
+                    command.CommandText = "SELECT LibraryTranId, UserMasterId, DueDate, IsRemindedSubmission, IsReturned, IsMovedToTransaction FROM LibraryTransaction WHERE Active=1 AND IsRemindedSubmission=1 AND IsReturned<>1 AND IsMovedToTransaction AND TransactionIdForDue IS NULL AND DueDate<@runDate";
 
                     command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
 

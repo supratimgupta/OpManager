@@ -31,7 +31,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trViewModel.LocationList = uiDDLRepo.getLocationDropDown();
             trViewModel.TransactionTypeList = uiDDLRepo.getTransactionTypes();
             trViewModel.TransactionRuleList = uiDDLRepo.getTransactionRules();
-            //trViewModel.StandardSectionList = uiDDLRepo.getStandardDropDown();
+            trViewModel.StandardSectionList = uiDDLRepo.getStandardSectionDropDown();
             return View(trViewModel);
         }
 

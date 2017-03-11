@@ -40,7 +40,7 @@ namespace OpMgr.DataAccess.Implementations
         {
             try
             {
-                MySqlCommand configSelectCommand = new MySqlCommand("SELECT configurationkey, configurationvalue FROM dbo.Configuration");
+                MySqlCommand configSelectCommand = new MySqlCommand("SELECT configurationkey, configurationvalue FROM Configuration");
                 _dbSvc.OpenConnection();
                 configSelectCommand.Connection = _dbSvc.GetConnection() as MySqlConnection;
                 MySqlDataAdapter msDataAdap = new MySqlDataAdapter(configSelectCommand);

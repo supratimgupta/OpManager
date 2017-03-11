@@ -21,7 +21,7 @@
                                 @Html.OpMgrDropDownListFor(m => m.User.UserMasterId, Model.UserList, TransactionLogAdd.UserSelectLabel, new { @class = "form-control", onchange="checkIsStudent(this);" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.TransactionDate, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control", id="ddlTransactionDate" })
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDate, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control" })
                             </div>
                         </div>
                         <div class="row">
