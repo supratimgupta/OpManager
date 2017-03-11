@@ -328,7 +328,9 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<UserMasterDTO> Users()
+
+        //below code will fetch only Standard LIst not based on classtype
+        public List<StandardDTO> Standard()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -336,34 +338,24 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select UserMasterId,Fname,Mname,Lname from UserMaster where Active=1";
+                    command.CommandText = "select StandardId,StandardName from standard where Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);
                     msDa.Fill(_dtData);
-                    List<UserMasterDTO> lstUsers = new List<UserMasterDTO>();
+                    List<StandardDTO> lstStandard = new List<StandardDTO>();
                     if (_dtData != null && _dtData.Rows.Count > 0)
                     {
-                        UserMasterDTO userDTO = null;
+                        StandardDTO standardDTO = null;
                         foreach (DataRow dr in _dtData.Rows)
                         {
-                            userDTO = new UserMasterDTO();
-                            userDTO.UserMasterId = (int)dr["UserMasterId"];
-                            userDTO.FName = dr["Fname"].ToString();
-                            userDTO.MName = dr["Mname"].ToString();
-                            userDTO.LName = dr["Lname"].ToString();
-                            if(!string.IsNullOrEmpty(userDTO.MName.Trim()))
-                            {
-                                userDTO.FName = userDTO.FName + " " + userDTO.MName;
-                            }
-                            if(!string.IsNullOrEmpty(userDTO.LName.Trim()))
-                            {
-                                userDTO.FName = userDTO.FName + " " + userDTO.LName;
-                            }
-                            lstUsers.Add(userDTO);
+                            standardDTO = new StandardDTO();
+                            standardDTO.StandardId = (int)dr["StandardId"];
+                            standardDTO.StandardName = dr["StandardName"].ToString();
+                            lstStandard.Add(standardDTO);
                         }
                     }
-                    return lstUsers;
+                    return lstStandard;
                 }
                 catch (Exception exp)
                 {
@@ -372,7 +364,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionRuleDTO> TransactionRules()
+        public List<StandardSectionMapDTO> StandardSection()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -380,40 +372,30 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select TranRuleId,RuleName from TransactionRule where Active=1";
+                    command.CommandText = "select StandardSectionId,concat(StandardName,' ', SectionName) as StandardSectionDesc from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);
                     msDa.Fill(_dtData);
-                    List<TransactionRuleDTO> lstRules = new List<TransactionRuleDTO>();
+                    List<StandardSectionMapDTO> lstStandardSection = new List<StandardSectionMapDTO>();
                     if (_dtData != null && _dtData.Rows.Count > 0)
                     {
-                        TransactionRuleDTO ruleDTO = null;
+                        StandardSectionMapDTO standardSectionMapDTO = null;
                         foreach (DataRow dr in _dtData.Rows)
                         {
-                            ruleDTO = new TransactionRuleDTO();
-                            ruleDTO.TranRuleId = (int)dr["TranRuleId"];
-                            ruleDTO.RuleName = dr["RuleName"].ToString();
-
-                            lstRules.Add(ruleDTO);
+                            standardSectionMapDTO = new StandardSectionMapDTO();
+                            standardSectionMapDTO.StandardSectionId = (int)dr["StandardSectionId"];
+                            standardSectionMapDTO.StandardSectionDesc = dr["StandardSectionDesc"].ToString();
+                            lstStandardSection.Add(standardSectionMapDTO);
                         }
                     }
-                    return lstRules;
+                    return lstStandardSection;
                 }
                 catch (Exception exp)
                 {
                     throw exp;
                 }
             }
-        }
-
-        public Dictionary<string, string> TransactionTypes()
-        {
-            Dictionary<string, string> dicTransactionTypes = new Dictionary<string, string>();
-            dicTransactionTypes.Add("D", "Debit");
-            dicTransactionTypes.Add("C", "Credit");
-            dicTransactionTypes.Add("NA", "Not Applicable");
-            return dicTransactionTypes;
         }
     }
 }

@@ -40,8 +40,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -72,8 +72,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -100,8 +100,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -125,8 +125,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -150,8 +150,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -175,8 +175,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -200,8 +200,8 @@ namespace OperationsManager.ExtendedHtmlHelpers
                 {
                     string id = objId.ToString();
                     OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
-                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
-                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.URL, System.Web.HttpContext.Current.Request.Url));
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
                     if (hiddenControl != null)
                     {
                         return new MvcHtmlString("");
@@ -243,6 +243,31 @@ namespace OperationsManager.ExtendedHtmlHelpers
             container.InnerHtml += editorField;
 
             return MvcHtmlString.Create(container.ToString());
+        }
+
+        public static MvcHtmlString OpMgrPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, object htmlAttributes = null)
+        {
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.PasswordFor(expression, htmlAttributes).ToString(), true, false);
+                    }
+                }
+
+            }
+            return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.PasswordFor(expression, htmlAttributes).ToString(), false, false);
         }
 
         //public static MvcHtmlString HelpTextFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string customText = null)

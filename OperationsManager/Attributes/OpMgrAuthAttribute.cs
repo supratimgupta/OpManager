@@ -24,7 +24,7 @@ namespace OperationsManager.Attributes
             {
                 return false;
             }
-            var url = session.ActionList.FirstOrDefault(al => string.Equals(al.URL, httpContext.Request.Path));
+            var url = session.ActionList.FirstOrDefault(al => string.Equals(al.ActionLink, httpContext.Request.Path));
             if(url!=null)
             {
                 return true;

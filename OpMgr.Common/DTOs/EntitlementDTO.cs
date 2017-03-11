@@ -8,10 +8,10 @@ namespace OpMgr.Common.DTOs
 {
     public class EntitlementDTO
     {
-        public int RowId { get; set; }
+        public int UserRoleId { get; set; }
 
         public string RoleName { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsRoleActive { get; set; }
     }
 }

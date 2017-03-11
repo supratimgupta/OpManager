@@ -197,6 +197,7 @@
     <Compile Include="Areas\Transaction\Controllers\TransactionController.cs" />
     <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
+    <Compile Include="Attributes\Encryption.cs" />
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -223,6 +224,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Library.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Library.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\LoginResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -278,6 +284,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -309,6 +317,8 @@
     <Content Include="template\js\easypiechart.js" />
     <Content Include="template\js\html5shiv.min.js" />
     <Content Include="template\js\jquery-1.11.1.min.js" />
+    <Content Include="template\js\jquery.datepicker.js" />
+    <Content Include="template\js\jquery.datepicker.min.js" />
     <Content Include="template\js\lumino.glyphs.js" />
     <Content Include="template\js\respond.min.js" />
     <Content Include="template\login.html" />
@@ -407,6 +417,10 @@
     <EmbeddedResource Include="Resources\IndexResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>IndexResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Library.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Library.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\LoginResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

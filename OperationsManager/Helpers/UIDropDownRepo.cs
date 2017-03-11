@@ -72,22 +72,28 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardId", "StandardName");
         }
 
-        public SelectList getUserDropDown()
+        // return standardlist not based on classtype
+        public SelectList getStandardDropDown()
         {
-            List<UserMasterDTO> uDto = _ddlRepo.Users();
-            return new SelectList(uDto, "UserMasterId", "FName");
+            List<StandardDTO> rDto = _ddlRepo.Standard();
+            return new SelectList(rDto, "StandardId", "StandardName");
         }
 
-        public SelectList getTransactionRules()
+        // return standard Section List
+        public SelectList getStandardSectionDropDown()
         {
-            List<TransactionRuleDTO> trDto = _ddlRepo.TransactionRules();
-            return new SelectList(trDto, "TranRuleId", "RuleName");
+            List<StandardSectionMapDTO> rDto = _ddlRepo.StandardSection();
+            return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
 
-        public SelectList getTransactionTypes()
+        public SelectList getGenderDropDown()
         {
-            Dictionary<string, string> trTypes = _ddlRepo.TransactionTypes();
-            return new SelectList(trTypes, "Key", "Value");
+            Dictionary<string, string> dicGender = new Dictionary<string, string>();
+
+            dicGender.Add("1", "Male");
+            dicGender.Add("2", "Female");
+            dicGender.Add("3", "Other");
+            return new SelectList(dicGender, "key", "value");
         }
     }
 }
