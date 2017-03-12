@@ -84,12 +84,14 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public IDataReader GetPendingTransactions(DateTime? runDate)
+        public DataTable GetPendingTransactions(DateTime? runDate)
         {
             using(IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
+                    dbSvc.OpenConnection();
+
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "SELECT LibraryTranId, UserMasterId, DueDate, IsRemindedSubmission, IsReturned, IsMovedToTransaction FROM LibraryTransaction WHERE Active=1 AND IsRemindedSubmission=1 AND IsReturned<>1 AND IsMovedToTransaction AND TransactionIdForDue IS NULL AND DueDate<@runDate";
 
@@ -97,7 +99,10 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    return command.ExecuteReader();
+                    _dtResult = new DataTable();
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    mDa.Fill(_dtResult);
+                    return _dtResult;
                 }
                 catch(Exception exp)
                 {

@@ -64,11 +64,14 @@ namespace OpMgr.DataAccess.Implementations
             {
                 try
                 {
+                    dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "UPDATE UserTransaction SET LastAutoTransactionOn=@lastTransOn, NextAutoTransactionOn=@nextAutoTransOn WHERE UserTransactionId=@userTrans";
                     command.Parameters.Add("@lastTransOn", MySqlDbType.Date).Value = userTrans.LastAutoTransactionOn;
                     command.Parameters.Add("@nextAutoTransOn", MySqlDbType.Date).Value = userTrans.NextAutoTransactionOn;
                     command.Parameters.Add("@userTrans", MySqlDbType.Int32).Value = userTrans.UserTransactionId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     if(command.ExecuteNonQuery()>0)
                     {

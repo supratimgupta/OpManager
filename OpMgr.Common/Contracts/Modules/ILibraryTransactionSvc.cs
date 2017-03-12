@@ -9,7 +9,7 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface ILibraryTransactionSvc : ICRUDSvc<DTOs.LibraryTransactionDTO, DTOs.LibraryTransactionDTO>, IDisposable
     {
-        IDataReader GetPendingTransactions(DateTime? runDate);
+        DataTable GetPendingTransactions(DateTime? runDate);
 
         bool MoveLibTransToCashTrans(int libTrnsId, bool? IsMovedToTransaction, int? cashTrnsId);
     }

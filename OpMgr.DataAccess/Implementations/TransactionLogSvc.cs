@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OpMgr.DataAccess.Implementations
 {
-    public class TransactionLogSvc : ITransactionLogSvc, IDisposable
+    public class TransactionLogSvc : ITransactionLogSvc
     {
         private IConfigSvc _configSvc;
 
@@ -50,7 +50,7 @@ namespace OpMgr.DataAccess.Implementations
                                                "AmountGiven, DueAmount, TransferMode, locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId, PenaltyTransactionRule) VALUES " +
                                                "(@createdBy, @createdDate, @updatedBy, @updatedDate, @active, @userMasterId, @transactionDate, " +
                                                "@transactionDueDate, @transPrevDueDate, @parentTransLogId, @isCompleted, @completedOn, @amountImposed, " +
-                                               "@amountGiven, @dueAmount, @transferMode, @locationId, @standardSectionId, @transactionType, @hasPenalty, @originalTransLogId, @transRuleId, @penTrnsRuleId)";
+                                               "@amountGiven, @dueAmount, @transferMode, @locationId, @standardSectionId, @transactionType, @hasPenalty, @originalTransLogId, @transRuleId, @penTrnsRuleId); SELECT LAST_INSERT_ID();";
 
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
@@ -262,13 +262,14 @@ namespace OpMgr.DataAccess.Implementations
                         }
 
                         var retData = command.ExecuteScalar();
-                        if(retData != null)
+                        if (retData != null)
                         {
-                            data.TransactionLogId = (int)retData;
+                            data.TransactionLogId = int.Parse(retData.ToString());
                             status.IsSuccess = true;
                             status.IsException = false;
                             status.ReturnObj = data;
                         }
+
                     }
                     return status;
                 }
@@ -300,19 +301,23 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
-        public IDataReader GetPendingTransactions(DateTime? runDate)
+        public DataTable GetPendingTransactions(DateTime? runDate)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
+                    dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "SELECT TransactionLogId, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, UserMasterId, TransactionDate, TransactionDueDate, "+
                                            "TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, AmountGiven, DueAmount, TransferMode, "+
-                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId FROM TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate<@runDate";
+                                           "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId, PenaltyTransactionRule FROM TransactionLog WHERE Active=1 AND IsCompleted<>1 AND HasPenalty<>1 AND TransactionDueDate IS NOT NULL AND TransactionDueDate<@runDate";
                     command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    return command.ExecuteReader();
+                    MySqlDataAdapter mDA = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable();
+                    mDA.Fill(_dtResult);
+                    return _dtResult;
                 }
                 catch (Exception exp)
                 {
@@ -328,6 +333,7 @@ namespace OpMgr.DataAccess.Implementations
             {
                 try
                 {
+                    dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "UPDATE TransactionLog SET HasPenalty=@hasPenalty WHERE TransactionLogId=@trnsLogId";
                     command.Parameters.Add("@hasPenalty", MySqlDbType.Bit).Value = hasPenalty.Value;
