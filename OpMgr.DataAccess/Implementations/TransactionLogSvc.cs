@@ -47,7 +47,7 @@ namespace OpMgr.DataAccess.Implementations
                         MySqlCommand command = new MySqlCommand();
                         command.CommandText = "INSERT INTO TransactionLog (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, Active, UserMasterId, TransactionDate, " +
                                                "TransactionDueDate, TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, " +
-                                               "AmountGiven, DueAmount, TransferMode, locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogiId, TranRuleId, PenaltyTransRuleId) VALUES " +
+                                               "AmountGiven, DueAmount, TransferMode, locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId, PenaltyTransactionRule) VALUES " +
                                                "(@createdBy, @createdDate, @updatedBy, @updatedDate, @active, @userMasterId, @transactionDate, " +
                                                "@transactionDueDate, @transPrevDueDate, @parentTransLogId, @isCompleted, @completedOn, @amountImposed, " +
                                                "@amountGiven, @dueAmount, @transferMode, @locationId, @standardSectionId, @transactionType, @hasPenalty, @originalTransLogId, @transRuleId, @penTrnsRuleId)";

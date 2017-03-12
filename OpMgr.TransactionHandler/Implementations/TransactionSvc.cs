@@ -341,7 +341,7 @@ namespace OpMgr.TransactionHandler.Implementations
                     {
                         using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                         {
-                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransRuleId"].ToString());
+                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransactionRule"].ToString());
                             if(trnsRule!=null && trnsRule.Length>0)
                             {
                                 TransactionLogDTO trnsLog = new TransactionLogDTO();
