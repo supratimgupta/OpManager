@@ -439,7 +439,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                 trnsLog.ParentTransactionLogId = null;
                                 trnsLog.IsCompleted = false;
                                 trnsLog.CompletedOn = null;
-                                trnsLog.AmountImposed = (double)trnsRule[0]["ActualAmount"];
+                                trnsLog.AmountImposed = double.Parse(trnsRule[0]["ActualAmount"].ToString());
                                 trnsLog.AmountGiven = null;
                                 trnsLog.DueAmount = trnsLog.AmountImposed;
                                 trnsLog.TransferMode = null;
