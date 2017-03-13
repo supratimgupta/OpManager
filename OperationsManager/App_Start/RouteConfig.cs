@@ -16,11 +16,11 @@ namespace OperationsManager
             var route1 = routes.MapRoute(
                 name: "Default",
                 url: "",
-                defaults: new { controller = "Transaction", action = "AddTransaction", id = UrlParameter.Optional},
+                defaults: new { controller = "Student", action = "Search", id = UrlParameter.Optional},
                 namespaces: new [] { "OperationsManagers.Controllers" }
-
+                
             );
-            route1.DataTokens["area"] = "Transaction";
+            route1.DataTokens["area"] = "Student";
         }
     }
 }

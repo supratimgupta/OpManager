@@ -48,6 +48,7 @@
     <Compile Include="Implementations\DbSvc.cs" />
     <Compile Include="Implementations\LibraryTransactionSvc.cs" />
     <Compile Include="Implementations\RoleSvc.cs" />
+    <Compile Include="Implementations\StudentSvc.cs" />
     <Compile Include="Implementations\UserSvc.cs" />
     <Compile Include="Implementations\TransactionLogSvc.cs" />
     <Compile Include="Implementations\TransactionMasterSvc.cs" />
