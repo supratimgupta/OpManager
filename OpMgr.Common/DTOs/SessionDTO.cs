@@ -9,6 +9,7 @@ namespace OpMgr.Common.DTOs
     public class SessionDTO : DTOs.UserMasterDTO
     {
         public List<ActionDTO> ActionList { get; set; }
+        public List<EntitlementDTO> EntitleMentList { get; set; }
 
         //public string CurrentRequestedPage { get; set; }
     }

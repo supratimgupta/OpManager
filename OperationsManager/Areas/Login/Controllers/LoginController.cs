@@ -25,7 +25,7 @@ namespace OperationsManager.Areas.Login.Controllers
         Encryption encrypt = new Encryption();
 
 
-        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo)
+        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc)
         {
             _userSvc = userSvc;
             _ddlRepo = ddlRepo;
@@ -33,7 +33,7 @@ namespace OperationsManager.Areas.Login.Controllers
             _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
             //_logger = logger;
 
-            //_sessionSvc = sessionSvc;
+            _sessionSvc = sessionSvc;
         }
 
         // GET: Login/Login
@@ -48,12 +48,15 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             List<EntitlementDTO> lstEntitleMent = new List<EntitlementDTO>();
             List<ActionDTO> lstAction = new List<ActionDTO>();
+            string pass = encrypt.encryption(data.Password);
+            data.Password = pass;
             StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent,out lstAction);
             if (status.IsSuccess)
             {
                 SessionDTO session = new SessionDTO();
                 session.UserName = status.ReturnObj.UserName;
-                session.ActionList = new List<ActionDTO>();
+                session.ActionList = lstAction;
+                session.EntitleMentList = lstEntitleMent;
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }

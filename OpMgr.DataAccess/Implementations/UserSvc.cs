@@ -92,7 +92,6 @@ namespace OpMgr.DataAccess.Implementations
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
                     StatusDTO<UserMasterDTO> status = new StatusDTO<UserMasterDTO>();
-                    status.ReturnObj.UserMasterId = Convert.ToInt32(rdr["UserMasterId"]);
                     return status;
                 }
                 catch (Exception exp)
@@ -133,7 +132,6 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         if (_dsData.Tables[0].Rows.Count > 0)
                         {
-
                             userMaster.UserMasterId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["UserMasterId"]);
                         }
 
@@ -159,7 +157,7 @@ namespace OpMgr.DataAccess.Implementations
                                 useractionDTO.IsChildAction = Convert.ToBoolean(_dsData.Tables[2].Rows[0]["IsChildAction"]);
                                 useractionDTO.MenuText = _dsData.Tables[2].Rows[0]["MenuText"].ToString();
                                 useractionDTO.DisabledControlId = _dsData.Tables[2].Rows[0]["DisabledControlId"].ToString();
-                                useractionDTO.HiddenControlId = _dsData.Tables[2].Rows[0]["HiddenControld"].ToString();
+                                useractionDTO.HiddenControlId = _dsData.Tables[2].Rows[0]["HiddenControlId"].ToString();
                                 useractionDTO.GroupName = _dsData.Tables[2].Rows[0]["GroupName"].ToString();
                                 useractionList.Add(useractionDTO);
                             }
