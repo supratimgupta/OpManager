@@ -193,6 +193,8 @@
     <Compile Include="Areas\Login\Controllers\LoginController.cs" />
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
+    <Compile Include="Areas\Student\Controllers\StudentController.cs" />
+    <Compile Include="Areas\Student\Models\StudentVM.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="Areas\Transaction\Controllers\TransactionController.cs" />
     <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
@@ -247,6 +249,8 @@
     <Content Include="Areas\Transaction\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Transaction\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Transaction\Views\Transaction\AddTransaction.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Search.cshtml" />
+    <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -355,8 +359,6 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Library\Models\" />
     <Folder Include="Areas\Library\Views\Shared\" />
-    <Folder Include="Areas\Student\Controllers\" />
-    <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Student\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
