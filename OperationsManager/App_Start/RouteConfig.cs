@@ -17,7 +17,7 @@ namespace OperationsManager
                 name: "Default",
                 url: "",
                 defaults: new { controller = "Transaction", action = "AddTransaction", id = UrlParameter.Optional },
-                namespaces: new[] { "OperationsManagers.Controllers" }
+                namespaces: new [] { "OperationsManagers.Controllers" }
 
             );
             route1.DataTokens["area"] = "Transaction";
