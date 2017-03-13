@@ -26,7 +26,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult Search()
         {
             StatusDTO<List<StudentDTO>> status = _studSvc.Select(null);
-            List<StudentVM> studViewList = null;
+            List<StudentVM> studViewList = null; 
 
             if (status.ReturnObj != null && status.ReturnObj.Count > 0)
             {
