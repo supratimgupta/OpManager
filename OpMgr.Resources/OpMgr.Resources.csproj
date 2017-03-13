@@ -72,6 +72,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="User\StudentResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="User\UserResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,6 +107,10 @@
     <EmbeddedResource Include="User\LoginResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\StudentResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StudentResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User\UserResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
