@@ -21,6 +21,13 @@ namespace OperationsManager.Helpers
         public  SelectList getLocationDropDown()
         {
             List<LocationDTO> lDto = _ddlRepo.Location();
+
+            LocationDTO locDto = new LocationDTO();
+            locDto.LocationId = -1;
+            locDto.LocationDescription = string.Empty;
+
+            lDto.Insert(0, locDto);
+
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }
 
@@ -83,13 +90,20 @@ namespace OperationsManager.Helpers
         public SelectList getStandardSectionDropDown()
         {
             List<StandardSectionMapDTO> rDto = _ddlRepo.StandardSection();
+
+            StandardSectionMapDTO ssDto = new StandardSectionMapDTO();
+            ssDto.StandardSectionId = -1;
+            ssDto.StandardSectionDesc = string.Empty;
+
+            rDto.Insert(0, ssDto);
+
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
 
         public SelectList getGenderDropDown()
         {
             Dictionary<string, string> dicGender = new Dictionary<string, string>();
-
+            dicGender.Add("-1", "");
             dicGender.Add("1", "Male");
             dicGender.Add("2", "Female");
             dicGender.Add("3", "Other");
@@ -98,22 +112,38 @@ namespace OperationsManager.Helpers
 
         public SelectList getUserDropDown()
         {
-            return new SelectList(_ddlRepo.GetAllActiveUsers(), "UserMasterId", "FName");
+            List<UserMasterDTO> lstUserMaster = _ddlRepo.GetAllActiveUsers();
+
+            UserMasterDTO umDTO = new UserMasterDTO();
+            umDTO.UserMasterId = -1;
+            umDTO.FName = string.Empty;
+            lstUserMaster.Insert(0,umDTO);
+
+            return new SelectList(lstUserMaster, "UserMasterId", "FName");
         }
 
         public SelectList getTransactionTypes()
         {
             Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
 
-            dicTrTypes.Add("1", "Debit");
-            dicTrTypes.Add("2", "Credit");
-            dicTrTypes.Add("3", "NA");
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("D", "Debit");
+            dicTrTypes.Add("C", "Credit");
+            dicTrTypes.Add("NA", "NA");
             return new SelectList(dicTrTypes, "key", "value");
         }
 
         public SelectList getTransactionRules()
         {
-            return new SelectList(_ddlRepo.GetActiveTrRules(), "TranRuleId", "RuleName");
+            List<TransactionRuleDTO> lstTrRule = _ddlRepo.GetActiveTrRules();
+
+            TransactionRuleDTO trRule = new TransactionRuleDTO();
+            trRule.TranRuleId = -1;
+            trRule.RuleName = string.Empty;
+
+            lstTrRule.Insert(0, trRule);
+
+            return new SelectList(lstTrRule, "TranRuleId", "RuleName");
         }
     }
 }

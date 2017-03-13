@@ -16,11 +16,15 @@ namespace OperationsManager.Areas.Transaction.Controllers
         private IUserSvc _userSvc;
 
         private ICommonConfigSvc _commonConfig;
-        public TransactionController(IDropdownRepo ddlRepo, IUserSvc userSvc, ICommonConfigSvc commonConfig)
+
+        private ITransactionLogSvc _transactionLog;
+
+        public TransactionController(IDropdownRepo ddlRepo, IUserSvc userSvc, ICommonConfigSvc commonConfig, ITransactionLogSvc transactionLog)
         {
             _ddlRepo = ddlRepo;
             _userSvc = userSvc;
             _commonConfig = commonConfig;
+            _transactionLog = transactionLog;
         }
         [HttpGet]
         public ActionResult AddTransaction()
@@ -32,6 +36,28 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trViewModel.TransactionTypeList = uiDDLRepo.getTransactionTypes();
             trViewModel.TransactionRuleList = uiDDLRepo.getTransactionRules();
             trViewModel.StandardSectionList = uiDDLRepo.getStandardSectionDropDown();
+            return View(trViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult AddTransaction(Models.TransactionViewModel trViewModel)
+        {
+            trViewModel.Active = true;
+            trViewModel.IsCompleted = false;
+            trViewModel.CreatedDate = DateTime.Today.Date;
+            _transactionLog.Insert(trViewModel);
+            trViewModel = new Models.TransactionViewModel();
+            Helpers.UIDropDownRepo uiDDLRepo = new Helpers.UIDropDownRepo(_ddlRepo);
+            
+            trViewModel.UserList = uiDDLRepo.getUserDropDown();
+            trViewModel.LocationList = uiDDLRepo.getLocationDropDown();
+            trViewModel.TransactionTypeList = uiDDLRepo.getTransactionTypes();
+            trViewModel.TransactionRuleList = uiDDLRepo.getTransactionRules();
+            trViewModel.StandardSectionList = uiDDLRepo.getStandardSectionDropDown();
+
+            //Add user session when implemented
+            
             return View(trViewModel);
         }
 

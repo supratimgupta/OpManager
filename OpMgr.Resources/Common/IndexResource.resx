@@ -117,28 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="loginButton" xml:space="preserve">
-    <value>Login</value>
-    <comment>Button description of Login Page</comment>
+  <data name="CustomControlLabel" xml:space="preserve">
+    <value>Test Label</value>
   </data>
-  <data name="PageHeader" xml:space="preserve">
-    <value>Please Login</value>
-    <comment>Asking for login in header of login page</comment>
+  <data name="CustomControlPlaceHolder" xml:space="preserve">
+    <value>Demo text</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>St Augustine's School</value>
-    <comment>Login Page title</comment>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
-    <comment>Password of User to Login</comment>
-  </data>
-  <data name="UserName" xml:space="preserve">
-    <value>User Name</value>
-    <comment>User Name of user to login</comment>
-  </data>
-  <data name="RememberMe" xml:space="preserve">
-    <value>Remember Me</value>
-    <comment>Checkbox to remeber password</comment>
+    <value>Demo Index</value>
   </data>
 </root>

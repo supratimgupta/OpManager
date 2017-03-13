@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperationsManager.Resources {
+namespace OpMgr.Resources.Common {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace OperationsManager.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class IndexResource {
+    public class CommonResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public IndexResource() {
+        internal CommonResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.IndexResource", typeof(IndexResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.CommonResource", typeof(CommonResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,25 +61,34 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Label.
+        ///   Looks up a localized string similar to Trio.
         /// </summary>
-        public static string CustomControlLabel {
+        public static string BrandName {
             get {
-                return ResourceManager.GetString("CustomControlLabel", resourceCulture);
+                return ResourceManager.GetString("BrandName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo text.
+        ///   Looks up a localized string similar to Powered by Trio.
         /// </summary>
-        public static string CustomControlPlaceHolder {
+        public static string FooterText {
             get {
-                return ResourceManager.GetString("CustomControlPlaceHolder", resourceCulture);
+                return ResourceManager.GetString("FooterText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo Index.
+        ///   Looks up a localized string similar to Please Log In.
+        /// </summary>
+        public static string PageHeader {
+            get {
+                return ResourceManager.GetString("PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to St Augustine&apos;s School.
         /// </summary>
         public static string PageTitle {
             get {

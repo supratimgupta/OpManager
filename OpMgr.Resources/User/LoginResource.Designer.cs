@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperationsManager.Resources {
+namespace OpMgr.Resources.User {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace OperationsManager.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class TransactionLogAdd {
+    public class LoginResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal TransactionLogAdd() {
+        internal LoginResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.TransactionLogAdd", typeof(TransactionLogAdd).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.User.LoginResource", typeof(LoginResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,25 +61,16 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount.
+        ///   Looks up a localized string similar to Login.
         /// </summary>
-        public static string AmountImposedLabel {
+        public static string loginButton {
             get {
-                return ResourceManager.GetString("AmountImposedLabel", resourceCulture);
+                return ResourceManager.GetString("loginButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Location.
-        /// </summary>
-        public static string LocationLabel {
-            get {
-                return ResourceManager.GetString("LocationLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add a New Transaction.
+        ///   Looks up a localized string similar to Please Login.
         /// </summary>
         public static string PageHeader {
             get {
@@ -88,56 +79,38 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Standard Section.
+        ///   Looks up a localized string similar to St Augustine&apos;s School.
         /// </summary>
-        public static string StandardSectionLabel {
+        public static string PageTitle {
             get {
-                return ResourceManager.GetString("StandardSectionLabel", resourceCulture);
+                return ResourceManager.GetString("PageTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Date.
+        ///   Looks up a localized string similar to Password.
         /// </summary>
-        public static string TransactionDateLabel {
+        public static string Password {
             get {
-                return ResourceManager.GetString("TransactionDateLabel", resourceCulture);
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Due Date.
+        ///   Looks up a localized string similar to Remember Me.
         /// </summary>
-        public static string TransactionDueDateLabel {
+        public static string RememberMe {
             get {
-                return ResourceManager.GetString("TransactionDueDateLabel", resourceCulture);
+                return ResourceManager.GetString("RememberMe", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Transaction Rule.
+        ///   Looks up a localized string similar to User Name.
         /// </summary>
-        public static string TransactionRuleLabel {
+        public static string UserName {
             get {
-                return ResourceManager.GetString("TransactionRuleLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction Type.
-        /// </summary>
-        public static string TransactionTypeLabel {
-            get {
-                return ResourceManager.GetString("TransactionTypeLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select User.
-        /// </summary>
-        public static string UserSelectLabel {
-            get {
-                return ResourceManager.GetString("UserSelectLabel", resourceCulture);
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
     }

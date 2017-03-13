@@ -215,36 +215,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\CommonResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommonResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\IndexResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IndexResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Library.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Library.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\LoginResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoginResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\TransactionLogAdd.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TransactionLogAdd.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\UserResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserResource.resx</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -409,32 +379,18 @@
       <Project>{48bfc7fb-8015-4a52-b404-5cfc383402bf}</Project>
       <Name>OpMgr.DataAccess</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\CommonResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommonResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\IndexResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>IndexResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Library.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Library.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LoginResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\TransactionLogAdd.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TransactionLogAdd.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\UserResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>UserResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\OpMgr.Logger\OpMgr.Logger.csproj">
+      <Project>{c977afea-b959-4806-9fd3-6935813362b4}</Project>
+      <Name>OpMgr.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Resources\OpMgr.Resources.csproj">
+      <Project>{1597930e-b3b4-42d3-b17d-cd4ebb0cd396}</Project>
+      <Name>OpMgr.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.TransactionHandler\OpMgr.TransactionHandler.csproj">
+      <Project>{4d95fa50-5330-46a9-9cbb-a803e0ea1667}</Project>
+      <Name>OpMgr.TransactionHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
