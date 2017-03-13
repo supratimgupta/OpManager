@@ -16,7 +16,7 @@ namespace OperationsManager
             var route1 = routes.MapRoute(
                 name: "Default",
                 url: "",
-                defaults: new { controller = "Transaction", action = "AddTransaction", id = UrlParameter.Optional },
+                defaults: new { controller = "Transaction", action = "AddTransaction", id = UrlParameter.Optional},
                 namespaces: new [] { "OperationsManagers.Controllers" }
 
             );
