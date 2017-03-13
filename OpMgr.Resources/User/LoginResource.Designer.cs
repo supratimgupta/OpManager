@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperationsManager.Resources {
+namespace OpMgr.Resources.User {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace OperationsManager.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class IndexResource {
+    public class LoginResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public IndexResource() {
+        internal LoginResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.IndexResource", typeof(IndexResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.User.LoginResource", typeof(LoginResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,56 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Label.
+        ///   Looks up a localized string similar to Login.
         /// </summary>
-        public static string CustomControlLabel {
+        public static string loginButton {
             get {
-                return ResourceManager.GetString("CustomControlLabel", resourceCulture);
+                return ResourceManager.GetString("loginButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo text.
+        ///   Looks up a localized string similar to Please Login.
         /// </summary>
-        public static string CustomControlPlaceHolder {
+        public static string PageHeader {
             get {
-                return ResourceManager.GetString("CustomControlPlaceHolder", resourceCulture);
+                return ResourceManager.GetString("PageHeader", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo Index.
+        ///   Looks up a localized string similar to St Augustine&apos;s School.
         /// </summary>
         public static string PageTitle {
             get {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Me.
+        /// </summary>
+        public static string RememberMe {
+            get {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
     }

@@ -117,28 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="loginButton" xml:space="preserve">
-    <value>Login</value>
-    <comment>Button description of Login Page</comment>
+  <data name="AccDate" xml:space="preserve">
+    <value>Acc Date</value>
   </data>
-  <data name="PageHeader" xml:space="preserve">
-    <value>Please Login</value>
-    <comment>Asking for login in header of login page</comment>
+  <data name="AccNo" xml:space="preserve">
+    <value>Acc Number</value>
   </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>St Augustine's School</value>
-    <comment>Login Page title</comment>
+  <data name="AuthorName1" xml:space="preserve">
+    <value>Author Name</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
-    <comment>Password of User to Login</comment>
+  <data name="BarCode" xml:space="preserve">
+    <value>BarCode</value>
   </data>
-  <data name="UserName" xml:space="preserve">
-    <value>User Name</value>
-    <comment>User Name of user to login</comment>
+  <data name="BookCategory" xml:space="preserve">
+    <value>Book Category</value>
   </data>
-  <data name="RememberMe" xml:space="preserve">
-    <value>Remember Me</value>
-    <comment>Checkbox to remeber password</comment>
+  <data name="BookName" xml:space="preserve">
+    <value>Book Name</value>
+  </data>
+  <data name="BookType" xml:space="preserve">
+    <value>Book Type</value>
+  </data>
+  <data name="CallNo" xml:space="preserve">
+    <value>Call No</value>
+  </data>
+  <data name="CoAuthorName" xml:space="preserve">
+    <value>Co Author Name</value>
+  </data>
+  <data name="Edition" xml:space="preserve">
+    <value>Edition</value>
+  </data>
+  <data name="ISBNNo" xml:space="preserve">
+    <value>ISBNNumber</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="NOFCD" xml:space="preserve">
+    <value>NOFCD</value>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Publisher" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="PublishingYear" xml:space="preserve">
+    <value>Publishing Year</value>
+  </data>
+  <data name="PurchaseDate" xml:space="preserve">
+    <value>Purchase Date</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Series</value>
   </data>
 </root>

@@ -27,5 +27,14 @@ namespace OpMgr.Common.Contracts.Modules
         List<DesignationDTO> Designation();
 
         List<StandardDTO> Standard(ClassTypeDTO classTypeDTO);
+
+        // below code will return only list of standard not based on classtype
+        List<StandardDTO> Standard();
+
+        List<StandardSectionMapDTO> StandardSection();
+
+        List<UserMasterDTO> GetAllActiveUsers();
+
+        List<TransactionRuleDTO> GetActiveTrRules();
     }
 }

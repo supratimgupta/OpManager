@@ -7,9 +7,9 @@ using System.Data;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface IUserTransactionSvc : ICRUDSvc<DTOs.UserTransactionDTO, DTOs.UserTransactionDTO>
+    public interface IUserTransactionSvc : ICRUDSvc<DTOs.UserTransactionDTO, DTOs.UserTransactionDTO>, IDisposable
     {
-        IDataReader GetUserTransactions(DateTime? runDate);
+        DataTable GetUserTransactions(DateTime? runDate);
 
         DTOs.StatusDTO UpdateTransLastRunNextRun(DTOs.UserTransactionDTO userTrans);
     }

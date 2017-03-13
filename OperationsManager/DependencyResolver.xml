@@ -1,19 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module name="configModule">
-<bind service="OpMgr.Common.Contracts.IConfigSvc, OpMgr.Common"
-  to="OpMgr.Configurations.Implementations.ConfigSvc, OpMgr.Configurations" />
-  
-<bind service="OpMgr.Common.Contracts.Modules.IDropdownRepo, OpMgr.Common"
-  to="OpMgr.DataAccess.Implementations.DropdownRepo, OpMgr.DataAccess" />
+  <bind service="OpMgr.Common.Contracts.IConfigSvc, OpMgr.Common"
+    to="OpMgr.Configurations.Implementations.ConfigSvc, OpMgr.Configurations" />
 
-
-<bind service="OpMgr.Common.Contracts.Modules.IUserSvc, OpMgr.Common"
-  to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
-
-  <bind service="OpMgr.Common.Contracts.Modules.IStudentSvc, OpMgr.Common"
-    to="OpMgr.DataAccess.Implementations.StudentSvc, OpMgr.DataAccess" />
+  <bind service="OpMgr.Common.Contracts.Modules.IUserTransactionSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.UserTransactionSvc, OpMgr.DataAccess" />
 
   <bind service="OpMgr.Common.Contracts.ILogSvc, OpMgr.Common"
     to="OpMgr.Logger.Implementations.TextLogSvc, OpMgr.Logger" />
+
+  <bind service="OpMgr.Common.Contracts.ICommonConfigDataSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.CommonConfigDataSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.ITransactionMasterSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.TransactionMasterSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.ITransactionRuleSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.TransactionRuleSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.ITransactionLogSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.TransactionLogSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.ILibraryTransactionSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.LibraryTransactionSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.ITransactionSvc, OpMgr.Common"
+    to="OpMgr.TransactionHandler.Implementations.TransactionSvc, OpMgr.TransactionHandler" />
+
+  <bind service="OpMgr.Common.Contracts.IDbSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.DbSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.IDropdownRepo, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.DropdownRepo, OpMgr.DataAccess" />
+
+
+  <bind service="OpMgr.Common.Contracts.Modules.IUserSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
+
+
+  <bind service="OpMgr.Common.Contracts.ICommonConfigSvc, OpMgr.Common"
+    to="OpMgr.Configurations.Implementations.WebCommonConfigSvc, OpMgr.Configurations" />
 </module>
 

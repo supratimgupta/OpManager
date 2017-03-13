@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperationsManager.Resources {
+namespace OpMgr.Resources.User {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.UserResource", typeof(UserResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.User.UserResource", typeof(UserResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -79,11 +79,38 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blood Group.
+        /// </summary>
+        public static string BloodGrp {
+            get {
+                return ResourceManager.GetString("BloodGrp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard Section.
+        /// </summary>
+        public static string Class {
+            get {
+                return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class Type.
         /// </summary>
         public static string ClassType {
             get {
                 return ResourceManager.GetString("ClassType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
             }
         }
         
@@ -102,6 +129,42 @@ namespace OperationsManager.Resources {
         public static string DateOfBirth {
             get {
                 return ResourceManager.GetString("DateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Of Joining.
+        /// </summary>
+        public static string DateOfJoining {
+            get {
+                return ResourceManager.GetString("DateOfJoining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        public static string DepartmentId {
+            get {
+                return ResourceManager.GetString("DepartmentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Designation.
+        /// </summary>
+        public static string DesignationId {
+            get {
+                return ResourceManager.GetString("DesignationId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Education Qualification.
+        /// </summary>
+        public static string EducationQualification {
+            get {
+                return ResourceManager.GetString("EducationQualification", resourceCulture);
             }
         }
         
@@ -214,6 +277,24 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterButton {
+            get {
+                return ResourceManager.GetString("RegisterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration No.
         /// </summary>
         public static string RegistrationNo {
@@ -241,7 +322,7 @@ namespace OperationsManager.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RollNo.
+        ///   Looks up a localized string similar to Roll No.
         /// </summary>
         public static string RollNo {
             get {
@@ -255,6 +336,15 @@ namespace OperationsManager.Resources {
         public static string Section {
             get {
                 return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee Id.
+        /// </summary>
+        public static string StaffEmployeeId {
+            get {
+                return ResourceManager.GetString("StaffEmployeeId", resourceCulture);
             }
         }
         
@@ -273,6 +363,15 @@ namespace OperationsManager.Resources {
         public static string UploadImage {
             get {
                 return ResourceManager.GetString("UploadImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  UserName.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
     }

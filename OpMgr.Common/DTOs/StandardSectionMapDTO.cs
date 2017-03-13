@@ -20,6 +20,8 @@ namespace OpMgr.Common.DTOs
 
         public bool Active { get; set; }
 
+        public string StandardSectionDesc { get; set; }
+
         public SectionDTO Section { get; set; }
 
         public StandardDTO Standard { get; set; }

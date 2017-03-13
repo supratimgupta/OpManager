@@ -66,7 +66,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT TranRuleId, TranMasterId, StandardId, SectionId, UserMasterId, ClassTypeId, FirstDuedateAfterdays, DueDateincreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, PenaltyTransactionType, PenaltyTranRuleId FROM dbo.TransactionRule WHERE Active=1";
+                    command.CommandText = "SELECT TranRuleId, TranMasterId, StandardId, SectionId, UserMasterId, ClassTypeId, FirstDuedateAfterdays, DueDateincreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, PenaltyTransactionType, PenaltyTranRuleId FROM TransactionRule WHERE Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
                     _dtResult = new DataTable("TRANS_RULE");

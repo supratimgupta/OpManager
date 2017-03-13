@@ -36,10 +36,8 @@ namespace OpMgr.Common.DTOs
 
         public StandardSectionMapDTO StandardSectionMap { get; set; }
 
-        public HouseTypeDTO HouseType {get; set;}
+        public HouseTypeDTO HouseType { get; set; }
 
-
-
-        //public string GuardianContact
+        
     }
 }
