@@ -1,4 +1,11 @@
-﻿@using OperationsManager.Resources
+﻿@using OpMgr.Resources.Common
+@using Ninject
+@using OpMgr.Common.Contracts
+@{
+    StandardKernel kernel = new StandardKernel();
+    List<OperationsManager.Models.MenuModel> menu = new List<OperationsManager.Models.MenuModel>();
+    menu = OperationsManager.Helpers.MenuHelper.GetMenuItems(kernel.Get<ISessionSvc>());
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +59,11 @@
             </div>
         </form>
         <ul class="nav menu">
-            <li><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
+            @if(menu!=null)
+            {
+                OperationsManager.Helpers.MenuHelper.GetMenuDesign(menu);
+            }
+            @*<li><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
             <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
             <li><a href="charts.html"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Charts</a></li>
             <li><a href="tables.html"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> Tables</a></li>
@@ -81,7 +92,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li>*@
             <li role="presentation" class="divider"></li>
             <li><a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
         </ul>

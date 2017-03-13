@@ -70,6 +70,24 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid amount.
+        /// </summary>
+        public static string AmountImposedValidMsg {
+            get {
+                return ResourceManager.GetString("AmountImposedValidMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid due date.
+        /// </summary>
+        public static string DueDateValidMsg {
+            get {
+                return ResourceManager.GetString("DueDateValidMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string LocationLabel {
@@ -97,11 +115,29 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid transaction rule.
+        /// </summary>
+        public static string TranRuleValidMsg {
+            get {
+                return ResourceManager.GetString("TranRuleValidMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transaction Date.
         /// </summary>
         public static string TransactionDateLabel {
             get {
                 return ResourceManager.GetString("TransactionDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid transaction date.
+        /// </summary>
+        public static string TransactionDateValidMsg {
+            get {
+                return ResourceManager.GetString("TransactionDateValidMsg", resourceCulture);
             }
         }
         
@@ -138,6 +174,24 @@ namespace OpMgr.Resources.Transaction {
         public static string UserSelectLabel {
             get {
                 return ResourceManager.GetString("UserSelectLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must select an user.
+        /// </summary>
+        public static string UserValidMessage {
+            get {
+                return ResourceManager.GetString("UserValidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a valid transaction type.
+        /// </summary>
+        public static string ValidTranTypeMsg {
+            get {
+                return ResourceManager.GetString("ValidTranTypeMsg", resourceCulture);
             }
         }
     }

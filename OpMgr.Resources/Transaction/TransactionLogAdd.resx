@@ -120,6 +120,12 @@
   <data name="AmountImposedLabel" xml:space="preserve">
     <value>Amount</value>
   </data>
+  <data name="AmountImposedValidMsg" xml:space="preserve">
+    <value>Please enter a valid amount</value>
+  </data>
+  <data name="DueDateValidMsg" xml:space="preserve">
+    <value>Please enter a valid due date</value>
+  </data>
   <data name="LocationLabel" xml:space="preserve">
     <value>Location</value>
   </data>
@@ -129,8 +135,14 @@
   <data name="StandardSectionLabel" xml:space="preserve">
     <value>Select Standard Section</value>
   </data>
+  <data name="TranRuleValidMsg" xml:space="preserve">
+    <value>Please enter a valid transaction rule</value>
+  </data>
   <data name="TransactionDateLabel" xml:space="preserve">
     <value>Transaction Date</value>
+  </data>
+  <data name="TransactionDateValidMsg" xml:space="preserve">
+    <value>Please enter a valid transaction date</value>
   </data>
   <data name="TransactionDueDateLabel" xml:space="preserve">
     <value>Due Date</value>
@@ -143,5 +155,11 @@
   </data>
   <data name="UserSelectLabel" xml:space="preserve">
     <value>Select User</value>
+  </data>
+  <data name="UserValidMessage" xml:space="preserve">
+    <value>Must select an user</value>
+  </data>
+  <data name="ValidTranTypeMsg" xml:space="preserve">
+    <value>Please select a valid transaction type</value>
   </data>
 </root>

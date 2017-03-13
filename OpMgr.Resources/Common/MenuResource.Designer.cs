@@ -22,14 +22,14 @@ namespace OpMgr.Resources.Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CommonResource {
+    public class MenuResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CommonResource() {
+        internal MenuResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OpMgr.Resources.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.CommonResource", typeof(CommonResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.MenuResource", typeof(MenuResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,42 +57,6 @@ namespace OpMgr.Resources.Common {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to St..
-        /// </summary>
-        public static string BrandName {
-            get {
-                return ResourceManager.GetString("BrandName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Powered by Trio.
-        /// </summary>
-        public static string FooterText {
-            get {
-                return ResourceManager.GetString("FooterText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Augustine&apos;s School.
-        /// </summary>
-        public static string PageHeader {
-            get {
-                return ResourceManager.GetString("PageHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to St Augustine&apos;s School.
-        /// </summary>
-        public static string PageTitle {
-            get {
-                return ResourceManager.GetString("PageTitle", resourceCulture);
             }
         }
     }

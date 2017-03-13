@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OperationsManager.Attributes;
+using OperationsManager.Models;
 
 namespace OperationsManager.Areas.Login.Controllers
 {

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using OpMgr.Resources;
+using OpMgr.Resources.Transaction;
 
 namespace OpMgr.Common.DTOs
 {
@@ -14,20 +13,35 @@ namespace OpMgr.Common.DTOs
         public UserMasterDTO UpdatedBy { get; set; }
         public DateTime? UpdatedDate{ get; set; }
         public bool? Active { get; set; }
+
+
+        [Range(1, int.MaxValue, ErrorMessageResourceName = "UserValidMessage", ErrorMessageResourceType =typeof(TransactionLogAdd))]
         public UserMasterDTO User { get; set; }
+
+        [Required(ErrorMessageResourceName = "TransactionDateValidMsg", ErrorMessageResourceType = typeof(TransactionLogAdd))]
         public DateTime? TransactionDate { get; set; }
+
+        [Required(ErrorMessageResourceName = "DueDateValidMsg", ErrorMessageResourceType = typeof(TransactionLogAdd))]
         public DateTime? TransactionDueDate { get; set; }
+
         public DateTime? TransactionPreviousDueDate { get; set; }
         public TransactionLogDTO ParentTransactionLogId { get; set; }
         public bool? IsCompleted { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessageResourceName = "TranRuleValidMsg", ErrorMessageResourceType = typeof(TransactionLogAdd))]
         public TransactionRuleDTO TransactionRule { get; set; }
+
         public DateTime? CompletedOn { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessageResourceName = "AmountImposedValidMsg", ErrorMessageResourceType = typeof(TransactionLogAdd))]
         public double? AmountImposed { get; set; }
+
         public double? AmountGiven { get; set; }
         public double? DueAmount { get; set; }
         public string TransferMode { get; set; }
         public LocationDTO Location { get; set; }
 
+        [Range(1, 3, ErrorMessageResourceName = "ValidTranTypeMsg", ErrorMessageResourceType = typeof(TransactionLogAdd))]
         public string TransactionType { get; set; }
 
         public bool? HasPenalty { get; set; }
