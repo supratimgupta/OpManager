@@ -194,6 +194,8 @@
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
+    <Compile Include="Areas\Transaction\Controllers\TransactionController.cs" />
+    <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
     <Compile Include="Attributes\Encryption.cs" />
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
@@ -213,31 +215,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\CommonResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommonResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\IndexResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IndexResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Library.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Library.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\LoginResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoginResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\UserResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserResource.resx</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -267,10 +244,14 @@
     <Content Include="Areas\Library\Views\Library\RegisterBooks.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Admin\AddMasterData.cshtml" />
+    <Content Include="Areas\Transaction\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Transaction\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Transaction\Views\Transaction\AddTransaction.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jqModalDialog.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -377,9 +358,6 @@
     <Folder Include="Areas\Student\Controllers\" />
     <Folder Include="Areas\Student\Models\" />
     <Folder Include="Areas\Student\Views\Shared\" />
-    <Folder Include="Areas\Transaction\Controllers\" />
-    <Folder Include="Areas\Transaction\Models\" />
-    <Folder Include="Areas\Transaction\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -401,28 +379,18 @@
       <Project>{48bfc7fb-8015-4a52-b404-5cfc383402bf}</Project>
       <Name>OpMgr.DataAccess</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\CommonResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommonResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\IndexResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>IndexResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Library.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Library.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LoginResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\UserResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>UserResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\OpMgr.Logger\OpMgr.Logger.csproj">
+      <Project>{c977afea-b959-4806-9fd3-6935813362b4}</Project>
+      <Name>OpMgr.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Resources\OpMgr.Resources.csproj">
+      <Project>{1597930e-b3b4-42d3-b17d-cd4ebb0cd396}</Project>
+      <Name>OpMgr.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.TransactionHandler\OpMgr.TransactionHandler.csproj">
+      <Project>{4d95fa50-5330-46a9-9cbb-a803e0ea1667}</Project>
+      <Name>OpMgr.TransactionHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -117,20 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BrandName" xml:space="preserve">
-    <value>Trio</value>
-    <comment>Brand name of the product</comment>
+  <data name="AmountImposedLabel" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="FooterText" xml:space="preserve">
-    <value>Powered by Trio</value>
-    <comment>Brand name powered text</comment>
+  <data name="LocationLabel" xml:space="preserve">
+    <value>Location</value>
   </data>
   <data name="PageHeader" xml:space="preserve">
-    <value>Please Log In</value>
-    <comment>Header for the pages</comment>
+    <value>Add a New Transaction</value>
   </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>St Augustine's School</value>
-    <comment>Common string in title of every page</comment>
+  <data name="StandardSectionLabel" xml:space="preserve">
+    <value>Select Standard Section</value>
+  </data>
+  <data name="TransactionDateLabel" xml:space="preserve">
+    <value>Transaction Date</value>
+  </data>
+  <data name="TransactionDueDateLabel" xml:space="preserve">
+    <value>Due Date</value>
+  </data>
+  <data name="TransactionRuleLabel" xml:space="preserve">
+    <value>Select Transaction Rule</value>
+  </data>
+  <data name="TransactionTypeLabel" xml:space="preserve">
+    <value>Transaction Type</value>
+  </data>
+  <data name="UserSelectLabel" xml:space="preserve">
+    <value>Select User</value>
   </data>
 </root>

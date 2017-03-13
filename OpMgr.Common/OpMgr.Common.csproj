@@ -98,7 +98,12 @@
     <Compile Include="DTOs\UserTransactionDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\OpMgr.Resources\OpMgr.Resources.csproj">
+      <Project>{1597930e-b3b4-42d3-b17d-cd4ebb0cd396}</Project>
+      <Name>OpMgr.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

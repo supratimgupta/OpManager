@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface ITransactionLogSvc : ICRUDSvc<DTOs.TransactionLogDTO, DTOs.TransactionLogDTO>
+    public interface ITransactionLogSvc : ICRUDSvc<DTOs.TransactionLogDTO, DTOs.TransactionLogDTO>, IDisposable
     {
-        IDataReader GetPendingTransactions(DateTime? runDate);
+        DataTable GetPendingTransactions(DateTime? runDate);
 
         bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty);
     }

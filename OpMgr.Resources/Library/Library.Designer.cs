@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperationsManager.Resources {
+namespace OpMgr.Resources.Library {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.Library", typeof(Library).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Library.Library", typeof(Library).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

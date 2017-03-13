@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OperationsManager\OperationsManager.csproj">
-      <Project>{8CC50DF4-3FF1-452F-A681-F11432F93AE2}</Project>
+      <Project>{8cc50df4-3ff1-452f-a681-f11432f93ae2}</Project>
       <Name>OperationsManager</Name>
     </ProjectReference>
   </ItemGroup>

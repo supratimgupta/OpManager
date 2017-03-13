@@ -204,11 +204,11 @@ namespace OpMgr.TransactionHandler.Implementations
                 {
                     if (string.Equals("PERCENT", graceAmtOn.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        calculatedAmt = actualAmt - ((actualAmt * (double)graceAmt) / 100);
+                        calculatedAmt = actualAmt - ((actualAmt * double.Parse(graceAmt.ToString())) / 100);
                     }
                     else if (string.Equals("ACTUAL", graceAmtOn.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        calculatedAmt = actualAmt - (double)graceAmt;
+                        calculatedAmt = actualAmt - double.Parse(graceAmt.ToString());
                     }
                 }
             }
@@ -225,11 +225,11 @@ namespace OpMgr.TransactionHandler.Implementations
                 {
                     if (string.Equals("PERCENT", fineAmountOn.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        calFineAmount = ((actualAmt * (double)fineAmount) / 100);
+                        calFineAmount = ((actualAmt * double.Parse(fineAmount.ToString())) / 100);
                     }
                     else if (string.Equals("ACTUAL", fineAmountOn.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        calFineAmount = (double)fineAmount;
+                        calFineAmount = double.Parse(fineAmount.ToString());
                     }
                 }
             }
@@ -239,10 +239,10 @@ namespace OpMgr.TransactionHandler.Implementations
         public void AddRegularTransactions()
         {
             FillTransDetails();
-            IDataReader reader = _uTransSvc.GetUserTransactions(_runDate);
-            if(reader!=null)
+            DataTable dtReader = _uTransSvc.GetUserTransactions(_runDate);
+            if(dtReader != null)
             {
-                while(reader.NextResult())
+                foreach(DataRow reader in dtReader.Rows)
                 {
                     try
                     {
@@ -252,7 +252,7 @@ namespace OpMgr.TransactionHandler.Implementations
                            DateTime? nextDayToRun = null;
                            string isDiffTo = string.Empty;
                            int transMasterId = (int)reader["TranMasterId"];
-                           if (IsTransactionRequired(transMasterId, reader["NextAutoTransactionOn"], reader["LastAutoTransactionOn"], out lastDayOfRun, out nextDayToRun, out isDiffTo))
+                           if (IsTransactionRequired(transMasterId, string.IsNullOrEmpty(reader["NextAutoTransactionOn"].ToString())?null: reader["NextAutoTransactionOn"], string.IsNullOrEmpty(reader["LastAutoTransactionOn"].ToString())?null: reader["LastAutoTransactionOn"], out lastDayOfRun, out nextDayToRun, out isDiffTo))
                            {
                                DataRow[] rules = GetRuleRow(transMasterId, isDiffTo, reader["StandardId"], reader["SectionId"], reader["UserMasterId"], reader["ClassTypeId"]);
 
@@ -278,7 +278,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                    trnsLogDto.ParentTransactionLogId = null;
                                    trnsLogDto.IsCompleted = false;
                                    trnsLogDto.CompletedOn = null;
-                                   trnsLogDto.AmountImposed = (double)rules[0]["ActualAmount"];
+                                   trnsLogDto.AmountImposed = CalculateAmount(string.IsNullOrEmpty(reader["GraceAmountOn"].ToString())?null: reader["GraceAmountOn"], string.IsNullOrEmpty(reader["GraceAmount"].ToString())?null: reader["GraceAmount"], double.Parse(rules[0]["ActualAmount"].ToString()));
                                    trnsLogDto.AmountGiven = null;
                                    trnsLogDto.DueAmount = trnsLogDto.AmountImposed;
                                    trnsLogDto.TransferMode = null;
@@ -320,22 +320,31 @@ namespace OpMgr.TransactionHandler.Implementations
                         _logger.Log(exp);
                     }
                 }
+                
+            }
+
+            //Disposing source data
+            _uTransSvc.Dispose();
+            if (dtReader!=null)
+            {
+                dtReader.Dispose();
+                dtReader = null;
             }
         }
 
         public void CheckDuesAndAddFine()
         {
             FillTransDetails();
-            IDataReader reader = _transLog.GetPendingTransactions(_runDate);
-            if (reader != null)
+            DataTable dtReader = _transLog.GetPendingTransactions(_runDate);
+            if (dtReader != null)
             {
-                while (reader.NextResult())
+                foreach(DataRow reader in dtReader.Rows)
                 {
                     try
                     {
                         using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                         {
-                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransRuleId"].ToString());
+                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransactionRule"].ToString());
                             if(trnsRule!=null && trnsRule.Length>0)
                             {
                                 TransactionLogDTO trnsLog = new TransactionLogDTO();
@@ -344,12 +353,12 @@ namespace OpMgr.TransactionHandler.Implementations
                                 trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
                                 trnsLog.TransactionDate = _runDate;
                                 trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
-                                trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionPreviousDueDate"];
+                                trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionDueDate"];
                                 trnsLog.ParentTransactionLogId = new TransactionLogDTO();
                                 trnsLog.ParentTransactionLogId.TransactionLogId = (int)reader["TransactionLogId"];
                                 trnsLog.IsCompleted = false;
                                 trnsLog.CompletedOn = null;
-                                trnsLog.AmountImposed = CalculateFineAmount(trnsRule[0]["PenaltyCalculatedIn"], trnsRule[0]["penaltyamount"], (double)reader["DueAmount"]);
+                                trnsLog.AmountImposed = CalculateFineAmount(string.IsNullOrEmpty(trnsRule[0]["PenaltyCalculatedIn"].ToString())?null: trnsRule[0]["PenaltyCalculatedIn"], string.IsNullOrEmpty(trnsRule[0]["penaltyamount"].ToString())?null: trnsRule[0]["penaltyamount"], string.IsNullOrEmpty(reader["DueAmount"].ToString())?0:double.Parse(reader["DueAmount"].ToString()));
                                 trnsLog.AmountGiven = null;
                                 trnsLog.DueAmount = trnsLog.AmountImposed;
                                 trnsLog.TransferMode = null;
@@ -395,15 +404,23 @@ namespace OpMgr.TransactionHandler.Implementations
                     }
                 }
             }
+
+            //Disposing source data
+            _transLog.Dispose();
+            if (dtReader != null)
+            {
+                dtReader.Dispose();
+                dtReader = null;
+            }
         }
 
         public void CheckLibraryDueAndAddFine()
         {
             FillTransDetails();
-            IDataReader reader = _libTrans.GetPendingTransactions(_runDate);
-            if (reader != null)
+            DataTable dtReader = _libTrans.GetPendingTransactions(_runDate);
+            if (dtReader != null)
             {
-                while (reader.NextResult())
+                foreach(DataRow reader in dtReader.Rows)
                 {
                     try
                     {
@@ -422,7 +439,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                 trnsLog.ParentTransactionLogId = null;
                                 trnsLog.IsCompleted = false;
                                 trnsLog.CompletedOn = null;
-                                trnsLog.AmountImposed = (double)trnsRule[0]["ActualAmount"];
+                                trnsLog.AmountImposed = double.Parse(trnsRule[0]["ActualAmount"].ToString());
                                 trnsLog.AmountGiven = null;
                                 trnsLog.DueAmount = trnsLog.AmountImposed;
                                 trnsLog.TransferMode = null;
@@ -451,6 +468,14 @@ namespace OpMgr.TransactionHandler.Implementations
                         _logger.Log(exp);
                     }
                 }
+            }
+
+            //Disposing the source data
+            _libTrans.Dispose();
+            if (dtReader != null)
+            {
+                dtReader.Dispose();
+                dtReader = null;
             }
         }
     }

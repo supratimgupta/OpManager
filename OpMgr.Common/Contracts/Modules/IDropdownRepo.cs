@@ -32,5 +32,9 @@ namespace OpMgr.Common.Contracts.Modules
         List<StandardDTO> Standard();
 
         List<StandardSectionMapDTO> StandardSection();
+
+        List<UserMasterDTO> GetAllActiveUsers();
+
+        List<TransactionRuleDTO> GetActiveTrRules();
     }
 }

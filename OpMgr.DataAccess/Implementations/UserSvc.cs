@@ -51,7 +51,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@LName", MySqlDbType.String).Value = data.LName;
                     command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.Gender;
                     command.Parameters.Add("@Image", MySqlDbType.String).Value = data.Image;
-                    command.Parameters.Add("@DOB", MySqlDbType.Datetime).Value = data.DOB;
+                    command.Parameters.Add("@DOB", MySqlDbType.DateTime).Value = data.DOB;
                     command.Parameters.Add("@EmailId", MySqlDbType.String).Value = data.EmailId;
                     command.Parameters.Add("@ResidentialAddress", MySqlDbType.String).Value = data.ResidentialAddress;
                     command.Parameters.Add("@PermanentAddress", MySqlDbType.String).Value = data.PermanentAddress;
@@ -65,7 +65,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
                     command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
-                    command.Parameters.Add("@AdmissionDate", MySqlDbType.Datetime).Value = data.Student.AdmissionDate;
+                    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
                     command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
                     command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
                     command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
@@ -76,7 +76,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
                         command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
-                        command.Parameters.Add("@DateOfJoining", MySqlDbType.Datetime).Value = data.Employee.DateOfJoining;
+                        command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                         command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
                         command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
                     }
@@ -84,7 +84,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
                         command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@DateOfJoining", MySqlDbType.Datetime).Value = DBNull.Value;
+                        command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
                         command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
                         command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
                     }

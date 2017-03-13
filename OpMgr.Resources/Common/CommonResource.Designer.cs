@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OperationsManager.Resources {
+namespace OpMgr.Resources.Common {
     using System;
     
     
@@ -29,7 +29,7 @@ namespace OperationsManager.Resources {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public CommonResource() {
+        internal CommonResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OperationsManager.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OperationsManager.Resources.CommonResource", typeof(CommonResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.CommonResource", typeof(CommonResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -117,80 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccDate" xml:space="preserve">
-    <value>Acc Date</value>
-    <comment>Acc Date</comment>
+  <data name="CustomControlLabel" xml:space="preserve">
+    <value>Test Label</value>
   </data>
-  <data name="AccNo" xml:space="preserve">
-    <value>Acc Number</value>
-    <comment>Acc Number</comment>
+  <data name="CustomControlPlaceHolder" xml:space="preserve">
+    <value>Demo text</value>
   </data>
-  <data name="AuthorName1" xml:space="preserve">
-    <value>Author Name</value>
-    <comment>Name of Author</comment>
-  </data>
-  <data name="BarCode" xml:space="preserve">
-    <value>BarCode</value>
-    <comment>BarCode</comment>
-  </data>
-  <data name="BookCategory" xml:space="preserve">
-    <value>Book Category</value>
-    <comment>Book Category</comment>
-  </data>
-  <data name="BookName" xml:space="preserve">
-    <value>Book Name</value>
-    <comment>Name of Book</comment>
-  </data>
-  <data name="BookType" xml:space="preserve">
-    <value>Book Type</value>
-    <comment>Book Type</comment>
-  </data>
-  <data name="CallNo" xml:space="preserve">
-    <value>Call No</value>
-    <comment>Call No</comment>
-  </data>
-  <data name="CoAuthorName" xml:space="preserve">
-    <value>Co Author Name</value>
-    <comment>Name of Co Author</comment>
-  </data>
-  <data name="Edition" xml:space="preserve">
-    <value>Edition</value>
-    <comment>Edition</comment>
-  </data>
-  <data name="ISBNNo" xml:space="preserve">
-    <value>ISBNNumber</value>
-    <comment>ISBN Number</comment>
-  </data>
-  <data name="Location" xml:space="preserve">
-    <value>Location</value>
-    <comment>Location</comment>
-  </data>
-  <data name="NOFCD" xml:space="preserve">
-    <value>NOFCD</value>
-    <comment>NOFCD</comment>
-  </data>
-  <data name="Place" xml:space="preserve">
-    <value>Place</value>
-    <comment>Place in library</comment>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
-    <comment>Price</comment>
-  </data>
-  <data name="Publisher" xml:space="preserve">
-    <value>Publisher</value>
-    <comment>Publisher</comment>
-  </data>
-  <data name="PublishingYear" xml:space="preserve">
-    <value>Publishing Year</value>
-    <comment>Publishing Year</comment>
-  </data>
-  <data name="PurchaseDate" xml:space="preserve">
-    <value>Purchase Date</value>
-    <comment>Purchase Date</comment>
-  </data>
-  <data name="Series" xml:space="preserve">
-    <value>Series</value>
-    <comment>Series</comment>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Demo Index</value>
   </data>
 </root>
