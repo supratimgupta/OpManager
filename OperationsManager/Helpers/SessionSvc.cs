@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OperationsManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,6 +18,13 @@ namespace OperationsManager.Helpers
         public OpMgr.Common.DTOs.SessionDTO GetUserSession()
         {
             return System.Web.HttpContext.Current.Session[_sessionIdentifier] as OpMgr.Common.DTOs.SessionDTO;
+        }
+
+        public void Logout()
+        {
+            System.Web.HttpContext.Current.Session.Abandon();
+            System.Web.HttpContext.Current.Session.RemoveAll();
+            System.Web.HttpContext.Current.Session[_sessionIdentifier] = null;
         }
     }
 }

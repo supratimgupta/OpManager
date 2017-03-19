@@ -40,11 +40,17 @@
 
   <bind service="OpMgr.Common.Contracts.Modules.IUserSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
+  
+  <bind service="OpMgr.Common.Contracts.Modules.IStudentSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.StudentSvc, OpMgr.DataAccess" />
 
   <bind service="OpMgr.Common.Contracts.Modules.IBookMasterSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.BookMasterSvc, OpMgr.DataAccess" />
 
   <bind service="OpMgr.Common.Contracts.ICommonConfigSvc, OpMgr.Common"
     to="OpMgr.Configurations.Implementations.WebCommonConfigSvc, OpMgr.Configurations" />
+
+  <bind service="OpMgr.Common.Contracts.ISessionSvc, OpMgr.Common"
+    to="OperationsManager.Helpers.SessionSvc, OperationsManager" />
 </module>
 

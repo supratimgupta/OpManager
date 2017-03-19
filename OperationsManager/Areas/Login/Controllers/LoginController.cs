@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OperationsManager.Attributes;
+using OperationsManager.Models;
 
 namespace OperationsManager.Areas.Login.Controllers
 {
@@ -24,7 +25,6 @@ namespace OperationsManager.Areas.Login.Controllers
 
         Encryption encrypt = new Encryption();
 
-
         public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc)
         {
             _userSvc = userSvc;
@@ -40,17 +40,35 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            UserMasterDTO userDto = null;
+
+            if(Request.Cookies["userDetails"]!=null)
+            {
+                var userId = Request.Cookies["userDetails"]["uid"];
+                var pwd = Request.Cookies["userDetails"]["pwd"];
+
+                if (!string.IsNullOrEmpty(userId) && pwd != null && !string.IsNullOrEmpty(pwd))
+                {
+                    userDto = new UserMasterDTO();
+                    userDto.RememberMe = true;
+                    userDto.UserName = userId;
+                    userDto.Password = pwd;
+                    return View(userDto);
+                }
+            }
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(UserMasterDTO data)
         {
             List<EntitlementDTO> lstEntitleMent = new List<EntitlementDTO>();
             List<ActionDTO> lstAction = new List<ActionDTO>();
+            string unencryptedPass = data.Password;
             string pass = encrypt.encryption(data.Password);
             data.Password = pass;
-            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent, out lstAction);
+            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent,out lstAction);
             if (status.IsSuccess)
             {
                 SessionDTO session = new SessionDTO();
@@ -60,6 +78,8 @@ namespace OperationsManager.Areas.Login.Controllers
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }
+
+
             return View();
         }
 
@@ -70,8 +90,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
-        //For edit URL will be like "/Register?mode=EDIT&id={id}"
-        public ActionResult Register(string mode, string id)
+        public ActionResult Register()
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
             uvModel.MODE = mode;
@@ -137,6 +156,8 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpPost]
+        [OpMgrAuth]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(Models.UserViewModel uvModel)
         {
             if (string.Equals(uvModel.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
@@ -194,6 +215,19 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
             return View(uvModel);
+        }
+
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            _sessionSvc.Logout();
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public ActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

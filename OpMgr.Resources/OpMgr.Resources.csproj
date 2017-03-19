@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpMgr.Resources</RootNamespace>
     <AssemblyName>OpMgr.Resources</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +51,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Common\MenuResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MenuResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Library\Library.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -61,10 +67,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TransactionLogAdd.resx</DependentUpon>
     </Compile>
+    <Compile Include="Transaction\TransactionSearch.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionSearch.resx</DependentUpon>
+    </Compile>
     <Compile Include="User\LoginResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="User\StudentResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentResource.resx</DependentUpon>
     </Compile>
     <Compile Include="User\UserResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -81,6 +97,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>IndexResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Common\MenuResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MenuResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Library.Designer.cs</LastGenOutput>
@@ -89,9 +109,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TransactionLogAdd.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transaction\TransactionSearch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TransactionSearch.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="User\LoginResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\StudentResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StudentResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User\UserResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

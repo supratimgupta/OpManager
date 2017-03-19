@@ -22,14 +22,14 @@ namespace OpMgr.Resources.Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CommonResource {
+    public class MenuResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CommonResource() {
+        internal MenuResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OpMgr.Resources.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.CommonResource", typeof(CommonResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.MenuResource", typeof(MenuResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,47 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your access is restricted to this page... Sorry!!!.
+        ///   Looks up a localized string similar to Add Transaction.
         /// </summary>
-        public static string AccessDenied {
+        public static string AddTransaction {
             get {
-                return ResourceManager.GetString("AccessDenied", resourceCulture);
+                return ResourceManager.GetString("AddTransaction", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to St..
+        ///   Looks up a localized string similar to Add User.
         /// </summary>
-        public static string BrandName {
+        public static string AddUser {
             get {
-                return ResourceManager.GetString("BrandName", resourceCulture);
+                return ResourceManager.GetString("AddUser", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Powered by Trio.
+        ///   Looks up a localized string similar to Admin Panel.
         /// </summary>
-        public static string FooterText {
+        public static string AdminPanel {
             get {
-                return ResourceManager.GetString("FooterText", resourceCulture);
+                return ResourceManager.GetString("AdminPanel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Augustine&apos;s School.
+        ///   Looks up a localized string similar to Edit User.
         /// </summary>
-        public static string PageHeader {
+        public static string EditUser {
             get {
-                return ResourceManager.GetString("PageHeader", resourceCulture);
+                return ResourceManager.GetString("EditUser", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to St Augustine&apos;s School.
+        ///   Looks up a localized string similar to Search Transaction.
         /// </summary>
-        public static string PageTitle {
+        public static string SearchTransaction {
             get {
-                return ResourceManager.GetString("PageTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Welcome.
-        /// </summary>
-        public static string WelcomeText {
-            get {
-                return ResourceManager.GetString("WelcomeText", resourceCulture);
+                return ResourceManager.GetString("SearchTransaction", resourceCulture);
             }
         }
     }
