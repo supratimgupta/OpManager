@@ -1,10 +1,18 @@
 ﻿@using OpMgr.Resources.Common
 @using Ninject
 @using OpMgr.Common.Contracts
+@using OperationsManager.Helpers;
+@using OpMgr.Common.DTOs;
 @{
-    StandardKernel kernel = new StandardKernel();
+    NinjectControllerFactory ncf = new NinjectControllerFactory();
+    IKernel kernel = ncf.GetNinjectKernel();
     List<OperationsManager.Models.MenuModel> menu = new List<OperationsManager.Models.MenuModel>();
     menu = OperationsManager.Helpers.MenuHelper.GetMenuItems(kernel.Get<ISessionSvc>());
+    SessionDTO session = kernel.Get<ISessionSvc>().GetUserSession();
+
+    System.Web.HttpContext.Current.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+
+    System.Web.HttpContext.Current.Response.Cache.SetNoStore();
 }
 <!DOCTYPE html>
 <html>
@@ -39,11 +47,11 @@
                 <a class="navbar-brand" href="#"><span>@CommonResource.BrandName</span>@CommonResource.PageHeader</a>
                 <ul class="user-menu">
                     <li class="dropdown pull-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> User <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> @OpMgr.Resources.Common.CommonResource.WelcomeText ! @session.FName<span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
-                            <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
-                            <li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+                            @*<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+                            <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>*@
+                            <li><a href="/Login/Login/Logout"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -61,7 +69,7 @@
         <ul class="nav menu">
             @if(menu!=null)
             {
-                OperationsManager.Helpers.MenuHelper.GetMenuDesign(menu);
+                @OperationsManager.Helpers.MenuHelper.GetMenuDesign(menu);
             }
             @*<li><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
             <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
@@ -94,30 +102,26 @@
                 </ul>
             </li>*@
             <li role="presentation" class="divider"></li>
-            <li><a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+            <li><a href="/Login/Login/Logout"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Logout</a></li>
         </ul>
     </div><!--/.sidebar-->
 
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-        <div class="row">
+        @*<div class="row">
             <ol class="breadcrumb">
                 <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
                 <li class="active">Icons</li>
             </ol>
-        </div><!--/.row-->
+        </div>*@<!--/.row-->
         @RenderBody()
     </div><!--/.main-->
     
     <script src="~/template/js/jquery-1.11.1.min.js"></script>
     <script src="~/template/js/bootstrap.min.js"></script>
-    <script src="~/template/js/chart.min.js"></script>
-    <script src="~/template/js/chart-data.js"></script>
-    <script src="~/template/js/easypiechart.js"></script>
-    <script src="~/template/js/easypiechart-data.js"></script>
     <script src="~/template/js/bootstrap-datepicker.js"></script>
     <script src="~/Content/js/OpMgrStyleJs.js"></script>
     <script src="~/Scripts/jquery-ui.js"></script>
-    <script>
+    @*<script>
         !function ($) {
             $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
                 $(this).find('em:first').toggleClass("glyphicon-minus");
@@ -131,7 +135,7 @@
         $(window).on('resize', function () {
             if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
         })
-    </script>
+    </script>*@
     @RenderSection("PageScripts",false)
 </body>
 

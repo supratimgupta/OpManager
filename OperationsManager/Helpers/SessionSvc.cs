@@ -19,5 +19,12 @@ namespace OperationsManager.Helpers
         {
             return System.Web.HttpContext.Current.Session[_sessionIdentifier] as OpMgr.Common.DTOs.SessionDTO;
         }
+
+        public void Logout()
+        {
+            System.Web.HttpContext.Current.Session.Abandon();
+            System.Web.HttpContext.Current.Session.RemoveAll();
+            System.Web.HttpContext.Current.Session[_sessionIdentifier] = null;
+        }
     }
 }

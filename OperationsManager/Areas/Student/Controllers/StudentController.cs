@@ -1,4 +1,5 @@
 ﻿using OperationsManager.Areas.Student.Models;
+using OperationsManager.Attributes;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -10,6 +11,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Student.Controllers
 {
+    [OpMgrAuth]
     [HandleError()]
     public class StudentController : Controller
     {

@@ -1,4 +1,5 @@
-﻿using OpMgr.Common.Contracts;
+﻿using OperationsManager.Attributes;
+using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
 using System;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
+    [OpMgrAuth]
     public class TransactionController : Controller
     {
         private IDropdownRepo _ddlRepo;
@@ -41,6 +43,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddTransaction(Models.TransactionViewModel trViewModel)
         {
             trViewModel.Active = true;
@@ -48,6 +51,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trViewModel.CreatedDate = DateTime.Today.Date;
             _transactionLog.Insert(trViewModel);
             trViewModel = new Models.TransactionViewModel();
+            ModelState.Clear();
             Helpers.UIDropDownRepo uiDDLRepo = new Helpers.UIDropDownRepo(_ddlRepo);
             
             trViewModel.UserList = uiDDLRepo.getUserDropDown();

@@ -149,16 +149,17 @@ namespace OpMgr.DataAccess.Implementations
 
                         if (_dsData.Tables[2].Rows.Count > 0)
                         {
-                            ActionDTO useractionDTO = new ActionDTO();
+                            ActionDTO useractionDTO = null;
                             for (int i = 0; i < _dsData.Tables[2].Rows.Count; i++)
                             {
+                                useractionDTO = new ActionDTO();
                                 useractionDTO.ActionName = _dsData.Tables[2].Rows[i]["ActionName"].ToString();
-                                useractionDTO.ActionLink = _dsData.Tables[2].Rows[0]["ActionLink"].ToString();
-                                useractionDTO.IsChildAction = Convert.ToBoolean(_dsData.Tables[2].Rows[0]["IsChildAction"]);
-                                useractionDTO.MenuText = _dsData.Tables[2].Rows[0]["MenuText"].ToString();
-                                useractionDTO.DisabledControlId = _dsData.Tables[2].Rows[0]["DisabledControlId"].ToString();
-                                useractionDTO.HiddenControlId = _dsData.Tables[2].Rows[0]["HiddenControlId"].ToString();
-                                useractionDTO.GroupName = _dsData.Tables[2].Rows[0]["GroupName"].ToString();
+                                useractionDTO.ActionLink = _dsData.Tables[2].Rows[i]["ActionLink"].ToString();
+                                useractionDTO.IsChildAction = Convert.ToBoolean(_dsData.Tables[2].Rows[i]["IsChildAction"]);
+                                useractionDTO.MenuText = _dsData.Tables[2].Rows[i]["MenuText"].ToString();
+                                useractionDTO.DisabledControlId = _dsData.Tables[2].Rows[i]["DisabledControlId"].ToString();
+                                useractionDTO.HiddenControlId = _dsData.Tables[2].Rows[i]["HiddenControlId"].ToString();
+                                useractionDTO.GroupName = _dsData.Tables[2].Rows[i]["GroupName"].ToString();
                                 useractionList.Add(useractionDTO);
                             }
                             actionList = useractionList;

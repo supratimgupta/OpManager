@@ -13,7 +13,7 @@ namespace OperationsManager.Helpers
 {
     public class NinjectControllerFactory : DefaultControllerFactory
     {
-        private IKernel ninjectKernel;
+        private static IKernel ninjectKernel;
 
         public NinjectControllerFactory()
         {
@@ -32,6 +32,11 @@ namespace OperationsManager.Helpers
         {
             ninjectKernel.Load(System.Configuration.ConfigurationManager.AppSettings["DIXMLPath"]);
              
+        }
+
+        public IKernel GetNinjectKernel()
+        {
+            return ninjectKernel;
         }
     }
 }

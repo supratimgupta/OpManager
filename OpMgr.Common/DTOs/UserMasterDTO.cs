@@ -59,5 +59,7 @@ namespace OpMgr.Common.DTOs
         public StudentDTO Student { get; set; }
 
         public EmployeeDetailsDTO Employee { get; set; }
+
+        public bool RememberMe { get; set; }
     }
 }

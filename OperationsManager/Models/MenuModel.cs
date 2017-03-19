@@ -16,5 +16,7 @@ namespace OperationsManager.Models
         public List<MenuModel> ChildItems { get; set; }
 
         public bool IsSelected { get; set; }
+
+        public string MenuCode { get; set; }
     }
 }
