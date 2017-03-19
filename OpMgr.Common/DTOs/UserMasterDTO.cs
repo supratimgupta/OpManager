@@ -69,6 +69,6 @@ namespace OpMgr.Common.DTOs
 
         public EmployeeDetailsDTO Employee { get; set; }
 
-               
+        public bool RememberMe { get; set; }      
     }
 }

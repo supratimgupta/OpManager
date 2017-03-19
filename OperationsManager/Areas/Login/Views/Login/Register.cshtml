@@ -10,9 +10,9 @@
 @section PageScripts{
     <script>
         $(document).ready(function () {
-            $('.admissiondate').datepicker('option', { dateFormat: 'mm-dd-yyyy' });
-            $('.DOB-picker').datepicker('option', { dateFormat: 'mm-dd-yyyy' });
-            $('.dateofjoining').datepicker('option', { dateFormat: 'mm-dd-yyyy' });
+            $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
 
             var roleId = $("#Role_RoleId").val();
             if (roleId == 1) {
@@ -59,7 +59,7 @@
 
                 @using (Html.BeginForm())
                 {
-                    
+                    @Html.AntiForgeryToken()
                     <fieldset>
 
                         <div class="col-lg-5">

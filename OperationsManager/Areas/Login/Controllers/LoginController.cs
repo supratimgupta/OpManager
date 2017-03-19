@@ -37,12 +37,13 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         // GET: Login/Login
+        // GET: Login/Login
         [HttpGet]
         public ActionResult Login()
         {
             UserMasterDTO userDto = null;
 
-            if(Request.Cookies["userDetails"]!=null)
+            if (Request.Cookies["userDetails"] != null)
             {
                 var userId = Request.Cookies["userDetails"]["uid"];
                 var pwd = Request.Cookies["userDetails"]["pwd"];
@@ -68,7 +69,29 @@ namespace OperationsManager.Areas.Login.Controllers
             string unencryptedPass = data.Password;
             string pass = encrypt.encryption(data.Password);
             data.Password = pass;
-            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent,out lstAction);
+
+            if (data.RememberMe)
+            {
+                HttpCookie cookie = new HttpCookie("userDetails");
+                cookie["uid"] = data.UserName;
+                cookie["pwd"] = unencryptedPass;
+                cookie.Expires = DateTime.Now + new TimeSpan(1, 0, 0, 0);
+
+                if (Request.Cookies["userDetails"] != null)
+                {
+                    Response.Cookies.Set(cookie);
+                }
+                else
+                {
+                    Response.Cookies.Add(cookie);
+                }
+            }
+            else
+            {
+                Response.Cookies.Clear();
+            }
+
+            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent, out lstAction);
             if (status.IsSuccess)
             {
                 SessionDTO session = new SessionDTO();
@@ -80,7 +103,7 @@ namespace OperationsManager.Areas.Login.Controllers
             }
 
 
-            return View();
+            return RedirectToAction("Register");
         }
 
         [HttpGet]
@@ -90,7 +113,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
-        public ActionResult Register()
+        public ActionResult Register(string mode, string id)
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
             uvModel.MODE = mode;

@@ -15,23 +15,13 @@
         <script>
             $(document).ready(function () {
                 $('.purchasedate-picker').datepicker({ dateFormat: 'dd-M-yy' });
-                //$('.accdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
+                $('.accdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
                 $('.publishingdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
 
                 UseDatePicker()
             });
 
-            function UseDatePicker() {
-
-                $(".accdate-picker").datepicker({
-                    showOn: "button",
-                    buttonImage: 'OperationsManager/images/calendar.gif',
-                    buttonImageOnly: true,
-                    changeMonth: true,
-                    changeYear: true,
-                    buttonText: "Date"
-                }).attr("readonly", "false");
-            }
+            
         </script>
     }
     <div class="row">
