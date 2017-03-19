@@ -18,5 +18,9 @@ namespace OperationsManager.Areas.Transaction.Models
         public SelectList TransactionTypeList { get; set; }
 
         public SelectList StandardSectionList { get; set; }
+
+        public List<TransactionViewModel> SearchResult { get; set; }
+
+        public string Message { get; set; }
     }
 }

@@ -95,5 +95,14 @@ namespace OpMgr.Resources.Common {
                 return ResourceManager.GetString("EditUser", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Transaction.
+        /// </summary>
+        public static string SearchTransaction {
+            get {
+                return ResourceManager.GetString("SearchTransaction", resourceCulture);
+            }
+        }
     }
 }

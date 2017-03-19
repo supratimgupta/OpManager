@@ -258,6 +258,7 @@
     <Content Include="Areas\Student\Views\Student\Search.cshtml" />
     <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Login\Views\Login\AccessDenied.cshtml" />
+    <Content Include="Areas\Transaction\Views\Transaction\Search.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
