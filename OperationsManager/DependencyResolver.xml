@@ -43,5 +43,8 @@
 
   <bind service="OpMgr.Common.Contracts.ICommonConfigSvc, OpMgr.Common"
     to="OpMgr.Configurations.Implementations.WebCommonConfigSvc, OpMgr.Configurations" />
+
+  <!--<bind service="OpMgr.Common.Contracts.ISessionSvc, OpMgr.Common"
+    to="OpMgr.Helpers.SessionSvc" />-->
 </module>
 
