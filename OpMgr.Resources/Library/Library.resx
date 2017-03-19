@@ -150,6 +150,9 @@
   <data name="ISBNNo" xml:space="preserve">
     <value>ISBNNumber</value>
   </data>
+  <data name="LibraryHeader" xml:space="preserve">
+    <value>Register Books</value>
+  </data>
   <data name="Location" xml:space="preserve">
     <value>Location</value>
   </data>
@@ -170,6 +173,12 @@
   </data>
   <data name="PurchaseDate" xml:space="preserve">
     <value>Purchase Date</value>
+  </data>
+  <data name="RegisterBooks" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RegisterButton" xml:space="preserve">
+    <value>Register</value>
   </data>
   <data name="Series" xml:space="preserve">
     <value>Series</value>

@@ -160,6 +160,15 @@ namespace OpMgr.Resources.Library {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register Books.
+        /// </summary>
+        public static string LibraryHeader {
+            get {
+                return ResourceManager.GetString("LibraryHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string Location {
@@ -219,6 +228,24 @@ namespace OpMgr.Resources.Library {
         public static string PurchaseDate {
             get {
                 return ResourceManager.GetString("PurchaseDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterBooks {
+            get {
+                return ResourceManager.GetString("RegisterBooks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterButton {
+            get {
+                return ResourceManager.GetString("RegisterButton", resourceCulture);
             }
         }
         

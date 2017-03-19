@@ -19,11 +19,9 @@ namespace OperationsManager.Areas.Login.Models
 
         public SelectList ClassTypeList { get; set; }
 
-        public SelectList SectionList { get; set; }        
+        public SelectList SectionList { get; set; }
 
         public SelectList DepartmentList { get; set; }
-
-        public SelectList BookCategoryList { get; set; }
 
         public SelectList DesignationList { get; set; }
 
@@ -37,7 +35,10 @@ namespace OperationsManager.Areas.Login.Models
 
         //public StandardSectionMapDTO StandardSection { get; set; }
 
-        public EmployeeDetailsDTO EmployeeDetails { get; set; }
+        //public EmployeeDetailsDTO EmployeeDetails { get; set; }
+
+        public string MODE { get; set; }
+        public int HdnUserMasterId { get; set; }
 
         //public BookMasterDTO BookMaster { get; set; }
     }

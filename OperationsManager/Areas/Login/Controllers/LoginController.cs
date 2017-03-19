@@ -50,7 +50,7 @@ namespace OperationsManager.Areas.Login.Controllers
             List<ActionDTO> lstAction = new List<ActionDTO>();
             string pass = encrypt.encryption(data.Password);
             data.Password = pass;
-            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent,out lstAction);
+            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent, out lstAction);
             if (status.IsSuccess)
             {
                 SessionDTO session = new SessionDTO();
@@ -60,8 +60,6 @@ namespace OperationsManager.Areas.Login.Controllers
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }
-
-
             return View();
         }
 
@@ -72,21 +70,68 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
-        public ActionResult Register()
+        //For edit URL will be like "/Register?mode=EDIT&id={id}"
+        public ActionResult Register(string mode, string id)
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
+            uvModel.MODE = mode;
+            if(string.Equals(mode,"EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                uvModel.UserMasterId = int.Parse(id);
+            }
+            if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                //Populate edit data using id passed in URL, if id==null then show error message
+                StatusDTO<UserMasterDTO> dto = _userSvc.Select(Convert.ToInt32(id));
+                uvModel.UserMasterId = dto.ReturnObj.UserMasterId;
+                //uvModel.UserMasterId = dto.ReturnObj.UserMasterId;
+                uvModel.FName = dto.ReturnObj.FName;
+                uvModel.MName = dto.ReturnObj.MName;
+                uvModel.LName = dto.ReturnObj.LName;
+                uvModel.Gender = dto.ReturnObj.Gender;
+                uvModel.Image = dto.ReturnObj.Image;
+                uvModel.DOB = dto.ReturnObj.DOB;
+                uvModel.EmailId = dto.ReturnObj.EmailId;
+                uvModel.ResidentialAddress = dto.ReturnObj.ResidentialAddress;
+                uvModel.PermanentAddress = dto.ReturnObj.PermanentAddress;
+                uvModel.ContactNo = dto.ReturnObj.ContactNo;
+                uvModel.AltContactNo = dto.ReturnObj.AltContactNo;
+                uvModel.BloodGroup = dto.ReturnObj.BloodGroup;
+                uvModel.Location = dto.ReturnObj.Location;
+                uvModel.Role = dto.ReturnObj.Role;
+                if (dto.ReturnObj.Role.RoleId == 1)
+                {
+                    uvModel.Student = new StudentDTO();
+                    uvModel.Student.RollNumber = dto.ReturnObj.Student.RollNumber;
+                    uvModel.Student.RegistrationNumber = dto.ReturnObj.Student.RegistrationNumber;
+                    uvModel.Student.GuardianContact = dto.ReturnObj.Student.GuardianContact;
+                    uvModel.Student.GuardianName = dto.ReturnObj.Student.GuardianName;
+                    uvModel.Student.GuardianEmailId = dto.ReturnObj.Student.GuardianEmailId;
+                    uvModel.Student.HouseType = dto.ReturnObj.Student.HouseType;
+                    uvModel.Student.StandardSectionMap = dto.ReturnObj.Student.StandardSectionMap;
+                }
+                else if (dto.ReturnObj.Role.RoleId > 1)
+                {
+                    uvModel.Employee = new EmployeeDetailsDTO();
+                    uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
+                    uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
+                    uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
+                    uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
+                    uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
+                }
+            }
+
             uvModel.GenderList = _uiddlRepo.getGenderDropDown();
             uvModel.LocationList = _uiddlRepo.getLocationDropDown();
             uvModel.RoleList = _uiddlRepo.getRoleDropDown();
             uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
             uvModel.SectionList = _uiddlRepo.getSectionDropDown();
             uvModel.HouseList = _uiddlRepo.getHouseDropDown();
-            uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
+            //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
-            
 
             return View(uvModel);
         }
@@ -94,11 +139,47 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpPost]
         public ActionResult Register(Models.UserViewModel uvModel)
         {
+            if (string.Equals(uvModel.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                //Call update
+                //if (ModelState.IsValid)
+                //{
+                if (uvModel.Role.RoleId == 1)
+                {
+                    uvModel.Employee = null;
+                    _userSvc.Update(uvModel);
+                }
+                else if (uvModel.Role.RoleId > 1)
+                {
+                    uvModel.Student = null;
+                    _userSvc.Update(uvModel);
+                }
+                //}
+            }
+            else
+            {
+                //Call insert
+
+                //if (ModelState.IsValid)
+                //{
+                if (uvModel.Role.RoleId == 1)
+                {
+                    string pass = encrypt.encryption(uvModel.Password);
+                    uvModel.Password = pass;
+                    uvModel.Employee = null;
+                    _userSvc.Insert(uvModel);
+                }
+                else if (uvModel.Role.RoleId > 1)
+                {
+                    string pass = encrypt.encryption(uvModel.Password);
+                    uvModel.Password = pass;
+                    uvModel.Student = null;
+                    _userSvc.Insert(uvModel);
+                }
+                //}                
+            }
             //if(ModelState.IsValid)
             //{
-                string pass = encrypt.encryption(uvModel.Password);
-                uvModel.Password = pass;
-                _userSvc.Insert(uvModel);
             //}
 
             uvModel.GenderList = _uiddlRepo.getGenderDropDown();
@@ -107,12 +188,10 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
             uvModel.SectionList = _uiddlRepo.getSectionDropDown();
             uvModel.HouseList = _uiddlRepo.getHouseDropDown();
-            uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
+            //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-
-           
 
             return View(uvModel);
         }

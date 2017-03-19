@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,14 +23,19 @@ namespace OpMgr.Common.DTOs
 
         public UserMasterDTO UserDetails { get; set; }
 
+        [Required(ErrorMessage = "Roll Number is required")]
         public string RollNumber { get; set; }
 
+        [Required(ErrorMessage = "Registration Number is required")]
         public string RegistrationNumber { get; set; }
 
+        [Required(ErrorMessage = "Admission Date is required")]
         public DateTime? AdmissionDate { get; set; }
 
+        [Required(ErrorMessage = "Guardian Contact is required")]
         public string GuardianContact { get; set; }
 
+        [Required(ErrorMessage = "Guardian Name is required")]
         public string GuardianName { get; set; }
 
         public string GuardianEmailId { get; set; }
