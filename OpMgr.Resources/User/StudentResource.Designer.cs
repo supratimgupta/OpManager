@@ -61,7 +61,61 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string Class {
+            get {
+                return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        public static string FName {
+            get {
+                return ResourceManager.GetString("FName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact Number.
+        /// </summary>
+        public static string GuardianContactNo {
+            get {
+                return ResourceManager.GetString("GuardianContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        public static string LName {
+            get {
+                return ResourceManager.GetString("LName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Middle Name.
+        /// </summary>
+        public static string MName {
+            get {
+                return ResourceManager.GetString("MName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Students.
         /// </summary>
         public static string PageHeader {
             get {
@@ -75,6 +129,60 @@ namespace OpMgr.Resources.User {
         public static string PageTitle {
             get {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string RegistrationNo {
+            get {
+                return ResourceManager.GetString("RegistrationNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roll.
+        /// </summary>
+        public static string RollNo {
+            get {
+                return ResourceManager.GetString("RollNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchButton {
+            get {
+                return ResourceManager.GetString("SearchButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section.
+        /// </summary>
+        public static string Section {
+            get {
+                return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string StudentActions {
+            get {
+                return ResourceManager.GetString("StudentActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to School Students.
+        /// </summary>
+        public static string StudentTable {
+            get {
+                return ResourceManager.GetString("StudentTable", resourceCulture);
             }
         }
     }
