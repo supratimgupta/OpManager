@@ -1,0 +1,37 @@
+﻿@using OpMgr.Resources.Admin
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Admin.Models.AdminViewModel
+
+@{
+    ViewBag.Title = AdminResource.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div>
+        <div>
+            <div class="panel-heading">@AdminResource.Header</div>
+            <div class="panel-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.ActionDetails.RowId, Model.ActionList, AdminResource.Action, new { @class = "form-control" })
+
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.RoleDetails.UserRoleId, Model.EntitlementList, AdminResource.UserRole, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-10">
+                            <button type="submit" class="btn btn-primary">@AdminResource.AssignButton</button>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

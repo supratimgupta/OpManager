@@ -477,5 +477,73 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<ActionDTO> GetActions()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select ActionId,ActionName from dic_action where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<ActionDTO> lstAction = new List<ActionDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        ActionDTO actionDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            actionDTO = new ActionDTO();
+                            actionDTO.RowId = (int)dr["ActionId"];
+                            actionDTO.ActionName = dr["ActionName"].ToString();
+                            lstAction.Add(actionDTO);
+                        }
+                    }
+                    return lstAction;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<EntitlementDTO> GetUserRole()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select UserRoleId,RoleName from dic_entitlement where RoleIsActive=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<EntitlementDTO> lstEntitlement = new List<EntitlementDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        EntitlementDTO entitlementDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            entitlementDTO = new EntitlementDTO();
+                            entitlementDTO.UserRoleId = (int)dr["UserRoleId"];
+                            entitlementDTO.RoleName = dr["RoleName"].ToString();
+                            lstEntitlement.Add(entitlementDTO);
+                        }
+                    }
+                    return lstEntitlement;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }
