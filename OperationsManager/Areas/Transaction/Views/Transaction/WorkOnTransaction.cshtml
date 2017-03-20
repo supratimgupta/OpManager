@@ -1,0 +1,99 @@
+﻿@using OpMgr.Resources.Common
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.TransactionViewModel
+
+@{
+    ViewBag.Title = "WorkOnTransaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    OperationsManager.Attributes.Encryption encrypt = new OperationsManager.Attributes.Encryption();
+}
+
+<div class="row">
+    <div>
+        <div class="panel-default">
+            <div class="panel-heading">@WorkOnTransaction.PageHeader - @Model.TransactionLogId (@Model.TransactionRule.RuleName) @WorkOnTransaction.ForText @(Model.User.FName + " " + Model.User.LName)</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.TransactionLogId)
+                    @Html.HiddenFor(m => m.EncryptedTransactionLogId)
+                    <fieldset>
+                        @if (!Model.IsSuccessMessage)
+                        {
+                            @*<div class="panel panel-danger">
+                                    <div class="panel-body">
+                                        @Model.Message
+                                    </div>
+                                </div>*@
+                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                <strong>@Model.Message</strong>
+                            </div>
+                        }
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                @(Model.User.FName + " " + Model.User.LName)
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="totAmt">@WorkOnTransaction.TotalAmount</label>
+                                            @Html.DisplayFor(m => m.AmountImposed)
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="totAmt">@WorkOnTransaction.GivenAmount</label>
+                                            @Html.DisplayFor(m => m.AmountGiven)
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="totAmt">@WorkOnTransaction.DueAmount</label>
+                                            @Html.DisplayFor(m => m.DueAmount)
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    @if (!Model.IsCompleted.Value)
+                                    {
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.CurrentAmount, WorkOnTransaction.CurrentAmount, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5"></div>
+                                    }
+
+                                </div>
+                                <div class="row">
+                                    @if (!Model.HideSaveButton)
+                                    {
+                                        <div class="col-lg-5">
+                                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>

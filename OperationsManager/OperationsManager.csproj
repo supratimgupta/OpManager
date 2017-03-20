@@ -191,9 +191,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Models\AdminViewModel.cs" />
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
     <Compile Include="Areas\Library\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Library\LibraryAreaRegistration.cs" />
+    <Compile Include="Areas\Library\Models\LibraryViewModel.cs" />
     <Compile Include="Areas\Login\Controllers\LoginController.cs" />
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
@@ -236,6 +238,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\calendar.gif" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Employee\Views\web.config" />
@@ -257,6 +260,11 @@
     <Content Include="Areas\Transaction\Views\Transaction\AddTransaction.cshtml" />
     <Content Include="Areas\Student\Views\Student\Search.cshtml" />
     <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Login\Views\Login\AccessDenied.cshtml" />
+    <Content Include="Areas\Transaction\Views\Transaction\Search.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\ActionUserRoleMapping.cshtml" />
+    <Content Include="Areas\Transaction\Views\Transaction\MyTransactions.cshtml" />
+    <Content Include="Areas\Transaction\Views\Transaction\WorkOnTransaction.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -265,6 +273,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.css" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -306,7 +315,9 @@
     <Content Include="template\panels.html" />
     <Content Include="template\tables.html" />
     <Content Include="template\widgets.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -358,12 +369,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Employee\Controllers\" />
     <Folder Include="Areas\Employee\Models\" />
     <Folder Include="Areas\Employee\Views\Shared\" />
-    <Folder Include="Areas\Library\Models\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
   </ItemGroup>

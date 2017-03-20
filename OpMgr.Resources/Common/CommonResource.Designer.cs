@@ -61,6 +61,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your access is restricted to this page... Sorry!!!.
+        /// </summary>
+        public static string AccessDenied {
+            get {
+                return ResourceManager.GetString("AccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to St..
         /// </summary>
         public static string BrandName {
@@ -93,6 +102,15 @@ namespace OpMgr.Resources.Common {
         public static string PageTitle {
             get {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string WelcomeText {
+            get {
+                return ResourceManager.GetString("WelcomeText", resourceCulture);
             }
         }
     }

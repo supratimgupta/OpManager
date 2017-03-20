@@ -50,5 +50,18 @@ namespace OpMgr.Common.DTOs
         public StandardSectionMapDTO StandardSectionMap { get; set; }
 
         public TransactionRuleDTO PenaltyTransactionRule { get; set; }
+
+        //Search params
+        public DateTime? SearchFrom { get; set; }
+
+        public DateTime? SearchUpto { get; set; }
+
+        public string SearchStudRegId { get; set; }
+
+        public string SearchEmployeeId { get; set; }
+
+        public string SearchLoginName { get; set; }
+
+        public int? SearchStdSectionId { get; set; }
     }
 }

@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AdminResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Common\CommonResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -56,6 +61,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MenuResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Common\WorkOnTransaction.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkOnTransaction.resx</DependentUpon>
+    </Compile>
     <Compile Include="Library\Library.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -66,6 +76,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TransactionLogAdd.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Transaction\TransactionSearch.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionSearch.resx</DependentUpon>
     </Compile>
     <Compile Include="User\LoginResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,6 +99,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Admin\AdminResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdminResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Common\CommonResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonResource.Designer.cs</LastGenOutput>
@@ -96,6 +115,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MenuResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Common\WorkOnTransaction.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkOnTransaction.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Library.Designer.cs</LastGenOutput>
@@ -103,6 +126,10 @@
     <EmbeddedResource Include="Transaction\TransactionLogAdd.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TransactionLogAdd.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transaction\TransactionSearch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TransactionSearch.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User\LoginResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

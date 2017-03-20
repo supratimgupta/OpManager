@@ -135,4 +135,7 @@
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>
   </data>
+  <data name="LoginFooter" xml:space="preserve">
+    <value>St. Augustine's Day School</value>
+  </data>
 </root>

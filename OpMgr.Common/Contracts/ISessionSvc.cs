@@ -11,5 +11,7 @@ namespace OpMgr.Common.Contracts
         void SetUserSession(DTOs.SessionDTO session);
 
         DTOs.SessionDTO GetUserSession();
+
+        void Logout();
     }
 }

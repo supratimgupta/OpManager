@@ -36,5 +36,9 @@ namespace OpMgr.Common.Contracts.Modules
         List<UserMasterDTO> GetAllActiveUsers();
 
         List<TransactionRuleDTO> GetActiveTrRules();
+
+        List<ActionDTO> GetActions();
+
+        List<EntitlementDTO> GetUserRole();
     }
 }

@@ -28,6 +28,7 @@ namespace OpMgr.Common.DTOs
 
         public string LName { get; set; }
 
+
         public string Gender { get; set; }
 
         public string Image { get; set; }
@@ -36,20 +37,28 @@ namespace OpMgr.Common.DTOs
 
         public string EmailId { get; set; }
 
+        [Required(ErrorMessage = "Residential Address is required")]
         public string ResidentialAddress { get; set; }
 
+        [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Confirm Password is required")]
+        [CompareAttribute("Password", ErrorMessage = "Password doesn't match.")]
         public string ConfirmPassword { get; set; }
 
+        [Required(ErrorMessage = "Permanent Address is required")]
         public string PermanentAddress { get; set; }
 
+        [Required(ErrorMessage = "Contact Number is required")]
         public string ContactNo { get; set; }
 
-        public string AlContactNo { get; set; }
+        public string AltContactNo { get; set; }
 
+        [Required(ErrorMessage = "Blood Group is required")]
         public string BloodGroup { get; set; }
         
         public LocationDTO Location { get; set; }
@@ -59,5 +68,9 @@ namespace OpMgr.Common.DTOs
         public StudentDTO Student { get; set; }
 
         public EmployeeDetailsDTO Employee { get; set; }
+
+        public bool RememberMe { get; set; }
+        
+        public string LoginFailedMsg { get; set; }      
     }
 }

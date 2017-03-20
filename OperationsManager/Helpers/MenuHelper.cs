@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Web.Mvc;
 using System.Text;
+using System.Web;
 
 namespace OperationsManager.Helpers
 {
@@ -24,12 +25,12 @@ namespace OperationsManager.Helpers
                 MenuModel menu;
                 for (int i=0;i<actions.Count;i++)
                 {
-                    if(!string.IsNullOrEmpty(actions[i].ActionLink) && string.IsNullOrEmpty(actions[i].HiddenControlId) && string.IsNullOrEmpty(actions[i].DisabledControlId))
+                    if(!string.IsNullOrEmpty(actions[i].ActionLink) && !string.IsNullOrEmpty(actions[i].MenuText) && string.IsNullOrEmpty(actions[i].HiddenControlId) && string.IsNullOrEmpty(actions[i].DisabledControlId))
                     {
                         string menuText = OpMgr.Resources.Common.MenuResource.ResourceManager.GetString(actions[i].MenuText);
                         if(string.IsNullOrEmpty(actions[i].GroupName))
                         {
-                            menu = lstMenu.FirstOrDefault(m => string.Equals(m.MenuText, menuText));
+                            menu = lstMenu.FirstOrDefault(m => string.Equals(m.MenuCode, actions[i].MenuText));
                             if(menu == null)
                             {
                                 menu = new MenuModel();
@@ -37,6 +38,13 @@ namespace OperationsManager.Helpers
                                 menu.IsSelfRedirectable = true;
                                 menu.ChildItems = null;
                                 menu.UrlToRedirect = actions[i].ActionLink;
+                                menu.MenuCode =  actions[i].MenuText;
+
+                                if(string.Equals(menu.UrlToRedirect, HttpContext.Current.Request.Path, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    menu.IsSelected = true;
+                                }
+
                                 lstMenu.Add(menu);
                             }
                         }
@@ -47,9 +55,15 @@ namespace OperationsManager.Helpers
                             menu.IsSelfRedirectable = true;
                             menu.ChildItems = null;
                             menu.UrlToRedirect = actions[i].ActionLink;
+                            menu.MenuCode = actions[i].MenuText;
+
+                            if (string.Equals(menu.UrlToRedirect, HttpContext.Current.Request.Path, StringComparison.OrdinalIgnoreCase))
+                            {
+                                menu.IsSelected = true;
+                            }
 
                             string groupName = OpMgr.Resources.Common.MenuResource.ResourceManager.GetString(actions[i].GroupName);
-                            MenuModel addedRoot = lstMenu.FirstOrDefault(m => string.Equals(m.MenuText, groupName));
+                            MenuModel addedRoot = lstMenu.FirstOrDefault(m => string.Equals(m.MenuCode, actions[i].GroupName));
                             if(addedRoot==null)
                             {
                                 addedRoot = new MenuModel();
@@ -57,6 +71,7 @@ namespace OperationsManager.Helpers
                                 addedRoot.IsSelfRedirectable = false;
                                 addedRoot.MenuText = groupName;
                                 addedRoot.UrlToRedirect = string.Empty;
+                                addedRoot.MenuCode = actions[i].GroupName;
                                 lstMenu.Add(addedRoot);
                             }
                             if(addedRoot.ChildItems==null)
@@ -66,7 +81,7 @@ namespace OperationsManager.Helpers
                             }
                             else
                             {
-                                if(addedRoot.ChildItems.FirstOrDefault(m => string.Equals(m.MenuText, menuText)) == null)
+                                if(addedRoot.ChildItems.FirstOrDefault(m => string.Equals(m.MenuCode, actions[i].MenuText)) == null)
                                 {
                                     addedRoot.ChildItems.Add(menu);
                                 }
@@ -89,15 +104,15 @@ namespace OperationsManager.Helpers
                 int subItemCounter = 0;
                 for (int i = 0; i < lstMenu.Count; i++)
                 {
-                    if (lstMenu[i].IsSelfRedirectable || lstMenu[i].ChildItems == null || lstMenu[i].ChildItems.Count > 0)
+                    if (lstMenu[i].IsSelfRedirectable || lstMenu[i].ChildItems == null || lstMenu[i].ChildItems==null || lstMenu[i].ChildItems.Count == 0)
                     {
                         if (lstMenu[i].IsSelected)
                         {
-                            sbMenuHtml.AppendLine("<li class=\"active\"><a href=\"\"> " + lstMenu[i].MenuText + "</a></li>");
+                            sbMenuHtml.AppendLine("<li class=\"active\"><a href=\""+lstMenu[i].UrlToRedirect+"\"> " + lstMenu[i].MenuText + "</a></li>");
                         }
                         else
                         {
-                            sbMenuHtml.AppendLine("<li class=\"active\"><a href=\"\"> " + lstMenu[i].MenuText + "</a></li>");
+                            sbMenuHtml.AppendLine("<li class=\"\"><a href=\"" + lstMenu[i].UrlToRedirect + "\"> " + lstMenu[i].MenuText + "</a></li>");
                         }
                     }
                     else
@@ -122,15 +137,19 @@ namespace OperationsManager.Helpers
                             {
                                 sbMenuHtml.AppendLine("<li class=\"active\">");
                                 sbMenuHtml.AppendLine("<a class=\"active\" href=\""+lstMenu[i].ChildItems[j].UrlToRedirect+"\">");
+                                sbMenuHtml.AppendLine("<svg class=\"glyph stroked chevron-right\" style=\"color:white;\"><use xlink:href=\"#stroked-chevron-right\" style=\"color:white;\"></use></svg><span style=\"color:white;\"> " + lstMenu[i].ChildItems[j].MenuText+"</span>");
+                                sbMenuHtml.AppendLine("</a>");
+                                sbMenuHtml.AppendLine("</li>");
                             }
                             else
                             {
                                 sbMenuHtml.AppendLine("<li>");
                                 sbMenuHtml.AppendLine("<a class=\"\" href=\"" + lstMenu[i].ChildItems[j].UrlToRedirect + "\">");
+                                sbMenuHtml.AppendLine("<svg class=\"glyph stroked chevron-right\"><use xlink:href=\"#stroked-chevron-right\"></use></svg> " + lstMenu[i].ChildItems[j].MenuText);
+                                sbMenuHtml.AppendLine("</a>");
+                                sbMenuHtml.AppendLine("</li>");
                             }
-                            sbMenuHtml.AppendLine("<svg class=\"glyph stroked chevron-right\"><use xlink:href=\"#stroked-chevron-right\"></use></svg> "+ lstMenu[i].ChildItems[j].MenuText);
-                            sbMenuHtml.AppendLine("</a>");
-                            sbMenuHtml.AppendLine("</li>");
+                            
                         }
                         sbMenuHtml.AppendLine("</ul>");
                         sbMenuHtml.AppendLine("</li>");

@@ -70,6 +70,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to St. Augustine&apos;s Day School.
+        /// </summary>
+        public static string LoginFooter {
+            get {
+                return ResourceManager.GetString("LoginFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Login.
         /// </summary>
         public static string PageHeader {

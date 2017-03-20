@@ -9,6 +9,10 @@
   <bind service="OpMgr.Common.Contracts.ILogSvc, OpMgr.Common"
     to="OpMgr.Logger.Implementations.TextLogSvc, OpMgr.Logger" />
 
+
+  <bind service="OpMgr.Common.Contracts.ISessionSvc, OpMgr.Common"
+    to="OperationsManager.Helpers.SessionSvc, OperationsManager" />
+
   <bind service="OpMgr.Common.Contracts.ICommonConfigDataSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.CommonConfigDataSvc, OpMgr.DataAccess" />
 
@@ -40,11 +44,11 @@
   <bind service="OpMgr.Common.Contracts.Modules.IStudentSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.StudentSvc, OpMgr.DataAccess" />
 
+  <bind service="OpMgr.Common.Contracts.Modules.IBookMasterSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.BookMasterSvc, OpMgr.DataAccess" />
 
   <bind service="OpMgr.Common.Contracts.ICommonConfigSvc, OpMgr.Common"
     to="OpMgr.Configurations.Implementations.WebCommonConfigSvc, OpMgr.Configurations" />
 
-  <!--<bind service="OpMgr.Common.Contracts.ISessionSvc, OpMgr.Common"
-    to="OpMgr.Helpers.SessionSvc" />-->
 </module>
 
