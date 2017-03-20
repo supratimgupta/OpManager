@@ -46,12 +46,22 @@ namespace OperationsManager.Helpers
         public SelectList getClassTypeDropDown()
         {
             List<ClassTypeDTO> rDto = _ddlRepo.ClassType();
+            ClassTypeDTO blank = new ClassTypeDTO();
+            blank.ClassTypeId = -1;
+            blank.ClassTypeName = "";
+            rDto.Insert(0, blank);
             return new SelectList(rDto, "ClassTypeId", "ClassTypeName");
         }
 
         public SelectList getSectionDropDown()
         {
             List<SectionDTO> rDto = _ddlRepo.Section();
+
+            SectionDTO blank = new SectionDTO();
+            blank.SectionId = -1;
+            blank.SectionName = "";
+            rDto.Insert(0, blank);
+
             return new SelectList(rDto, "SectionId", "SectionName");
         }
 
@@ -83,6 +93,12 @@ namespace OperationsManager.Helpers
         public SelectList getStandardDropDown()
         {
             List<StandardDTO> rDto = _ddlRepo.Standard();
+
+            StandardDTO blank = new StandardDTO();
+            blank.StandardId = -1;
+            blank.StandardName = "";
+            rDto.Insert(0, blank);
+
             return new SelectList(rDto, "StandardId", "StandardName");
         }
 

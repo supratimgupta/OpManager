@@ -269,9 +269,9 @@ namespace OpMgr.TransactionHandler.Implementations
                                    trnsLogDto.User.UserMasterId = (int)reader["UserMasterId"];
                                    trnsLogDto.TransactionDate = _runDate;
 
-                                   if (rules[0]["FirstDuedateAfterdays"] != null || !string.IsNullOrEmpty(rules[0]["FirstDuedateAfterdays"].ToString()))
+                                   if (rules[0]["FirstDueAfterDays"] != null || !string.IsNullOrEmpty(rules[0]["FirstDueAfterDays"].ToString()))
                                    {
-                                       trnsLogDto.TransactionDueDate = _runDate.AddDays((int)rules[0]["FirstDuedateAfterdays"]);
+                                       trnsLogDto.TransactionDueDate = _runDate.AddDays((int)rules[0]["FirstDueAfterDays"]);
                                    }
                                    else
                                    {
@@ -438,7 +438,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                 trnsLog.User = new UserMasterDTO();
                                 trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
                                 trnsLog.TransactionDate = _runDate;
-                                trnsLog.TransactionDueDate = (_runDate.AddDays((int)trnsRule[0]["FirstDuedateAfterdays"]));
+                                trnsLog.TransactionDueDate = (_runDate.AddDays((int)trnsRule[0]["FirstDueAfterDays"]));
                                 trnsLog.TransactionPreviousDueDate = null;
                                 trnsLog.ParentTransactionLogId = null;
                                 trnsLog.IsCompleted = false;

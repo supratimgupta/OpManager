@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OpMgr.Resources.Common {
+namespace OpMgr.Resources.Transaction {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace OpMgr.Resources.Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class MenuResource {
+    public class TransactionRuleSearch {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MenuResource() {
+        internal TransactionRuleSearch() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OpMgr.Resources.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.MenuResource", typeof(MenuResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Transaction.TransactionRuleSearch", typeof(TransactionRuleSearch).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,65 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Transaction.
+        ///   Looks up a localized string similar to Due Date Increases By.
         /// </summary>
-        public static string AddTransaction {
+        public static string ColDueIncreasesBy {
             get {
-                return ResourceManager.GetString("AddTransaction", resourceCulture);
+                return ResourceManager.GetString("ColDueIncreasesBy", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add User.
+        ///   Looks up a localized string similar to First Due After Days.
         /// </summary>
-        public static string AddUser {
+        public static string ColFirstDueAfterDays {
             get {
-                return ResourceManager.GetString("AddUser", resourceCulture);
+                return ResourceManager.GetString("ColFirstDueAfterDays", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Panel.
+        ///   Looks up a localized string similar to Penalty Amount.
         /// </summary>
-        public static string AdminPanel {
+        public static string ColPenaltyAmt {
             get {
-                return ResourceManager.GetString("AdminPanel", resourceCulture);
+                return ResourceManager.GetString("ColPenaltyAmt", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit User.
+        ///   Looks up a localized string similar to Amount.
         /// </summary>
-        public static string EditUser {
+        public static string ColRuleAmount {
             get {
-                return ResourceManager.GetString("EditUser", resourceCulture);
+                return ResourceManager.GetString("ColRuleAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Transactions.
+        ///   Looks up a localized string similar to Rule Name.
         /// </summary>
-        public static string MyTransactions {
+        public static string ColRuleName {
             get {
-                return ResourceManager.GetString("MyTransactions", resourceCulture);
+                return ResourceManager.GetString("ColRuleName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Transaction.
+        ///   Looks up a localized string similar to Penalty Calc In.
         /// </summary>
-        public static string SearchTransaction {
+        public static string ColRulePenaltyCalcIn {
             get {
-                return ResourceManager.GetString("SearchTransaction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search Students.
-        /// </summary>
-        public static string StudentSearch {
-            get {
-                return ResourceManager.GetString("StudentSearch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction Master.
-        /// </summary>
-        public static string TransactionMaster {
-            get {
-                return ResourceManager.GetString("TransactionMaster", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add Transaction Rule.
-        /// </summary>
-        public static string TransactionRuleAdd {
-            get {
-                return ResourceManager.GetString("TransactionRuleAdd", resourceCulture);
+                return ResourceManager.GetString("ColRulePenaltyCalcIn", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Transaction Rules.
         /// </summary>
-        public static string TransactionRuleSearch {
+        public static string PageHeader {
             get {
-                return ResourceManager.GetString("TransactionRuleSearch", resourceCulture);
+                return ResourceManager.GetString("PageHeader", resourceCulture);
             }
         }
     }

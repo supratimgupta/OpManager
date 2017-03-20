@@ -270,6 +270,8 @@
     <Content Include="Areas\Transaction\Views\Transaction\MyTransactions.cshtml" />
     <Content Include="Areas\Transaction\Views\Transaction\WorkOnTransaction.cshtml" />
     <Content Include="Areas\Transaction\Views\TransactionMaster\TransactionMaster.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionRule\TransactionRule.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionRule\Search.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -380,7 +382,6 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
-    <Folder Include="Areas\Transaction\Views\TransactionRule\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -26,5 +26,7 @@ namespace OperationsManager.Areas.Transaction.Models
         public SelectList PenaltyTransactionRules { get; set; }
 
         public string MODE { get; set; }
+
+        public string SuccessMsg { get; set; }
     }
 }
