@@ -145,5 +145,33 @@ namespace OperationsManager.Helpers
 
             return new SelectList(lstTrRule, "TranRuleId", "RuleName");
         }
+
+        // return Action List
+        public SelectList getActionLinkDropDown()
+        {
+            List<ActionDTO> lactionDto = _ddlRepo.GetActions();
+
+            ActionDTO actDto = new ActionDTO();
+            actDto.RowId = -1;
+            actDto.ActionName = string.Empty;
+
+            lactionDto.Insert(0, actDto);
+
+            return new SelectList(lactionDto, "RowId", "ActionName");
+        }
+
+        // return Entitlement List
+        public SelectList getEntitleMentDropDown()
+        {
+            List<EntitlementDTO> lstentitleDto = _ddlRepo.GetUserRole();
+
+            EntitlementDTO entitleDto = new EntitlementDTO();
+            entitleDto.UserRoleId = -1;
+            entitleDto.RoleName = string.Empty;
+
+            lstentitleDto.Insert(0, entitleDto);
+
+            return new SelectList(lstentitleDto, "UserRoleId", "RoleName");
+        }
     }
 }
