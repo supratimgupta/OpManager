@@ -41,7 +41,7 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            UserMasterDTO userDto = null;
+            UserMasterDTO userDto = new UserMasterDTO();
 
             if (Request.Cookies["userDetails"] != null)
             {
@@ -50,14 +50,14 @@ namespace OperationsManager.Areas.Login.Controllers
 
                 if (!string.IsNullOrEmpty(userId) && pwd != null && !string.IsNullOrEmpty(pwd))
                 {
-                    userDto = new UserMasterDTO();
+                    //userDto = new UserMasterDTO();
                     userDto.RememberMe = true;
                     userDto.UserName = userId;
                     userDto.Password = pwd;
                     return View(userDto);
                 }
             }
-            return View();
+            return View(userDto);
         }
 
         [HttpPost]
@@ -70,30 +70,30 @@ namespace OperationsManager.Areas.Login.Controllers
             string pass = encrypt.encryption(data.Password);
             data.Password = pass;
 
-            if (data.RememberMe)
-            {
-                HttpCookie cookie = new HttpCookie("userDetails");
-                cookie["uid"] = data.UserName;
-                cookie["pwd"] = unencryptedPass;
-                cookie.Expires = DateTime.Now + new TimeSpan(1, 0, 0, 0);
-
-                if (Request.Cookies["userDetails"] != null)
-                {
-                    Response.Cookies.Set(cookie);
-                }
-                else
-                {
-                    Response.Cookies.Add(cookie);
-                }
-            }
-            else
-            {
-                Response.Cookies.Clear();
-            }
-
             StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent, out lstAction);
             if (status.IsSuccess)
             {
+                if (data.RememberMe)
+                {
+                    HttpCookie cookie = new HttpCookie("userDetails");
+                    cookie["uid"] = data.UserName;
+                    cookie["pwd"] = unencryptedPass;
+                    cookie.Expires = DateTime.Now + new TimeSpan(1, 0, 0, 0);
+
+                    if (Request.Cookies["userDetails"] != null)
+                    {
+                        Response.Cookies.Set(cookie);
+                    }
+                    else
+                    {
+                        Response.Cookies.Add(cookie);
+                    }
+                }
+                else
+                {
+                    Response.Cookies.Clear();
+                }
+
                 SessionDTO session = new SessionDTO();
                 session.UserName = status.ReturnObj.UserName;
                 session.ActionList = lstAction;
@@ -101,7 +101,11 @@ namespace OperationsManager.Areas.Login.Controllers
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }
-
+            else
+            {
+                data.LoginFailedMsg = status.FailureReason;
+                return View(data);
+            }
 
             return RedirectToAction("Register");
         }

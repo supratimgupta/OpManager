@@ -21,6 +21,14 @@ namespace OperationsManager.Areas.Transaction.Models
 
         public List<TransactionViewModel> SearchResult { get; set; }
 
-        public string Message { get; set; }
+        public MvcHtmlString Message { get; set; }
+
+        public bool IsSuccessMessage { get; set; }
+
+        public double CurrentAmount { get; set; }
+
+        public string EncryptedTransactionLogId { get; set; }
+
+        public bool HideSaveButton { get; set; }
     }
 }

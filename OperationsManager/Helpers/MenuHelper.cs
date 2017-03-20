@@ -25,7 +25,7 @@ namespace OperationsManager.Helpers
                 MenuModel menu;
                 for (int i=0;i<actions.Count;i++)
                 {
-                    if(!string.IsNullOrEmpty(actions[i].ActionLink) && string.IsNullOrEmpty(actions[i].HiddenControlId) && string.IsNullOrEmpty(actions[i].DisabledControlId))
+                    if(!string.IsNullOrEmpty(actions[i].ActionLink) && !string.IsNullOrEmpty(actions[i].MenuText) && string.IsNullOrEmpty(actions[i].HiddenControlId) && string.IsNullOrEmpty(actions[i].DisabledControlId))
                     {
                         string menuText = OpMgr.Resources.Common.MenuResource.ResourceManager.GetString(actions[i].MenuText);
                         if(string.IsNullOrEmpty(actions[i].GroupName))

@@ -56,6 +56,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MenuResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Common\WorkOnTransaction.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkOnTransaction.resx</DependentUpon>
+    </Compile>
     <Compile Include="Library\Library.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -100,6 +105,10 @@
     <EmbeddedResource Include="Common\MenuResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MenuResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\WorkOnTransaction.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>WorkOnTransaction.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

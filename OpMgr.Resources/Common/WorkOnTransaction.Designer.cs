@@ -22,14 +22,14 @@ namespace OpMgr.Resources.Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class MenuResource {
+    public class WorkOnTransaction {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MenuResource() {
+        internal WorkOnTransaction() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OpMgr.Resources.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.MenuResource", typeof(MenuResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.WorkOnTransaction", typeof(WorkOnTransaction).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,56 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Transaction.
+        ///   Looks up a localized string similar to Current Amount.
         /// </summary>
-        public static string AddTransaction {
+        public static string CurrentAmount {
             get {
-                return ResourceManager.GetString("AddTransaction", resourceCulture);
+                return ResourceManager.GetString("CurrentAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add User.
+        ///   Looks up a localized string similar to Amount Due.
         /// </summary>
-        public static string AddUser {
+        public static string DueAmount {
             get {
-                return ResourceManager.GetString("AddUser", resourceCulture);
+                return ResourceManager.GetString("DueAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Panel.
+        ///   Looks up a localized string similar to For.
         /// </summary>
-        public static string AdminPanel {
+        public static string ForText {
             get {
-                return ResourceManager.GetString("AdminPanel", resourceCulture);
+                return ResourceManager.GetString("ForText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit User.
+        ///   Looks up a localized string similar to Amount Given.
         /// </summary>
-        public static string EditUser {
+        public static string GivenAmount {
             get {
-                return ResourceManager.GetString("EditUser", resourceCulture);
+                return ResourceManager.GetString("GivenAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Transactions.
+        ///   Looks up a localized string similar to Payment For Transaction.
         /// </summary>
-        public static string MyTransactions {
+        public static string PageHeader {
             get {
-                return ResourceManager.GetString("MyTransactions", resourceCulture);
+                return ResourceManager.GetString("PageHeader", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Transaction.
+        ///   Looks up a localized string similar to Total Amount.
         /// </summary>
-        public static string SearchTransaction {
+        public static string TotalAmount {
             get {
-                return ResourceManager.GetString("SearchTransaction", resourceCulture);
+                return ResourceManager.GetString("TotalAmount", resourceCulture);
             }
         }
     }

@@ -205,6 +205,24 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no data to display.
+        /// </summary>
+        public static string NoDataMsg {
+            get {
+                return ResourceManager.GetString("NoDataMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment.
+        /// </summary>
+        public static string PaymentLinkText {
+            get {
+                return ResourceManager.GetString("PaymentLinkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration No.
         /// </summary>
         public static string RegNumber {

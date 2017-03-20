@@ -169,7 +169,11 @@ namespace OpMgr.TransactionHandler.Implementations
         {
             DataRow[] rule = null;
 
-            if(string.Equals(isDiffTo, "USER", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(isDiffTo, "NONE", StringComparison.OrdinalIgnoreCase))
+            {
+                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId);
+            }
+            if (string.Equals(isDiffTo, "USER", StringComparison.OrdinalIgnoreCase))
             {
                 rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId +" AND UserMasterId=" + (int)uMasterId);
             }

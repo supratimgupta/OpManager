@@ -129,6 +129,9 @@
   <data name="EditUser" xml:space="preserve">
     <value>Edit User</value>
   </data>
+  <data name="MyTransactions" xml:space="preserve">
+    <value>My Transactions</value>
+  </data>
   <data name="SearchTransaction" xml:space="preserve">
     <value>Search Transaction</value>
   </data>

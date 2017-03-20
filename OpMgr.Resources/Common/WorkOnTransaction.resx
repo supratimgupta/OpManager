@@ -117,79 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Col1" xml:space="preserve">
-    <value>Transaction Id</value>
+  <data name="CurrentAmount" xml:space="preserve">
+    <value>Current Amount</value>
   </data>
-  <data name="Col10" xml:space="preserve">
-    <value>Mode</value>
+  <data name="DueAmount" xml:space="preserve">
+    <value>Amount Due</value>
   </data>
-  <data name="Col11" xml:space="preserve">
-    <value>Type</value>
+  <data name="ForText" xml:space="preserve">
+    <value>For</value>
   </data>
-  <data name="Col12" xml:space="preserve">
-    <value>Generated Penalty</value>
+  <data name="GivenAmount" xml:space="preserve">
+    <value>Amount Given</value>
   </data>
-  <data name="Col13" xml:space="preserve">
-    <value>Rule</value>
+  <data name="PageHeader" xml:space="preserve">
+    <value>Payment For Transaction</value>
   </data>
-  <data name="Col14" xml:space="preserve">
-    <value>Due Date</value>
-  </data>
-  <data name="Col2" xml:space="preserve">
-    <value>User Name</value>
-  </data>
-  <data name="Col3" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="Col4" xml:space="preserve">
-    <value>Parent Id</value>
-  </data>
-  <data name="Col5" xml:space="preserve">
-    <value>Completed</value>
-  </data>
-  <data name="Col6" xml:space="preserve">
-    <value>Completed On</value>
-  </data>
-  <data name="Col7" xml:space="preserve">
-    <value>Total Amt</value>
-  </data>
-  <data name="Col8" xml:space="preserve">
-    <value>Given Amt</value>
-  </data>
-  <data name="Col9" xml:space="preserve">
-    <value>Due Amt</value>
-  </data>
-  <data name="EmployeeId" xml:space="preserve">
-    <value>Employee Id</value>
-  </data>
-  <data name="FromDate" xml:space="preserve">
-    <value>Transaction From</value>
-  </data>
-  <data name="NoDataMsg" xml:space="preserve">
-    <value>There is no data to display</value>
-  </data>
-  <data name="PaymentLinkText" xml:space="preserve">
-    <value>Payment</value>
-  </data>
-  <data name="RegNumber" xml:space="preserve">
-    <value>Registration No</value>
-  </data>
-  <data name="StandardSection" xml:space="preserve">
-    <value>Standard Section</value>
-  </data>
-  <data name="ToDate" xml:space="preserve">
-    <value>Transaction To</value>
-  </data>
-  <data name="TransSearchPageHeader" xml:space="preserve">
-    <value>Search Transaction</value>
-  </data>
-  <data name="TransType" xml:space="preserve">
-    <value>Transaction Type</value>
-  </data>
-  <data name="UserFName" xml:space="preserve">
-    <value>First Name</value>
-  </data>
-  <data name="UserLName" xml:space="preserve">
-    <value>Last Name</value>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total Amount</value>
   </data>
 </root>
