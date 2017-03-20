@@ -66,7 +66,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    selectClause = "SELECT users.FName, users.MName,users.LName," +
+                    selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName," +
                                    "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber,"+
                                    "student.GuardianContactNo "+
                                    "FROM studentinfo student "+
@@ -86,18 +86,18 @@ namespace OpMgr.DataAccess.Implementations
 
                         if (!string.IsNullOrEmpty(data.UserDetails.FName))
                         {
-                            whereClause = "AND users.FName=@FName ";
+                            whereClause = whereClause+ " AND users.FName=@FName ";
                             command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
                         }
                         if(!string.IsNullOrEmpty(data.UserDetails.MName))
                         {
-                            whereClause = "AND users.MName=@MName ";
+                            whereClause = whereClause + " AND users.MName=@MName ";
                             command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
                         }
 
                         if(!string.IsNullOrEmpty(data.UserDetails.LName))
                         {
-                            whereClause = "AND users.LName=@LName ";
+                            whereClause = whereClause + " AND users.LName=@LName ";
                             command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
                         }
 
@@ -109,7 +109,7 @@ namespace OpMgr.DataAccess.Implementations
 
                         if(data.StandardSectionMap.StandardSectionId!=-1)
                         {
-                            whereClause = "AND stdSecMap.StandardSectionId=@StandardSectionId ";
+                            whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
                             command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value=data.StandardSectionMap.StandardSectionId;
                         }
 
@@ -118,13 +118,13 @@ namespace OpMgr.DataAccess.Implementations
 
                         if(!string.IsNullOrEmpty(data.RegistrationNumber))
                         {
-                            whereClause = "AND student.RegistrationNumber=@RegistrationNumber ";
+                            whereClause = whereClause + " AND student.RegistrationNumber=@RegistrationNumber ";
                             command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
                         }
 
                         if (!string.IsNullOrEmpty(data.RollNumber))
                         {
-                            whereClause = "AND student.RollNumber=@RollNumber ";
+                            whereClause = whereClause + " AND student.RollNumber=@RollNumber ";
                             command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
                         }
 
@@ -164,6 +164,7 @@ namespace OpMgr.DataAccess.Implementations
                             student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
                             student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
                             student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
+                            student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
 
                             studLst.ReturnObj = new List<StudentDTO>();
                             studLst.ReturnObj.Add(student);

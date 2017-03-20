@@ -14,5 +14,7 @@ namespace OperationsManager.Areas.Student.Models
         public List<StudentVM> studentList { get; set;}
 
         public SelectList StandardSectionList { get; set; }
+
+        public Boolean IsSearchSuccessful { get; set; }
     }
 }

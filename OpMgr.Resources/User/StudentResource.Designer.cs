@@ -79,6 +79,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact Number.
+        /// </summary>
+        public static string GuardianContactNo {
+            get {
+                return ResourceManager.GetString("GuardianContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name.
         /// </summary>
         public static string LName {
@@ -147,6 +156,24 @@ namespace OpMgr.Resources.User {
         public static string SearchButton {
             get {
                 return ResourceManager.GetString("SearchButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section.
+        /// </summary>
+        public static string Section {
+            get {
+                return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string StudentActions {
+            get {
+                return ResourceManager.GetString("StudentActions", resourceCulture);
             }
         }
         

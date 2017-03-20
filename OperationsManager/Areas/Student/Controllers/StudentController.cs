@@ -58,6 +58,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
 
                             searchItem.UserDetails = new UserMasterDTO();
+                            searchItem.UserDetails.UserMasterId = student.UserDetails.UserMasterId;
                             searchItem.UserDetails.FName = student.UserDetails.FName;
                             searchItem.UserDetails.MName = student.UserDetails.MName;
                             searchItem.UserDetails.LName = student.UserDetails.LName;
@@ -81,6 +82,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                             //Add into Student vIew Model List
                             studView.studentList.Add(searchItem);
+                            studView.IsSearchSuccessful = true;
 
                         }
                     }
@@ -166,6 +168,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
 
                                 searchItem.UserDetails = new UserMasterDTO();
+                                searchItem.UserDetails.UserMasterId = student.UserDetails.UserMasterId;
                                 searchItem.UserDetails.FName = stud.UserDetails.FName;
                                 searchItem.UserDetails.MName = stud.UserDetails.MName;
                                 searchItem.UserDetails.LName = stud.UserDetails.LName;
@@ -175,10 +178,9 @@ namespace OperationsManager.Areas.Student.Controllers
                                 {
                                     searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.MName;
                                 }
-                                else
-                                {
+                                
                                     searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
-                                }
+                                
 
                                 searchItem.StandardSectionMap = new StandardSectionMapDTO();
                                 searchItem.StandardSectionMap.Standard = new StandardDTO();
@@ -190,12 +192,18 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 //Add into Student vIew Model List
                                 studView.studentList.Add(searchItem);
+                                studView.IsSearchSuccessful = true;
 
                             }
                         }
 
 
                     }
+                }
+                else
+                {
+                    studView = studentView;
+                    studentView.IsSearchSuccessful = false;
                 }
             }
 
