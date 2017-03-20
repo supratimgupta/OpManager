@@ -17,16 +17,16 @@
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
-                    @Html.HiddenFor(m=>m.TransactionLogId)
-                    @Html.HiddenFor(m=>m.EncryptedTransactionLogId)
+                    @Html.HiddenFor(m => m.TransactionLogId)
+                    @Html.HiddenFor(m => m.EncryptedTransactionLogId)
                     <fieldset>
                         @if (!Model.IsSuccessMessage)
                         {
                             @*<div class="panel panel-danger">
-                                <div class="panel-body">
-                                    @Model.Message
-                                </div>
-                            </div>*@
+                                    <div class="panel-body">
+                                        @Model.Message
+                                    </div>
+                                </div>*@
                             <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
                                 <strong>@Model.Message</strong>
                             </div>
@@ -88,13 +88,12 @@
                                     }
                                 </div>
                             </div>
-                            
+
                         </div>
-                        
+
                     </fieldset>
                 }
             </div>
         </div>
     </div>
 </div>
-
