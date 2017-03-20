@@ -18,6 +18,8 @@ namespace OpMgr.Common.DTOs
 
         public DateTime? UpdatedDate { get; set; }
 
+        public bool Active { get; set; }
+
         public string TransactionName { get; set; }
 
         public string TransactionType { get; set; }
@@ -29,5 +31,7 @@ namespace OpMgr.Common.DTOs
         public string DayToRun { get; set; }
 
         public string YearlyDayToRun { get; set; }
+
+        public string IsDiffTo { get; set; }
     }
 }

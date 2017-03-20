@@ -122,5 +122,14 @@ namespace OpMgr.Resources.Common {
                 return ResourceManager.GetString("StudentSearch", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction Master.
+        /// </summary>
+        public static string TransactionMaster {
+            get {
+                return ResourceManager.GetString("TransactionMaster", resourceCulture);
+            }
+        }
     }
 }

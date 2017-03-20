@@ -173,5 +173,30 @@ namespace OperationsManager.Helpers
 
             return new SelectList(lstentitleDto, "UserRoleId", "RoleName");
         }
+
+        public SelectList getTransactionIsDiffTo()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("NONE", "NONE");
+            dicTrTypes.Add("USER", "USER");
+            dicTrTypes.Add("CLASS-TYPE", "CLASS-TYPE");
+            dicTrTypes.Add("STANDARD", "STANDARD");
+            dicTrTypes.Add("SECTION", "SECTION");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
+
+        public SelectList getTransactionFrequencies()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("DAILY", "DAILY");
+            dicTrTypes.Add("MONTHLY", "MONTHLY");
+            dicTrTypes.Add("YEARLY", "YEARLY");
+            dicTrTypes.Add("ONE-TIME", "ONE-TIME");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
     }
 }

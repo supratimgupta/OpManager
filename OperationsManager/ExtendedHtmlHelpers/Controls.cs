@@ -166,7 +166,7 @@ namespace OperationsManager.ExtendedHtmlHelpers
             return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.TextAreaFor(expression, htmlAttributes).ToString(), false, false);
         }
 
-        public static MvcHtmlString OpMgrCheckBoxFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, bool>> expression, string labelText, object htmlAttributes = null)
+        public static MvcHtmlString OpMgrCheckBoxFor<TModel>(this HtmlHelper<TModel> helper, Expression<Func<TModel, bool>> expression, string labelText, object htmlAttributes = null)
         {
             if (htmlAttributes != null)
             {

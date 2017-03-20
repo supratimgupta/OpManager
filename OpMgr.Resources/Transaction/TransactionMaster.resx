@@ -117,28 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddTransaction" xml:space="preserve">
-    <value>Add Transaction</value>
+  <data name="Active" xml:space="preserve">
+    <value>Is Active</value>
   </data>
-  <data name="AddUser" xml:space="preserve">
-    <value>Add User</value>
+  <data name="ColDayToRun" xml:space="preserve">
+    <value>Day to run (If monthly)</value>
   </data>
-  <data name="AdminPanel" xml:space="preserve">
-    <value>Admin Panel</value>
+  <data name="ColDiffTo" xml:space="preserve">
+    <value>Diff to</value>
   </data>
-  <data name="EditUser" xml:space="preserve">
-    <value>Edit User</value>
+  <data name="ColFreq" xml:space="preserve">
+    <value>Frequency</value>
   </data>
-  <data name="MyTransactions" xml:space="preserve">
-    <value>My Transactions</value>
+  <data name="ColTrName" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="SearchTransaction" xml:space="preserve">
-    <value>Search Transaction</value>
+  <data name="ColTrType" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="StudentSearch" xml:space="preserve">
-    <value>Search Students</value>
+  <data name="ColYearlyDayToRun" xml:space="preserve">
+    <value>Yearly day to run</value>
   </data>
-  <data name="TransactionMaster" xml:space="preserve">
-    <value>Transaction Master</value>
+  <data name="DayToRun" xml:space="preserve">
+    <value>Day to run</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="IsDiffTo" xml:space="preserve">
+    <value>Is Different to</value>
+  </data>
+  <data name="IsPenalty" xml:space="preserve">
+    <value>Is Penalty</value>
+  </data>
+  <data name="PageHeader" xml:space="preserve">
+    <value>Add / Edit Transaction Master</value>
+  </data>
+  <data name="ResetButtonText" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SaveButtonText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="TableHeader" xml:space="preserve">
+    <value>Current Data</value>
+  </data>
+  <data name="TransactionName" xml:space="preserve">
+    <value>Transaction Name</value>
+  </data>
+  <data name="TransactionType" xml:space="preserve">
+    <value>Transaction type</value>
+  </data>
+  <data name="YearlyDayToRun" xml:space="preserve">
+    <value>Yearly day to run (If yearly, dd-MM)</value>
   </data>
 </root>

@@ -10,5 +10,7 @@ namespace OpMgr.Common.Contracts.Modules
     public interface ITransactionMasterSvc : ICRUDSvc<DTOs.TransactionMasterDTO, DTOs.TransactionMasterDTO>
     {
         DataTable GetAllTransactions();
+
+        DTOs.StatusDTO<List<DTOs.TransactionMasterDTO>> GetAllTransactioMasters();
     }
 }
