@@ -47,5 +47,9 @@ namespace OpMgr.Common.DTOs
         public double? PenaltyAmount { get; set; }
 
         public double? ActualAmount { get; set; }
+
+        public string PenaltyTransactionType { get; set; }
+
+        public TransactionRuleDTO PenaltyTransactionRule { get; set; }
     }
 }

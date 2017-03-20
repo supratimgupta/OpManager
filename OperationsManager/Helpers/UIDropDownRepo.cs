@@ -198,5 +198,15 @@ namespace OperationsManager.Helpers
             dicTrTypes.Add("ONE-TIME", "ONE-TIME");
             return new SelectList(dicTrTypes, "key", "value");
         }
+
+        public SelectList getCalcType()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("PERCENT", "PERCENT");
+            dicTrTypes.Add("ACTUAL", "ACTUAL");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
     }
 }

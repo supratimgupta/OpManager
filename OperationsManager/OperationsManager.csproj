@@ -204,7 +204,9 @@
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="Areas\Transaction\Controllers\TransactionController.cs" />
     <Compile Include="Areas\Transaction\Controllers\TransactionMasterController.cs" />
+    <Compile Include="Areas\Transaction\Controllers\TransactionRuleController.cs" />
     <Compile Include="Areas\Transaction\Models\TransactionMasterVM.cs" />
+    <Compile Include="Areas\Transaction\Models\TransactionRuleVM.cs" />
     <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
     <Compile Include="Attributes\Encryption.cs" />
@@ -378,6 +380,7 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
+    <Folder Include="Areas\Transaction\Views\TransactionRule\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
