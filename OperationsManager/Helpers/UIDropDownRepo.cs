@@ -208,5 +208,18 @@ namespace OperationsManager.Helpers
             dicTrTypes.Add("ACTUAL", "ACTUAL");
             return new SelectList(dicTrTypes, "key", "value");
         }
+
+        public SelectList getTransactionMasters()
+        {
+            List<TransactionMasterDTO> lstentitleDto = _ddlRepo.GetTransactionMasters();
+
+            TransactionMasterDTO trMasterDTO = new TransactionMasterDTO();
+            trMasterDTO.TranMasterId = -1;
+            trMasterDTO.TransactionName = string.Empty;
+
+            lstentitleDto.Insert(0, trMasterDTO);
+
+            return new SelectList(lstentitleDto, "TranMasterId", "TransactionName");
+        }
     }
 }
