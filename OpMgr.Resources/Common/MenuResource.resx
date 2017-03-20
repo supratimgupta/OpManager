@@ -135,4 +135,7 @@
   <data name="SearchTransaction" xml:space="preserve">
     <value>Search Transaction</value>
   </data>
+  <data name="StudentSearch" xml:space="preserve">
+    <value>Search Students</value>
+  </data>
 </root>

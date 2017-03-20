@@ -113,5 +113,14 @@ namespace OpMgr.Resources.Common {
                 return ResourceManager.GetString("SearchTransaction", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Students.
+        /// </summary>
+        public static string StudentSearch {
+            get {
+                return ResourceManager.GetString("StudentSearch", resourceCulture);
+            }
+        }
     }
 }
