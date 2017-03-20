@@ -28,19 +28,21 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         // GET: Transaction/TransactionRule
-        public ActionResult TransactionRule()
+        public ActionResult TransactionRule(string mode, string id)
         {
             Helpers.UIDropDownRepo uiDDLRepo = new Helpers.UIDropDownRepo(_ddlRepo);
             TransactionRuleVM trRuleVM = new TransactionRuleVM();
             trRuleVM.Users = uiDDLRepo.getUserDropDown();
             trRuleVM.Standards = uiDDLRepo.getStandardDropDown();
             trRuleVM.Sections = uiDDLRepo.getSectionDropDown();
-            trRuleVM.PenaltyCalcIn = uiDDLRepo.getPenaltyCalcIn();
+            trRuleVM.PenaltyCalcIn = uiDDLRepo.getCalcType();
             trRuleVM.ClassTypes = uiDDLRepo.getClassTypeDropDown();
             trRuleVM.PenaltyTransactionTypes = uiDDLRepo.getTransactionTypes();
-
-
-            return View();
+            trRuleVM.TransactionMasters = uiDDLRepo.getTransactionMasters();
+            trRuleVM.PenaltyTransactionRules = uiDDLRepo.getTransactionRules();
+            trRuleVM.Active = true;
+            trRuleVM.MODE = "ADD";
+            return View(trRuleVM);
         }
     }
 }

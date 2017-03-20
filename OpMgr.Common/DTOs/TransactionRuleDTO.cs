@@ -37,9 +37,9 @@ namespace OpMgr.Common.DTOs
 
         public UserMasterDTO UserDTO { get; set; }
 
-        public int FirstDueAfterDays { get; set; }
+        public int? FirstDueAfterDays { get; set; }
 
-        public int DueDateIncreasesBy { get; set; }
+        public int? DueDateIncreasesBy { get; set; }
 
         //Percent/ Absolute
         public string PenaltyCalculatedIn { get; set; }

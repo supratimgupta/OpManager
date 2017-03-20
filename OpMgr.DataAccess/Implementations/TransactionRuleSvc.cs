@@ -282,7 +282,48 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<TransactionRuleDTO> Select(int rowId)
         {
-            throw new NotImplementedException();
+            StatusDTO<TransactionRuleDTO> status = new StatusDTO<TransactionRuleDTO>();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.CommandText = "SELECT TranRuleId, TranMasterId, UserMasterId, StandardId, SectionId, FirstDueAfterdays, DueDateIncreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, ClassTypeId, RuleName, PenaltyTransactionType, PenaltyTranRuleId from transactionrule where TranRuleId=@trRuleId";
+                    command.Parameters.Add("@trRuleId", MySqlDbType.Int32).Value = rowId;
+                    DataTable dtResult = new DataTable();
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    mDa.Fill(dtResult);
+                    if(dtResult!=null && dtResult.Rows.Count>0)
+                    {
+                        status.ReturnObj = new TransactionRuleDTO();
+                        status.ReturnObj.TranRuleId = (int)dtResult.Rows[0]["TranRuleId"];
+                        status.ReturnObj.TranMaster = new TransactionMasterDTO();
+                        status.ReturnObj.TranMaster.TranMasterId = string.IsNullOrEmpty(dtResult.Rows[0]["TranMasterId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["TranMasterId"].ToString());
+                        status.ReturnObj.UserDTO = new UserMasterDTO();
+                        status.ReturnObj.UserDTO.UserMasterId = string.IsNullOrEmpty(dtResult.Rows[0]["UserMasterId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["UserMasterId"].ToString());
+                        status.ReturnObj.Standard = new StandardDTO();
+                        status.ReturnObj.Standard.StandardId = string.IsNullOrEmpty(dtResult.Rows[0]["StandardId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["StandardId"].ToString());
+                        status.ReturnObj.Section = new SectionDTO();
+                        status.ReturnObj.Section.SectionId = string.IsNullOrEmpty(dtResult.Rows[0]["SectionId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["SectionId"].ToString());
+                        status.ReturnObj.FirstDueAfterDays = string.IsNullOrEmpty(dtResult.Rows[0]["FirstDueAfterdays"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["FirstDueAfterdays"].ToString());
+                        status.ReturnObj.DueDateIncreasesBy = string.IsNullOrEmpty(dtResult.Rows[0]["DueDateIncreasesBy"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["DueDateIncreasesBy"].ToString());
+                        status.ReturnObj.PenaltyCalculatedIn = dtResult.Rows[0]["PenaltyCalculatedIn"].ToString();
+                        status.ReturnObj.PenaltyAmount = string.IsNullOrEmpty(dtResult.Rows[0]["PenaltyAmount"].ToString()) ? 0.0 : double.Parse(dtResult.Rows[0]["PenaltyAmount"].ToString());
+                        status.ReturnObj.ActualAmount = string.IsNullOrEmpty(dtResult.Rows[0]["ActualAmount"].ToString()) ? 0.0 : double.Parse(dtResult.Rows[0]["ActualAmount"].ToString());
+                        status.ReturnObj.ClassType = new ClassTypeDTO();
+                        status.ReturnObj.ClassType.ClassTypeId = string.IsNullOrEmpty(dtResult.Rows[0]["ClassTypeId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["ClassTypeId"].ToString());
+                        status.ReturnObj.RuleName = dtResult.Rows[0]["ClassTypeId"].ToString();
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
         }
           
         public DataTable GetAllRules()
