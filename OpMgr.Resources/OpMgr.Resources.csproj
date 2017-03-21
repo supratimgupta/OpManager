@@ -87,6 +87,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TransactionSearch.resx</DependentUpon>
     </Compile>
+    <Compile Include="Transaction\UserTransactionResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserTransactionResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="User\LoginResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -139,6 +144,10 @@
     <EmbeddedResource Include="Transaction\TransactionSearch.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TransactionSearch.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transaction\UserTransactionResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserTransactionResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User\LoginResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
