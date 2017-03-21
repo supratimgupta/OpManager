@@ -210,6 +210,9 @@
     <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\Models\UserTransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
+    <Compile Include="Areas\User\Controllers\UserController.cs" />
+    <Compile Include="Areas\User\Models\UserVM.cs" />
+    <Compile Include="Areas\User\UserAreaRegistration.cs" />
     <Compile Include="Attributes\Encryption.cs" />
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -272,6 +275,9 @@
     <Content Include="Areas\Transaction\Views\Transaction\WorkOnTransaction.cshtml" />
     <Content Include="Areas\Transaction\Views\TransactionMaster\TransactionMaster.cshtml" />
     <Content Include="Areas\Transaction\Views\Transaction\UserTransaction.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\User\Views\User\Search.cshtml" />
+    <Content Include="Areas\User\Views\_ViewStart.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
