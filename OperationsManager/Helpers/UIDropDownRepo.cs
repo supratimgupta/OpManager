@@ -46,12 +46,22 @@ namespace OperationsManager.Helpers
         public SelectList getClassTypeDropDown()
         {
             List<ClassTypeDTO> rDto = _ddlRepo.ClassType();
+            ClassTypeDTO blank = new ClassTypeDTO();
+            blank.ClassTypeId = -1;
+            blank.ClassTypeName = "";
+            rDto.Insert(0, blank);
             return new SelectList(rDto, "ClassTypeId", "ClassTypeName");
         }
 
         public SelectList getSectionDropDown()
         {
             List<SectionDTO> rDto = _ddlRepo.Section();
+
+            SectionDTO blank = new SectionDTO();
+            blank.SectionId = -1;
+            blank.SectionName = "";
+            rDto.Insert(0, blank);
+
             return new SelectList(rDto, "SectionId", "SectionName");
         }
 
@@ -83,6 +93,12 @@ namespace OperationsManager.Helpers
         public SelectList getStandardDropDown()
         {
             List<StandardDTO> rDto = _ddlRepo.Standard();
+
+            StandardDTO blank = new StandardDTO();
+            blank.StandardId = -1;
+            blank.StandardName = "";
+            rDto.Insert(0, blank);
+
             return new SelectList(rDto, "StandardId", "StandardName");
         }
 
@@ -172,6 +188,54 @@ namespace OperationsManager.Helpers
             lstentitleDto.Insert(0, entitleDto);
 
             return new SelectList(lstentitleDto, "UserRoleId", "RoleName");
+        }
+
+        public SelectList getTransactionIsDiffTo()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("NONE", "NONE");
+            dicTrTypes.Add("USER", "USER");
+            dicTrTypes.Add("CLASS-TYPE", "CLASS-TYPE");
+            dicTrTypes.Add("STANDARD", "STANDARD");
+            dicTrTypes.Add("SECTION", "SECTION");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
+
+        public SelectList getTransactionFrequencies()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("DAILY", "DAILY");
+            dicTrTypes.Add("MONTHLY", "MONTHLY");
+            dicTrTypes.Add("YEARLY", "YEARLY");
+            dicTrTypes.Add("ONE-TIME", "ONE-TIME");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
+
+        public SelectList getCalcType()
+        {
+            Dictionary<string, string> dicTrTypes = new Dictionary<string, string>();
+
+            dicTrTypes.Add("-1", "");
+            dicTrTypes.Add("PERCENT", "PERCENT");
+            dicTrTypes.Add("ACTUAL", "ACTUAL");
+            return new SelectList(dicTrTypes, "key", "value");
+        }
+
+        public SelectList getTransactionMasters()
+        {
+            List<TransactionMasterDTO> lstentitleDto = _ddlRepo.GetTransactionMasters();
+
+            TransactionMasterDTO trMasterDTO = new TransactionMasterDTO();
+            trMasterDTO.TranMasterId = -1;
+            trMasterDTO.TransactionName = string.Empty;
+
+            lstentitleDto.Insert(0, trMasterDTO);
+
+            return new SelectList(lstentitleDto, "TranMasterId", "TransactionName");
         }
     }
 }

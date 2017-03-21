@@ -117,34 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddTransaction" xml:space="preserve">
-    <value>Add Transaction</value>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
   </data>
-  <data name="AddUser" xml:space="preserve">
-    <value>Add User</value>
+  <data name="ActualAmount" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="AdminPanel" xml:space="preserve">
-    <value>Admin Panel</value>
+  <data name="ClassType" xml:space="preserve">
+    <value>Class Type</value>
   </data>
-  <data name="EditUser" xml:space="preserve">
-    <value>Edit User</value>
+  <data name="DueDateIncreasesBy" xml:space="preserve">
+    <value>Due Date increases by</value>
   </data>
-  <data name="MyTransactions" xml:space="preserve">
-    <value>My Transactions</value>
+  <data name="FirstDueAfterDays" xml:space="preserve">
+    <value>First Due After Days</value>
   </data>
-  <data name="SearchTransaction" xml:space="preserve">
-    <value>Search Transaction</value>
+  <data name="PageHeader" xml:space="preserve">
+    <value>Transaction Rule</value>
   </data>
-  <data name="StudentSearch" xml:space="preserve">
-    <value>Search Students</value>
+  <data name="PenaltyAmount" xml:space="preserve">
+    <value>Penalty Amount</value>
   </data>
-  <data name="TransactionMaster" xml:space="preserve">
-    <value>Transaction Master</value>
+  <data name="PenaltyCalculatedIn" xml:space="preserve">
+    <value>Penalty Calc In</value>
   </data>
-  <data name="TransactionRuleAdd" xml:space="preserve">
-    <value>Add Transaction Rule</value>
+  <data name="PenaltyTransactionRule" xml:space="preserve">
+    <value>Penalty Trans Rule</value>
   </data>
-  <data name="TransactionRuleSearch" xml:space="preserve">
-    <value>Transaction Rules</value>
+  <data name="PenaltyTransactionType" xml:space="preserve">
+    <value>Penalty Transaction Type</value>
+  </data>
+  <data name="RuleName" xml:space="preserve">
+    <value>Rule Name</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Section</value>
+  </data>
+  <data name="Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="TranMaster" xml:space="preserve">
+    <value>Transaction</value>
+  </data>
+  <data name="UserDTO" xml:space="preserve">
+    <value>User</value>
   </data>
 </root>

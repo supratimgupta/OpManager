@@ -12,5 +12,7 @@ namespace OpMgr.Common.Contracts.Modules
         DataTable GetUserTransactions(DateTime? runDate);
 
         DTOs.StatusDTO UpdateTransLastRunNextRun(DTOs.UserTransactionDTO userTrans);
+
+        //List<DTOs.UserTransactionDTO> GetUserTransactions(int userMasterId);
     }
 }

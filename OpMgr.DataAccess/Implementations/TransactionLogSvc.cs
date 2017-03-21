@@ -328,7 +328,7 @@ namespace OpMgr.DataAccess.Implementations
                         }
                         command.Parameters.Add("@trLogId", MySqlDbType.Int32).Value = data.TransactionLogId;
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                        if(command.ExecuteNonQuery()>1)
+                        if(command.ExecuteNonQuery()>0)
                         {
                             status.IsSuccess = true;
                             status.IsException = false;

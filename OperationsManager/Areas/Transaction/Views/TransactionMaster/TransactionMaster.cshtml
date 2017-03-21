@@ -1,0 +1,195 @@
+﻿
+@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.TransactionMasterVM
+
+
+@{
+    ViewBag.Title = "Transaction Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div>
+        <div class="panel-default">
+            <div class="panel-heading">@TransactionMaster.PageHeader</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m=>m.MODE, new {id="hfMode" })
+                    @Html.HiddenFor(m=>m.TranMasterId, new {id="hfRowId" })
+                    <div class="row">
+                        <div class="col-lg-2">
+                            @Html.OpMgrTextBoxFor(m=>m.TransactionName, TransactionMaster.TransactionName, new {@class="form-control", id="txtName" })
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.OpMgrDropDownListFor(m => m.TransactionType, Model.TransTypeList , TransactionMaster.TransactionType, new { @class = "form-control", id="ddlType" })
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.OpMgrDropDownListFor(m => m.IsDiffTo, Model.IsDiffToList, TransactionMaster.IsDiffTo, new { @class = "form-control", id="ddlIsDiffTo" })
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.OpMgrDropDownListFor(m => m.Frequency, Model.FrequencyList, TransactionMaster.Frequency, new { @class = "form-control", id="ddlFreq" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            @Html.OpMgrTextBoxFor(m => m.DayToRun, TransactionMaster.DayToRun, new { @class = "form-control", id="txtDayToRun" })
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.OpMgrTextBoxFor(m => m.YearlyDayToRun, TransactionMaster.YearlyDayToRun, new { @class = "form-control", id="txtYrlyDayToRun" })
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.OpMgrCheckBoxFor(m=>m.IsPenalty, TransactionMaster.IsPenalty, new {id="cbIsPenalty" })
+                            @Html.OpMgrCheckBoxFor(m => m.Active, TransactionMaster.Active, new { id = "cbIsActive" })
+                        </div>
+                        <div class="col-lg-2">
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:49%"><button type="submit" class="btn btn-primary btn-block">@TransactionMaster.SaveButtonText</button></td>
+                                    <td style="width:2%"></td>
+                                    <td style="width:49%"><button type="button" class="btn btn-primary btn-block" onclick="reset();">@TransactionMaster.ResetButtonText</button></td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="panel-default">
+            <div class="panel-heading">@TransactionMaster.TableHeader</div>
+            <div class="panel-body">
+                @if (Model.SearchList != null && Model.SearchList.Count > 0)
+                {
+                    <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>@TransactionMaster.ColTrName</th>
+                                <th>@TransactionMaster.ColTrType</th>
+                                <th>@TransactionMaster.ColFreq</th>
+                                <th>@TransactionMaster.ColDiffTo</th>
+                                <th>@TransactionMaster.ColDayToRun</th>
+                                <th>@TransactionMaster.ColYearlyDayToRun</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(int i=0; i<Model.SearchList.Count;i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.SearchList[i].TransactionName
+                                    </td>
+                                    <td>
+                                        @Model.SearchList[i].TransactionType
+                                    </td>
+                                    <td>
+                                        @Model.SearchList[i].Frequency
+                                    </td>
+                                    <td>
+                                        @Model.SearchList[i].IsDiffTo
+                                    </td>
+                                    <td>
+                                        @Model.SearchList[i].DayToRun
+                                    </td>
+                                    <td>
+                                        @Model.SearchList[i].YearlyDayToRun
+                                    </td>
+                                    <td>
+                                        <a onclick="setForEdit('@Model.SearchList[i].TranMasterId'
+                                                                ,'@Model.SearchList[i].TransactionName'
+                                                                ,'@Model.SearchList[i].TransactionType'
+                                                                ,'@Model.SearchList[i].Frequency'
+                                                                ,'@Model.SearchList[i].IsDiffTo'
+                                                                ,'@(Model.SearchList[i].IsPenalty?"YES":"NO")'
+                                                                ,'@Model.SearchList[i].DayToRun'
+                                                                ,'@Model.SearchList[i].YearlyDayToRun'
+                                                                ,'@(Model.SearchList[i].Active?"YES":"NO")');" style="cursor:pointer;">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" language="javascript">
+    function setForEdit(tmId, tmName, tmType, tmFreq, tmIsDiffTo, tmIsPenalty, tmDayToRun, tmYearlyDayToRun, tmActive)
+    {
+        alert(tmActive);
+        document.getElementById("hfMode").value = "EDIT";
+        document.getElementById("hfRowId").value = tmId;
+
+        document.getElementById("txtName").value = tmName;
+
+        var ddlType = document.getElementById("ddlType");
+
+        for (var i = 0; i < ddlType.options.length; i++) {
+            if (ddlType.options[i].value == tmType) {
+                ddlType.selectedIndex = i;
+                break;
+            }
+        }
+
+        var ddlIsDiffTo = document.getElementById("ddlIsDiffTo");
+
+        for (var i = 0; i < ddlIsDiffTo.options.length; i++) {
+            if (ddlIsDiffTo.options[i].value == tmIsDiffTo) {
+                ddlIsDiffTo.selectedIndex = i;
+                break;
+            }
+        }
+
+        var ddlFreq = document.getElementById("ddlFreq");
+
+        for (var i = 0; i < ddlFreq.options.length; i++) {
+            if (ddlFreq.options[i].value == tmFreq) {
+                ddlFreq.selectedIndex = i;
+                break;
+            }
+        }
+
+        document.getElementById("txtDayToRun").value = tmDayToRun;
+
+        document.getElementById("txtYrlyDayToRun").value = tmYearlyDayToRun;
+
+        if (tmIsPenalty == 'YES')
+        {
+            document.getElementById("cbIsPenalty").checked = true;
+        }
+        else
+        {
+            document.getElementById("cbIsPenalty").checked = false;
+        }
+
+        if(tmActive=='YES')
+        {
+            document.getElementById("cbIsActive").checked = true;
+        }
+        else
+        {
+            document.getElementById("cbIsActive").checked = false;
+        }
+    }
+
+    function reset()
+    {
+        document.getElementById("hfMode").value = "ADD";
+        document.getElementById("hfRowId").value = "";
+        document.getElementById("txtName").value = "";
+        document.getElementById("ddlType").selectedIndex = 0;
+        document.getElementById("ddlIsDiffTo").selectedIndex = 0;
+        document.getElementById("ddlFreq").selectedIndex = 0;
+        document.getElementById("txtDayToRun").value = "";
+        document.getElementById("txtYrlyDayToRun").value = "";
+        document.getElementById("cbIsPenalty").checked = false;
+        document.getElementById("cbIsActive").checked = true;
+    }
+</script>
+

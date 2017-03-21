@@ -37,9 +37,9 @@ namespace OpMgr.Common.DTOs
 
         public UserMasterDTO UserDTO { get; set; }
 
-        public int FirstDueAfterDays { get; set; }
+        public int? FirstDueAfterDays { get; set; }
 
-        public int DueDateIncreasesBy { get; set; }
+        public int? DueDateIncreasesBy { get; set; }
 
         //Percent/ Absolute
         public string PenaltyCalculatedIn { get; set; }
@@ -47,5 +47,9 @@ namespace OpMgr.Common.DTOs
         public double? PenaltyAmount { get; set; }
 
         public double? ActualAmount { get; set; }
+
+        public string PenaltyTransactionType { get; set; }
+
+        public TransactionRuleDTO PenaltyTransactionRule { get; set; }
     }
 }

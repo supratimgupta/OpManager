@@ -1,0 +1,75 @@
+﻿@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model List<OpMgr.Common.DTOs.TransactionRuleDTO>
+
+
+@{
+    ViewBag.Title = "Add Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div>
+        <div class="panel-default">
+            <div class="panel-heading">@TransactionRuleSearch.PageHeader</div>
+            <div class="panel-body">
+                @if (Model != null && Model.Count > 0)
+                {
+                    <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @TransactionRuleSearch.ColRuleName
+                                </th>
+                                <th>
+                                    @TransactionRuleSearch.ColRuleAmount
+                                </th>
+                                <th>
+                                    @TransactionRuleSearch.ColRulePenaltyCalcIn
+                                </th>
+                                <th>
+                                    @TransactionRuleSearch.ColPenaltyAmt
+                                </th>
+                                <th>
+                                    @TransactionRuleSearch.ColFirstDueAfterDays
+                                </th>
+                                <th>
+                                    @TransactionRuleSearch.ColDueIncreasesBy
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(int i=0;i<Model.Count;i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model[i].RuleName
+                                    </td>
+                                    <td>
+                                        @Model[i].ActualAmount
+                                    </td>
+                                    <td>
+                                        @Model[i].PenaltyCalculatedIn
+                                    </td>
+                                    <td>
+                                        @Model[i].PenaltyAmount
+                                    </td>
+                                    <td>
+                                        @Model[i].FirstDueAfterDays
+                                    </td>
+                                    <td>
+                                        @Model[i].DueDateIncreasesBy
+                                    </td>
+                                    <td>
+                                        <a href="/Transaction/TransactionRule/TransactionRule?mode=EDIT&id=@Model[i].TranRuleId">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

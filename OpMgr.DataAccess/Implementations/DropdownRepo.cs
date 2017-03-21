@@ -545,5 +545,73 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<TransactionMasterDTO> GetTransactionMasters()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select TranMasterId, TransactionName from transactionmaster where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<TransactionMasterDTO> lstTrMaster = new List<TransactionMasterDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        TransactionMasterDTO trMaster = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            trMaster = new TransactionMasterDTO();
+                            trMaster.TranMasterId = (int)dr["TranMasterId"];
+                            trMaster.TransactionName = dr["TransactionName"].ToString();
+                            lstTrMaster.Add(trMaster);
+                        }
+                    }
+                    return lstTrMaster;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> GetTransactionRules()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select TranRuleId, RuleName from transactionrule where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<TransactionRuleDTO> lstTrRule = new List<TransactionRuleDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        TransactionRuleDTO trRule = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            trRule = new TransactionRuleDTO();
+                            trRule.TranRuleId = (int)dr["TranRuleId"];
+                            trRule.RuleName = dr["RuleName"].ToString();
+                            lstTrRule.Add(trRule);
+                        }
+                    }
+                    return lstTrRule;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }
