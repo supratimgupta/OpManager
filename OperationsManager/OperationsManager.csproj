@@ -203,6 +203,10 @@
     <Compile Include="Areas\Student\Models\StudentVM.cs" />
     <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
     <Compile Include="Areas\Transaction\Controllers\TransactionController.cs" />
+    <Compile Include="Areas\Transaction\Controllers\TransactionMasterController.cs" />
+    <Compile Include="Areas\Transaction\Controllers\TransactionRuleController.cs" />
+    <Compile Include="Areas\Transaction\Models\TransactionMasterVM.cs" />
+    <Compile Include="Areas\Transaction\Models\TransactionRuleVM.cs" />
     <Compile Include="Areas\Transaction\Models\TransactionViewModel.cs" />
     <Compile Include="Areas\Transaction\TransactionAreaRegistration.cs" />
     <Compile Include="Areas\User\Controllers\UserController.cs" />
@@ -272,6 +276,9 @@
     <Content Include="Areas\User\Views\_ViewStart.cshtml" />
     <Content Include="Areas\User\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\User\Views\User\Search.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionMaster\TransactionMaster.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionRule\Search.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionRule\TransactionRule.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
