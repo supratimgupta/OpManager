@@ -183,6 +183,9 @@
   <data name="MName" xml:space="preserve">
     <value>Middle Name</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="PageHeader" xml:space="preserve">
     <value>Register a User</value>
   </data>
@@ -207,6 +210,15 @@
   <data name="RollNo" xml:space="preserve">
     <value>Roll No</value>
   </data>
+  <data name="SearchButton" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchPageHeader" xml:space="preserve">
+    <value>Search Users</value>
+  </data>
+  <data name="SearchPageTitle" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Section" xml:space="preserve">
     <value>Section</value>
   </data>
@@ -219,7 +231,13 @@
   <data name="UploadImage" xml:space="preserve">
     <value>Upload Image</value>
   </data>
+  <data name="UserActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="UserName" xml:space="preserve">
     <value> UserName</value>
+  </data>
+  <data name="UserTableName" xml:space="preserve">
+    <value>Users</value>
   </data>
 </root>

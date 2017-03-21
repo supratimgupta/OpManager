@@ -142,7 +142,8 @@ namespace OpMgr.DataAccess.Implementations
 
                     if(dsStudentLst!=null && dsStudentLst.Tables.Count>0)
                     {
-                        for(int i=0;i<dsStudentLst.Tables[0].Rows.Count;i++)
+                        studLst.ReturnObj = new List<StudentDTO>();
+                        for (int i=0;i<dsStudentLst.Tables[0].Rows.Count;i++)
                         {
                             StudentDTO student = new StudentDTO();
                             student.Active = true;
@@ -166,7 +167,7 @@ namespace OpMgr.DataAccess.Implementations
                             student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
                             student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
 
-                            studLst.ReturnObj = new List<StudentDTO>();
+                           
                             studLst.ReturnObj.Add(student);
 
                             studLst.IsSuccess = true;
