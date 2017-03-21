@@ -107,7 +107,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 return View(data);
             }
 
-            return RedirectToAction("Register");
+            return RedirectToAction("MyTransactions", "Transaction", new { area = "Transaction" }); ;
         }
 
         [HttpGet]

@@ -1,0 +1,104 @@
+﻿@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.TransactionRuleVM
+
+
+@{
+    ViewBag.Title = "Transaction Rules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div>
+        <div class="panel-default">
+            <div class="panel-heading">@TransactionRule.PageHeader</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        @if (!string.IsNullOrEmpty(Model.SuccessMsg))
+                        {
+                            <div class="alert alert-success alert-dismissable alert-dismissible fade in">
+                                <strong>@Model.SuccessMsg</strong>
+                            </div>
+                        }
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                @Html.HiddenFor(m => m.MODE)
+                                @Html.HiddenFor(m => m.TranRuleId)
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.RuleName, TransactionRule.RuleName, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.TranMaster.TranMasterId, Model.TransactionMasters, TransactionRule.TranMaster, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.ClassType.ClassTypeId, Model.ClassTypes, TransactionRule.ClassType, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.Standard.StandardId, Model.Standards, TransactionRule.Standard, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.Section.SectionId, Model.Sections, TransactionRule.Section, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.UserDTO.UserMasterId, Model.Users, TransactionRule.UserDTO, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.ActualAmount, TransactionRule.ActualAmount, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.PenaltyCalculatedIn, Model.PenaltyCalcIn, TransactionRule.PenaltyCalculatedIn, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.PenaltyAmount, TransactionRule.PenaltyAmount, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.PenaltyTransactionType, Model.PenaltyTransactionTypes, TransactionRule.PenaltyTransactionType, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.PenaltyTransactionRule, Model.PenaltyTransactionRules, TransactionRule.PenaltyTransactionRule, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FirstDueAfterDays, TransactionRule.FirstDueAfterDays, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.DueDateIncreasesBy, TransactionRule.DueDateIncreasesBy, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrCheckBoxFor(m => m.Active, TransactionRule.Active)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                    </div>
+                                    <div class="col-lg-5">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

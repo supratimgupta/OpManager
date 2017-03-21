@@ -82,6 +82,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TransactionMaster.resx</DependentUpon>
     </Compile>
+    <Compile Include="Transaction\TransactionRule.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionRule.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Transaction\TransactionRuleSearch.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransactionRuleSearch.resx</DependentUpon>
+    </Compile>
     <Compile Include="Transaction\TransactionSearch.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,6 +150,16 @@
     <EmbeddedResource Include="Transaction\TransactionMaster.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TransactionMaster.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transaction\TransactionRule.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TransactionRule.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transaction\TransactionRuleSearch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TransactionRuleSearch.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Transaction\TransactionSearch.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OpMgr.Resources.Common {
+namespace OpMgr.Resources.Transaction {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace OpMgr.Resources.Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class MenuResource {
+    public class TransactionRule {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MenuResource() {
+        internal TransactionRule() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace OpMgr.Resources.Common {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Common.MenuResource", typeof(MenuResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpMgr.Resources.Transaction.TransactionRule", typeof(TransactionRule).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,146 +61,137 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AddBooks.
+        ///   Looks up a localized string similar to Active.
         /// </summary>
-        public static string AddBooks {
+        public static string Active {
             get {
-                return ResourceManager.GetString("AddBooks", resourceCulture);
+                return ResourceManager.GetString("Active", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Transaction.
+        ///   Looks up a localized string similar to Amount.
         /// </summary>
-        public static string AddTransaction {
+        public static string ActualAmount {
             get {
-                return ResourceManager.GetString("AddTransaction", resourceCulture);
+                return ResourceManager.GetString("ActualAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add User.
+        ///   Looks up a localized string similar to Class Type.
         /// </summary>
-        public static string AddUser {
+        public static string ClassType {
             get {
-                return ResourceManager.GetString("AddUser", resourceCulture);
+                return ResourceManager.GetString("ClassType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Panel.
+        ///   Looks up a localized string similar to Due Date increases by.
         /// </summary>
-        public static string AdminPanel {
+        public static string DueDateIncreasesBy {
             get {
-                return ResourceManager.GetString("AdminPanel", resourceCulture);
+                return ResourceManager.GetString("DueDateIncreasesBy", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit User.
+        ///   Looks up a localized string similar to First Due After Days.
         /// </summary>
-        public static string EditUser {
+        public static string FirstDueAfterDays {
             get {
-                return ResourceManager.GetString("EditUser", resourceCulture);
+                return ResourceManager.GetString("FirstDueAfterDays", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entitlement Action.
+        ///   Looks up a localized string similar to Transaction Rule.
         /// </summary>
-        public static string EntitlementAction {
+        public static string PageHeader {
             get {
-                return ResourceManager.GetString("EntitlementAction", resourceCulture);
+                return ResourceManager.GetString("PageHeader", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Library.
+        ///   Looks up a localized string similar to Penalty Amount.
         /// </summary>
-        public static string Library {
+        public static string PenaltyAmount {
             get {
-                return ResourceManager.GetString("Library", resourceCulture);
+                return ResourceManager.GetString("PenaltyAmount", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Transactions.
+        ///   Looks up a localized string similar to Penalty Calc In.
         /// </summary>
-        public static string MyTransactions {
+        public static string PenaltyCalculatedIn {
             get {
-                return ResourceManager.GetString("MyTransactions", resourceCulture);
+                return ResourceManager.GetString("PenaltyCalculatedIn", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Transaction.
+        ///   Looks up a localized string similar to Penalty Trans Rule.
         /// </summary>
-        public static string SearchTransaction {
+        public static string PenaltyTransactionRule {
             get {
-                return ResourceManager.GetString("SearchTransaction", resourceCulture);
+                return ResourceManager.GetString("PenaltyTransactionRule", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search User.
+        ///   Looks up a localized string similar to Penalty Transaction Type.
         /// </summary>
-        public static string SearchUser {
+        public static string PenaltyTransactionType {
             get {
-                return ResourceManager.GetString("SearchUser", resourceCulture);
+                return ResourceManager.GetString("PenaltyTransactionType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Students.
+        ///   Looks up a localized string similar to Rule Name.
         /// </summary>
-        public static string StudentSearch {
+        public static string RuleName {
             get {
-                return ResourceManager.GetString("StudentSearch", resourceCulture);
+                return ResourceManager.GetString("RuleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section.
+        /// </summary>
+        public static string Section {
+            get {
+                return ResourceManager.GetString("Section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard.
+        /// </summary>
+        public static string Standard {
+            get {
+                return ResourceManager.GetString("Standard", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Transaction.
         /// </summary>
-        public static string Transaction {
+        public static string TranMaster {
             get {
-                return ResourceManager.GetString("Transaction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction Master.
-        /// </summary>
-        public static string TransactionMaster {
-            get {
-                return ResourceManager.GetString("TransactionMaster", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add Transaction Rule.
-        /// </summary>
-        public static string TransactionRuleAdd {
-            get {
-                return ResourceManager.GetString("TransactionRuleAdd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transaction Rules.
-        /// </summary>
-        public static string TransactionRuleSearch {
-            get {
-                return ResourceManager.GetString("TransactionRuleSearch", resourceCulture);
+                return ResourceManager.GetString("TranMaster", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
-        public static string User {
+        public static string UserDTO {
             get {
-                return ResourceManager.GetString("User", resourceCulture);
+                return ResourceManager.GetString("UserDTO", resourceCulture);
             }
         }
     }

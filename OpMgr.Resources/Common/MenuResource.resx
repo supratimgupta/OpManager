@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddBooks" xml:space="preserve">
+    <value>AddBooks</value>
+  </data>
   <data name="AddTransaction" xml:space="preserve">
     <value>Add Transaction</value>
   </data>
@@ -129,16 +132,37 @@
   <data name="EditUser" xml:space="preserve">
     <value>Edit User</value>
   </data>
+  <data name="EntitlementAction" xml:space="preserve">
+    <value>Entitlement Action</value>
+  </data>
+  <data name="Library" xml:space="preserve">
+    <value>Library</value>
+  </data>
   <data name="MyTransactions" xml:space="preserve">
     <value>My Transactions</value>
   </data>
   <data name="SearchTransaction" xml:space="preserve">
     <value>Search Transaction</value>
   </data>
+  <data name="SearchUser" xml:space="preserve">
+    <value>Search User</value>
+  </data>
   <data name="StudentSearch" xml:space="preserve">
     <value>Search Students</value>
   </data>
+  <data name="Transaction" xml:space="preserve">
+    <value>Transaction</value>
+  </data>
   <data name="TransactionMaster" xml:space="preserve">
     <value>Transaction Master</value>
+  </data>
+  <data name="TransactionRuleAdd" xml:space="preserve">
+    <value>Add Transaction Rule</value>
+  </data>
+  <data name="TransactionRuleSearch" xml:space="preserve">
+    <value>Transaction Rules</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
   </data>
 </root>

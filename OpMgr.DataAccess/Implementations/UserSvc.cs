@@ -18,10 +18,12 @@ namespace OpMgr.DataAccess.Implementations
         private IConfigSvc _configSvc;
         private DataTable _dtData;
         private DataSet _dsData;
+        private ILogSvc _logger;
 
-        public UserSvc(IConfigSvc configSvc)
+        public UserSvc(IConfigSvc configSvc,ILogSvc logger)
         {
             _configSvc = configSvc;
+            _logger = logger;
         }
 
         public StatusDTO<UserMasterDTO> Delete(UserMasterDTO data)
@@ -300,7 +302,133 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<List<UserMasterDTO>> Select(UserMasterDTO data)
         {
-            throw new NotImplementedException();
+            StatusDTO<List<UserMasterDTO>> userList = new StatusDTO<List<UserMasterDTO>>();
+
+            string whereClause = null;
+            string selectClause = null;
+            DataSet dsUserLst = null;
+
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+
+                try
+                {
+
+                    dbSvc.OpenConnection();//openning the connection
+
+                    MySqlCommand command = new MySqlCommand();// creating my sql command for queries
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    selectClause = "SELECT users.UserMasterId,users.FName,users.MName,users.LName,users.Gender,users.EmailId,users.ResidentialAddress,users.PermanentAddress," +
+                                  "users.ContactNo,users.AltContactNo,users.BloodGroup,r.RoleDescription" +
+                                   " FROM usermaster users" +
+                                   " INNER JOIN roles r ON users.RoleId = r.RoleId";
+
+                    whereClause = " WHERE users.Active = 1";
+
+                    if (data != null)
+                    {
+
+                        //Name Search
+
+                        if (!string.IsNullOrEmpty(data.FName))
+                        {
+                            whereClause = whereClause + " AND users.FName=@FName";
+                            command.Parameters.Add("@FName", MySqlDbType.String).Value = data.FName;
+                        }
+
+                        if (!string.IsNullOrEmpty(data.MName))
+                        {
+                            whereClause = whereClause + " AND users.MName=@MName ";
+                            command.Parameters.Add("@MName", MySqlDbType.String).Value = data.MName;
+                        }
+
+                        if (!string.IsNullOrEmpty(data.LName))
+                        {
+                            whereClause = whereClause + " AND users.LName=@LName ";
+                            command.Parameters.Add("@LName", MySqlDbType.String).Value = data.LName;
+                        }
+
+                        //Gender Search
+
+                        if (!string.IsNullOrEmpty(data.Gender) && !string.Equals(data.Gender,"-1"))
+                        {
+                            whereClause = whereClause + " AND users.Gender=@Gender ";
+                            command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.Gender;
+                        }
+
+                        // Role Search
+                        if (!string.IsNullOrEmpty(data.Role.RoleDescription))
+                        {
+                            whereClause = whereClause + " AND r.RoleDescription=@RoleDescription";
+                            command.Parameters.Add("@RoleDescription", MySqlDbType.String).Value = data.Role.RoleDescription;
+                        }
+
+                        //BloodGroup Search
+                        if (!string.IsNullOrEmpty(data.BloodGroup))
+                        {
+                            whereClause = whereClause + " AND users.BloodGroup=@BloodGroup";
+                            command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.BloodGroup;
+                        }
+
+
+                    }
+
+                    command.CommandText = selectClause + whereClause;
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(command);
+                    dsUserLst = new DataSet();
+                    da.Fill(dsUserLst);
+
+
+                    if (dsUserLst != null && dsUserLst.Tables.Count > 0)
+                    {
+                        userList.ReturnObj = new List<UserMasterDTO>();
+                        for (int i = 0; i < dsUserLst.Tables[0].Rows.Count; i++)
+                        {
+                            UserMasterDTO user = new UserMasterDTO();
+
+                            user.UserMasterId = Convert.ToInt32(dsUserLst.Tables[0].Rows[i]["UserMasterId"]);
+
+                            user.FName = dsUserLst.Tables[0].Rows[i]["FName"].ToString();
+                            user.MName = dsUserLst.Tables[0].Rows[i]["MName"].ToString();
+                            user.LName = dsUserLst.Tables[0].Rows[i]["LName"].ToString();
+
+
+                            user.Gender = dsUserLst.Tables[0].Rows[i]["Gender"].ToString();
+
+                            user.EmailId = dsUserLst.Tables[0].Rows[i]["EmailId"].ToString();
+                            user.ResidentialAddress = dsUserLst.Tables[0].Rows[i]["ResidentialAddress"].ToString();
+                            user.PermanentAddress = dsUserLst.Tables[0].Rows[i]["PermanentAddress"].ToString();
+
+                            user.ContactNo = dsUserLst.Tables[0].Rows[i]["ContactNo"].ToString();
+                            user.AltContactNo = dsUserLst.Tables[0].Rows[i]["AltContactNo"].ToString();
+
+                            user.BloodGroup = dsUserLst.Tables[0].Rows[i]["BloodGroup"].ToString();
+
+                            user.Role = new RoleDTO();
+                            user.Role.RoleDescription = dsUserLst.Tables[0].Rows[i]["RoleDescription"].ToString();
+
+                           
+                            userList.ReturnObj.Add(user);
+
+                            userList.IsSuccess = true;
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(ex);
+                    userList.IsSuccess = false;
+                    userList.IsException = true;
+                    userList.ReturnObj = null;
+                    userList.ExceptionMessage = ex.Message;
+                    userList.StackTrace = ex.StackTrace;
+                }
+            }
+            return userList;
         }
 
         public StatusDTO<UserMasterDTO> Update(UserMasterDTO data)

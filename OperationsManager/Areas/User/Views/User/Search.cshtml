@@ -1,18 +1,18 @@
 ﻿@using OpMgr.Resources.User
 @using OperationsManager.ExtendedHtmlHelpers
-@model OperationsManager.Areas.Student.Models.StudentVM
+@model OperationsManager.Areas.User.Models.UserVM
 
 @{
-   // Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+    // Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Search Students</h2>
+<h2>@UserResource.SearchPageHeader</h2>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@StudentResource.PageTitle</title>
+    <title>@UserResource.SearchPageTitle</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
@@ -30,7 +30,7 @@
         <div class="col-lg-12">
 
             <div class="panel panel-default">
-                <div class="panel-heading">@StudentResource.PageTitle</div>
+                <div class="panel-heading">@UserResource.SearchPageHeader</div>
                 <div class="panel-body">
 
                     @using (Html.BeginForm())
@@ -38,35 +38,31 @@
                         @Html.AntiForgeryToken()
                         <fieldset>
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, StudentResource.FName, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control" })
                             </div>
 
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, StudentResource.MName, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
                             </div>
 
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, StudentResource.LName, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control" })
                             </div>
 
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.Name, StudentResource.Name, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.Role.RoleDescription, UserResource.Role, new { @class = "form-control" })
                             </div>
 
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.RollNumber, StudentResource.RollNo, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.BloodGroup, UserResource.BloodGrp, new { @class = "form-control" })
                             </div>
 
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, StudentResource.RegistrationNo, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
                             </div>
 
-                            <div class="col-lg-2">
-                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
-                            </div>
-
-                            <div class="col-lg-2" style="vertical-align:bottom;padding-top:20px">
-                                <button type="submit" class="btn btn-primary">@StudentResource.SearchButton</button>
+                            <div class="col-lg-2" style="vertical-align:bottom;margin-top:40px">
+                                <button type="submit" class="btn btn-primary">@UserResource.SearchButton</button>
                             </div>
                         </fieldset>
                     }
@@ -82,7 +78,7 @@
 
 
             <div class="panel panel-default">
-                <div class="panel-heading">@StudentResource.StudentTable</div>
+                <div class="panel-heading">@UserResource.UserTableName</div>
                 <div class="panel-body">
                     <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                         <thead>
@@ -92,27 +88,30 @@
 
                                 </th>
                                 <th th data-field="name" data-sortable="true">
-                                    @StudentResource.Name
+                                    @UserResource.Name
                                 </th>
                                 <th h data-field="standard" data-sortable="true">
-                                    @StudentResource.Class
+                                    @UserResource.Gender
                                 </th>
                                 <th th data-field="section" data-sortable="true">
-                                    @StudentResource.Section
+                                    @UserResource.EmailId
                                 </th>
                                 <th th data-field="roll number" data-sortable="true">
-                                    @StudentResource.RollNo
+                                    @UserResource.ResidentialAddress
                                 </th>
                                 <th th data-field="registration" data-sortable="true">
-                                    @StudentResource.RegistrationNo
+                                    @UserResource.ContactNo
                                 </th>
-
 
                                 <th th data-field="contact" data-sortable="true">
-                                    @StudentResource.GuardianContactNo
+                                    @UserResource.BloodGrp
+                                </th>
+
+                                <th th data-field="contact" data-sortable="true">
+                                    @UserResource.Role
                                 </th>
                                 <th>
-                                    @StudentResource.StudentActions
+                                    @UserResource.UserActions
                                 </th>
 
                             </tr>
@@ -123,44 +122,60 @@
                                 if (Model.IsSearchSuccessful)
                                 {
 
-                                
+                                   
 
-                                    foreach (var student in Model.studentList)
-                                    {
-                                        <tr>
+                                        foreach (var user in Model.UserList)
+                                        {
+                                          <tr>
                                             <td>
-                                                <input type="checkbox" name="chkStudent" value="@student.StudentInfoId" />
+                                                <input type="checkbox" name="chkStudent" value="@user.UserMasterId" />
                                             </td>
                                             <td>
-                                                @student.Name
+                                                @user.Name
 
-                                            </td>
-                                            <td>
-                                                @student.StandardSectionMap.Standard.StandardName
-                                            </td>
-                                            <td>
-                                                @student.StandardSectionMap.Section.SectionName
-                                            </td>
-                                            <td>
-                                                @student.RollNumber
-                                            </td>
-                                            <td>
-                                                @student.RegistrationNumber
-                                            </td>
-                                            <td>
-                                                @student.GuardianContact
-
-                                            </td>
-                                            <td>
-                                                <a href="/Login/Login/Register?mode=EDIT&id=@student.UserDetails.UserMasterId">Edit</a>
-                                                @Html.ActionLink("Delete", "Delete", new { studentId = student.StudentInfoId }, null)
                                             </td>
                                             
-                                        </tr>
-                                    }
+                                                
+                                                @if(string.Equals(user.Gender,"1"))
+                                                {
+                                                   <td>Male</td> 
+                                                }
+                                                else if (string.Equals(user.Gender, "2"))
+                                                {
+                                                  <td>Female</td>
+                                                }
+                                                else if (string.Equals(user.Gender, "3"))
+                                                {
+                                                  <td>Others</td>
+                                                }
+
+                                            
+                                            <td>
+                                                @user.EmailId
+                                            </td>
+                                            <td>
+                                                @user.ResidentialAddress
+                                            </td>
+                                            <td>
+                                                @user.ContactNo
+                                            </td>
+                                            <td>
+                                                @user.BloodGroup
+
+                                            </td>
+                                              <td>
+                                                  @user.Role.RoleDescription
+
+                                              </td>
+                                            <td>
+                                                <a href="/Login/Login/Register?mode=EDIT&id=@user.UserMasterId">Edit</a>
+                                                @Html.ActionLink("Delete", "Delete", new { studentId = user.UserMasterId }, null)
+                                            </td>
+                                          </tr>
+                                        }
 
 
-                                
+                                   
                                 }
                                 else
                                 {
@@ -173,9 +188,9 @@
                             }
 
 
-                            </tbody>
-                        </table>
-                            <script>
+                        </tbody>
+                    </table>
+                    <script>
                                 $(function () {
                                     $('#hover, #striped, #condensed').click(function () {
                                         var classes = 'table';
@@ -204,11 +219,12 @@
                                     }
                                     return {};
                                 }
-                            </script>
-                        </div>
-                    </div>
+                    </script>
                 </div>
             </div>
-        </body>
-    </html>
+        </div>
+    </div>
+</body>
+</html>
+
 
