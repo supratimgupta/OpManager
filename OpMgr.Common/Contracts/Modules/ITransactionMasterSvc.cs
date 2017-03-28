@@ -12,5 +12,9 @@ namespace OpMgr.Common.Contracts.Modules
         DataTable GetAllTransactions();
 
         DTOs.StatusDTO<List<DTOs.TransactionMasterDTO>> GetAllTransactioMasters();
+
+        string GetIsDifferentTo(int transMasterId);
+
+        string GetFreq(int trnsMasterId);
     }
 }

@@ -247,6 +247,9 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\calendar.gif" />
+    <Content Include="Qubico\css\qubico-blue.css" />
+    <Content Include="Qubico\css\qubico.css" />
+    <Content Include="Qubico\js\qubico.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Employee\Views\web.config" />
@@ -279,6 +282,8 @@
     <Content Include="Areas\User\Views\User\Search.cshtml" />
     <Content Include="Areas\User\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\AddStyle.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionRule\Search.cshtml" />
+    <Content Include="Areas\Transaction\Views\TransactionRule\TransactionRule.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -391,7 +396,6 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
-    <Folder Include="Areas\Transaction\Views\TransactionRule\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

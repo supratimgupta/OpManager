@@ -16,7 +16,7 @@ namespace OperationsManager.Areas.Library.Controllers
     {
         private IBookMasterSvc _bookmasterSvc;
 
-        private ILogSvc _logger;
+        //private ILogSvc _logger;
 
         private ISessionSvc _sessionSvc;
 

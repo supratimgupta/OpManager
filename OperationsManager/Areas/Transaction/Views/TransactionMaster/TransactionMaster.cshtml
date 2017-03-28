@@ -9,6 +9,120 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section PageScripts
+{
+    <script language="javascript" type="text/javascript">
+        function checkFrequency(ddlFreq)
+        {
+            var selectedFreq = ddlFreq.options[ddlFreq.selectedIndex].value;
+            if(selectedFreq==="MONTHLY")
+            {
+                $("#txtDayToRun").prop("disabled", false);
+                $("#txtYrlyDayToRun").prop("disabled", true);
+                document.getElementById("txtYrlyDayToRun").value = "";
+            }
+            else if(selectedFreq==="YEARLY")
+            {
+                $("#txtDayToRun").prop("disabled", true);
+                document.getElementById("txtDayToRun").value = "";
+                $("#txtYrlyDayToRun").prop("disabled", false);
+            }
+            else if(selectedFreq==="ONE-TIME")
+            {
+                $("#txtDayToRun").prop("disabled", false);
+                $("#txtYrlyDayToRun").prop("disabled", true);
+                document.getElementById("txtYrlyDayToRun").value = "";
+            }
+            else
+            {
+                $("#txtDayToRun").prop("disabled", true);
+                $("#txtYrlyDayToRun").prop("disabled", true);
+                document.getElementById("txtYrlyDayToRun").value = "";
+                document.getElementById("txtDayToRun").value = "";
+            }
+        }
+
+        $(document).ready(function () {
+            $("#txtDayToRun").prop("disabled", true);
+            $("#txtYrlyDayToRun").prop("disabled", true);
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function setForEdit(tmId, tmName, tmType, tmFreq, tmIsDiffTo, tmIsPenalty, tmDayToRun, tmYearlyDayToRun, tmActive)
+        {
+            alert(tmActive);
+            document.getElementById("hfMode").value = "EDIT";
+            document.getElementById("hfRowId").value = tmId;
+
+            document.getElementById("txtName").value = tmName;
+
+            var ddlType = document.getElementById("ddlType");
+
+            for (var i = 0; i < ddlType.options.length; i++) {
+                if (ddlType.options[i].value == tmType) {
+                    ddlType.selectedIndex = i;
+                    break;
+                }
+            }
+
+            var ddlIsDiffTo = document.getElementById("ddlIsDiffTo");
+
+            for (var i = 0; i < ddlIsDiffTo.options.length; i++) {
+                if (ddlIsDiffTo.options[i].value == tmIsDiffTo) {
+                    ddlIsDiffTo.selectedIndex = i;
+                    break;
+                }
+            }
+
+            var ddlFreq = document.getElementById("ddlFreq");
+
+            for (var i = 0; i < ddlFreq.options.length; i++) {
+                if (ddlFreq.options[i].value == tmFreq) {
+                    ddlFreq.selectedIndex = i;
+                    break;
+                }
+            }
+
+            document.getElementById("txtDayToRun").value = tmDayToRun;
+
+            document.getElementById("txtYrlyDayToRun").value = tmYearlyDayToRun;
+
+            if (tmIsPenalty == 'YES')
+            {
+                document.getElementById("cbIsPenalty").checked = true;
+            }
+            else
+            {
+                document.getElementById("cbIsPenalty").checked = false;
+            }
+
+            if(tmActive=='YES')
+            {
+                document.getElementById("cbIsActive").checked = true;
+            }
+            else
+            {
+                document.getElementById("cbIsActive").checked = false;
+            }
+
+            checkFrequency(ddlFreq);
+        }
+
+        function reset()
+        {
+            document.getElementById("hfMode").value = "ADD";
+            document.getElementById("hfRowId").value = "";
+            document.getElementById("txtName").value = "";
+            document.getElementById("ddlType").selectedIndex = 0;
+            document.getElementById("ddlIsDiffTo").selectedIndex = 0;
+            document.getElementById("ddlFreq").selectedIndex = 0;
+            document.getElementById("txtDayToRun").value = "";
+            document.getElementById("txtYrlyDayToRun").value = "";
+            document.getElementById("cbIsPenalty").checked = false;
+            document.getElementById("cbIsActive").checked = true;
+        }
+    </script>
+}
 <div class="row">
     <div>
         <div class="panel-default">
@@ -30,7 +144,7 @@
                             @Html.OpMgrDropDownListFor(m => m.IsDiffTo, Model.IsDiffToList, TransactionMaster.IsDiffTo, new { @class = "form-control", id="ddlIsDiffTo" })
                         </div>
                         <div class="col-lg-2">
-                            @Html.OpMgrDropDownListFor(m => m.Frequency, Model.FrequencyList, TransactionMaster.Frequency, new { @class = "form-control", id="ddlFreq" })
+                            @Html.OpMgrDropDownListFor(m => m.Frequency, Model.FrequencyList, TransactionMaster.Frequency, new { @class = "form-control", id="ddlFreq", onchange = "checkFrequency(this);" })
                         </div>
                     </div>
                     <div class="row">
@@ -119,77 +233,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" language="javascript">
-    function setForEdit(tmId, tmName, tmType, tmFreq, tmIsDiffTo, tmIsPenalty, tmDayToRun, tmYearlyDayToRun, tmActive)
-    {
-        alert(tmActive);
-        document.getElementById("hfMode").value = "EDIT";
-        document.getElementById("hfRowId").value = tmId;
 
-        document.getElementById("txtName").value = tmName;
-
-        var ddlType = document.getElementById("ddlType");
-
-        for (var i = 0; i < ddlType.options.length; i++) {
-            if (ddlType.options[i].value == tmType) {
-                ddlType.selectedIndex = i;
-                break;
-            }
-        }
-
-        var ddlIsDiffTo = document.getElementById("ddlIsDiffTo");
-
-        for (var i = 0; i < ddlIsDiffTo.options.length; i++) {
-            if (ddlIsDiffTo.options[i].value == tmIsDiffTo) {
-                ddlIsDiffTo.selectedIndex = i;
-                break;
-            }
-        }
-
-        var ddlFreq = document.getElementById("ddlFreq");
-
-        for (var i = 0; i < ddlFreq.options.length; i++) {
-            if (ddlFreq.options[i].value == tmFreq) {
-                ddlFreq.selectedIndex = i;
-                break;
-            }
-        }
-
-        document.getElementById("txtDayToRun").value = tmDayToRun;
-
-        document.getElementById("txtYrlyDayToRun").value = tmYearlyDayToRun;
-
-        if (tmIsPenalty == 'YES')
-        {
-            document.getElementById("cbIsPenalty").checked = true;
-        }
-        else
-        {
-            document.getElementById("cbIsPenalty").checked = false;
-        }
-
-        if(tmActive=='YES')
-        {
-            document.getElementById("cbIsActive").checked = true;
-        }
-        else
-        {
-            document.getElementById("cbIsActive").checked = false;
-        }
-    }
-
-    function reset()
-    {
-        document.getElementById("hfMode").value = "ADD";
-        document.getElementById("hfRowId").value = "";
-        document.getElementById("txtName").value = "";
-        document.getElementById("ddlType").selectedIndex = 0;
-        document.getElementById("ddlIsDiffTo").selectedIndex = 0;
-        document.getElementById("ddlFreq").selectedIndex = 0;
-        document.getElementById("txtDayToRun").value = "";
-        document.getElementById("txtYrlyDayToRun").value = "";
-        document.getElementById("cbIsPenalty").checked = false;
-        document.getElementById("cbIsActive").checked = true;
-    }
-</script>
 

@@ -546,7 +546,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionMasterDTO> GetTransactionMasters()
+        public List<TransactionMasterDTO> GetTransactionMasters(string frequency=null)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -555,6 +555,11 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "select TranMasterId, TransactionName from transactionmaster where Active=1";
+                    if(!string.IsNullOrEmpty(frequency))
+                    {
+                        command.CommandText = command.CommandText + " AND Frequency=@freq";
+                        command.Parameters.Add("@freq", MySqlDbType.VarChar).Value = frequency;
+                    }
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);

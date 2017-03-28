@@ -7,7 +7,140 @@
     ViewBag.Title = "Transaction Rules";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section PageScripts
+{
+    <script language="javascript" type="text/javascript">
+        function getTrnsMasterData(ddlFreq)
+        {
+            
+            var selectedFreq = ddlFreq.options[ddlFreq.selectedIndex].value;
+            var trnsMaster = new Object();
+            trnsMaster.Frequency = selectedFreq;
+            $.ajax({
+                type: 'POST',
+                url: 'GetTransactionMasters',
+                data: trnsMaster,
+                dataType: "json",
+                success: function (resultData) {  populateTrnsMasterDDL(resultData.data); },
+                error: function (error) { }
+            });
+        }
 
+        function getIsDiffTo(ddlTrnsMaster)
+        {
+            
+            var selectedMaster = ddlTrnsMaster.options[ddlTrnsMaster.selectedIndex].value;
+            var trnsMaster = new Object();
+            trnsMaster.TranMasterId = parseInt(selectedMaster);
+            $.ajax({
+                type: 'POST',
+                url: 'GetIsDifferentTo',
+                data: trnsMaster,
+                dataType: "json",
+                success: function (resultData) {  enableDisableControls(resultData.diffTo); },
+                error: function (error) {  }
+            });
+        }
+
+        $(document).ready(function () {
+            debugger;
+            if (document.getElementById("hfMode").value==="EDIT" || document.getElementById("hfIsPostBack").value === "TRUE")
+            {
+                getIsDiffTo(document.getElementById("ddlTrnsMasters"));
+            }
+            else
+            {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlStandard").selectedIndex = 0
+                document.getElementById("ddlUser").selectedIndex = 0
+            }
+        });
+
+        function enableDisableControls(diffTo)
+        {
+            if(diffTo==="CLASS-TYPE")
+            {
+                $("#ddlClassType").prop("disabled", false);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlStandard").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlUser").selectedIndex = 0;
+            }
+            else if(diffTo=="STANDARD")
+            {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", false);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlUser").selectedIndex = 0;
+            }
+            else if(diffTo=="SECTION")
+            {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", false);
+                $("#ddlSection").prop("disabled", false);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlUser").selectedIndex = 0;
+            }
+            else if (diffTo == "USER") {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", false);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlStandard").selectedIndex = 0
+            }
+            else if (diffTo == "NONE") {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlStandard").selectedIndex = 0
+                document.getElementById("ddlUser").selectedIndex = 0
+            }
+        }
+
+        function populateTrnsMasterDDL(trnsMasters)
+        {
+            var ddlTrnsMasters = document.getElementById("ddlTrnsMasters");
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++)
+            {
+                var option = document.createElement("option");
+                if (i == -1)
+                {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else
+                {
+                    option.value = trnsMasters[i].TranMasterId;
+                    option.innerHTML = trnsMasters[i].TransactionName;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+    </script>
+}
 <div class="row">
     <div>
         <div class="panel-default">
@@ -23,32 +156,46 @@
                                 <strong>@Model.SuccessMsg</strong>
                             </div>
                         }
+                        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+                        {
+                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                <strong>@Model.ErrorMsg</strong>
+                            </div>
+                        }
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                @Html.HiddenFor(m => m.MODE)
+                                @Html.HiddenFor(m => m.MODE, new {id="hfMode" })
                                 @Html.HiddenFor(m => m.TranRuleId)
+                                <input type="hidden" value="@Model.IsPostBack" name="IsPostBack" id="hfIsPostBack" />
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.SelectedFrequency, Model.TransactionFrequencies, TransactionRule.SelectFrequency, new { @class = "form-control", onchange="getTrnsMasterData(this);" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-5">
                                         @Html.OpMgrTextBoxFor(m => m.RuleName, TransactionRule.RuleName, new { @class = "form-control" })
                                     </div>
                                     <div class="col-lg-5">
-                                        @Html.OpMgrDropDownListFor(m => m.TranMaster.TranMasterId, Model.TransactionMasters, TransactionRule.TranMaster, new { @class = "form-control" })
+                                        @Html.OpMgrDropDownListFor(m => m.TranMaster.TranMasterId, Model.TransactionMasters, TransactionRule.TranMaster, new { @class = "form-control", id="ddlTrnsMasters", onchange= "getIsDiffTo(this);" })
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-5">
-                                        @Html.OpMgrDropDownListFor(m => m.ClassType.ClassTypeId, Model.ClassTypes, TransactionRule.ClassType, new { @class = "form-control" })
+                                        @Html.OpMgrDropDownListFor(m => m.ClassType.ClassTypeId, Model.ClassTypes, TransactionRule.ClassType, new { @class = "form-control", id="ddlClassType" })
                                     </div>
                                     <div class="col-lg-5">
-                                        @Html.OpMgrDropDownListFor(m => m.Standard.StandardId, Model.Standards, TransactionRule.Standard, new { @class = "form-control" })
+                                        @Html.OpMgrDropDownListFor(m => m.Standard.StandardId, Model.Standards, TransactionRule.Standard, new { @class = "form-control", id="ddlStandard" })
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-5">
-                                        @Html.OpMgrDropDownListFor(m => m.Section.SectionId, Model.Sections, TransactionRule.Section, new { @class = "form-control" })
+                                        @Html.OpMgrDropDownListFor(m => m.Section.SectionId, Model.Sections, TransactionRule.Section, new { @class = "form-control", id="ddlSection" })
                                     </div>
                                     <div class="col-lg-5">
-                                        @Html.OpMgrDropDownListFor(m => m.UserDTO.UserMasterId, Model.Users, TransactionRule.UserDTO, new { @class = "form-control" })
+                                        @Html.OpMgrDropDownListFor(m => m.UserDTO.UserMasterId, Model.Users, TransactionRule.UserDTO, new { @class = "form-control", id="ddlUser" })
                                     </div>
                                 </div>
                                 <div class="row">

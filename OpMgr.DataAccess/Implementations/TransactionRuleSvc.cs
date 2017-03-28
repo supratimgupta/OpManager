@@ -407,5 +407,66 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public bool IsDuplicate(int trnsMasterId, int standardId, int sectionId, int classTypeId, int userMasterId, string isDiffTo, string mode, int ruleId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT TranRuleId FROM TransactionRule WHERE TranMasterId=@tranMaster";
+                    command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = trnsMasterId;
+                    if(string.Equals(isDiffTo, "CLASS-TYPE", StringComparison.OrdinalIgnoreCase))
+                    {
+                        command.CommandText = command.CommandText + " AND ClassTypeId=@classType";
+                        command.Parameters.Add("@classType", MySqlDbType.Int32).Value = classTypeId;
+                    }
+                    else if (string.Equals(isDiffTo, "STANDARD", StringComparison.OrdinalIgnoreCase))
+                    {
+                        command.CommandText = command.CommandText + " AND StandardId=@standardId";
+                        command.Parameters.Add("@standardId", MySqlDbType.Int32).Value = standardId;
+                    }
+                    else if (string.Equals(isDiffTo, "SECTION", StringComparison.OrdinalIgnoreCase))
+                    {
+                        command.CommandText = command.CommandText + " AND StandardId=@standardId AND SectionId=@sectionId";
+                        command.Parameters.Add("@standardId", MySqlDbType.Int32).Value = standardId;
+                        command.Parameters.Add("@sectionId", MySqlDbType.Int32).Value = sectionId;
+                    }
+                    else if (string.Equals(isDiffTo, "USER", StringComparison.OrdinalIgnoreCase))
+                    {
+                        command.CommandText = command.CommandText + " AND UserMasterId=@userMasterId";
+                        command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = userMasterId;
+                    }
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_RULE");
+                    dataAdap.Fill(_dtResult);
+                    if(string.Equals(mode, "ADD", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if(_dtResult!=null && _dtResult.Rows.Count>0)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    if(_dtResult!=null && _dtResult.Rows.Count==1)
+                    {
+                        if(string.Equals(_dtResult.Rows[0]["TranRuleId"].ToString(), ruleId.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+                    return true;
+                    
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
     }
 }

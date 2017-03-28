@@ -12,7 +12,7 @@ namespace OperationsManager.Areas.Admin.Controllers
 {
     public class AdminController : Controller
     {
-        private ILogSvc _logger;
+        //private ILogSvc _logger;
 
         private IEntitlementActionSvc _entitlementActionSvc;
 

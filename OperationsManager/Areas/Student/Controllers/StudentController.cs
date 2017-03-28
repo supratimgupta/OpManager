@@ -16,7 +16,7 @@ namespace OperationsManager.Areas.Student.Controllers
     public class StudentController : Controller
     {
         private IStudentSvc _studSvc;
-        private ILogSvc _logSvc;
+        //private ILogSvc _logSvc;
         private IDropdownRepo _dropDwnRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
 

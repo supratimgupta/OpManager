@@ -300,8 +300,13 @@ namespace OpMgr.TransactionHandler.Implementations
                                    trnsLogDto.HasPenalty = false;
                                    trnsLogDto.TransactionRule = new TransactionRuleDTO();
                                    trnsLogDto.TransactionRule.TranRuleId = (int)rules[0]["TranRuleId"];
-                                   trnsLogDto.PenaltyTransactionRule = new TransactionRuleDTO();
-                                   trnsLogDto.PenaltyTransactionRule.TranRuleId = trnsLogDto.TransactionRule.TranRuleId;
+
+                                    if (trnsLogDto.TransactionDueDate!=null)
+                                    {
+                                        trnsLogDto.PenaltyTransactionRule = new TransactionRuleDTO();
+                                        trnsLogDto.PenaltyTransactionRule.TranRuleId = trnsLogDto.TransactionRule.TranRuleId;
+                                    }
+                                   
                                    StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLogDto);
                                    if(status.IsSuccess)
                                    {
@@ -349,55 +354,58 @@ namespace OpMgr.TransactionHandler.Implementations
                     {
                         using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                         {
-                            DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransactionRule"].ToString());
-                            if(trnsRule!=null && trnsRule.Length>0)
+                            if(!string.IsNullOrEmpty(reader["PenaltyTransactionRule"].ToString()))
                             {
-                                TransactionLogDTO trnsLog = new TransactionLogDTO();
-                                trnsLog.Active = true;
-                                trnsLog.User = new UserMasterDTO();
-                                trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
-                                trnsLog.TransactionDate = _runDate;
-                                trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
-                                trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionDueDate"];
-                                trnsLog.ParentTransactionLogId = new TransactionLogDTO();
-                                trnsLog.ParentTransactionLogId.TransactionLogId = (int)reader["TransactionLogId"];
-                                trnsLog.IsCompleted = false;
-                                trnsLog.CompletedOn = null;
-                                trnsLog.AmountImposed = CalculateFineAmount(string.IsNullOrEmpty(trnsRule[0]["PenaltyCalculatedIn"].ToString())?null: trnsRule[0]["PenaltyCalculatedIn"], string.IsNullOrEmpty(trnsRule[0]["penaltyamount"].ToString())?null: trnsRule[0]["penaltyamount"], string.IsNullOrEmpty(reader["DueAmount"].ToString())?0:double.Parse(reader["DueAmount"].ToString()));
-                                trnsLog.AmountGiven = null;
-                                trnsLog.DueAmount = trnsLog.AmountImposed;
-                                trnsLog.TransferMode = null;
-                                trnsLog.Location = null;
-                                if(reader["StandardSectionId"]==null || string.IsNullOrEmpty(reader["StandardSectionId"].ToString()))
+                                DataRow[] trnsRule = _dtTransRule.Select("TranRuleId=" + reader["PenaltyTransactionRule"].ToString());
+                                if (trnsRule != null && trnsRule.Length > 0)
                                 {
-                                    trnsLog.StandardSectionMap = null;
-                                }
-                                else
-                                {
-                                    trnsLog.StandardSectionMap = new StandardSectionMapDTO();
-                                    trnsLog.StandardSectionMap.StandardSectionId = (int)reader["StandardSectionId"];
-                                }
-                                trnsLog.TransactionType = trnsRule[0]["PenaltyTransactionType"]==null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTransactionType"].ToString())?reader["TransactionType"].ToString() : trnsRule[0]["PenaltyTransactionType"].ToString();
-                                trnsLog.HasPenalty = false;
-                                trnsLog.OriginalTransLog = new TransactionLogDTO();
-                                if(reader["OriginalTransactionLogId"]==null || string.IsNullOrEmpty(reader["OriginalTransactionLogId"].ToString()))
-                                {
-                                    trnsLog.OriginalTransLog.TransactionLogId = (int)reader["TransactionLogId"];
-                                }
-                                else
-                                {
-                                    trnsLog.OriginalTransLog.TransactionLogId = (int)reader["OriginalTransactionLogId"];
-                                }
-                                trnsLog.TransactionRule = new TransactionRuleDTO();
-                                trnsLog.TransactionRule.TranRuleId = (int)trnsRule[0]["TranRuleId"];
-                                trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
-                                trnsLog.PenaltyTransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"]==null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTranRuleId"].ToString())? (int)trnsRule[0]["TranRuleId"]: (int)trnsRule[0]["PenaltyTranRuleId"];
-                                StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
-                                if(status.IsSuccess)
-                                {
-                                    if(_transLog.UpdateHasPenaltyFlag((int)reader["TransactionLogId"], true, trnsLog.TransactionDueDate.Value, trnsLog.PenaltyTransactionRule.TranRuleId))
+                                    TransactionLogDTO trnsLog = new TransactionLogDTO();
+                                    trnsLog.Active = true;
+                                    trnsLog.User = new UserMasterDTO();
+                                    trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
+                                    trnsLog.TransactionDate = _runDate;
+                                    trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
+                                    trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionDueDate"];
+                                    trnsLog.ParentTransactionLogId = new TransactionLogDTO();
+                                    trnsLog.ParentTransactionLogId.TransactionLogId = (int)reader["TransactionLogId"];
+                                    trnsLog.IsCompleted = false;
+                                    trnsLog.CompletedOn = null;
+                                    trnsLog.AmountImposed = CalculateFineAmount(string.IsNullOrEmpty(trnsRule[0]["PenaltyCalculatedIn"].ToString()) ? null : trnsRule[0]["PenaltyCalculatedIn"], string.IsNullOrEmpty(trnsRule[0]["penaltyamount"].ToString()) ? null : trnsRule[0]["penaltyamount"], string.IsNullOrEmpty(reader["DueAmount"].ToString()) ? 0 : double.Parse(reader["DueAmount"].ToString()));
+                                    trnsLog.AmountGiven = null;
+                                    trnsLog.DueAmount = trnsLog.AmountImposed;
+                                    trnsLog.TransferMode = null;
+                                    trnsLog.Location = null;
+                                    if (reader["StandardSectionId"] == null || string.IsNullOrEmpty(reader["StandardSectionId"].ToString()))
                                     {
-                                        ts.Complete();
+                                        trnsLog.StandardSectionMap = null;
+                                    }
+                                    else
+                                    {
+                                        trnsLog.StandardSectionMap = new StandardSectionMapDTO();
+                                        trnsLog.StandardSectionMap.StandardSectionId = (int)reader["StandardSectionId"];
+                                    }
+                                    trnsLog.TransactionType = trnsRule[0]["PenaltyTransactionType"] == null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTransactionType"].ToString()) ? reader["TransactionType"].ToString() : trnsRule[0]["PenaltyTransactionType"].ToString();
+                                    trnsLog.HasPenalty = false;
+                                    trnsLog.OriginalTransLog = new TransactionLogDTO();
+                                    if (reader["OriginalTransactionLogId"] == null || string.IsNullOrEmpty(reader["OriginalTransactionLogId"].ToString()))
+                                    {
+                                        trnsLog.OriginalTransLog.TransactionLogId = (int)reader["TransactionLogId"];
+                                    }
+                                    else
+                                    {
+                                        trnsLog.OriginalTransLog.TransactionLogId = (int)reader["OriginalTransactionLogId"];
+                                    }
+                                    trnsLog.TransactionRule = new TransactionRuleDTO();
+                                    trnsLog.TransactionRule.TranRuleId = (int)trnsRule[0]["TranRuleId"];
+                                    trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
+                                    trnsLog.PenaltyTransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"] == null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTranRuleId"].ToString()) ? (int)trnsRule[0]["TranRuleId"] : (int)trnsRule[0]["PenaltyTranRuleId"];
+                                    StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
+                                    if (status.IsSuccess)
+                                    {
+                                        if (_transLog.UpdateHasPenaltyFlag((int)reader["TransactionLogId"], true, trnsLog.TransactionDueDate.Value, trnsLog.PenaltyTransactionRule.TranRuleId))
+                                        {
+                                            ts.Complete();
+                                        }
                                     }
                                 }
                             }
