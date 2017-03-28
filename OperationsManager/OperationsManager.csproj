@@ -278,6 +278,7 @@
     <Content Include="Areas\User\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\User\Views\User\Search.cshtml" />
     <Content Include="Areas\User\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\AddStyle.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -294,8 +295,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\paging.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Style.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="template\charts.html" />
     <Content Include="template\css\bootstrap-table.css" />

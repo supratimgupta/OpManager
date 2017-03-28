@@ -47,6 +47,9 @@
   <bind service="OpMgr.Common.Contracts.Modules.IBookMasterSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.BookMasterSvc, OpMgr.DataAccess" />
 
+  <bind service="OpMgr.Common.Contracts.Modules.IEntitlementActionSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.EntitlementActionSvc, OpMgr.DataAccess" />
+
   <bind service="OpMgr.Common.Contracts.ICommonConfigSvc, OpMgr.Common"
     to="OpMgr.Configurations.Implementations.WebCommonConfigSvc, OpMgr.Configurations" />
 
