@@ -339,6 +339,7 @@ namespace OpMgr.TransactionHandler.Implementations
         public void CheckDuesAndAddFine()
         {
             FillTransDetails();
+            //Currently no penalty for penalty calculation, if that's needed need to add a logic
             DataTable dtReader = _transLog.GetPendingTransactions(_runDate);
             if (dtReader != null)
             {
@@ -394,7 +395,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                 StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
                                 if(status.IsSuccess)
                                 {
-                                    if(_transLog.UpdateHasPenaltyFlag((int)reader["TransactionLogId"], true))
+                                    if(_transLog.UpdateHasPenaltyFlag((int)reader["TransactionLogId"], true, trnsLog.TransactionDueDate.Value, trnsLog.PenaltyTransactionRule.TranRuleId))
                                     {
                                         ts.Complete();
                                     }
