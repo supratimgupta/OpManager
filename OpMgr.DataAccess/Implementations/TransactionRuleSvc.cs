@@ -468,5 +468,280 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<TransactionRuleDTO> GetUserLevelRules(int transactionMasterId, int userRowId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT * FROM (SELECT tr.TranRuleId, u.UserMasterId, u.FName, u.MName, u.LName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, tr.RuleName, tr.ActualAmount, u.Active, tr.TranMasterId, tm.IsDifferentTo FROM usermaster u LEFT OUTER JOIN transactionrule tr ON u.UserMasterId=tr.UserMasterId LEFT OUTER JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId) res WHERE (res.TranMasterId=@tranMaster OR res.TranMasterId IS NULL) AND res.UserMasterId=@userMaster AND (res.IsDifferentTo='USER' OR res.IsDifferentTo IS NULL)";
+                    command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@userMaster", MySqlDbType.Int32).Value = userRowId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_RULE");
+                    dataAdap.Fill(_dtResult);
+                    List<TransactionRuleDTO> lstRules = null;
+                    if(_dtResult!=null && _dtResult.Rows.Count>0)
+                    {
+                        lstRules = new List<TransactionRuleDTO>();
+                        TransactionRuleDTO rule = null;
+                        foreach(DataRow dr in _dtResult.Rows)
+                        {
+                            rule = new TransactionRuleDTO();
+                            if(!string.IsNullOrEmpty(dr["TranRuleId"].ToString()))
+                            {
+                                rule.TranRuleId = (int)dr["TranRuleId"];
+                            }
+                            else
+                            {
+                                rule.TranRuleId = -1;
+                            }
+                            rule.UserDTO = new UserMasterDTO();
+                            rule.UserDTO.UserMasterId = (int)dr["UserMasterId"];
+                            rule.UserDTO.FName = dr["FName"].ToString();
+                            rule.UserDTO.MName = dr["MName"].ToString();
+                            rule.UserDTO.LName = dr["LName"].ToString();
+                            rule.TranMaster = new TransactionMasterDTO();
+                            rule.TranMaster.TransactionName = dr["TransactionName"].ToString();
+                            rule.RuleName = dr["RuleName"].ToString();
+                            rule.ActualAmount = string.IsNullOrEmpty(dr["ActualAmount"].ToString()) ? 0.0 : double.Parse(dr["ActualAmount"].ToString());
+                            lstRules.Add(rule);
+                        }
+                    }
+                    return lstRules;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> GetClassTypeLevelRules(int transactionMasterId, int? classTypeRowId = null)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT * FROM (SELECT tr.TranRuleId, ct.ClassTypeId, ct.ClassTypeName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, tr.RuleName, tr.ActualAmount, tr.TranMasterId, ct.Active, tm.IsDifferentTo FROM classtype ct LEFT OUTER JOIN transactionrule tr ON ct.ClassTypeId=tr.ClassTypeId LEFT OUTER JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId) res WHERE (res.TranMasterId=@tranMaster OR res.TranMasterId IS NULL) AND res.Active=1 AND (res.IsDifferentTo='CLASS-TYPE' OR res.IsDifferentTo IS NULL)";
+                    command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    if(classTypeRowId!=null && classTypeRowId.Value>0)
+                    {
+                        command.CommandText += " AND res.ClassTypeId=@classType";
+                        command.Parameters.Add("@classType", MySqlDbType.Int32).Value = classTypeRowId.Value;
+                    }
+                    
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_RULE");
+                    dataAdap.Fill(_dtResult);
+                    List<TransactionRuleDTO> lstRules = null;
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        lstRules = new List<TransactionRuleDTO>();
+                        TransactionRuleDTO rule = null;
+                        foreach (DataRow dr in _dtResult.Rows)
+                        {
+                            rule = new TransactionRuleDTO();
+                            if (!string.IsNullOrEmpty(dr["TranRuleId"].ToString()))
+                            {
+                                rule.TranRuleId = (int)dr["TranRuleId"];
+                            }
+                            else
+                            {
+                                rule.TranRuleId = -1;
+                            }
+                            rule.ClassType = new ClassTypeDTO();
+                            rule.ClassType.ClassTypeId = (int)dr["ClassTypeId"];
+                            rule.ClassType.ClassTypeName = dr["ClassTypeName"].ToString();
+                            rule.TranMaster = new TransactionMasterDTO();
+                            rule.TranMaster.TransactionName = dr["TransactionName"].ToString();
+                            rule.RuleName = dr["RuleName"].ToString();
+                            rule.ActualAmount = string.IsNullOrEmpty(dr["ActualAmount"].ToString()) ? 0.0 : double.Parse(dr["ActualAmount"].ToString());
+                            lstRules.Add(rule);
+                        }
+                    }
+                    return lstRules;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> GetStandardLevelRules(int transactionMasterId, int? standardRowId = null)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT * FROM (SELECT tr.TranRuleId, std.StandardId, std.StandardName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, tr.RuleName, tr.ActualAmount, tr.TranMasterId, std.Active, tm.IsDifferentTo FROM standard std LEFT OUTER JOIN transactionrule tr ON std.StandardId=tr.StandardId LEFT OUTER JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId) res WHERE (res.TranMasterId=@tranMaster OR res.TranMasterId IS NULL) AND res.Active=1 AND (res.IsDifferentTo='STANDARD' OR res.IsDifferentTo IS NULL)";
+                    command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    if (standardRowId != null && standardRowId.Value > 0)
+                    {
+                        command.CommandText += " AND res.StandardId=@stdId";
+                        command.Parameters.Add("@stdId", MySqlDbType.Int32).Value = standardRowId.Value;
+                    }
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_RULE");
+                    dataAdap.Fill(_dtResult);
+                    List<TransactionRuleDTO> lstRules = null;
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        lstRules = new List<TransactionRuleDTO>();
+                        TransactionRuleDTO rule = null;
+                        foreach (DataRow dr in _dtResult.Rows)
+                        {
+                            rule = new TransactionRuleDTO();
+                            if (!string.IsNullOrEmpty(dr["TranRuleId"].ToString()))
+                            {
+                                rule.TranRuleId = (int)dr["TranRuleId"];
+                            }
+                            else
+                            {
+                                rule.TranRuleId = -1;
+                            }
+                            rule.Standard = new StandardDTO();
+                            rule.Standard.StandardId = (int)dr["StandardId"];
+                            rule.Standard.StandardName = dr["StandardName"].ToString();
+                            rule.TranMaster = new TransactionMasterDTO();
+                            rule.TranMaster.TransactionName = dr["TransactionName"].ToString();
+                            rule.RuleName = dr["RuleName"].ToString();
+                            rule.ActualAmount = string.IsNullOrEmpty(dr["ActualAmount"].ToString()) ? 0.0 : double.Parse(dr["ActualAmount"].ToString());
+                            lstRules.Add(rule);
+                        }
+                    }
+                    return lstRules;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> GetStandardSectionLevelRules(int transactionMasterId, int standardId, int? sectionId = null)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT * FROM (SELECT tr.TranRuleId, std.StandardId, std.StandardName, sec.SectionId, sec.SectionName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, tr.RuleName, tr.ActualAmount, tr.TranMasterId, stdsec.Active as stdSecActive, std.Active as stdActive, sec.Active as secActive, tm.IsDifferentTo FROM standardsectionmap stdsec LEFT OUTER JOIN standard std ON stdsec.StandardId=std.StandardId LEFT OUTER JOIN section sec ON stdsec.SectionId=sec.SectionId LEFT OUTER JOIN transactionrule tr ON stdsec.StandardId=tr.StandardId LEFT OUTER JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId) res WHERE (res.TranMasterId=@tranMaster OR res.TranMasterId IS NULL) AND res.StandardId=@stdId AND res.stdSecActive=1 AND res.stdActive=1 AND res.secActive=1 AND (res.IsDifferentTo='SECTION' OR res.IsDifferentTo IS NULL)";
+                    command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@stdId", MySqlDbType.Int32).Value = standardId;
+                    if (sectionId != null && sectionId.Value > 0)
+                    {
+                        command.CommandText += " AND res.SectionId=@secId";
+                        command.Parameters.Add("@secId", MySqlDbType.Int32).Value = sectionId.Value;
+                    }
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_RULE");
+                    dataAdap.Fill(_dtResult);
+                    List<TransactionRuleDTO> lstRules = null;
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        lstRules = new List<TransactionRuleDTO>();
+                        TransactionRuleDTO rule = null;
+                        foreach (DataRow dr in _dtResult.Rows)
+                        {
+                            rule = new TransactionRuleDTO();
+                            if (!string.IsNullOrEmpty(dr["TranRuleId"].ToString()))
+                            {
+                                rule.TranRuleId = (int)dr["TranRuleId"];
+                            }
+                            else
+                            {
+                                rule.TranRuleId = -1;
+                            }
+                            rule.Standard = new StandardDTO();
+                            rule.Standard.StandardName = dr["StandardName"].ToString();
+                            rule.Section = new SectionDTO();
+                            rule.Section.SectionName = dr["SectionName"].ToString();
+                            rule.TranMaster = new TransactionMasterDTO();
+                            rule.TranMaster.TransactionName = dr["TransactionName"].ToString();
+                            rule.RuleName = dr["RuleName"].ToString();
+                            rule.ActualAmount = string.IsNullOrEmpty(dr["ActualAmount"].ToString()) ? 0.0 : double.Parse(dr["ActualAmount"].ToString());
+                            lstRules.Add(rule);
+                        }
+                    }
+                    return lstRules;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public List<TransactionRuleDTO> GetNoneLevelRules(int? transactionMasterId = null)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT tr.TranRuleId, tm.TranMasterId, tm.TransactionName, tr.RuleName, tr.ActualAmount FROM transactionmaster tm LEFT OUTER JOIN transactionrule tr ON tm.TranMasterId=tr.TranMasterId WHERE tm.Active=1 AND (tm.IsDifferentTo='NONE' OR tm.IsDifferentTo IS NULL)";
+                    
+                    if (transactionMasterId != null && transactionMasterId.Value > 0)
+                    {
+                        command.CommandText += " AND tm.TranMasterId=@tmId";
+                        command.Parameters.Add("@tmId", MySqlDbType.Int32).Value = transactionMasterId.Value;
+                    }
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_RULE");
+                    dataAdap.Fill(_dtResult);
+                    List<TransactionRuleDTO> lstRules = null;
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        lstRules = new List<TransactionRuleDTO>();
+                        TransactionRuleDTO rule = null;
+                        foreach (DataRow dr in _dtResult.Rows)
+                        {
+                            rule = new TransactionRuleDTO();
+                            if (!string.IsNullOrEmpty(dr["TranRuleId"].ToString()))
+                            {
+                                rule.TranRuleId = (int)dr["TranRuleId"];
+                            }
+                            else
+                            {
+                                rule.TranRuleId = -1;
+                            }
+                            rule.TranMaster = new TransactionMasterDTO();
+                            rule.TranMaster.TransactionName = dr["TransactionName"].ToString();
+                            rule.RuleName = dr["RuleName"].ToString();
+                            rule.ActualAmount = string.IsNullOrEmpty(dr["ActualAmount"].ToString()) ? 0.0 : double.Parse(dr["ActualAmount"].ToString());
+                            lstRules.Add(rule);
+                        }
+                    }
+                    return lstRules;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
     }
 }

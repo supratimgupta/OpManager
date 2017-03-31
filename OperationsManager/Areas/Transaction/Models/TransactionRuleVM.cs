@@ -1,4 +1,5 @@
-﻿using OpMgr.Common.DTOs;
+﻿using OpMgr.Common.Contracts.Modules;
+using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,5 +37,15 @@ namespace OperationsManager.Areas.Transaction.Models
         public string SelectedFrequency { get; set; }
 
         public string IsPostBack { get; set; }
+
+        public List<TransactionRuleVM> SearchedResult { get; set; }
+
+        public int? oldUserMasterId { get; set; }
+
+        public int? oldClassTypeId { get; set; }
+
+        public int? oldStdId { get; set; }
+
+        public int? oldSecId { get; set; }
     }
 }
