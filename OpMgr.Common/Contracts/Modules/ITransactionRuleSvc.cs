@@ -13,5 +13,17 @@ namespace OpMgr.Common.Contracts.Modules
         DataTable GetAllRules();
 
         List<TransactionRuleDTO> GetAllRulesWithInactive();
+
+        bool IsDuplicate(int trnsMasterId, int standardId, int sectionId, int classTypeId, int userMasterId, string isDiffTo, string mode, int ruleId);
+
+        List<TransactionRuleDTO> GetUserLevelRules(int transactionMasterId, int userRowId);
+
+        List<TransactionRuleDTO> GetClassTypeLevelRules(int transactionMasterId, int? classTypeRowId=null);
+
+        List<TransactionRuleDTO> GetStandardLevelRules(int transactionMasterId, int? standardRowId=null);
+
+        List<TransactionRuleDTO> GetStandardSectionLevelRules(int transactionMasterId, int standardId, int? sectionId=null);
+
+        List<TransactionRuleDTO> GetNoneLevelRules(int? transactionMasterId=null);
     }
 }

@@ -15,7 +15,7 @@ namespace OperationsManager.Areas.User.Controllers
     public class UserController : Controller
     {
         private IUserSvc _userSvc;
-        private ILogSvc _logSvc;
+        //private ILogSvc _logSvc;
         private IDropdownRepo _dropDownRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
 

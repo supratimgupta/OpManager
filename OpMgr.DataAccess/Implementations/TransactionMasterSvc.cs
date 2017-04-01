@@ -146,6 +146,66 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public string GetFreq(int trnsMasterId)
+        {
+            string returnValue = "-1";
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT Frequency FROM transactionmaster WHERE TranMasterId=@trnsMaster";
+                    command.Parameters.Add("@trnsMaster", MySqlDbType.Int32).Value = trnsMasterId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_MASTER");
+                    dataAdap.Fill(_dtResult);
+
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        returnValue = _dtResult.Rows[0]["Frequency"].ToString();
+                    }
+
+                    return returnValue;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public string GetIsDifferentTo(int transMasterId)
+        {
+            string returnValue = "-1";
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT IsdifferentTo FROM transactionmaster WHERE TranMasterId=@trnsMaster";
+                    command.Parameters.Add("@trnsMaster", MySqlDbType.Int32).Value = transMasterId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_MASTER");
+                    dataAdap.Fill(_dtResult);
+                    
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        returnValue = _dtResult.Rows[0]["IsdifferentTo"].ToString();
+                    }
+
+                    return returnValue;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
         public StatusDTO<List<TransactionMasterDTO>> GetAllTransactioMasters()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))

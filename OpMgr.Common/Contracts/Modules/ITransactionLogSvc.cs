@@ -11,6 +11,6 @@ namespace OpMgr.Common.Contracts.Modules
     {
         DataTable GetPendingTransactions(DateTime? runDate);
 
-        bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty);
+        bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty, DateTime dueDate, int penaltyTransactionRule);
     }
 }

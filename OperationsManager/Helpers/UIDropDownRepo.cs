@@ -225,9 +225,9 @@ namespace OperationsManager.Helpers
             return new SelectList(dicTrTypes, "key", "value");
         }
 
-        public SelectList getTransactionMasters()
+        public SelectList getTransactionMasters(string frequency=null)
         {
-            List<TransactionMasterDTO> lstentitleDto = _ddlRepo.GetTransactionMasters();
+            List<TransactionMasterDTO> lstentitleDto = _ddlRepo.GetTransactionMasters(frequency);
 
             TransactionMasterDTO trMasterDTO = new TransactionMasterDTO();
             trMasterDTO.TranMasterId = -1;

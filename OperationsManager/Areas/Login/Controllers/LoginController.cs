@@ -15,7 +15,7 @@ namespace OperationsManager.Areas.Login.Controllers
     {
         private IUserSvc _userSvc;
 
-        private ILogSvc _logger;
+        //private ILogSvc _logger;
 
         private ISessionSvc _sessionSvc;
 

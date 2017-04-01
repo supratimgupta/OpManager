@@ -153,6 +153,9 @@
   <data name="Section" xml:space="preserve">
     <value>Section</value>
   </data>
+  <data name="SelectFrequency" xml:space="preserve">
+    <value>Transaction Type</value>
+  </data>
   <data name="Standard" xml:space="preserve">
     <value>Standard</value>
   </data>
