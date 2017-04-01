@@ -121,7 +121,7 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
             uvModel.MODE = mode;
-            if(string.Equals(mode,"EDIT", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 uvModel.UserMasterId = int.Parse(id);
             }
@@ -145,38 +145,38 @@ namespace OperationsManager.Areas.Login.Controllers
                 uvModel.BloodGroup = dto.ReturnObj.BloodGroup;
                 uvModel.Location = dto.ReturnObj.Location;
                 uvModel.Role = dto.ReturnObj.Role;
-                if (dto.ReturnObj.Role.RoleId == 1)
-                {
-                    uvModel.Student = new StudentDTO();
-                    uvModel.Student.RollNumber = dto.ReturnObj.Student.RollNumber;
-                    uvModel.Student.RegistrationNumber = dto.ReturnObj.Student.RegistrationNumber;
-                    uvModel.Student.GuardianContact = dto.ReturnObj.Student.GuardianContact;
-                    uvModel.Student.GuardianName = dto.ReturnObj.Student.GuardianName;
-                    uvModel.Student.GuardianEmailId = dto.ReturnObj.Student.GuardianEmailId;
-                    uvModel.Student.HouseType = dto.ReturnObj.Student.HouseType;
-                    uvModel.Student.StandardSectionMap = dto.ReturnObj.Student.StandardSectionMap;
-                }
-                else if (dto.ReturnObj.Role.RoleId > 1)
-                {
-                    uvModel.Employee = new EmployeeDetailsDTO();
-                    uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
-                    uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
-                    uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
-                    uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
-                    uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
-                }
+                //if (dto.ReturnObj.Role.RoleId == 1)
+                //{
+                //    uvModel.Student = new StudentDTO();
+                //    uvModel.Student.RollNumber = dto.ReturnObj.Student.RollNumber;
+                //    uvModel.Student.RegistrationNumber = dto.ReturnObj.Student.RegistrationNumber;
+                //    uvModel.Student.GuardianContact = dto.ReturnObj.Student.GuardianContact;
+                //    uvModel.Student.GuardianName = dto.ReturnObj.Student.GuardianName;
+                //    uvModel.Student.GuardianEmailId = dto.ReturnObj.Student.GuardianEmailId;
+                //    uvModel.Student.HouseType = dto.ReturnObj.Student.HouseType;
+                //    uvModel.Student.StandardSectionMap = dto.ReturnObj.Student.StandardSectionMap;
+                //}
+                //else if (dto.ReturnObj.Role.RoleId > 1)
+                //{
+                uvModel.Employee = new EmployeeDetailsDTO();
+                uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
+                uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
+                uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
+                uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
+                uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
+                //}
             }
 
             uvModel.GenderList = _uiddlRepo.getGenderDropDown();
             uvModel.LocationList = _uiddlRepo.getLocationDropDown();
             uvModel.RoleList = _uiddlRepo.getRoleDropDown();
-            uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
-            uvModel.SectionList = _uiddlRepo.getSectionDropDown();
-            uvModel.HouseList = _uiddlRepo.getHouseDropDown();
+            // uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            //uvModel.SectionList = _uiddlRepo.getSectionDropDown();
+            //uvModel.HouseList = _uiddlRepo.getHouseDropDown();
             //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
-            uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+            //uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
 
             return View(uvModel);
@@ -192,16 +192,9 @@ namespace OperationsManager.Areas.Login.Controllers
                 //Call update
                 //if (ModelState.IsValid)
                 //{
-                if (uvModel.Role.RoleId == 1)
-                {
-                    uvModel.Employee = null;
-                    _userSvc.Update(uvModel);
-                }
-                else if (uvModel.Role.RoleId > 1)
-                {
-                    uvModel.Student = null;
-                    _userSvc.Update(uvModel);
-                }
+
+                _userSvc.Update(uvModel);
+
                 //}
             }
             else
@@ -210,20 +203,10 @@ namespace OperationsManager.Areas.Login.Controllers
 
                 //if (ModelState.IsValid)
                 //{
-                if (uvModel.Role.RoleId == 1)
-                {
-                    string pass = encrypt.encryption(uvModel.Password);
-                    uvModel.Password = pass;
-                    uvModel.Employee = null;
-                    _userSvc.Insert(uvModel);
-                }
-                else if (uvModel.Role.RoleId > 1)
-                {
-                    string pass = encrypt.encryption(uvModel.Password);
-                    uvModel.Password = pass;
-                    uvModel.Student = null;
-                    _userSvc.Insert(uvModel);
-                }
+                string pass = encrypt.encryption(uvModel.Password);
+                uvModel.Password = pass;
+                _userSvc.Insert(uvModel);
+
                 //}                
             }
             //if(ModelState.IsValid)
@@ -233,13 +216,13 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.GenderList = _uiddlRepo.getGenderDropDown();
             uvModel.LocationList = _uiddlRepo.getLocationDropDown();
             uvModel.RoleList = _uiddlRepo.getRoleDropDown();
-            uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
-            uvModel.SectionList = _uiddlRepo.getSectionDropDown();
-            uvModel.HouseList = _uiddlRepo.getHouseDropDown();
+            //uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            //uvModel.SectionList = _uiddlRepo.getSectionDropDown();
+            //uvModel.HouseList = _uiddlRepo.getHouseDropDown();
             //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
-            uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+            //uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
             return View(uvModel);
         }

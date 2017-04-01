@@ -10,7 +10,7 @@
 @section PageScripts{
     <script>
         $(document).ready(function () {
-            $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
             $('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
 
@@ -100,7 +100,7 @@
                         <div class="col-lg-5">
                             @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
                         </div>
-                        <div class="col-lg-5">
+                        @*<div class="col-lg-5">
                             @if(Model.MODE=="EDIT")
                             {
                                 @Html.HiddenFor(m=>m.Role.RoleId)
@@ -111,9 +111,9 @@
                                 @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
                             }
                             
-                        </div>
+                        </div>*@
                         
-                        <div id="divStudent">
+                        @*<div id="divStudent">
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.Student.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control" })
                             </div>
@@ -139,8 +139,8 @@
                             <div class="col-lg-5">
                                 @Html.OpMgrDropDownListFor(m => m.Student.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
                             </div>
-                        </div>
-                        <div id="divStaff">
+                        </div>*@
+                        @*<div id="divStaff">*@
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.Employee.DateOfJoining, UserResource.DateOfJoining, new { @class = "dateofjoining form-control" })
                             </div>
@@ -156,7 +156,7 @@
                             <div class="col-lg-5">
                                 @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
                             </div>
-                        </div>
+                        @*</div>*@
                         @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
                         {
                             <div id="divcredentials">

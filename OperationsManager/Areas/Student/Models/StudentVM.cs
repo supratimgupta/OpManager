@@ -16,5 +16,21 @@ namespace OperationsManager.Areas.Student.Models
         public SelectList StandardSectionList { get; set; }
 
         public Boolean IsSearchSuccessful { get; set; }
+
+        public SelectList LocationList { get; set; }
+
+        public SelectList GenderList { get; set; }
+
+        public SelectList RoleList { get; set; }
+
+        public SelectList HouseList { get; set; }
+
+        public SelectList ClassTypeList { get; set; }
+
+        public SelectList SectionList { get; set; }
+
+        public string MODE { get; set; }
+        public int HdnUserMasterId { get; set; }
+
     }
 }

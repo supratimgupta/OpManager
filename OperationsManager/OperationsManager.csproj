@@ -279,6 +279,7 @@
     <Content Include="Areas\User\Views\User\Search.cshtml" />
     <Content Include="Areas\User\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\AddStyle.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Register.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

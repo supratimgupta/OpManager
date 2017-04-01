@@ -19,7 +19,7 @@ namespace OperationsManager.Areas.Student.Controllers
         private ILogSvc _logSvc;
         private IDropdownRepo _dropDwnRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
-
+        Encryption encrypt = new Encryption();
         public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo)
         {
             _studSvc = studSvc;
@@ -28,11 +28,75 @@ namespace OperationsManager.Areas.Student.Controllers
             //_logSvc = logSvc;
         }
         // GET: Student/Student
+
+
+        [HttpGet]
+        public ActionResult Register(string mode, string id)
+
+
+
+        {
+            Models.StudentVM studView = new Models.StudentVM();
+            studView.UserDetails = new UserMasterDTO();
+            studView.MODE = mode;
+            
+            if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                studView.UserDetails.UserMasterId = int.Parse(id);
+            }
+            if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                //Populate edit data using id passed in URL, if id==null then show error message
+                StatusDTO<StudentDTO> dto = _studSvc.Select(Convert.ToInt32(id));
+                studView.UserDetails = new UserMasterDTO();
+                studView.UserDetails.UserMasterId = dto.ReturnObj.UserDetails.UserMasterId;
+                //uvModel.UserMasterId = dto.ReturnObj.UserMasterId;
+                studView.UserDetails.FName = dto.ReturnObj.UserDetails.FName;
+                studView.UserDetails.MName = dto.ReturnObj.UserDetails.MName;
+                studView.UserDetails.LName = dto.ReturnObj.UserDetails.LName;
+                studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
+                studView.UserDetails.Image = dto.ReturnObj.UserDetails.Image;
+                studView.UserDetails.DOB = dto.ReturnObj.UserDetails.DOB;
+                studView.UserDetails.EmailId = dto.ReturnObj.UserDetails.EmailId;
+                studView.UserDetails.ResidentialAddress = dto.ReturnObj.UserDetails.ResidentialAddress;
+                studView.UserDetails.PermanentAddress = dto.ReturnObj.UserDetails.PermanentAddress;
+                studView.UserDetails.ContactNo = dto.ReturnObj.UserDetails.ContactNo;
+                studView.UserDetails.AltContactNo = dto.ReturnObj.UserDetails.AltContactNo;
+                studView.UserDetails.BloodGroup = dto.ReturnObj.UserDetails.BloodGroup;
+                studView.UserDetails.Location = dto.ReturnObj.UserDetails.Location;
+                studView.UserDetails.Role = dto.ReturnObj.UserDetails.Role;
+
+                //studView.Student = new StudentDTO();
+                studView.RollNumber = dto.ReturnObj.RollNumber;
+                studView.RegistrationNumber = dto.ReturnObj.RegistrationNumber;
+                studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
+                studView.GuardianContact = dto.ReturnObj.GuardianContact;
+                studView.GuardianName = dto.ReturnObj.GuardianName;
+                studView.GuardianEmailId = dto.ReturnObj.GuardianEmailId;
+                studView.HouseType = dto.ReturnObj.HouseType;
+                studView.StandardSectionMap = dto.ReturnObj.StandardSectionMap;
+                
+            }
+
+            studView.GenderList = _uiddlRepo.getGenderDropDown();
+            studView.LocationList = _uiddlRepo.getLocationDropDown();
+            studView.RoleList = _uiddlRepo.getRoleDropDown();
+            studView.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            studView.SectionList = _uiddlRepo.getSectionDropDown();
+            studView.HouseList = _uiddlRepo.getHouseDropDown();
+            //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
+            //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
+            //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
+            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+
+
+            return View(studView);
+        }
         [HttpGet]
         public ActionResult Search()
         {
             StatusDTO<List<StudentDTO>> status = _studSvc.Select(null);
-            StudentVM studView = null; 
+            StudentVM studView = null;
 
             if (status.ReturnObj != null && status.ReturnObj.Count > 0)
             {
@@ -65,20 +129,19 @@ namespace OperationsManager.Areas.Student.Controllers
                             searchItem.UserDetails.MName = student.UserDetails.MName;
                             searchItem.UserDetails.LName = student.UserDetails.LName;
 
-                            searchItem.Name = searchItem.UserDetails.FName;
-                            if (!string.IsNullOrEmpty(searchItem.UserDetails.MName))
+                            searchItem.Name = student.UserDetails.FName;
+                            if (!string.IsNullOrEmpty(student.UserDetails.FName))
                             {
-                                searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.MName;
+                                searchItem.Name = searchItem.Name + " " + student.UserDetails.MName;
                             }
-                            
-                                searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
-                           
+
+                            searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
+
 
                             searchItem.StandardSectionMap = new StandardSectionMapDTO();
                             searchItem.StandardSectionMap.Standard = new StandardDTO();
                             searchItem.StandardSectionMap.Section = new SectionDTO();
-
-
+                            
                             searchItem.StandardSectionMap.Standard.StandardName = student.StandardSectionMap.Standard.StandardName;
                             searchItem.StandardSectionMap.Section.SectionName = student.StandardSectionMap.Section.SectionName;
 
@@ -88,8 +151,6 @@ namespace OperationsManager.Areas.Student.Controllers
 
                         }
                     }
-
-
                 }
                 if (status.IsException)
                 {
@@ -114,24 +175,21 @@ namespace OperationsManager.Areas.Student.Controllers
             //Fetch the StandardSection List
             studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
-
-
-            if (studentView!=null)
-           {
+            if (studentView != null)
+            {
                 student = new StudentDTO();
+                //studentView.UserDetails = new UserMasterDTO();
                 student.UserDetails = new UserMasterDTO();
-
                 // Search for FName LName and MName
 
                 student.UserDetails.FName = studentView.UserDetails.FName;
                 student.UserDetails.MName = studentView.UserDetails.MName;
                 student.UserDetails.LName = studentView.UserDetails.LName;
 
-
                 student.StandardSectionMap = new StandardSectionMapDTO();
                 student.StandardSectionMap.Standard = new StandardDTO();
                 student.StandardSectionMap.Section = new SectionDTO();
-
+               
                 // Search for Class
 
                 student.StandardSectionMap.StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
@@ -142,7 +200,6 @@ namespace OperationsManager.Areas.Student.Controllers
                 student.RegistrationNumber = studentView.RegistrationNumber;
 
                 StatusDTO<List<StudentDTO>> status = _studSvc.Select(student);
-                
 
                 if (status.ReturnObj != null && status.ReturnObj.Count > 0)
                 {
@@ -162,15 +219,14 @@ namespace OperationsManager.Areas.Student.Controllers
                             if (stud != null)
                             {
                                 searchItem = new StudentVM(); // instantiating each student
-
+                                
                                 searchItem.Active = stud.Active;
                                 searchItem.GuardianContact = stud.GuardianContact;
                                 searchItem.RegistrationNumber = stud.RegistrationNumber;
                                 searchItem.RollNumber = stud.RollNumber;
 
-
                                 searchItem.UserDetails = new UserMasterDTO();
-                                searchItem.UserDetails.UserMasterId = student.UserDetails.UserMasterId;
+                                searchItem.UserDetails.UserMasterId = stud.UserDetails.UserMasterId;
                                 searchItem.UserDetails.FName = stud.UserDetails.FName;
                                 searchItem.UserDetails.MName = stud.UserDetails.MName;
                                 searchItem.UserDetails.LName = stud.UserDetails.LName;
@@ -180,14 +236,12 @@ namespace OperationsManager.Areas.Student.Controllers
                                 {
                                     searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.MName;
                                 }
-                                
-                                    searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
-                                
+
+                                searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
 
                                 searchItem.StandardSectionMap = new StandardSectionMapDTO();
                                 searchItem.StandardSectionMap.Standard = new StandardDTO();
                                 searchItem.StandardSectionMap.Section = new SectionDTO();
-
 
                                 searchItem.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
                                 searchItem.StandardSectionMap.Section.SectionName = stud.StandardSectionMap.Section.SectionName;
@@ -209,7 +263,49 @@ namespace OperationsManager.Areas.Student.Controllers
                 }
             }
 
-           return View(studView);
+            return View(studView);
+        }
+
+        [HttpPost]
+        public ActionResult Register(Models.StudentVM studentView)
+        {
+            if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                //Call update
+                //if (ModelState.IsValid)
+                //{ 
+                _studSvc.Update(studentView);                    
+                
+                //}
+            }
+            else
+            {
+                //Call insert
+
+                //if (ModelState.IsValid)
+                //{   
+                string pass = encrypt.encryption(studentView.UserDetails.Password);
+                studentView.UserDetails.Password = pass;
+                _studSvc.Insert(studentView);
+                
+                //}                
+            }
+            //if(ModelState.IsValid)
+            //{
+            //}
+
+            studentView.GenderList = _uiddlRepo.getGenderDropDown();
+            studentView.LocationList = _uiddlRepo.getLocationDropDown();
+            studentView.RoleList = _uiddlRepo.getRoleDropDown();
+            //uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            studentView.SectionList = _uiddlRepo.getSectionDropDown();
+            studentView.HouseList = _uiddlRepo.getHouseDropDown();
+            //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
+            //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
+            //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
+            studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+
+            return View(studentView);
         }
     }
 }

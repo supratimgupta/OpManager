@@ -63,48 +63,48 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.BloodGroup;
                     command.Parameters.Add("@UserName", MySqlDbType.String).Value = data.UserName;
                     command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.Password;
-                    command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
+                    //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
                     command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Location.LocationId;
 
-                    if (data.Student != null)
-                    {
-                        command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
-                        command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
-                        command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
-                        command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
-                        command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
-                        command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
-                        command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.Student.StandardSectionMap.StandardSectionId;
-                        command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.Student.HouseType.HouseTypeId;
-                    }
-                    else
-                    {
-                        command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = DBNull.Value;
-                        command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
-                        command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = DBNull.Value;
-                    }
+                    //if (data.Student != null)
+                    //{
+                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
+                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
+                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
+                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
+                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
+                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
+                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.Student.StandardSectionMap.StandardSectionId;
+                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.Student.HouseType.HouseTypeId;
+                    //}
+                    //else
+                    //{
+                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = DBNull.Value;
+                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //}
 
-                    if (data.Employee != null)
-                    {
+                    //if (data.Employee != null)
+                    //{
                         command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
                         command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
                         command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                         command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
                         command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
-                    }
-                    else
-                    {
-                        command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
-                        command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
-                        command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
-                    }
+                    //}
+                    //else
+                    //{
+                    //    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
+                    //    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //    command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //}
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
@@ -248,45 +248,45 @@ namespace OpMgr.DataAccess.Implementations
                             usermasterDTO.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
                             usermasterDTO.BloodGroup = _dsData.Tables[0].Rows[0]["BloodGroup"].ToString();
                             
-                            if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) == 1)
+                            //if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) == 1)
+                            //{
+                                //usermasterDTO.Student = new StudentDTO();
+                                //usermasterDTO.Student.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
+                                //usermasterDTO.Student.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
+                                //if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
+                                //{
+                                //    usermasterDTO.Student.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
+                                //}
+                                //else
+                                //{
+                                //    usermasterDTO.Student.AdmissionDate = null;
+                                //}
+                                //usermasterDTO.Student.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
+                                //usermasterDTO.Student.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
+                                //usermasterDTO.Student.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
+                                //usermasterDTO.Student.StandardSectionMap = new StandardSectionMapDTO();
+                                //usermasterDTO.Student.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
+                                //usermasterDTO.Student.HouseType = new HouseTypeDTO();
+                                //usermasterDTO.Student.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
+                            //}
+                            //else if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) > 1)
+                            //{
+                            usermasterDTO.Employee = new EmployeeDetailsDTO();
+                            usermasterDTO.Employee.EducationalQualification = _dsData.Tables[0].Rows[0]["EducationQualification"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DateOfJoining"].ToString()))
                             {
-                                usermasterDTO.Student = new StudentDTO();
-                                usermasterDTO.Student.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
-                                usermasterDTO.Student.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
-                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
-                                {
-                                    usermasterDTO.Student.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
-                                }
-                                else
-                                {
-                                    usermasterDTO.Student.AdmissionDate = null;
-                                }
-                                usermasterDTO.Student.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
-                                usermasterDTO.Student.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
-                                usermasterDTO.Student.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
-                                usermasterDTO.Student.StandardSectionMap = new StandardSectionMapDTO();
-                                usermasterDTO.Student.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
-                                usermasterDTO.Student.HouseType = new HouseTypeDTO();
-                                usermasterDTO.Student.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
+                                usermasterDTO.Employee.DateOfJoining = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["DateOfJoining"]);
                             }
-                            else if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) > 1)
+                            else
                             {
-                                usermasterDTO.Employee = new EmployeeDetailsDTO();
-                                usermasterDTO.Employee.EducationalQualification = _dsData.Tables[0].Rows[0]["EducationQualification"].ToString();
-                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DateOfJoining"].ToString()))
-                                {
-                                    usermasterDTO.Employee.DateOfJoining = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["DateOfJoining"]);
-                                }
-                                else
-                                {
-                                    usermasterDTO.Employee.DateOfJoining = null;
-                                }
-                                usermasterDTO.Employee.Department = new DepartmentDTO();
-                                usermasterDTO.Employee.Department.DepartmentId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
-                                usermasterDTO.Employee.StaffEmployeeId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
-                                usermasterDTO.Employee.Designation = new DesignationDTO();
-                                usermasterDTO.Employee.Designation.DesignationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                                usermasterDTO.Employee.DateOfJoining = null;
                             }
+                            usermasterDTO.Employee.Department = new DepartmentDTO();
+                            usermasterDTO.Employee.Department.DepartmentId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                            usermasterDTO.Employee.StaffEmployeeId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
+                            usermasterDTO.Employee.Designation = new DesignationDTO();
+                            usermasterDTO.Employee.Designation.DesignationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                            //}
                         }
                     }
                     status.ReturnObj = usermasterDTO;
@@ -458,48 +458,48 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.BloodGroup;
                     command.Parameters.Add("@UserName", MySqlDbType.String).Value = data.UserName;
                     command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.Password;
-                    command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
+                    //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
                     command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Location.LocationId;
 
-                    if (data.Student != null)
-                    {
-                        command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
-                        command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
-                        command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
-                        command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
-                        command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
-                        command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
-                        command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.Student.StandardSectionMap.StandardSectionId;
-                        command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.Student.HouseType.HouseTypeId;
-                    }
-                    else
-                    {
-                        command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = DBNull.Value;
-                        command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
-                        command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = DBNull.Value;
-                    }
+                    //if (data.Student != null)
+                    //{
+                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
+                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
+                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
+                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
+                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
+                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
+                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.Student.StandardSectionMap.StandardSectionId;
+                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.Student.HouseType.HouseTypeId;
+                    //}
+                    //else
+                    //{
+                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = DBNull.Value;
+                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //}
 
-                    if (data.Employee != null)
-                    {
-                        command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
+                    //if (data.Employee != null)
+                    //{
+                       command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
                         command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
                         command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                         command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
                         command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
-                    }
-                    else
-                    {
-                        command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
-                        command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
-                        command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
-                        command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
-                    }
+                    //}
+                    //else
+                    //{
+                    //    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
+                    //    command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
+                    //    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //    command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //}
                     command.ExecuteNonQuery();
                     StatusDTO<UserMasterDTO> status = new StatusDTO<UserMasterDTO>();
                     return status;
