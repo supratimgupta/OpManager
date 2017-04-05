@@ -47,6 +47,10 @@ namespace OpMgr.Common.DTOs
         public bool? HasPenalty { get; set; }
 
         public TransactionLogDTO OriginalTransLog { get; set; }
+        public double? AdjustedAmount { get; set; }
+
+        public int? IsPrincipalApproved { get; set; }
+
         public StandardSectionMapDTO StandardSectionMap { get; set; }
 
         public TransactionRuleDTO PenaltyTransactionRule { get; set; }

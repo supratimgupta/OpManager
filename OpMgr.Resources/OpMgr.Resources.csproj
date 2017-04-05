@@ -72,6 +72,11 @@
       <DependentUpon>Library.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transaction\Payment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Payment.resx</DependentUpon>
+    </Compile>
     <Compile Include="Transaction\TransactionLogAdd.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -142,6 +147,10 @@
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Library.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transaction\Payment.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Payment.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Transaction\TransactionLogAdd.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

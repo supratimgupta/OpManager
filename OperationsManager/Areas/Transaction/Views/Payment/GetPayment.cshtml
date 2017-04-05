@@ -1,0 +1,326 @@
+﻿@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.PaymentVM
+
+@{
+    ViewBag.Title = Payment.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section PageScripts{
+    <script>
+        $(document).ready(function () {
+            var radios = $('input:radio[name=radiobuttonId]');
+            var radiobuton = document.getElementById("radiobuttonId")
+            radios[1].checked = true;
+            $("#txtStaff").hide();
+            $('input:radio[name=radiobuttonId]').change(function () {
+                alert("1");
+                if (radios[0].checked == true) {
+                    $("#txtStudent").hide();
+                    $("#txtStaff").show();
+                }
+                else if (radios[1].checked == true) {
+                    $("#txtStudent").show();
+                    $("#txtStaff").hide();
+                }
+
+            });
+
+        });
+
+        function calculateAdjustment(i) {
+            
+            var tablePayment = document.getElementById("tablePayment");
+            var tbody = tablePayment.getElementsByTagName("tbody")[0];
+            var row = tbody.rows[i];
+            
+            var cell9currentpay = row.cells[9];
+            var textBoxcurrentpay = cell9currentpay.getElementsByTagName("input")[0];
+            var currentpayval = parseFloat(textBoxcurrentpay.value);
+            
+
+            var cell4Total = row.cells[4];
+            var textBoxTotalAmount = cell4Total[0].find('td:eq(0)').html();      
+            var totalamountval = parseFloat(textBoxTotalAmount.value);
+            
+                        
+            var cell5Paid = row.cells[5];
+            var textBoxPaid = cell5Paid.getElementsByTagName("input")[0];
+            alert(textBoxPaid);
+            var paidamountval = parseFloat(textBoxPaid.value);
+                        
+            var cell6Due = row.cells[6];
+            var textBoxDue = cell6Due.getElementsByTagName("input")[0];
+            var dueamountval = parseFloat(textBoxDue.value);
+            
+            //var cell9currentpay = row.cells[9];
+            //var textBoxcurrentpay = cell9currentpay.getElementsByTagName("input")[0];
+            //var currentpayval = parseFloat(textBoxcurrentpay.value);
+
+            var cell10Adjusting = row.cells[10];
+            var textBoxadjusting = cell10Adjusting.getElementsByTagName("input")[0];
+            var adjustingval = parseFloat(textBoxadjusting.value);
+
+
+            var cell11TranslogId = row.cells[11];
+            var hdnTransLogId = cell11TranslogId.getElementsByTagName("input")[0];
+            var trnsLogIdVal = parseInt(hdnTransLogId.value);
+                
+            var trnslog = new Object();
+
+            if(totalamountval > paidamountval)
+            {
+                if(currentpayval > 0)
+                {
+                    paidamountval = paidamountval + currentpayval;
+                    dueamountval = dueamountval - currentpayval;
+
+                    translog.TransactionLogId = trnsLogIdVal;
+                    translog.AmountGiven =paidamountval;
+                    translog.DueAmount = dueamountval;
+                    translog.AdjustedAmount = adjustingval;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'updateRowPayment',
+                        data: trnslog,
+                        dataType: "json",
+                        success: function (resultData) { alert("Paid Successfully"); },
+                        error: function (error) { }
+                    });
+                }
+                else
+                {
+                    alert("Enter a proper amount");
+                    return false;
+                }
+            }
+            else
+            {
+                alert("There is no Due for this Transaction");
+            }
+
+            
+            
+        }
+
+
+        function submitAll()
+        {
+            var tablePayment = document.getElementById("tablePayment");
+            var tbody = tablePayment.getElementsByTagName("tbody")[0];
+
+            var lstObjects = new Array();
+            var item = new Object();
+            for(i=0;i<tbody.rows.length;i++)
+            {
+                var row = tbody.rows[i];
+
+                var cell9 = row.cells[9];
+                var textBox = cell9.getElementsByTagName("input")[0];
+                var val = textBox.value;
+                item.AdjustedAmount = parseFloat(val);
+                lstObjects.push(item);
+            }
+            
+            
+            
+            
+        }
+    </script>
+
+}
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">@Payment.PageHeader</div>
+            <div class="panel-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="col-lg-1">
+                            @Html.OpMgrRadioButtonfor(m => m.radiobuttonId, Payment.Staffradio, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-1">
+                            @Html.OpMgrRadioButtonfor(m => m.radiobuttonId, Payment.Studentradio, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-2" id="txtStaff">
+                            @Html.OpMgrTextBoxFor(m => m.StaffEmployeeId, Payment.SearchEmployeeId, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-2" id="txtStudent">
+                            @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, Payment.SearchRegistrationNo, new { @class = "form-control" })
+                        </div>
+
+                        <div class="col-lg-2" style="vertical-align:bottom;margin-top:40px">
+                            <button type="submit" class="btn btn-primary">@Payment.BtnPendingPayment</button>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">@Payment.TableTransaction</div>
+            <div class="panel-body">
+                <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                    <thead>
+                        <tr>
+                            <th th data-field="name" data-sortable="true">
+                                @Payment.UserName
+                            </th>
+                            <th h data-field="transactionname" data-sortable="true">
+                                @Payment.TransactionName
+                            </th>
+                            <th th data-field="transactiondate" data-sortable="true">
+                                @Payment.TransactionDate
+                            </th>
+                            <th th data-field="duedate" data-sortable="true">
+                                @Payment.TransactionDueDate
+                            </th>
+                            <th th data-field="total" data-sortable="true">
+                                @Payment.GridRowTotal
+                            </th>
+                            <th th data-field="total" data-sortable="true">
+                                @Payment.GridRowPaid
+                            </th>
+                            <th th data-field="due" data-sortable="true">
+                                @Payment.GridRowDue
+                            </th>
+                            <th th data-field="principalapprval" data-sortable="true">
+                                @Payment.IsPrincipalApproved
+                            </th>
+                            <th th data-field="adjustedamount" data-sortable="true">
+                                @Payment.GridRowAdjustedAmount
+                            </th>
+                            <th th data-field="currentlypaying" data-sortable="true">
+                                @Payment.GridRowCurrentlyPaying
+                            </th>
+                            <th th data-field="adjustingamount" data-sortable="true">
+                                @Payment.GridRowAdjustingAmount
+                            </th>
+                            <th>
+                                @Payment.GridRowSubmit
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            if (Model.IsSearchSuccessful)
+                            {
+                                for (int i = 0; i < Model.paymentDetailsList.Count; i++)
+                                {
+                        <tr>
+                            <td>
+                                @Model.paymentDetailsList[i].Name
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].TransactionRule.TranMaster.TransactionName
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].TransactionDate
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].TransactionDueDate
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].AmountImposed
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].AmountGiven
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].DueAmount
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].PrincipalApproved
+                            </td>
+                            <td>
+                                @Model.paymentDetailsList[i].AdjustedAmount
+                            </td>
+                            <td>
+                                @Html.OpMgrTextBoxFor(m => m.rowCurrentlyPaying, "", new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.OpMgrTextBoxFor(m => m.rowAdjustingAmount, "", new { @class = "form-control" })
+                            </td>
+
+                            <td>
+                                <button type="submit" class="btn btn-primary" onclick="calculateAdjustment(@i)">@Payment.GridRowSubmit</button>
+                                @Html.HiddenFor(m => m.HdnTransactionLogId)
+                            </td>
+                        </tr>
+                                }
+                            }
+                            else
+                            {
+                        <tr>
+                            <td colspan="8" align="center" style="font-style:oblique">
+                                No Data Found
+                            </td>
+                        </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <script>
+                    $(function () {
+                        $('#hover, #striped, #condensed').click(function () {
+                            var classes = 'table';
+
+                            if ($('#hover').prop('checked')) {
+                                classes += ' table-hover';
+                            }
+                            if ($('#condensed').prop('checked')) {
+                                classes += ' table-condensed';
+                            }
+                            $('#table-style').bootstrapTable('destroy')
+                                .bootstrapTable({
+                                    classes: classes,
+                                    striped: $('#striped').prop('checked')
+                                });
+                        });
+                    });
+
+                    function rowStyle(row, index) {
+                        var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+                        if (index % 2 === 0 && index / 2 < classes.length) {
+                            return {
+                                classes: classes[index / 2]
+                            };
+                        }
+                        return {};
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">@Payment.PageHeader</div>
+            <div class="panel-body">
+                <div class="col-lg-2" id="labeltotaldue">
+                    @Html.OpMgrTextBoxFor(m => m.LabelTotalDue, Payment.LabelTotalDue, new { @class = "form-control" })
+                </div>
+                <div class="col-lg-2" id="txttotalpay">
+                    @Html.OpMgrTextBoxFor(m => m.LabelCurrentlyPaying, Payment.LabelCurrentPaying, new { @class = "form-control" })
+
+                </div>
+                <div class="col-lg-2" id="tstadjust">
+                    @Html.OpMgrTextBoxFor(m => m.LabelCurrentlyAdjust, Payment.LabelCurrentAdjustment, new { @class = "form-control" })
+
+                </div>
+                <div class="col-lg-2" style="vertical-align:bottom;margin-top:40px">
+                    <button type="submit" class="btn btn-primary">@Payment.LabelSubmitAll</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

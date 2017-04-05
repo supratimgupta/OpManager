@@ -14,7 +14,8 @@ namespace OpMgr.DataAccess.Implementations
     public class TransactionLogSvc : ITransactionLogSvc
     {
         private IConfigSvc _configSvc;
-
+        private DataTable _dtData;
+        private DataSet _dsData;
         private ILogSvc _logger;
 
         private DataTable _dtResult;
@@ -41,7 +42,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     StatusDTO<TransactionLogDTO> status = new StatusDTO<TransactionLogDTO>();
-                    if(data!=null)
+                    if (data != null)
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
@@ -81,7 +82,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(data.UpdatedDate!=null)
+                        if (data.UpdatedDate != null)
                         {
                             command.Parameters.Add("@updatedDate", MySqlDbType.DateTime).Value = data.UpdatedDate;
                         }
@@ -90,7 +91,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@updatedDate", MySqlDbType.DateTime).Value = DBNull.Value;
                         }
 
-                        if(data.Active!=null)
+                        if (data.Active != null)
                         {
                             command.Parameters.Add("@active", MySqlDbType.Bit).Value = data.Active;
                         }
@@ -99,7 +100,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@active", MySqlDbType.Bit).Value = DBNull.Value;
                         }
 
-                        if(data.User!=null)
+                        if (data.User != null)
                         {
                             command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = data.User.UserMasterId;
                         }
@@ -108,7 +109,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(data.TransactionDate!=null)
+                        if (data.TransactionDate != null)
                         {
                             command.Parameters.Add("@transactionDate", MySqlDbType.DateTime).Value = data.TransactionDate;
                         }
@@ -117,7 +118,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@transactionDate", MySqlDbType.DateTime).Value = DBNull.Value;
                         }
 
-                        if(data.TransactionDueDate!=null)
+                        if (data.TransactionDueDate != null)
                         {
                             command.Parameters.Add("@transactionDueDate", MySqlDbType.DateTime).Value = data.TransactionDueDate;
                         }
@@ -126,7 +127,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@transactionDueDate", MySqlDbType.DateTime).Value = DBNull.Value;
                         }
 
-                        if(data.TransactionPreviousDueDate!=null)
+                        if (data.TransactionPreviousDueDate != null)
                         {
                             command.Parameters.Add("@transPrevDueDate", MySqlDbType.DateTime).Value = data.TransactionPreviousDueDate;
                         }
@@ -135,7 +136,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@transPrevDueDate", MySqlDbType.DateTime).Value = DBNull.Value;
                         }
 
-                        if(data.ParentTransactionLogId!=null)
+                        if (data.ParentTransactionLogId != null)
                         {
                             command.Parameters.Add("@parentTransLogId", MySqlDbType.Int32).Value = data.ParentTransactionLogId.TransactionLogId;
                         }
@@ -144,7 +145,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@parentTransLogId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(data.IsCompleted!=null)
+                        if (data.IsCompleted != null)
                         {
                             command.Parameters.Add("@isCompleted", MySqlDbType.Bit).Value = data.IsCompleted;
                         }
@@ -153,7 +154,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@isCompleted", MySqlDbType.Bit).Value = DBNull.Value;
                         }
 
-                        if(data.CompletedOn!=null)
+                        if (data.CompletedOn != null)
                         {
                             command.Parameters.Add("@completedOn", MySqlDbType.DateTime).Value = data.CompletedOn;
                         }
@@ -162,7 +163,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@completedOn", MySqlDbType.DateTime).Value = DBNull.Value;
                         }
 
-                        if(data.AmountImposed!=null)
+                        if (data.AmountImposed != null)
                         {
                             command.Parameters.Add("@amountImposed", MySqlDbType.Double).Value = data.AmountImposed;
                         }
@@ -171,7 +172,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@amountImposed", MySqlDbType.Double).Value = DBNull.Value;
                         }
 
-                        if(data.AmountGiven!=null)
+                        if (data.AmountGiven != null)
                         {
                             command.Parameters.Add("@amountGiven", MySqlDbType.Double).Value = data.AmountGiven;
                         }
@@ -180,7 +181,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@amountGiven", MySqlDbType.Double).Value = DBNull.Value;
                         }
 
-                        if(data.DueAmount!=null)
+                        if (data.DueAmount != null)
                         {
                             command.Parameters.Add("@dueAmount", MySqlDbType.Double).Value = data.DueAmount;
                         }
@@ -189,7 +190,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@dueAmount", MySqlDbType.Double).Value = DBNull.Value;
                         }
 
-                        if(!string.IsNullOrEmpty(data.TransferMode))
+                        if (!string.IsNullOrEmpty(data.TransferMode))
                         {
                             command.Parameters.Add("@transferMode", MySqlDbType.String).Value = data.TransferMode;
                         }
@@ -198,7 +199,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@transferMode", MySqlDbType.String).Value = DBNull.Value;
                         }
 
-                        if(data.Location!=null)
+                        if (data.Location != null)
                         {
                             command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = data.Location.LocationId;
                         }
@@ -207,7 +208,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(data.StandardSectionMap!=null)
+                        if (data.StandardSectionMap != null)
                         {
                             command.Parameters.Add("@standardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
                         }
@@ -216,7 +217,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@standardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(!string.IsNullOrEmpty(data.TransactionType))
+                        if (!string.IsNullOrEmpty(data.TransactionType))
                         {
                             command.Parameters.Add("@transactionType", MySqlDbType.String).Value = data.TransactionType;
                         }
@@ -225,7 +226,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@transactionType", MySqlDbType.String).Value = DBNull.Value;
                         }
 
-                        if(data.HasPenalty!=null)
+                        if (data.HasPenalty != null)
                         {
                             command.Parameters.Add("@hasPenalty", MySqlDbType.Bit).Value = data.HasPenalty;
                         }
@@ -234,7 +235,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@hasPenalty", MySqlDbType.Bit).Value = DBNull.Value;
                         }
 
-                        if(data.OriginalTransLog!=null)
+                        if (data.OriginalTransLog != null)
                         {
                             command.Parameters.Add("@originalTransLogId", MySqlDbType.Int32).Value = data.OriginalTransLog.TransactionLogId;
                         }
@@ -243,7 +244,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@originalTransLogId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(data.TransactionRule!=null)
+                        if (data.TransactionRule != null)
                         {
                             command.Parameters.Add("@transRuleId", MySqlDbType.Int32).Value = data.TransactionRule.TranRuleId;
                         }
@@ -252,7 +253,7 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@transRuleId", MySqlDbType.Int32).Value = DBNull.Value;
                         }
 
-                        if(data.PenaltyTransactionRule!=null)
+                        if (data.PenaltyTransactionRule != null)
                         {
                             command.Parameters.Add("@penTrnsRuleId", MySqlDbType.Int32).Value = data.PenaltyTransactionRule.TranRuleId;
                         }
@@ -292,9 +293,9 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
-                        command.CommandText = "UPDATE TransactionLog SET IsCompleted=@completed, CompletedOn=@completedOn"+
+                        command.CommandText = "UPDATE TransactionLog SET IsCompleted=@completed, CompletedOn=@completedOn" +
                                               ", DueAmount=@due, AmountGiven=@given WHERE TransactionLogId=@trLogId";
-                        if(data.IsCompleted!=null)
+                        if (data.IsCompleted != null)
                         {
                             command.Parameters.Add("@completed", MySqlDbType.Bit).Value = data.IsCompleted.Value;
                         }
@@ -328,7 +329,7 @@ namespace OpMgr.DataAccess.Implementations
                         }
                         command.Parameters.Add("@trLogId", MySqlDbType.Int32).Value = data.TransactionLogId;
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                        if(command.ExecuteNonQuery()>0)
+                        if (command.ExecuteNonQuery() > 0)
                         {
                             status.IsSuccess = true;
                             status.IsException = false;
@@ -375,7 +376,7 @@ namespace OpMgr.DataAccess.Implementations
                         command.Parameters.Add("@toDate", MySqlDbType.DateTime).Value = data.SearchUpto.Value;
                     }
 
-                    if(data.User!=null && data.User.UserMasterId>0)
+                    if (data.User != null && data.User.UserMasterId > 0)
                     {
                         command.CommandText = command.CommandText + " AND tl.UserMasterId=@umId";
                         command.Parameters.Add("@umId", MySqlDbType.Int32).Value = data.User.UserMasterId;
@@ -403,7 +404,7 @@ namespace OpMgr.DataAccess.Implementations
                         command.CommandText = command.CommandText + " AND ed.StaffEmployeeId=@empId";
                         command.Parameters.Add("@empId", MySqlDbType.String).Value = data.SearchEmployeeId;
                     }
-                    if (data.SearchStdSectionId != null && data.SearchStdSectionId.Value>0)
+                    if (data.SearchStdSectionId != null && data.SearchStdSectionId.Value > 0)
                     {
                         command.CommandText = command.CommandText + " AND tl.StandardSectionId=@stdSecId";
                         command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = data.SearchStdSectionId;
@@ -423,11 +424,11 @@ namespace OpMgr.DataAccess.Implementations
                     status.IsSuccess = true;
                     status.ReturnObj = null;
 
-                    if(dtData!=null && dtData.Rows.Count>0)
+                    if (dtData != null && dtData.Rows.Count > 0)
                     {
                         status.ReturnObj = new List<TransactionLogDTO>();
                         TransactionLogDTO trLog = null;
-                        foreach(DataRow dr in dtData.Rows)
+                        foreach (DataRow dr in dtData.Rows)
                         {
                             trLog = new TransactionLogDTO();
                             trLog.User = new UserMasterDTO();
@@ -438,9 +439,9 @@ namespace OpMgr.DataAccess.Implementations
                             trLog.TransactionDate = (DateTime)dr["TransactionDate"];
                             trLog.TransactionDueDate = (DateTime)dr["TransactionDueDate"];
                             trLog.ParentTransactionLogId = new TransactionLogDTO();
-                            trLog.ParentTransactionLogId.TransactionLogId = string.IsNullOrEmpty(dr["ParentTransactionLogId"].ToString()) ?-1:(int)dr["ParentTransactionLogId"];
+                            trLog.ParentTransactionLogId.TransactionLogId = string.IsNullOrEmpty(dr["ParentTransactionLogId"].ToString()) ? -1 : (int)dr["ParentTransactionLogId"];
                             trLog.IsCompleted = string.Equals(dr["IsCompleted"].ToString(), "1") ? true : false;
-                            trLog.CompletedOn = string.IsNullOrEmpty(dr["CompletedOn"].ToString())?null:(DateTime?)dr["CompletedOn"];
+                            trLog.CompletedOn = string.IsNullOrEmpty(dr["CompletedOn"].ToString()) ? null : (DateTime?)dr["CompletedOn"];
                             trLog.AmountImposed = double.Parse(dr["AmountImposed"].ToString());
                             trLog.AmountGiven = string.IsNullOrEmpty(dr["AmountGiven"].ToString()) ? 0.0 : double.Parse(dr["AmountGiven"].ToString());
                             trLog.DueAmount = string.IsNullOrEmpty(dr["DueAmount"].ToString()) ? 0.0 : double.Parse(dr["DueAmount"].ToString());
@@ -448,9 +449,9 @@ namespace OpMgr.DataAccess.Implementations
                             trLog.Location = new LocationDTO();
                             trLog.Location.LocationDescription = dr["LocationDescription"].ToString();
                             trLog.TransactionType = dr["TransactionType"].ToString();
-                            trLog.HasPenalty = string.Equals(dr["HasPenalty"].ToString(),"1")?true:false;
+                            trLog.HasPenalty = string.Equals(dr["HasPenalty"].ToString(), "1") ? true : false;
                             trLog.OriginalTransLog = new TransactionLogDTO();
-                            trLog.OriginalTransLog.TransactionLogId = string.IsNullOrEmpty(dr["OriginalTransactionLogId"].ToString()) ?-1:(int)dr["OriginalTransactionLogId"];
+                            trLog.OriginalTransLog.TransactionLogId = string.IsNullOrEmpty(dr["OriginalTransactionLogId"].ToString()) ? -1 : (int)dr["OriginalTransactionLogId"];
                             trLog.TransactionRule = new TransactionRuleDTO();
                             trLog.TransactionRule.RuleName = dr["RuleName"].ToString();
                             status.ReturnObj.Add(trLog);
@@ -459,12 +460,12 @@ namespace OpMgr.DataAccess.Implementations
 
                     return status;
                 }
-                catch(Exception exp)
+                catch (Exception exp)
                 {
                     _logger.Log(exp);
                     throw exp;
                 }
-                
+
             }
         }
 
@@ -522,7 +523,7 @@ namespace OpMgr.DataAccess.Implementations
                         trLog.OriginalTransLog.TransactionLogId = string.IsNullOrEmpty(dtData.Rows[0]["OriginalTransactionLogId"].ToString()) ? -1 : (int)dtData.Rows[0]["OriginalTransactionLogId"];
                         trLog.TransactionRule = new TransactionRuleDTO();
                         trLog.TransactionRule.RuleName = dtData.Rows[0]["RuleName"].ToString();
-                        status.ReturnObj=trLog;
+                        status.ReturnObj = trLog;
                     }
 
                     return status;
@@ -544,8 +545,8 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT TransactionLogId, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, UserMasterId, TransactionDate, TransactionDueDate, "+
-                                           "TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, AmountGiven, DueAmount, TransferMode, "+
+                    command.CommandText = "SELECT TransactionLogId, CreatedBy, CreatedDate, UpdatedBy, UpdatedDate, UserMasterId, TransactionDate, TransactionDueDate, " +
+                                           "TransactionPreviousDueDate, ParentTransactionLogId, IsCompleted, CompletedOn, AmountImposed, AmountGiven, DueAmount, TransferMode, " +
                                            "locationId, StandardSectionId, TransactionType, HasPenalty, OriginalTransactionLogId, TranRuleId, PenaltyTransactionRule FROM TransactionLog WHERE Active=1 AND IsCompleted<>1 AND OriginalTransactionLogId IS NULL AND ParentTransactionLogId IS NULL AND TransactionDueDate IS NOT NULL AND TransactionDueDate<@runDate";
                     command.Parameters.Add("@runDate", MySqlDbType.DateTime).Value = runDate.Value.Date;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
@@ -576,7 +577,177 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@penaltyRule", MySqlDbType.Int32).Value = penaltyTransactionRule;
                     command.Parameters.Add("@trnsLogId", MySqlDbType.Int32).Value = trnsLogId;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    return command.ExecuteNonQuery()>0;
+                    return command.ExecuteNonQuery() > 0;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<List<TransactionLogDTO>> SelectPayment(StudentDTO student)
+        {
+            StatusDTO<List<TransactionLogDTO>> status = new StatusDTO<List<TransactionLogDTO>>();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "get_Payment_details";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    if (!String.IsNullOrEmpty(student.RegistrationNumber))
+                    {
+                        command.Parameters.Add("@RegistrationNo1", MySqlDbType.VarChar).Value = student.RegistrationNumber;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@RegistrationNo1", MySqlDbType.VarChar).Value = DBNull.Value;
+                    }
+                    if (student.UserDetails != null)
+                    {
+                        student.UserDetails = new UserMasterDTO();
+                        student.UserDetails.Employee = new EmployeeDetailsDTO();
+                        if (!String.IsNullOrEmpty(student.UserDetails.Employee.StaffEmployeeId))
+                        {
+                            command.Parameters.Add("@StaffEmployeeId1", MySqlDbType.VarChar).Value = student.UserDetails.Employee.StaffEmployeeId;
+                        }
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@StaffEmployeeId1", MySqlDbType.VarChar).Value = DBNull.Value;
+                    }
+
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+
+                    if (_dsData != null)
+                    {
+                        status.ReturnObj = new List<TransactionLogDTO>();
+                        for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
+                        {
+                            TransactionLogDTO tranlog = new TransactionLogDTO();
+                            tranlog.TransactionLogId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["TransactionLogId"]);
+                            tranlog.User = new UserMasterDTO();
+                            tranlog.User.FName = _dsData.Tables[0].Rows[i]["FName"].ToString();
+                            tranlog.User.LName = _dsData.Tables[0].Rows[i]["Lname"].ToString();
+                            tranlog.TransactionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionDate"]);
+                            tranlog.TransactionDueDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionDueDate"]);
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["TransactionPreviousDueDate"].ToString()))
+                            {
+                                tranlog.TransactionPreviousDueDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionPreviousDueDate"]);
+                            }
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["ParentTransactionLogId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[i]["ParentTransactionLogId"]) > 0 )
+                                {
+                                    tranlog.ParentTransactionLogId = new TransactionLogDTO();
+                                    tranlog.ParentTransactionLogId.TransactionLogId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["ParentTransactionLogId"]);
+                                }
+                            }
+                            tranlog.IsCompleted = Convert.ToBoolean(_dsData.Tables[0].Rows[i]["IsCompleted"]);
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["CompletedOn"].ToString()))
+                            {
+                                tranlog.CompletedOn = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["CompletedOn"]);
+                            }
+                            tranlog.AmountImposed = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AmountImposed"]);
+                            tranlog.AmountGiven = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AmountGiven"]);
+                            tranlog.DueAmount = Convert.ToDouble(_dsData.Tables[0].Rows[i]["DueAmount"]);
+                            tranlog.TransferMode = _dsData.Tables[0].Rows[i]["TransferMode"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["HasPenalty"].ToString()))
+                            {
+                                tranlog.HasPenalty = Convert.ToBoolean(_dsData.Tables[0].Rows[i]["HasPenalty"]);
+                            }
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["AdjustedAmount"].ToString()))
+                            {
+                                tranlog.AdjustedAmount = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AdjustedAmount"]);
+                            }
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["IsPrincipalApproved"].ToString()))
+                            {
+                                tranlog.IsPrincipalApproved = Convert.ToInt32(_dsData.Tables[0].Rows[i]["IsPrincipalApproved"]);
+                            }
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["OriginalTransactionLogId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[i]["OriginalTransactionLogId"]) > 0)
+                                {
+                                    tranlog.OriginalTransLog = new TransactionLogDTO();
+                                    tranlog.OriginalTransLog.TransactionLogId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["OriginalTransactionLogId"]);
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["TransactionName"].ToString()))
+                            {
+                                tranlog.TransactionRule = new TransactionRuleDTO();
+                                tranlog.TransactionRule.TranMaster = new TransactionMasterDTO();
+                                tranlog.TransactionRule.TranMaster.TransactionName = _dsData.Tables[0].Rows[i]["TransactionName"].ToString();
+                            }
+                            status.ReturnObj.Add(tranlog);
+                            status.IsSuccess = true;
+                        }
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+            return status;
+        }
+
+        public StatusDTO<TransactionLogDTO> UpdatePayment(TransactionLogDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    StatusDTO<TransactionLogDTO> status = new StatusDTO<TransactionLogDTO>();
+                    if (data != null)
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        command.CommandText = "UPDATE TransactionLog SET  AmountGiven=@given, DueAmount=@due ,AdjustedAmount=@adjusted WHERE TransactionLogId=@trLogId";
+                        
+                        if (data.AmountGiven != null)
+                        {
+                            command.Parameters.Add("@given", MySqlDbType.Double).Value = data.AmountGiven.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@given", MySqlDbType.Double).Value = DBNull.Value;
+                        }
+
+                        if (data.DueAmount != null)
+                        {
+                            command.Parameters.Add("@due", MySqlDbType.Double).Value = data.DueAmount.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@due", MySqlDbType.Double).Value = DBNull.Value;
+                        }
+
+
+                        if (data.DueAmount != null)
+                        {
+                            command.Parameters.Add("@adjusted", MySqlDbType.Double).Value = data.AdjustedAmount.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@adjusted", MySqlDbType.Double).Value = DBNull.Value;
+
+                        }
+                         command.Parameters.Add("@trLogId", MySqlDbType.Int32).Value = data.TransactionLogId;
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            status.IsSuccess = true;
+                            status.IsException = false;
+                        }
+                    }
+                    return status;
                 }
                 catch (Exception exp)
                 {

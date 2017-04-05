@@ -68,7 +68,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@AlContactNo", MySqlDbType.String).Value = data.UserDetails.AltContactNo;
                     command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.UserDetails.BloodGroup;
                     command.Parameters.Add("@UserName", MySqlDbType.String).Value = data.UserDetails.UserName;
-                    //command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.UserDetails.Password;
+                    command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.UserDetails.Password;
                     //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
                     command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
 
