@@ -1,0 +1,184 @@
+﻿@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.TransactionViewModel
+
+@{
+    ViewBag.Title = "Transactions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section PageScripts
+{
+    <script language="javascript" type="text/javascript">
+        function changeMode(mode)
+        {
+            document.getElementById("hfMode").value = mode;
+        }
+
+        function checkUncheckAll(cbCheckUncheck)
+        {
+            debugger;
+            if (cbCheckUncheck.checked)
+            {
+                $(".checkUncheck").attr('checked', 'checked');
+            }
+            else
+            {
+                $(".checkUncheck").removeAttr('checked');
+            }
+        }
+    </script>
+}
+<div class="row">
+    <div>
+        <div class="panel-default">
+            <div class="panel-heading">@TransactionSearch.TransSearchPageHeader</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        @if (!Model.IsSuccessMessage && Model.Message!=null && !string.IsNullOrEmpty(Model.Message.ToHtmlString()))
+                        {
+                            @*<div class="panel panel-danger">
+                                <div class="panel-body">
+                                    @Model.Message
+                                </div>
+                            </div>*@
+                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                <strong>@Model.Message</strong>
+                            </div>
+                        }
+                        else
+                        {
+                            @*<div class="panel panel-danger">
+                                    <div class="panel-body">
+                                        @Model.Message
+                                    </div>
+                                </div>*@
+                            if (Model.Message != null && !string.IsNullOrEmpty(Model.Message.ToHtmlString()))
+                            {
+                                <div class="alert alert-success alert-dismissable alert-dismissible fade in">
+                                    <strong>@Model.Message</strong>
+                                </div>
+                            }
+
+                        }
+                        @Html.HiddenFor(m=>m.MODE, new {id="hfMode" })
+                        <div class="row">
+                            <div class="col-lg-2">
+                                @Html.OpMgrTextBoxFor(m => m.SearchFrom, TransactionSearch.FromDate, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.OpMgrTextBoxFor(m => m.SearchUpto, TransactionSearch.ToDate, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-primary btn-block" onclick="changeMode('SEARCH');">Search</button>
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-primary btn-block" onclick="changeMode('APPROVE');">Approve</button>
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-primary btn-block" onclick="changeMode('CANCEL');">Cancel</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="row">
+                        @if (Model.SearchResult != null && Model.SearchResult.Count > 0)
+                        {
+                            <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.CheckBoxFor(m=>m.IsSelected, new {onchange="checkUncheckAll(this);" })
+                                        </th>
+                                        <th>
+                                            @TransactionSearch.Col2
+                                        </th>
+                                        <th>
+                                            @TransactionSearch.Col3
+                                        </th>
+                                        <th>
+                                            @TransactionSearch.Col7
+                                        </th>
+                                        <th>
+                                            @TransactionSearch.Col8
+                                        </th>
+                                        <th>
+                                            @TransactionSearch.Col9
+                                        </th>
+                                        <th>
+                                            Adjusted
+                                        </th>
+                                        <th>
+                                            @TransactionSearch.Col13
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.SearchResult.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @*<input class="checkUncheck" type="checkbox" name="SearchResult[@i].IsSelected" @(Model.SearchResult[i].IsSelected?"checked=\"checked\"":"") />*@
+                                                @Html.CheckBoxFor(m=>m.SearchResult[i].IsSelected)
+                                                <input type="hidden" name="SearchResult[@i].TransactionLogId" value="@Model.SearchResult[i].TransactionLogId" />
+                                                <input type="hidden" name="SearchResult[@i].DueAmount" value="@Model.SearchResult[i].DueAmount" />
+                                            </td>
+                                            <td>
+                                                @string.Concat(Model.SearchResult[i].User.FName, " ", Model.SearchResult[i].User.MName, " ", Model.SearchResult[i].User.LName)
+                                            </td>
+                                            <td>
+                                                @if (Model.SearchResult[i].TransactionDate != null)
+                                                {
+                                                    @Model.SearchResult[i].TransactionDate.Value.ToString("dd-MMM-yyyy hh:mm tt")
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.SearchResult[i].AmountImposed != null)
+                                                {
+                                                    @Model.SearchResult[i].AmountImposed.ToString()
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.SearchResult[i].AmountGiven != null)
+                                                {
+                                                    @Model.SearchResult[i].AmountGiven.ToString()
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.SearchResult[i].DueAmount != null)
+                                                {
+                                                    @Model.SearchResult[i].DueAmount.ToString()
+                                                }
+                                            </td>
+                                            <td>
+                                                @Model.SearchResult[i].AdjustedAmount
+                                            </td>
+                                            <td>
+                                                @(Model.SearchResult[i].TransactionRule != null ? Model.SearchResult[i].TransactionRule.RuleName : "")
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                                <tr>
+                                    <td align="center">
+                                        <b>
+                                            @TransactionSearch.NoDataMsg
+                                        </b>
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+</div>
