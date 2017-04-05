@@ -157,8 +157,7 @@
         <div>
             <div class="panel-heading">@UserResource.PageHeader</div>
             <div class="panel-body">
-
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
@@ -239,6 +238,26 @@
                                 @Html.OpMgrDropDownListFor(m => m.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
                             </div>
                         </div>
+                        <div id="divImages">
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Father (Old will be replaced)</label>
+                                    <input type="file" name="fuFatherImage" class="form-control" id="fatherImage" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Mother (Old will be replaced)</label>
+                                    <input type="file" name="fuMotherImage" class="form-control" id="motherImage" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
+                                    <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+                                </div>
+                            </div>
+                        </div>
                         @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
                         {
                             <div id="divcredentials">
@@ -252,6 +271,7 @@
                                     @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control" })
                                 </div>
                             </div>
+
                         }
                         <div class="row">
                             <table id="tblTransactions" class="table table table-striped table-bordered table-responsive table-hover">

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 
 namespace OperationsManager.Areas.Student.Controllers
 {
@@ -21,13 +22,17 @@ namespace OperationsManager.Areas.Student.Controllers
         private Helpers.UIDropDownRepo _uiddlRepo;
         Encryption encrypt = new Encryption();
         private IUserTransactionSvc _userTrans;
-        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans)
+
+        private IConfigSvc _configSvc;
+
+        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc)
         {
             _studSvc = studSvc;
             _dropDwnRepo = dropDwnRepo;
             _uiddlRepo = new Helpers.UIDropDownRepo(_dropDwnRepo);
             //_logSvc = logSvc;
             _userTrans = userTrans;
+            _configSvc = configSvc;
         }
         // GET: Student/Student
 
@@ -299,9 +304,45 @@ namespace OperationsManager.Areas.Student.Controllers
             return View(studView);
         }
 
+        private void SaveImageFiles(string directoryPath, string uploadedFileName, string regNo)
+        {
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            string fileName = uploadedFileName;
+            string[] arrNameWithExtension = fileName.Split('.');
+            string currentExtension = arrNameWithExtension[arrNameWithExtension.Length - 1];
+            string filePath = directoryPath + "\\" + regNo + "." + currentExtension;
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+            Request.Files[0].SaveAs(filePath);
+        }
+
         [HttpPost]
         public ActionResult Register(Models.StudentVM studentView)
         {
+            string folderName = string.Empty;
+            if(Request.Files.Count>0)
+            {
+                folderName = _configSvc.GetFatherImagesFolder();
+                SaveImageFiles(folderName, Request.Files[0].FileName, studentView.RegistrationNumber);
+            }
+
+            if(Request.Files.Count>1)
+            {
+                folderName = _configSvc.GetMotherImagesFolder();
+                SaveImageFiles(folderName, Request.Files[0].FileName, studentView.RegistrationNumber);
+            }
+
+            if (Request.Files.Count > 1)
+            {
+                folderName = _configSvc.GetStudentImagesFolder();
+                SaveImageFiles(folderName, Request.Files[0].FileName, studentView.RegistrationNumber);
+            }
+
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 //Call update
