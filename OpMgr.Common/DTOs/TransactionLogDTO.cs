@@ -68,7 +68,7 @@ namespace OpMgr.Common.DTOs
 
         public int? SearchStdSectionId { get; set; }
 
-        public double? AdjustedAmount { get; set; }
+        //public double? AdjustedAmount { get; set; }
 
         public bool IsChequeEncashed { get; set; }
 

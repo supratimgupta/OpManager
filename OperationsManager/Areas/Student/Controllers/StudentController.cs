@@ -325,22 +325,24 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult Register(Models.StudentVM studentView)
         {
             string folderName = string.Empty;
-            if(Request.Files.Count>0)
-            {
-                folderName = _configSvc.GetFatherImagesFolder();
-                SaveImageFiles(folderName, Request.Files[0].FileName, studentView.RegistrationNumber);
-            }
 
-            if(Request.Files.Count>1)
+            for(int i=0;i<Request.Files.Count;i++)
             {
-                folderName = _configSvc.GetMotherImagesFolder();
-                SaveImageFiles(folderName, Request.Files[0].FileName, studentView.RegistrationNumber);
-            }
+                string keyName = Request.Files.Keys[i];
+                switch(keyName)
+                {
+                    case "fuFatherImage":
+                        folderName = _configSvc.GetFatherImagesFolder();
+                        break;
+                    case "fuMotherImage":
+                        folderName = _configSvc.GetFatherImagesFolder();
+                        break;
+                    case "fuStudentImage":
+                        folderName = _configSvc.GetFatherImagesFolder();
+                        break;
+                }
 
-            if (Request.Files.Count > 1)
-            {
-                folderName = _configSvc.GetStudentImagesFolder();
-                SaveImageFiles(folderName, Request.Files[0].FileName, studentView.RegistrationNumber);
+                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
             }
 
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))

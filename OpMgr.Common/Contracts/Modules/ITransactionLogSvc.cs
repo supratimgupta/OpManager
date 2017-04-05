@@ -17,5 +17,9 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<List<TransactionLogDTO>> SelectPayment(StudentDTO student);
 
         StatusDTO<TransactionLogDTO> UpdatePayment(TransactionLogDTO tranlog);
+
+        StatusDTO<List<TransactionLogDTO>> GetPendingPrincipalApprovals(TransactionLogDTO tranlog);
+
+        bool ApproveCancelAdjustedAmt(List<TransactionLogDTO> lstTRLog);
     }
 }
