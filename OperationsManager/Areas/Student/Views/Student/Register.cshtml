@@ -17,6 +17,139 @@
                         
         });
     </script>
+    <script>
+        function addTransactionItems()
+        {
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "Transactions[" + nextRowId + "].UserTransactionId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlTrMaster = document.createElement("select");
+            ddlTrMaster.name = "Transactions[" + nextRowId + "].Transaction.TranMasterId";
+            ddlTrMaster.className = "form-control";
+            populateTrMasterDDL(ddlTrMaster);
+            scndCell.appendChild(ddlTrMaster);
+
+            var thirdCell = document.createElement("td");
+            var ddlCalcIn = document.createElement("select");
+            ddlCalcIn.name = "Transactions[" + nextRowId + "].GraceAmountIn";
+            ddlCalcIn.className = "form-control";
+            populateGraceIn(ddlCalcIn);
+            thirdCell.appendChild(ddlCalcIn);
+
+            var fourthCell = document.createElement("td");
+            var txtGraceAmt = document.createElement("input");
+            txtGraceAmt.type = "text";
+            txtGraceAmt.name = "Transactions[" + nextRowId + "].GraceAmount";
+            txtGraceAmt.className = "form-control";
+            fourthCell.appendChild(txtGraceAmt);
+
+            var fifthCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteRow(this);');
+            fifthCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+            newRow.appendChild(fourthCell);
+            newRow.appendChild(fifthCell);
+
+            tbody.appendChild(newRow);
+        }
+
+        function deleteRow(aDelete)
+        {
+            var row = aDelete.parentNode.parentNode;
+
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+
+            tbody.removeChild(row);
+        }
+
+        function populateGraceIn(ddlCalcIn)
+        {
+            $.ajax({
+                type: 'POST',
+                url: 'GetCalcIn',
+                dataType: "json",
+                success: function (resultData) { populateCalcInDDL(resultData, ddlCalcIn); },
+                error: function (error) { }
+            });
+        }
+
+        function populateCalcInDDL(trnsMasters, ddlCalcIn) {
+            var ddlTrnsMasters = ddlCalcIn;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].Key;
+                    option.innerHTML = trnsMasters[i].Value;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function populateTrMasterDDL(ddlTrMaster)
+        {
+            $.ajax({
+                type: 'POST',
+                url: 'GetTransactionMasterDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrnsMasterDDL(resultData, ddlTrMaster); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrnsMasterDDL(trnsMasters, ddlTrMaster) {
+            var ddlTrnsMasters = ddlTrMaster;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].TranMasterId;
+                    option.innerHTML = trnsMasters[i].TransactionName;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function deleteUserTrans(uTransId)
+        {
+            var uTrans = new Object();
+            uTrans.UserTransactionId = parseInt(uTransId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteUserTransaction',
+                data:uTrans,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+    </script>
 }
 
 <div class="row">
@@ -120,6 +253,68 @@
                                 </div>
                             </div>
                         }
+                        <div class="row">
+                            <table id="tblTransactions" class="table table table-striped table-bordered table-responsive table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">
+                                            Fees applicable to this student
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5">
+                                            <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="display:none;"></th>
+                                        <th>Fees</th>
+                                        <th>Grace on</th>
+                                        <th>Grace Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(Model.Transactions!=null && Model.Transactions.Count>0)
+                                    {
+                                        for(int i=0;i<Model.Transactions.Count;i++)
+                                        {
+                                            <tr>
+                                                <td style="display:none;">
+                                                    <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
+                                                </td>
+                                                <td>
+                                                    <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
+                                                        {
+                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId==trMaster.TranMasterId?"selected=\"selected\"":"")>@trMaster.TransactionName</option>
+                                                        }
+                                                    </select>
+                                                    
+                                                    @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
+                                                </td>
+                                                <td>
+                                                    <select name="Transactions[@i].GraceAmountIn" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
+                                                        {
+                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase)?"selected=\"selected\"":"")>@keyVal.Value</option>
+                                                        }
+                                                    </select>
+                                                    @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
+                                                    @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
+                                                </td>
+                                                <td>
+                                                    <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                        <div class="col-lg-10">
                             <div class="checkbox">
                             </div>

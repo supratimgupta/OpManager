@@ -13,6 +13,6 @@ namespace OpMgr.Common.Contracts.Modules
 
         DTOs.StatusDTO UpdateTransLastRunNextRun(DTOs.UserTransactionDTO userTrans);
 
-        //List<DTOs.UserTransactionDTO> GetUserTransactions(int userMasterId);
+        List<DTOs.UserTransactionDTO> GetUserTransactions(int userMasterId);
     }
 }

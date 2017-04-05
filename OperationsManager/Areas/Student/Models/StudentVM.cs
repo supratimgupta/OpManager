@@ -32,5 +32,14 @@ namespace OperationsManager.Areas.Student.Models
         public string MODE { get; set; }
         public int HdnUserMasterId { get; set; }
 
+        public List<UserTransactionDTO> Transactions { get; set; }
+
+        public SelectList TransactionMasters { get; set; }
+
+        public SelectList GraceAmountOnList { get; set; }
+
+        public List<TransactionMasterDTO> TransactionMasterSelectList { get; set; }
+
+        public List<KeyValueDTO> CalcInSelectList { get; set; }
     }
 }

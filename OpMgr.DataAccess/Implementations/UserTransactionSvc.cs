@@ -33,17 +33,148 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<UserTransactionDTO> Insert(UserTransactionDTO data)
         {
-            throw new NotImplementedException();
+            StatusDTO<UserTransactionDTO> status = new StatusDTO<UserTransactionDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "INSERT INTO UserTransaction(UserMasterId, TranMasterId, GraceAmountOn, GraceAmount, Active) VALUES (@userMasterId, @tranMasterId, @graceAmountOn, @graceAmount, 1)";
+
+                    if(data.User!=null && data.User.UserMasterId>0)
+                    {
+                        command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = data.User.UserMasterId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
+                    if(data.Transaction!=null && data.Transaction.TranMasterId>0)
+                    {
+                        command.Parameters.Add("@tranMasterId", MySqlDbType.Int32).Value = data.Transaction.TranMasterId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@tranMasterId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
+                    if(!string.IsNullOrEmpty(data.GraceAmountIn) && !string.Equals(data.GraceAmountIn, "-1"))
+                    {
+                        command.Parameters.Add("@graceAmountOn", MySqlDbType.String).Value = data.GraceAmountIn;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@graceAmountOn", MySqlDbType.String).Value = DBNull.Value;
+                    }
+
+                    if (data.GraceAmount!=null)
+                    {
+                        command.Parameters.Add("@graceAmount", MySqlDbType.String).Value = data.GraceAmount.Value;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@graceAmount", MySqlDbType.String).Value = DBNull.Value;
+                    }
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<UserTransactionDTO> Update(UserTransactionDTO data)
         {
-            throw new NotImplementedException();
+            StatusDTO<UserTransactionDTO> status = new StatusDTO<UserTransactionDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE UserTransaction SET TranMasterId=@tranMasterId, GraceAmountOn=@graceAmountOn, GraceAmount=@graceAmount WHERE UserTransactionId=@uTranId";
+
+                    if (data.Transaction != null && data.Transaction.TranMasterId > 0)
+                    {
+                        command.Parameters.Add("@tranMasterId", MySqlDbType.Int32).Value = data.Transaction.TranMasterId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@tranMasterId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
+                    if (!string.IsNullOrEmpty(data.GraceAmountIn) && !string.Equals(data.GraceAmountIn,"-1"))
+                    {
+                        command.Parameters.Add("@graceAmountOn", MySqlDbType.String).Value = data.GraceAmountIn;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@graceAmountOn", MySqlDbType.String).Value = DBNull.Value;
+                    }
+
+                    if (data.GraceAmount != null)
+                    {
+                        command.Parameters.Add("@graceAmount", MySqlDbType.String).Value = data.GraceAmount.Value;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@graceAmount", MySqlDbType.String).Value = DBNull.Value;
+                    }
+                    command.Parameters.Add("@uTranId", MySqlDbType.Int32).Value = data.UserTransactionId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<UserTransactionDTO> Delete(UserTransactionDTO data)
         {
-            throw new NotImplementedException();
+            StatusDTO<UserTransactionDTO> status = new StatusDTO<UserTransactionDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "DELETE FROM UserTransaction WHERE UserTransactionId=@userTrans";
+                    command.Parameters.Add("@userTrans", MySqlDbType.Int32).Value = data.UserTransactionId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<List<UserTransactionDTO>> Select(UserTransactionDTO data)
@@ -78,6 +209,54 @@ namespace OpMgr.DataAccess.Implementations
                         status.IsSuccess = true;
                     }
                     return status;
+                }
+                catch(Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public List<UserTransactionDTO> GetUserTransactions(int userMasterId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT UserTransactionId, TranMasterId, GraceAmountOn, GraceAmount FROM UserTransaction WHERE UserMasterId=@umId";
+                    command.Parameters.Add("@umId", MySqlDbType.Int32).Value = userMasterId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable();
+                    mDa.Fill(_dtResult);
+                    List<UserTransactionDTO> lstUTrans = null;
+                    if(_dtResult!=null && _dtResult.Rows.Count>0)
+                    {
+                        lstUTrans = new List<UserTransactionDTO>();
+                        UserTransactionDTO uTrans = null;
+                        foreach(DataRow dr in _dtResult.Rows)
+                        {
+                            uTrans = new UserTransactionDTO();
+                            uTrans.UserTransactionId = (int)dr["UserTransactionId"];
+                            uTrans.Transaction = new TransactionMasterDTO();
+                            uTrans.Transaction.TranMasterId = (int)dr["TranMasterId"];
+                            uTrans.GraceAmountIn = string.IsNullOrEmpty(dr["GraceAmountOn"].ToString()) ? "-1" : dr["GraceAmountOn"].ToString();
+                            if(string.IsNullOrEmpty(dr["GraceAmount"].ToString()))
+                            {
+                                uTrans.GraceAmount = null;
+                            }
+                            else
+                            {
+                                uTrans.GraceAmount = double.Parse(dr["GraceAmount"].ToString());
+                            }
+                            lstUTrans.Add(uTrans);
+                        }
+                    }
+                    return lstUTrans;
                 }
                 catch(Exception exp)
                 {

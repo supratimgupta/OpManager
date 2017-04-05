@@ -20,21 +20,45 @@ namespace OperationsManager.Areas.Student.Controllers
         private IDropdownRepo _dropDwnRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
         Encryption encrypt = new Encryption();
-        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo)
+        private IUserTransactionSvc _userTrans;
+        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans)
         {
             _studSvc = studSvc;
             _dropDwnRepo = dropDwnRepo;
             _uiddlRepo = new Helpers.UIDropDownRepo(_dropDwnRepo);
             //_logSvc = logSvc;
+            _userTrans = userTrans;
         }
         // GET: Student/Student
 
 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetTransactionMasterDDL()
+        {
+            return Json(_dropDwnRepo.GetTransactionMasters(), JsonRequestBehavior.AllowGet);
+        }
+        
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetCalcIn()
+        {
+            return Json(_uiddlRepo.getCalcTypeDic(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeleteUserTransaction(UserTransactionDTO uTrans)
+        {
+            if(_userTrans.Delete(uTrans).IsSuccess)
+            {
+                return Json(new { status = true, message = "Deleted successfully." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, message = "Delete failed." }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult Register(string mode, string id)
-
-
-
         {
             Models.StudentVM studView = new Models.StudentVM();
             studView.UserDetails = new UserMasterDTO();
@@ -44,6 +68,7 @@ namespace OperationsManager.Areas.Student.Controllers
             {
                 studView.UserDetails.UserMasterId = int.Parse(id);
             }
+            studView.Transactions = new List<UserTransactionDTO>();
             if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 //Populate edit data using id passed in URL, if id==null then show error message
@@ -75,8 +100,16 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.GuardianEmailId = dto.ReturnObj.GuardianEmailId;
                 studView.HouseType = dto.ReturnObj.HouseType;
                 studView.StandardSectionMap = dto.ReturnObj.StandardSectionMap;
-                
+
+                studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
+                studView.TransactionMasters = _uiddlRepo.getTransactionMasters();
             }
+
+            //studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
+            studView.TransactionMasters = _uiddlRepo.getTransactionMasters();
+
+            studView.CalcInSelectList = _uiddlRepo.getCalcTypeDic();
+            studView.TransactionMasterSelectList = _dropDwnRepo.GetTransactionMasters();
 
             studView.GenderList = _uiddlRepo.getGenderDropDown();
             studView.LocationList = _uiddlRepo.getLocationDropDown();
@@ -88,7 +121,7 @@ namespace OperationsManager.Areas.Student.Controllers
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-
+            studView.GraceAmountOnList = _uiddlRepo.getCalcType();
 
             return View(studView);
         }
@@ -274,7 +307,26 @@ namespace OperationsManager.Areas.Student.Controllers
                 //Call update
                 //if (ModelState.IsValid)
                 //{ 
-                _studSvc.Update(studentView);                    
+                StatusDTO<StudentDTO> status = _studSvc.Update(studentView);
+                if(status.IsSuccess)
+                {
+                    if(studentView.Transactions!=null && studentView.Transactions.Count>0)
+                    {
+                        for(int i=0;i<studentView.Transactions.Count;i++)
+                        {
+                            if(studentView.Transactions[i].UserTransactionId>0)
+                            {
+                                _userTrans.Update(studentView.Transactions[i]);
+                            }
+                            else
+                            {
+                                studentView.Transactions[i].User = new UserMasterDTO();
+                                studentView.Transactions[i].User.UserMasterId = studentView.UserDetails.UserMasterId;
+                                _userTrans.Insert(studentView.Transactions[i]);
+                            }
+                        }
+                    }
+                }                    
                 
                 //}
             }
@@ -286,13 +338,41 @@ namespace OperationsManager.Areas.Student.Controllers
                 //{   
                 string pass = encrypt.encryption(studentView.UserDetails.Password);
                 studentView.UserDetails.Password = pass;
-                _studSvc.Insert(studentView);
-                
+                StatusDTO<StudentDTO> status = _studSvc.Insert(studentView);
+                studentView.UserDetails = new UserMasterDTO();
+                studentView.UserDetails.UserMasterId = status.ReturnObj.UserDetails.UserMasterId;
+                if (status.IsSuccess)
+                {
+                    if (studentView.Transactions != null && studentView.Transactions.Count > 0)
+                    {
+                        for (int i = 0; i < studentView.Transactions.Count; i++)
+                        {
+                            if (studentView.Transactions[i].UserTransactionId > 0)
+                            {
+                                _userTrans.Update(studentView.Transactions[i]);
+                            }
+                            else
+                            {
+                                studentView.Transactions[i].User = new UserMasterDTO();
+                                studentView.Transactions[i].User.UserMasterId = status.ReturnObj.UserDetails.UserMasterId;
+                                _userTrans.Insert(studentView.Transactions[i]);
+                            }
+                        }
+                    }
+
+                    return RedirectToAction("Register", new { mode = "EDIT", id = studentView.UserDetails.UserMasterId.ToString() });
+                }
                 //}                
             }
             //if(ModelState.IsValid)
             //{
             //}
+            //ModelState.Clear();
+            studentView.TransactionMasters = _uiddlRepo.getTransactionMasters();
+            studentView.GraceAmountOnList = _uiddlRepo.getCalcType();
+
+            studentView.CalcInSelectList = _uiddlRepo.getCalcTypeDic();
+            studentView.TransactionMasterSelectList = _dropDwnRepo.GetTransactionMasters();
 
             studentView.GenderList = _uiddlRepo.getGenderDropDown();
             studentView.LocationList = _uiddlRepo.getLocationDropDown();
@@ -304,6 +384,8 @@ namespace OperationsManager.Areas.Student.Controllers
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+
+            studentView.Transactions = _userTrans.GetUserTransactions(studentView.UserDetails.UserMasterId);
 
             return View(studentView);
         }
