@@ -30,5 +30,9 @@ namespace OperationsManager.Areas.Transaction.Models
         public string EncryptedTransactionLogId { get; set; }
 
         public bool HideSaveButton { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        public string MODE { get; set; }
     }
 }

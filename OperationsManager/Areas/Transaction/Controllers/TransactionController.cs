@@ -342,5 +342,103 @@ namespace OperationsManager.Areas.Transaction.Controllers
                 return View(trVM);
             }
         }
+
+        [AllowAnonymous]
+        public ActionResult PrincipalApproval()
+        {
+            Models.TransactionViewModel model = new Models.TransactionViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult PrincipalApproval(Models.TransactionViewModel trModel)
+        {
+            string mode = trModel.MODE;
+            if(string.Equals(trModel.MODE,"SEARCH"))
+            {
+                StatusDTO<List<TransactionLogDTO>> status = _transactionLog.GetPendingPrincipalApprovals(trModel);
+                if(status.ReturnObj!=null && status.ReturnObj.Count>0)
+                {
+                    trModel.SearchResult = new List<Models.TransactionViewModel>();
+                    Models.TransactionViewModel item = null;
+                    foreach(TransactionLogDTO tlDTO in status.ReturnObj)
+                    {
+                        item = new Models.TransactionViewModel();
+                        item.User = tlDTO.User;
+                        item.TransactionRule = tlDTO.TransactionRule;
+                        item.TransactionDate = tlDTO.TransactionDate;
+                        item.AmountImposed = tlDTO.AmountImposed;
+                        item.AmountGiven = tlDTO.AmountGiven;
+                        item.TransactionLogId = tlDTO.TransactionLogId;
+                        item.DueAmount = tlDTO.DueAmount;
+                        item.AdjustedAmount = tlDTO.AdjustedAmount;
+                        item.IsSelected = true;
+                        trModel.SearchResult.Add(item);
+                    }
+                }
+                trModel.IsSelected = true;
+                trModel.Message = new MvcHtmlString("");
+                return View(trModel);
+            }
+            else if(string.Equals(trModel.MODE, "APPROVE") || string.Equals(trModel.MODE, "CANCEL"))
+            {
+                if(trModel.SearchResult!=null && trModel.SearchResult.Count>0)
+                {
+                    List<Models.TransactionViewModel> selectedResult = trModel.SearchResult.Where(sr => sr.IsSelected).ToList();
+                    if(selectedResult!=null && selectedResult.Count>0)
+                    {
+                        List<TransactionLogDTO> lstTRLog = new List<TransactionLogDTO>();
+                        TransactionLogDTO item = null;
+                        foreach(Models.TransactionViewModel trVM in selectedResult)
+                        {
+                            item = new TransactionLogDTO();
+                            item.TransactionLogId = trVM.TransactionLogId;
+                            item.IsCompleted = false;
+                            if(string.Equals(trModel.MODE, "APPROVE"))
+                            {
+                                item.IsPrincipalApprroved = 1;
+                            }
+                            if (string.Equals(trModel.MODE, "CANCEL"))
+                            {
+                                item.IsPrincipalApprroved = 2;
+                            }
+                            if(trVM.DueAmount>0)
+                            {
+                                item.IsCompleted = false;
+                            }
+                            else
+                            {
+                                if(string.Equals(trModel.MODE, "APPROVE"))
+                                {
+                                    item.IsCompleted = true;
+                                }
+                            }
+                            lstTRLog.Add(item);
+                        }
+                        bool status = _transactionLog.ApproveCancelAdjustedAmt(lstTRLog);
+                        if(status)
+                        {
+                            trModel = new Models.TransactionViewModel();
+                            trModel.IsSuccessMessage = true;
+                            trModel.Message = new MvcHtmlString("Selected items "+ (string.Equals(mode,"APPROVE")?"approved":"cancelled") + " successfully.");
+                            return View(trModel);
+                        }
+                        trModel = new Models.TransactionViewModel();
+                        trModel.Message = new MvcHtmlString("Error in operation, message logged.");
+                        return View(trModel);
+                    }
+                    trModel = new Models.TransactionViewModel();
+                    trModel.Message = new MvcHtmlString("No records are selected for the operation.");
+                    return View(trModel);
+                }
+                trModel = new Models.TransactionViewModel();
+                trModel.Message = new MvcHtmlString("No pending records for the operation.");
+                return View(trModel);
+            }
+            trModel = new Models.TransactionViewModel();
+            trModel.Message = new MvcHtmlString("Invalid operation.");
+            return View(trModel);
+        }
     }
 }

@@ -225,6 +225,23 @@ namespace OperationsManager.Helpers
             return new SelectList(dicTrTypes, "key", "value");
         }
 
+        public List<KeyValueDTO> getCalcTypeDic()
+        {
+            List<KeyValueDTO> dicTrTypes = new List<KeyValueDTO>();
+
+            KeyValueDTO keyVal = new KeyValueDTO();
+            keyVal.Key = "-1"; keyVal.Value = "";
+            dicTrTypes.Add(keyVal);
+            keyVal = new KeyValueDTO();
+            keyVal.Key = "PERCENT"; keyVal.Value = "PERCENT";
+            dicTrTypes.Add(keyVal);
+            keyVal = new KeyValueDTO();
+            keyVal.Key = "ACTUAL"; keyVal.Value = "ACTUAL";
+            dicTrTypes.Add(keyVal);
+
+            return dicTrTypes;
+        }
+
         public SelectList getTransactionMasters(string frequency=null)
         {
             List<TransactionMasterDTO> lstentitleDto = _ddlRepo.GetTransactionMasters(frequency);

@@ -85,6 +85,19 @@ namespace OpMgr.DataAccess.Implementations
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                    
+                    if(_dtData.Columns.Count>1)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new StudentDTO();
+                        status.ReturnObj.UserDetails = new UserMasterDTO();
+                        status.ReturnObj.UserDetails.UserMasterId = (int)_dtData.Rows[0][1];
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = _dtData.Rows[0][0].ToString();
+                    }
                     return status;
                 }
                 catch (Exception exp)
@@ -358,6 +371,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.ExecuteNonQuery();
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                    status.IsSuccess = true;
                     return status;
                 }
                 catch (Exception exp)

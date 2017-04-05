@@ -78,6 +78,7 @@
     <Compile Include="DTOs\FacultyCourseMapDTO.cs" />
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
     <Compile Include="DTOs\HouseTypeDTO.cs" />
+    <Compile Include="DTOs\KeyValueDTO.cs" />
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
     <Compile Include="DTOs\LocationDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
