@@ -30,13 +30,13 @@
                 <div class="panel-heading">@LoginResource.PageHeader</div>
                 <div class="panel-body">
 
-                    @using (Html.BeginForm())
+                    @using (Html.BeginForm("Login","Login",FormMethod.Post,new { id="loginForm" }))
                     {
                         @Html.AntiForgeryToken()
                         <fieldset>
-                            @Html.OpMgrTextBoxFor(m => m.UserName, LoginResource.UserName, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.UserName, LoginResource.UserName, new { @class = "form-control requiredField", data_rule_required = "true", data_msg_required = "User id is required", data_rule_email="true", data_msg_email="Email is not valid" })
 
-                            @Html.OpMgrPasswordFor(m => m.Password, LoginResource.Password, new { @class = "form-control" })
+                            @Html.OpMgrPasswordFor(m => m.Password, LoginResource.Password, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
 
                             <div class="checkbox">
                                 <label>
@@ -54,29 +54,16 @@
             </div>
         </div><!-- /.col-->
     </div><!-- /.row -->
-
-
-
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    @*<script>
-        !function ($) {
-            $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
-                $(this).find('em:first').toggleClass("glyphicon-minus");
-            });
-            $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-        }(window.jQuery);
-
-        $(window).on('resize', function () {
-            if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-        })
-        $(window).on('resize', function () {
-            if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-        })
-    </script>*@
 </body>
-
+@section PageScripts
+{
+    <script>
+            $(document).ready(function () {
+                var loginForm = $("#loginForm");
+	        $("#loginForm").validate();
+	    });
+    </script>
+}
 
 
 </html>
