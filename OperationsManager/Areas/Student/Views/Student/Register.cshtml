@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>RegisterStudent</h2>
+<h2></h2>
 @section PageScripts{
     <script>
         $(document).ready(function () {
@@ -153,8 +153,8 @@
 }
 
 <div class="row">
-    <div>
-        <div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
             <div class="panel-heading">@UserResource.PageHeader</div>
             <div class="panel-body">
                 @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -201,17 +201,17 @@
                             @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
                         </div>
                         @*<div class="col-lg-5">
-                            @if (Model.MODE == "EDIT")
-                            {
-                                @Html.HiddenFor(m => m.Role.RoleId)
-                                @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control", disabled = "disabled" })
-                            }
-                            else
-                            {
-                                @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
-                            }
+                                @if (Model.MODE == "EDIT")
+                                {
+                                    @Html.HiddenFor(m => m.Role.RoleId)
+                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control", disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
+                                }
 
-                        </div>*@
+                            </div>*@
                         <div id="divStudent">
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control" })
@@ -295,9 +295,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(Model.Transactions!=null && Model.Transactions.Count>0)
+                                    @if (Model.Transactions != null && Model.Transactions.Count > 0)
                                     {
-                                        for(int i=0;i<Model.Transactions.Count;i++)
+                                        for (int i = 0; i < Model.Transactions.Count; i++)
                                         {
                                             <tr>
                                                 <td style="display:none;">
@@ -307,17 +307,17 @@
                                                     <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
                                                         @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
                                                         {
-                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId==trMaster.TranMasterId?"selected=\"selected\"":"")>@trMaster.TransactionName</option>
+                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
                                                         }
                                                     </select>
-                                                    
+
                                                     @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
                                                 </td>
                                                 <td>
                                                     <select name="Transactions[@i].GraceAmountIn" class="form-control">
                                                         @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
                                                         {
-                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase)?"selected=\"selected\"":"")>@keyVal.Value</option>
+                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
                                                         }
                                                     </select>
                                                     @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
@@ -335,7 +335,7 @@
                                 </tbody>
                             </table>
                         </div>
-                       <div class="col-lg-10">
+                        <div class="col-lg-10">
                             <div class="checkbox">
                             </div>
                             <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>

@@ -97,6 +97,22 @@ namespace OperationsManager.Areas.Transaction.Controllers
                                 searchItem.HasPenalty = tranlog.HasPenalty;
                                 searchItem.AdjustedAmount = tranlog.AdjustedAmount;
                                 searchItem.IsPrincipalApproved = tranlog.IsPrincipalApproved;
+                                if (searchItem.IsPrincipalApproved == 0)
+                                {
+                                    searchItem.PrincipalApproved = "Pending";
+                                }
+                                else if (searchItem.IsPrincipalApproved == 1)
+                                {
+                                    searchItem.PrincipalApproved = "Approved";
+                                }
+                                else if (searchItem.IsPrincipalApproved == 2)
+                                {
+                                    searchItem.PrincipalApproved = "Rejected";
+                                }
+                                else
+                                {
+                                    searchItem.PrincipalApproved = String.Empty;
+                                }
                                 if (tranlog.OriginalTransLog != null)
                                 {
                                     if (tranlog.OriginalTransLog.TransactionLogId > 0)
