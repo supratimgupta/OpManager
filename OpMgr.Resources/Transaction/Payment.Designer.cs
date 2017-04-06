@@ -205,6 +205,15 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no Data to Display.
+        /// </summary>
+        public static string PaymentSearchNoData {
+            get {
+                return ResourceManager.GetString("PaymentSearchNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Staff Employee Id.
         /// </summary>
         public static string SearchEmployeeId {

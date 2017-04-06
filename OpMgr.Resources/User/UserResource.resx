@@ -189,6 +189,9 @@
   <data name="PageHeader" xml:space="preserve">
     <value>Register a User</value>
   </data>
+  <data name="PageHeaderStudent" xml:space="preserve">
+    <value>Register a Student</value>
+  </data>
   <data name="ParmanentAddress" xml:space="preserve">
     <value>Parmanent Address</value>
   </data>

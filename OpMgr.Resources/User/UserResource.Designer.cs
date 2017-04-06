@@ -277,6 +277,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register a Student.
+        /// </summary>
+        public static string PageHeaderStudent {
+            get {
+                return ResourceManager.GetString("PageHeaderStudent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parmanent Address.
         /// </summary>
         public static string ParmanentAddress {
