@@ -2,97 +2,93 @@
 @using OpMgr.Resources.User
 @using OperationsManager.ExtendedHtmlHelpers
 @model OperationsManager.Areas.Library.Models.LibraryViewModel
-    @{
-        ViewBag.Title = "RegisterBooks";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+@{
+    ViewBag.Title = "RegisterBooks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    @{
-        ViewBag.Title = "Register";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
-    @section PageScripts{
-        <script>
-            $(document).ready(function () {
-                $('.purchasedate-picker').datepicker({ dateFormat: 'dd-M-yy' });
-                $('.accdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
-                $('.publishingdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
+@section PageScripts{
+    <script>
+        $(document).ready(function () {
+            $('.purchasedate-picker').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.accdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.publishingdate-picker').datepicker({ dateFormat: 'dd-M-yy' });
 
-                UseDatePicker()
-            });
+            UseDatePicker()
+        });
 
-            
-        </script>
-    }
-    <div class="row">
-        <div>
-            <div>
-                <div class="panel-heading">Register Books</div>
-                <div class="panel-body">
-                    @using (Html.BeginForm())
+
+    </script>
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel panel-heading"><b>Library.LibraryHeader</b></div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
                     {
-                        <fieldset>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.BookName, Library.BookName, new { @class = "form-control" })
-                                @Html.HiddenFor(m => m.MODE)
-                                @Html.HiddenFor(m => m.BookMasterId)
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AuthorName1, Library.AuthorName1, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AuthorName2, Library.CoAuthorName, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.PurchaseDate, Library.PurchaseDate, new { @class = "purchasedate-picker form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AccNo, Library.AccNo, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AccDate, Library.AccDate, new { @class = "accdate-picker form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.CALLNO, Library.CallNo, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.ISBNNo, Library.ISBNNo, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.Edition, Library.Edition, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.Publisher, Library.Publisher, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.PublishingYear, Library.PublishingYear, new { @class = "publishingdate-picker form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.Place, Library.Place, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.Series, Library.Series, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.Price, Library.Price, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.NOFCD, Library.NOFCD, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.BookCategory.BookCategoryId, Model.BookCategoryList, Library.BookCategory, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
-                            </div>
+                    <fieldset>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.BookName, Library.BookName, new { @class = "form-control" })
+                            @Html.HiddenFor(m => m.MODE)
+                            @Html.HiddenFor(m => m.BookMasterId)
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.AuthorName1, Library.AuthorName1, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.AuthorName2, Library.CoAuthorName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.PurchaseDate, Library.PurchaseDate, new { @class = "purchasedate-picker form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.AccNo, Library.AccNo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.AccDate, Library.AccDate, new { @class = "accdate-picker form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.CALLNO, Library.CallNo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.ISBNNo, Library.ISBNNo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.Edition, Library.Edition, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.Publisher, Library.Publisher, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.PublishingYear, Library.PublishingYear, new { @class = "publishingdate-picker form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.Place, Library.Place, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.Series, Library.Series, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.Price, Library.Price, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.NOFCD, Library.NOFCD, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.BookCategory.BookCategoryId, Model.BookCategoryList, Library.BookCategory, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                        </div>
 
-                            <div class="col-lg-10">
-                                <button type="submit" class="btn btn-primary">Register</button>
-                            </div>
-                        </fieldset>
+                        <div class="col-lg-10">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </fieldset>
                     }
 
-                </div>
             </div>
-        </div><!-- /.col-->
-    </div>
+        </div>
+    </div><!-- /.col-->
+</div>
