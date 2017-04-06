@@ -143,8 +143,8 @@
 }
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel-default">
-            <div class="panel-heading">@TransactionRule.PageHeader</div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>@TransactionRule.PageHeader</b></div>
             <div class="panel-body">
                 @using (Html.BeginForm())
                 {
@@ -152,15 +152,15 @@
                     <fieldset>
                         @if (!string.IsNullOrEmpty(Model.SuccessMsg))
                         {
-                            <div class="alert alert-success alert-dismissable alert-dismissible fade in">
-                                <strong>@Model.SuccessMsg</strong>
-                            </div>
+                        <div class="alert alert-success alert-dismissable alert-dismissible fade in">
+                            <strong>@Model.SuccessMsg</strong>
+                        </div>
                         }
                         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
                         {
-                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
-                                <strong>@Model.ErrorMsg</strong>
-                            </div>
+                        <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                            <strong>@Model.ErrorMsg</strong>
+                        </div>
                         }
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -190,7 +190,7 @@
                                     <div class="col-lg-offset-6">
 
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-2" style="margin-top:28px">
                                         <button type="submit" class="btn btn-primary btn-block">Search</button>
                                     </div>
                                 </div>
@@ -199,99 +199,100 @@
 
                     </fieldset>
                 }
-                
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <fieldset>
-                                <div class="row">
-                                    @if (string.Equals(Model.IsPostBack, "TRUE") && Model.SearchedResult != null && Model.SearchedResult.Count > 0)
-                                {
-                                <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>Transaction Name</th>
-                                            @if (string.Equals(Model.IsdifferentTo, "USER"))
-                                                {
-                                                <th>User Name</th>
-                                                }
-                                            @if (string.Equals(Model.IsdifferentTo, "CLASS-TYPE"))
-                                                {
-                                                <th>Class Type</th>
-                                                }
-                                            @if (string.Equals(Model.IsdifferentTo, "STANDARD"))
-                                                {
-                                                <th>Standard</th>
-                                                }
-                                            @if (string.Equals(Model.IsdifferentTo, "SECTION"))
-                                                {
-                                                <th>Standard</th>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <fieldset>
+                    <div class="row">
+                        @if (string.Equals(Model.IsPostBack, "TRUE") && Model.SearchedResult != null && Model.SearchedResult.Count > 0)
+                        {
+                            <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction Name</th>
+                                        @if (string.Equals(Model.IsdifferentTo, "USER"))
+                                        {
+                                            <th>User Name</th>
+                                        }
+                                        @if (string.Equals(Model.IsdifferentTo, "CLASS-TYPE"))
+                                        {
+                                            <th>Class Type</th>
+                                        }
+                                        @if (string.Equals(Model.IsdifferentTo, "STANDARD"))
+                                        {
+                                            <th>Standard</th>
+                                        }
+                                        @if (string.Equals(Model.IsdifferentTo, "SECTION"))
+                                        {
+                                            <th>Standard</th>
                                                 <th>Section</th>
-                                                }
-                                            <th>Rule Name</th>
-                                            <th>Amount</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (int i = 0; i < Model.SearchedResult.Count; i++)
-                                            {
-                                            <tr>
-                                                <td>
-                                                    @Model.SearchedResult[i].TranMaster.TransactionName
-                                                </td>
-                                                @if (string.Equals(Model.IsdifferentTo, "USER"))
-                                                    {
-                                                    <td>@(Model.SearchedResult[i].UserDTO.FName + " " + Model.SearchedResult[i].UserDTO.MName + " " + Model.SearchedResult[i].UserDTO.LName)</td>
-                                                    }
-                                                @if (string.Equals(Model.IsdifferentTo, "CLASS-TYPE"))
-                                                    {
-                                                    <td>@Model.SearchedResult[i].ClassType.ClassTypeName</td>
-                                                    }
-                                                @if (string.Equals(Model.IsdifferentTo, "STANDARD"))
-                                                    {
-                                                    <td>@Model.SearchedResult[i].Standard.StandardName</td>
-                                                    }
-                                                @if (string.Equals(Model.IsdifferentTo, "SECTION"))
-                                                    {
-                                                    <td>@Model.SearchedResult[i].Standard.StandardName</td>
-                                                    <td>@Model.SearchedResult[i].Section.SectionName</td>
-                                                    }
-                                                <td>@Model.SearchedResult[i].RuleName</td>
-                                                <td>@Model.SearchedResult[i].ActualAmount</td>
-                                                <td>
-                                                    @if (Model.SearchedResult[i].TranRuleId > 0)
-                                                        {
-                                                        <a href="/Transaction/TransactionRule/TransactionRule?mode=EDIT&id=@Model.SearchedResult[i].TranRuleId">Edit</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            switch (Model.IsdifferentTo)
-                                                            {
-                                                                case "USER":
-                                                        <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=@Model.SearchedResult[i].UserDTO.UserMasterId&classTypeId=-1&standardId=-1&sectionId=-1">Add</a>
-                                                                    break;
-                                                                case "CLASS-TYPE":
-                                                        <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=@Model.SearchedResult[i].ClassType.ClassTypeId&standardId=-1&sectionId=-1">Add</a>
-                                                                    break;
-                                                                case "STANDARD":
-                                                        <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=-1&standardId=@Model.SearchedResult[i].Standard.StandardId&sectionId=-1">Add</a>
-                                                                    break;
-                                                                case "SECTION":
-                                                        <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=-1&standardId=@Model.SearchedResult[i].Standard.StandardId&sectionId=@Model.SearchedResult[i].Section.SectionId">Add</a>
-                                                                    break;
-                                                            }
-
-                                                        }
-                                                </td>
-                                            </tr>
-                                            }
-                                    </tbody>
-                                </table>
-                                }
-                                else
-                                {
-                                    if (string.Equals(Model.IsPostBack, "TRUE"))
+                                        }
+                                        <th>Rule Name</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.SearchedResult.Count; i++)
                                     {
+                                        <tr>
+                                            <td>
+                                                @Model.SearchedResult[i].TranMaster.TransactionName
+                                            </td>
+                                            @if (string.Equals(Model.IsdifferentTo, "USER"))
+                                            {
+                                                <td>@(Model.SearchedResult[i].UserDTO.FName + " " + Model.SearchedResult[i].UserDTO.MName + " " + Model.SearchedResult[i].UserDTO.LName)</td>
+                                            }
+                                            @if (string.Equals(Model.IsdifferentTo, "CLASS-TYPE"))
+                                            {
+                                                <td>@Model.SearchedResult[i].ClassType.ClassTypeName</td>
+                                            }
+                                            @if (string.Equals(Model.IsdifferentTo, "STANDARD"))
+                                            {
+                                                <td>@Model.SearchedResult[i].Standard.StandardName</td>
+                                            }
+                                            @if (string.Equals(Model.IsdifferentTo, "SECTION"))
+                                            {
+                                                <td>@Model.SearchedResult[i].Standard.StandardName</td>
+                                                <td>@Model.SearchedResult[i].Section.SectionName</td>
+                                            }
+                                            <td>@Model.SearchedResult[i].RuleName</td>
+                                            <td>@Model.SearchedResult[i].ActualAmount</td>
+                                            <td>
+                                                @if (Model.SearchedResult[i].TranRuleId > 0)
+                                                {
+                                                    <a href="/Transaction/TransactionRule/TransactionRule?mode=EDIT&id=@Model.SearchedResult[i].TranRuleId">Edit</a>
+                                                }
+                                                else
+                                                {
+                                                    switch (Model.IsdifferentTo)
+                                                    {
+                                                        case "USER":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=@Model.SearchedResult[i].UserDTO.UserMasterId&classTypeId=-1&standardId=-1&sectionId=-1">Add</a>
+                                                            break;
+                                                        case "CLASS-TYPE":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=@Model.SearchedResult[i].ClassType.ClassTypeId&standardId=-1&sectionId=-1">Add</a>
+                                                            break;
+                                                        case "STANDARD":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=-1&standardId=@Model.SearchedResult[i].Standard.StandardId&sectionId=-1">Add</a>
+                                                            break;
+                                                        case "SECTION":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=-1&standardId=@Model.SearchedResult[i].Standard.StandardId&sectionId=@Model.SearchedResult[i].Section.SectionId">Add</a>
+                                                            break;
+                                                    }
+
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            if (string.Equals(Model.IsPostBack, "TRUE"))
+                            {
                                 <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
                                     <thead>
                                         <tr>
@@ -301,9 +302,9 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                    }
-                                    else
-                                    {
+                            }
+                            else
+                            {
                                 <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
                                     <thead>
                                         <tr>
@@ -313,14 +314,13 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                    }
-                                }
-                                </div>
-                                </fieldset>
-</div>
+                            }
+                        }
                     </div>
-                
+                </fieldset>
             </div>
         </div>
+
+
     </div>
 </div>

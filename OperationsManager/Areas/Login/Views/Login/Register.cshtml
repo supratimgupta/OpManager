@@ -4,7 +4,7 @@
 
 
 @{
-    ViewBag.Title = "Register";
+    
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section PageScripts{
@@ -52,9 +52,9 @@
     </script>
 }
 <div class="row">
-    <div>
-        <div>
-            <div class="panel-heading">@UserResource.PageHeader</div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>@UserResource.PageHeader</b></div>
             <div class="panel-body">
 
                 @using (Html.BeginForm())
@@ -171,9 +171,7 @@
                                 </div>
                             </div>
                         }
-                        <div class="col-lg-10">
-                            <div class="checkbox">
-                            </div>
+                        <div class="col-lg-4">                            
                             <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
                         </div>
                     </fieldset>
