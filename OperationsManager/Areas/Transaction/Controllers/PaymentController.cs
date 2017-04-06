@@ -43,8 +43,11 @@ namespace OperationsManager.Areas.Transaction.Controllers
         {
             PaymentVM paymentview = null;
             StudentDTO student = null;
+            
+
             if (paymentvm != null)
             {
+                
                 if (!String.IsNullOrEmpty(paymentvm.RegistrationNumber))
                 {
                     student = new StudentDTO();
@@ -52,6 +55,8 @@ namespace OperationsManager.Areas.Transaction.Controllers
                 }
                 if (!String.IsNullOrEmpty(paymentvm.StaffEmployeeId))
                 {
+                    student = new StudentDTO();
+                    student.UserDetails = new UserMasterDTO();
                     student.UserDetails.Employee = new EmployeeDetailsDTO();
                     student.UserDetails.Employee.StaffEmployeeId = paymentvm.StaffEmployeeId;
                 }

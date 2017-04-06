@@ -740,12 +740,15 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@StaffEmployeeId1", MySqlDbType.VarChar).Value = DBNull.Value;
                     }
+                    MySqlParameter error = new MySqlParameter("@ErrorMsg", MySqlDbType.VarChar);
+                    error.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(error);
 
                     MySqlDataAdapter rdr = new MySqlDataAdapter(command);
                     _dsData = new DataSet();
                     rdr.Fill(_dsData);
 
-                    if (_dsData != null)
+                    if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0].Rows.Count > 0)
                     {
                         status.ReturnObj = new List<TransactionLogDTO>();
                         for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
@@ -808,6 +811,11 @@ namespace OpMgr.DataAccess.Implementations
                             status.IsSuccess = true;
                         }
                     }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = error.Value.ToString();
+                    }
                     return status;
                 }
                 catch (Exception exp)
@@ -815,7 +823,7 @@ namespace OpMgr.DataAccess.Implementations
                     throw exp;
                 }
             }
-            return status;
+            
         }
 
         public StatusDTO<TransactionLogDTO> UpdatePayment(TransactionLogDTO data)

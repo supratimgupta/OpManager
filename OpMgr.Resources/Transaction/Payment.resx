@@ -165,6 +165,9 @@
   <data name="PageHeader" xml:space="preserve">
     <value>Payment For User</value>
   </data>
+  <data name="PaymentSearchNoData" xml:space="preserve">
+    <value>There is no Data to Display</value>
+  </data>
   <data name="SearchEmployeeId" xml:space="preserve">
     <value>Staff Employee Id</value>
   </data>
