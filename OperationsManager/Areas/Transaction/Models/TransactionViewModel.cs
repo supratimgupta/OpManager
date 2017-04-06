@@ -27,6 +27,8 @@ namespace OperationsManager.Areas.Transaction.Models
 
         public double CurrentAmount { get; set; }
 
+        public double CurrentAdjusting { get; set; }
+
         public string EncryptedTransactionLogId { get; set; }
 
         public bool HideSaveButton { get; set; }

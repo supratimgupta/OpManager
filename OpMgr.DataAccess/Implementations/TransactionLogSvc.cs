@@ -837,7 +837,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
-                        command.CommandText = "UPDATE TransactionLog SET  AmountGiven=@given, DueAmount=@due ,AdjustedAmount=@adjusted WHERE TransactionLogId=@trLogId";
+                        command.CommandText = "UPDATE TransactionLog SET AmountGiven=@given, DueAmount=@due, AdjustedAmount=@adjusted, IsCompleted=@completed"+(data.IsPrincipalApproved!=null?", IsPrincipalApproved=@approved":string.Empty)+" WHERE TransactionLogId=@trLogId";
                         
                         if (data.AmountGiven != null)
                         {
@@ -858,7 +858,7 @@ namespace OpMgr.DataAccess.Implementations
                         }
 
 
-                        if (data.DueAmount != null)
+                        if (data.AdjustedAmount != null)
                         {
                             command.Parameters.Add("@adjusted", MySqlDbType.Double).Value = data.AdjustedAmount.Value;
                         }
@@ -867,7 +867,23 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@adjusted", MySqlDbType.Double).Value = DBNull.Value;
 
                         }
-                         command.Parameters.Add("@trLogId", MySqlDbType.Int32).Value = data.TransactionLogId;
+
+                        if (data.IsCompleted != null)
+                        {
+                            command.Parameters.Add("@completed", MySqlDbType.Bit).Value = data.IsCompleted.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@completed", MySqlDbType.Bit).Value = DBNull.Value;
+
+                        }
+
+                        if(data.IsPrincipalApproved!=null)
+                        {
+                            command.Parameters.Add("@approved", MySqlDbType.Int32).Value = data.IsPrincipalApproved;
+                        }
+
+                        command.Parameters.Add("@trLogId", MySqlDbType.Int32).Value = data.TransactionLogId;
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
                         if (command.ExecuteNonQuery() > 0)
                         {
@@ -876,6 +892,28 @@ namespace OpMgr.DataAccess.Implementations
                         }
                     }
                     return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public bool ResendRequest(int transactionLogId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE transactionlog SET IsPrincipalApproved=0 WHERE TransactionLogId=@tranLogId";
+                    command.Parameters.Add("@tranLogId", MySqlDbType.Int32).Value = transactionLogId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    return command.ExecuteNonQuery() > 0;
                 }
                 catch (Exception exp)
                 {
@@ -899,7 +937,7 @@ namespace OpMgr.DataAccess.Implementations
                         {
                             MySqlCommand command = new MySqlCommand();
                             command.CommandText = "UPDATE TransactionLog SET IsPrincipalApproved=@isPrincipalApproved, IsCompleted=@isCompleted WHERE TransactionLogId=@trnsLogId";
-                            command.Parameters.Add("@isPrincipalApproved", MySqlDbType.Int32).Value = trLog.IsPrincipalApprroved;
+                            command.Parameters.Add("@isPrincipalApproved", MySqlDbType.Int32).Value = trLog.IsPrincipalApproved;
                             command.Parameters.Add("@isCompleted", MySqlDbType.Bit).Value = trLog.IsCompleted;
                             command.Parameters.Add("@trnsLogId", MySqlDbType.Int32).Value = trLog.TransactionLogId;
                             command.Connection = dbSvc.GetConnection() as MySqlConnection;

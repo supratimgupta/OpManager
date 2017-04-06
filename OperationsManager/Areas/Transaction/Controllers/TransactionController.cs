@@ -397,11 +397,11 @@ namespace OperationsManager.Areas.Transaction.Controllers
                             item.IsCompleted = false;
                             if(string.Equals(trModel.MODE, "APPROVE"))
                             {
-                                item.IsPrincipalApprroved = 1;
+                                item.IsPrincipalApproved = 1;
                             }
                             if (string.Equals(trModel.MODE, "CANCEL"))
                             {
-                                item.IsPrincipalApprroved = 2;
+                                item.IsPrincipalApproved = 2;
                             }
                             if(trVM.DueAmount>0)
                             {

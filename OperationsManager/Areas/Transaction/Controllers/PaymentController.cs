@@ -147,11 +147,64 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
-        public JsonResult updateRowPayment(TransactionLogDTO tranlogDTO)
+        public JsonResult resendRequest(Models.TransactionViewModel tranlogDTO)
         {
+            if(_transactionLogSvc.ResendRequest(tranlogDTO.TransactionLogId))
+            {
+                return Json(new { status = true, message = "Successful" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, message = "Failed to resend request" }, JsonRequestBehavior.AllowGet);
+        }
 
-            _transactionLogSvc.UpdatePayment(tranlogDTO);
-            return Json(new { status = true, data = tranlogDTO }, JsonRequestBehavior.AllowGet);
+        [HttpPost]
+        public JsonResult updateRowPayment(Models.TransactionViewModel tranlogDTO)
+        {
+            if(tranlogDTO.AmountGiven==null)
+            {
+                tranlogDTO.AmountGiven = 0;
+            }
+            if(tranlogDTO.AdjustedAmount==null)
+            {
+                tranlogDTO.AdjustedAmount = 0;
+            }
+            if(tranlogDTO.DueAmount==null)
+            {
+                tranlogDTO.DueAmount = 0;
+            }
+            tranlogDTO.AmountGiven = tranlogDTO.AmountGiven + tranlogDTO.CurrentAmount;
+            tranlogDTO.AdjustedAmount = tranlogDTO.AdjustedAmount + tranlogDTO.CurrentAdjusting;
+            tranlogDTO.DueAmount = tranlogDTO.DueAmount - (tranlogDTO.CurrentAmount + tranlogDTO.CurrentAdjusting);
+            //tranlogDTO.IsPrincipalApproved = null;
+            bool principalApprovedChanged = false;
+            int? oldPrincipalApproved = null;
+            if (tranlogDTO.CurrentAdjusting>0)
+            {
+                tranlogDTO.IsPrincipalApproved = 0;
+                oldPrincipalApproved = 0;
+                principalApprovedChanged = true;
+            }
+            tranlogDTO.IsCompleted = false;
+            if((tranlogDTO.IsPrincipalApproved==null || tranlogDTO.IsPrincipalApproved==1) && tranlogDTO.DueAmount==0)
+            {
+                tranlogDTO.IsCompleted = true;
+            }
+            
+            if(!principalApprovedChanged)
+            {
+                oldPrincipalApproved = tranlogDTO.IsPrincipalApproved;
+                tranlogDTO.IsPrincipalApproved = null;
+            }
+            if(tranlogDTO.DueAmount>=0)
+            {
+                StatusDTO<TransactionLogDTO> status = _transactionLogSvc.UpdatePayment(tranlogDTO);
+                if(status.IsSuccess)
+                {
+                    tranlogDTO.IsPrincipalApproved = oldPrincipalApproved;
+                    return Json(new { status = true, data = tranlogDTO, message = "Successful" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { status = false, data = tranlogDTO, message = "Payment failed." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, data = tranlogDTO, message="Paid amount is greater than due amount" }, JsonRequestBehavior.AllowGet);
         }
     }
 }
