@@ -165,7 +165,12 @@
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
-
+                        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                <strong>@Model.ErrorMessage</strong>
+                            </div>
+                        }
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                             @Html.HiddenFor(m => m.MODE)

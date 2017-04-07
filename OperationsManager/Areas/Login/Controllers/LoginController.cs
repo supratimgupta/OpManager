@@ -230,7 +230,8 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             //uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
-            return View(uvModel);
+            //return View(uvModel);
+            return RedirectToAction("Search");
         }
 
         [HttpGet]
