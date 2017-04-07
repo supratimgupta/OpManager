@@ -21,5 +21,7 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<List<TransactionLogDTO>> GetPendingPrincipalApprovals(TransactionLogDTO tranlog);
 
         bool ApproveCancelAdjustedAmt(List<TransactionLogDTO> lstTRLog);
+
+        bool ResendRequest(int transactionLogId);
     }
 }

@@ -72,6 +72,6 @@ namespace OpMgr.Common.DTOs
 
         public bool IsChequeEncashed { get; set; }
 
-        public int? IsPrincipalApprroved { get; set; }
+        //public int? IsPrincipalApprroved { get; set; }
     }
 }

@@ -27,6 +27,8 @@ namespace OperationsManager.Areas.Transaction.Models
 
         public double CurrentAmount { get; set; }
 
+        public double CurrentAdjusting { get; set; }
+
         public string EncryptedTransactionLogId { get; set; }
 
         public bool HideSaveButton { get; set; }
@@ -34,5 +36,7 @@ namespace OperationsManager.Areas.Transaction.Models
         public bool IsSelected { get; set; }
 
         public string MODE { get; set; }
+
+        public List<TransactionViewModel> paymentDetailsList { get; set; }
     }
 }
