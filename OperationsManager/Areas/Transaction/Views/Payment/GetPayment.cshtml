@@ -156,6 +156,9 @@
                         var cell11 = row.cells[11];
                         var btn = cell11.getElementsByTagName("button")[0];
                         cell11.removeChild(btn);
+
+                        var cell7Approval = row.cells[7];
+                        cell7Approval.getElementsByTagName("span")[0].innerHTML = "Pending";
                     }
                     else
                     {
