@@ -151,7 +151,7 @@
     <value>Is Penalty</value>
   </data>
   <data name="PageHeader" xml:space="preserve">
-    <value>Add / Edit Transaction Master</value>
+    <value>Fees Master</value>
   </data>
   <data name="ResetButtonText" xml:space="preserve">
     <value>Reset</value>
@@ -163,7 +163,7 @@
     <value>Current Data</value>
   </data>
   <data name="TransactionName" xml:space="preserve">
-    <value>Transaction Name</value>
+    <value>Fees Name</value>
   </data>
   <data name="TransactionType" xml:space="preserve">
     <value>Transaction type</value>

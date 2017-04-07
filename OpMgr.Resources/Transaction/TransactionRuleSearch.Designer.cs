@@ -115,7 +115,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Rules.
+        ///   Looks up a localized string similar to Fees Rules.
         /// </summary>
         public static string PageHeader {
             get {
