@@ -36,5 +36,7 @@ namespace OperationsManager.Areas.Transaction.Models
         public bool IsSelected { get; set; }
 
         public string MODE { get; set; }
+
+        public List<TransactionViewModel> paymentDetailsList { get; set; }
     }
 }
