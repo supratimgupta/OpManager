@@ -107,11 +107,17 @@ namespace OperationsManager.Areas.Login.Controllers
                 return View(data);
             }
 
-            return RedirectToAction("MyTransactions", "Transaction", new { area = "Transaction" }); ;
+            return RedirectToAction("Landing", "Login", new { area = "Login" }); ;
         }
 
         [HttpGet]
         public ActionResult Welcome()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Landing()
         {
             return View();
         }

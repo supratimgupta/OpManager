@@ -11,8 +11,12 @@
 @section PageScripts{
     <script>
         $(document).ready(function () {
+            var loginForm = $("#registerstudentform");
+            $("#registerstudentform").validate();
+
             $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
+
             //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
                         
         });
@@ -157,13 +161,13 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
             <div class="panel-body">
-                @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { id = "registerstudentform" ,enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
 
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                             @Html.HiddenFor(m => m.MODE)
                             @Html.HiddenFor(m => m.UserDetails.UserMasterId)
                         </div>
@@ -171,10 +175,10 @@
                             @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact No is required" })
                         </div>
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
@@ -183,16 +187,16 @@
                             @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control" })
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control" })
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
                         </div>
                         <div class="col-lg-5">
                             @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
@@ -214,19 +218,19 @@
                             </div>*@
                         <div id="divStudent">
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Roll No is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", data_rule_required = "true", data_msg_required = "Admission Date is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
@@ -262,13 +266,13 @@
                         {
                             <div id="divcredentials">
                                 <div class="col-lg-10">
-                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control" })
+                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control" , data_rule_required = "true", data_msg_required = "UserName is required" })
                                 </div>
                                 <div class="col-lg-10">
-                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control" })
+                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control" , data_rule_required = "true", data_msg_required = "Password is required" })
                                 </div>
                                 <div class="col-lg-10">
-                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control" })
+                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
                                 </div>
                             </div>
 
