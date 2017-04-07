@@ -255,6 +255,7 @@
 
 
         function submitAll() {
+            debugger;
             var tablePayment = document.getElementById("tablePayment");
             var tbody = tablePayment.getElementsByTagName("tbody")[0];
 
@@ -306,10 +307,10 @@
                 trnslog.CurrentAdjusting = isNaN(adjustingval) ? 0.0 : adjustingval;
                 trnslog.IsPrincipalApproved = isNaN(approval) ? null : approval;
                 debugger;
-                if (!this.validate(trnslog)) {
-                    isValid = false;
-                    break;
-                }
+                //if (!this.validate(trnslog)) {
+                //    isValid = false;
+                //    break;
+                //}
                 lstObjects.push(trnslog);
             }
             if(!isValid)
@@ -327,6 +328,7 @@
             transLogs.CurrentAmount = isNaN(totalCurrentPayVal) ? 0.0 : totalCurrentPayVal;
             transLogs.CurrentAdjusting = isNaN(totalCurrentAdjustmentVal) ? 0.0 : totalCurrentAdjustmentVal;
             transLogs.DueAmount = isNaN(totalCurrentDue) ? 0.0 : totalCurrentDue;
+            transLogs.TransactionLogId = 0;
             if (!this.validate(transLogs)) {
                 isValid = false;
                 return false;
@@ -360,6 +362,7 @@
 
         function payAllCallback()
         {
+            debugger;
             $("#btnTotalPay").removeAttr('disabled');
             $(".individualPay").removeAttr('disabled');
 
@@ -561,7 +564,10 @@
                             <div class="panel-body">
                                 <div class="col-lg-2" id="labeltotaldue">
                                     @*@Html.OpMgrTextBoxFor(m => m.LabelTotalDue, Payment.LabelTotalDue, new { @class = "form-control", disabled="disabled" })*@
-                                    <input type="text" value="@Model.paymentDetailsList.Select(p=>p.DueAmount).Sum()" class="form-control" disabled="disabled" />
+                                    <div class="form-group">
+                                        <label for="due"><strong>@Payment.LabelTotalDue</strong></label>
+                                        <input type="text" value="@Model.paymentDetailsList.Select(p=>p.DueAmount).Sum()" class="form-control" disabled="disabled" />
+                                    </div>
                                     <input type="hidden" value="@Model.paymentDetailsList.Select(p=>p.DueAmount).Sum()" class="form-control" id="hfTotalDue" />
                                 </div>
                                 <div class="col-lg-2" id="txttotalpay">
@@ -573,7 +579,7 @@
                                 @*</div>
                             <div class="panel-body">*@
                                 <div class="col-lg-2" style="vertical-align:bottom;margin-top:28px">
-                                    <button type="submit" class="btn btn-primary btn-block" id="btnTotalPay">@Payment.LabelSubmitAll</button>
+                                    <button type="button" class="btn btn-primary btn-block" id="btnTotalPay" onclick="submitAll();">@Payment.LabelSubmitAll</button>
                                 </div>
                             </div>
                         </div>

@@ -216,7 +216,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             double currentTotalDue = transactions.DueAmount.Value;
             if(currentTotalPay+currentTotalAdjusting>0)
             {
-                if(currentTotalPay+currentTotalAdjusting> currentTotalDue)
+                if(currentTotalPay+currentTotalAdjusting <= currentTotalDue)
                 {
                     using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                     {
@@ -278,6 +278,9 @@ namespace OperationsManager.Areas.Transaction.Controllers
                                             throw new Exception("Error encountered in one transaction. Rolled back.");
                                         }
                                     }
+
+                                    currentTotalPay = currentTotalPay - currentGivenAmt;
+                                    currentTotalAdjusting = currentTotalAdjusting - currentAdjustedAmt;
                                 }
                             }
                         }
