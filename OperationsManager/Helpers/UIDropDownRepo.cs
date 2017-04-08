@@ -26,7 +26,7 @@ namespace OperationsManager.Helpers
             //locDto.LocationId = -1;
             locDto.LocationDescription = string.Empty;
 
-            lDto.Insert(0, locDto);
+           // lDto.Insert(0, locDto);
 
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }
@@ -125,7 +125,7 @@ namespace OperationsManager.Helpers
             ssDto.StandardSectionId = -1;
             ssDto.StandardSectionDesc = string.Empty;
 
-           // rDto.Insert(0, ssDto);
+            rDto.Insert(0, ssDto);
 
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }

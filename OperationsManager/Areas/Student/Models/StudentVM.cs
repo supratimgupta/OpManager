@@ -43,5 +43,11 @@ namespace OperationsManager.Areas.Student.Models
         public List<KeyValueDTO> CalcInSelectList { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        public SelectList NextStandardSectionList { get; set; }
+
+        public SelectList PromotionStatusList { get; set; }
+
+        public Boolean IsCommandPromote { get; set; }
     }
 }
