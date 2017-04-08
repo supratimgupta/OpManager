@@ -390,7 +390,7 @@ namespace OpMgr.DataAccess.Implementations
             DataSet dsStudentLst = null;
             int noOfUpdateSuccessful = 0;
 
-            if (studentList != null && !string.IsNullOrEmpty(Command) && StandardSectionId!=0)
+            if (!string.IsNullOrEmpty(Command))
                 {
                    
                     using (IDbSvc dbSvc = new DbSvc(_configSvc))
@@ -403,17 +403,38 @@ namespace OpMgr.DataAccess.Implementations
 
                             command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
+                            if(string.Equals(Command,"Promotion Confirmed"))
+                            {
+                                 updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status='Promoted' WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                                command = new MySqlCommand();
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                                command.CommandText = updateClause;
+                               
+                                if (command.ExecuteNonQuery() > 0)
+                                 {
+                                        noOfUpdateSuccessful++;
+                                 }
+
+                             }
+
                             if (string.Equals(Command, "Promote"))
                            {
 
                             foreach (StudentDTO stud in studentList)
                             {
+                                command = new MySqlCommand();
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
                                 updateClause = "UPDATE studentinfo SET Status=@Status,NewStandardSectionId=@NewStandardSectionId" +
                                                                       " WHERE StudentInfoId=@StudentInfoId AND Active=1 ";
                                 if (stud != null && stud.Status != null && stud.NewStandardSectionId != 0 && stud.StudentInfoId != 0)
                                 {
                                     command.Parameters.Add("@Status", MySqlDbType.String).Value = stud.Status;
-                                    command.Parameters.Add("@NewStandardSectionId", MySqlDbType.Int32).Value = stud.NewStandardSectionId;
+                                    if(string.Equals(stud.Status,"Promotion Confirmed"))
+                                       command.Parameters.Add("@NewStandardSectionId", MySqlDbType.Int32).Value = stud.NewStandardSectionId;
+                                    else
+                                        command.Parameters.Add("@NewStandardSectionId", MySqlDbType.Int32).Value=DBNull.Value;
                                     command.Parameters.Add("@StudentInfoId", MySqlDbType.Int32).Value = stud.StudentInfoId;
                                 }
 
@@ -463,7 +484,8 @@ namespace OpMgr.DataAccess.Implementations
                                 if (string.Equals(Command, "Promote"))
                                 {
                                     student.Status = dsStudentLst.Tables[0].Rows[i]["Status"].ToString();
-                                    student.NewStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
+                                    if(!string.IsNullOrEmpty(dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"].ToString()))
+                                         student.NewStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
                                 }
 
                                 student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();

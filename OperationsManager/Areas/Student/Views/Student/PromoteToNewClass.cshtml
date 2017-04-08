@@ -6,8 +6,6 @@
     // Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Promotion</h2>
 <html>
 <head>
     <meta charset="utf-8">
@@ -39,12 +37,15 @@
                         @Html.AntiForgeryToken()
                         <fieldset>
                             <div class="col-lg-2">
-                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control",@id="ddlStandardSection" })
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control", @id = "ddlStandardSection" })
+                                @Html.HiddenFor(m => m.StandardSectionMap.Serial)
                             </div>
 
                             <div class="col-lg-4" style="vertical-align:bottom;padding-top:30px">
                                 <button type="submit" name="Command" value="@StudentResource.GetStandardCommand" class="btn btn-primary">@StudentResource.SearchButton</button>
                             </div>
+
+
                         </fieldset>
                     }
                 </div>
@@ -52,133 +53,157 @@
         </div>
     </div>
 
+
     @if (Model.studentList != null && Model.studentList.Count > 0 && Model.IsSearchSuccessful)
-    {
-        int flag = 0;
-       
+            {
+                int flag = 0;
+
         <div class="panel panel-default">
             <div class="panel-heading">Class</div>
             <div class="panel-body">
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                <fieldset>
-                    <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                            <tr>
-
-                                <th th data-field="name" data-sortable="true">
-                                    @StudentResource.Name
-                                </th>
-                                <th th data-field="roll number" data-sortable="true">
-                                    @StudentResource.PromotionStatus
-                                </th>
-                                <th th data-field="roll number" data-sortable="true">
-                                    @StudentResource.RollNo
-                                </th>
-                                <th th data-field="roll number" data-sortable="true">
-                                    @StudentResource.NewClass
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           
-                            @for (int i=0;i<Model.studentList.Count;i++)
-                            {
-                                @Html.HiddenFor(m=>m.studentList[i].StudentInfoId)
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        @Model.studentList[i].Name
-                                    </td>
-                                    <td>
-                                        @if (!Model.IsCommandPromote)
-                                        {
-                                            @*@Html.OpMgrDropDownListFor(m => m.studentList[i].Status, Model.PromotionStatusList, StudentResource.Blank, new { @class = "form-control", @id = "ddlPromotionStatus", onchange = "changePromotionStatus()" })*@
 
-                                            <select id="ddlPromotionStatusList" name="studentList[@i].Status" class="form-control" onchange="changePromotionStatus()">
-                                                @foreach(var promotionStatus in Model.PromotionStatusList)
-                                                {
-                                                    <option value="@promotionStatus.Value" @(Model.studentList[i].Status == promotionStatus.Value ? "selected=\"selected\"" : "")>@promotionStatus.Text</option>
-                                                }
-                                            </select>
-
-                                        }
-                                        else
-                                        { 
-
-                                           @(Model.studentList[i].Status==null?"":Model.studentList[i].Status)
-
-
-                                        }
-
-                                    </td>
-                                    <td>
-
-                                        <input type="text" class="form-control" name="@Model.studentList[i].RollNumber" value="@Model.studentList[i].RollNumber" />
-
-                                    </td>
-                                    <td>
-                                        @if (Model.studentList[i].NewStandardSectionId == 0)
-                                        {
-                                            <select id="ddlNewStandardSectionList" name="studentList[@i].NewStandardSectionId" class="form-control">
-                                                @foreach (var newClass in Model.NextStandardSectionList)
-                                                {
-                                                    <option value="@newClass.Value" @(Model.studentList[i].NewStandardSectionId.ToString() == newClass.Value ? "selected=\"selected\"" : "")>@newClass.Text</option>
-                                                }
-                                            </select>
-                                        }
-                                        else
-                                        {
-                                            @Model.studentList[i].NewStandardSectionId
-                                        }
-                                    </td>
+                                    <th th data-field="name" data-sortable="true">
+                                        @StudentResource.Name
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @StudentResource.PromotionStatus
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @StudentResource.RollNo
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @StudentResource.NewClass
+                                    </th>
                                 </tr>
+                            </thead>
+                            <tbody>
+
+                                @for (int i = 0; i < Model.studentList.Count; i++)
+                                {
+                                    flag = 1;
+                                    @Html.HiddenFor(m => m.studentList[i].StudentInfoId)
+                                    <tr>
+                                        <td>
+                                            @Model.studentList[i].Name
+                                        </td>
+                                        <td>
+                                            @if (!Model.IsCommandPromote)
+                                            {
+                                                @*@Html.OpMgrDropDownListFor(m => m.studentList[i].Status, Model.PromotionStatusList, StudentResource.Blank, new { @class = "form-control", @id = "ddlPromotionStatus", onchange = "changePromotionStatus()" })*@
+
+                                                <select id="ddlPromotionStatusList" name="studentList[@i].Status" class="form-control" onchange="changePromotionStatus(this.parentNode.parentNode)">
+                                                    @foreach (var promotionStatus in Model.PromotionStatusList)
+                                                    {
+                                                        <option value="@promotionStatus.Value" @(Model.studentList[i].Status == promotionStatus.Value ? "selected=\"selected\"" : "")>@promotionStatus.Text</option>
+                                                    }
+                                                </select>
+
+                                            }
+                                            else
+                                            {
+
+                                                @(Model.studentList[i].Status == null ? "" : Model.studentList[i].Status)
+
+
+                                            }
+
+                                        </td>
+                                        <td>
+
+                                            <input type="text" class="form-control" name="studentList[@i].RollNumber" value="@Model.studentList[i].RollNumber" />
+
+                                        </td>
+                                        <td>
+                                            @if (Model.studentList[i].NewStandardSectionId == 0)
+                                            {
+                                                <select id="ddlNewStandardSectionList" name="studentList[@i].NewStandardSectionId" class="form-control">
+                                                    @{ int j = 0;}
+                                                    @foreach (var newClass in Model.NextStandardSectionList)
+                                                    {
+                                                        <option value="@newClass.Value" @(j == 1 ? "selected=\"selected\"" : "")>@newClass.Text</option>
+                                                        j++;
+
+                                                    }
+                                                </select>
+                                                        }
+                                                        @*else
+                                                            {
+                                                                <select id="ddlNewStandardSectionList" name="studentList[@i].NewStandardSectionId" class="form-control" disabled="disabled">
+                                                                    @{ int j = 0;}
+                                                                    @foreach (var newClass in Model.NextStandardSectionList)
+                                                                    {
+                                                                        <option value="@newClass.Value" @(j == 1 ? "selected=\"selected\"" : "")>@newClass.Text</option>
+                                                                        j++;
+
+                                                                    }
+                                                                </select>
+                                                                        }*@
+                                                    </td>
+                                                </tr>
+
+                                                        }
                                
-                            }
+                                    
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
-                    <br />
-                    <br />
-                    <input type="hidden" name="@Model.StandardSectionMap.StandardSectionId" id="hdnStandardSection" />
-                    @if (!Model.IsCommandPromote)
-                    {
-                   
-                    <button type="submit" name="Command" value="@StudentResource.PromoteCommand" class="btn btn-primary" onclick="return setStandardSectionId();">@StudentResource.PromotionButton</button>
-                    }
-                </fieldset>
-            }
-                    <script>
-                        function setStandardSectionId()
+                        <br />
+                        <br />
+
+                        @if (!Model.IsCommandPromote)
                         {
-                            debugger;
-                            var flag = false;
-                            var dropdownValue = document.getElementById("ddlStandardSection");
-                            var stdSec = dropdownValue.options[e.selectedIndex].value;
-
-                            var hiddenStandardSec = document.getElementById("hdnStandardSection");
-                            hiddenStandardSec.value = stdSec;
-                            if (hiddenStandardSec.value != null && hiddenStandardSec.value != "")
-                                flag = true;
-                            return flag;
+                            <button type="submit" name="Command" value="@StudentResource.PromoteCommand" class="btn btn-primary">@StudentResource.PromotionButton</button>
                         }
 
-                        function changePromotionStatus() {
-                        debugger
-                        var ddlPromotion = document.getElementById("ddlPromotionStatusList");
-                            if (ddlPromotion.selectedIndex==3) {
-                                var ddlNextStandard = document.getElementById("ddlNewStandardSectionList").disabled = true;
-                            }
-                            else {
-                                var ddlNextStandard = document.getElementById("ddlNewStandardSectionList").disabled = false;
-                            }
-                        }
+                        <button type="submit" name="Command" value="@StudentResource.ConfirmPromotionCommand" class="btn btn-primary">@StudentResource.ConfirmPromotionCommand</button>
 
-                    </script>
-</div>
+                    </fieldset>
+                }
+                <script>
+                    //function setStandardSectionId()
+                    //{
+                    //    debugger;
+                    //    var flag = false;
+                    //    var dropdownValue = document.getElementById("ddlStandardSection");
+                    //    var stdSec = dropdownValue.options[e.selectedIndex].value;
+
+                    //    var hiddenStandardSec = document.getElementById("hdnStandardSection");
+                    //    hiddenStandardSec.value = stdSec;
+                    //    if (hiddenStandardSec.value != null && hiddenStandardSec.value != "")
+                    //        flag = true;
+                    //    return flag;
+                    //}
+
+                    function changePromotionStatus(row) {
+                        //debugger
+                        var ddlPromotion = row.cells[1].getElementsByTagName("select")[0];
+                        if (ddlPromotion.selectedIndex == 1) {
+                            row.cells[3].getElementsByTagName("select")[0].disabled = true;
+                            row.cells[3].getElementsByTagName("select")[0].selectedIndex = 0;
+                        }
+                        else {
+                            row.cells[3].getElementsByTagName("select")[0].disabled = false;
+
+                        }
+                    }
+
+                </script>
+            </div>
         </div>
-               
+
+     }
+    else if(Model.studentList != null && Model.studentList.Count == 0 && Model.IsSearchSuccessful)
+    {
+        <label class="form-control" style="">All Students of this class has been promoted</label>
+
     }
 
 

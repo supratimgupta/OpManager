@@ -123,6 +123,9 @@
   <data name="Class" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="ConfirmPromotionCommand" xml:space="preserve">
+    <value>Promotion Confirmed</value>
+  </data>
   <data name="FName" xml:space="preserve">
     <value>First Name</value>
   </data>

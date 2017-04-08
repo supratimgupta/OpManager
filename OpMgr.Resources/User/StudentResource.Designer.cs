@@ -79,6 +79,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Promotion Confirmed.
+        /// </summary>
+        public static string ConfirmPromotionCommand {
+            get {
+                return ResourceManager.GetString("ConfirmPromotionCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FName {

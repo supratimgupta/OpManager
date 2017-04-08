@@ -400,7 +400,7 @@ namespace OpMgr.DataAccess.Implementations
 
 
         // returns next standard section w.r.t the current standard 
-        public List<StandardSectionMapDTO> NextStandardSection(int currentStandardId)
+        public List<StandardSectionMapDTO> NextStandardSection(int currentSerial)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -408,8 +408,8 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select StandardSectionId,concat(StandardName,' ', SectionName) as StandardSectionDesc from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1 AND ssm.StandardId=(@currentStandardId+1)";
-                    command.Parameters.Add("@currentStandardId", MySqlDbType.Int32).Value = currentStandardId;
+                    command.CommandText = "select StandardSectionId,concat(StandardName,' ', SectionName) as StandardSectionDesc from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1 AND ssm.StandardSectionId=(@currentSerial+1)";
+                    command.Parameters.Add("@currentSerial", MySqlDbType.Int32).Value = currentSerial;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);

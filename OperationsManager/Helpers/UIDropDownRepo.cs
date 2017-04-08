@@ -125,7 +125,7 @@ namespace OperationsManager.Helpers
             ssDto.StandardSectionId = -1;
             ssDto.StandardSectionDesc = string.Empty;
 
-            rDto.Insert(0, ssDto);
+           // rDto.Insert(0, ssDto);
 
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
@@ -143,10 +143,10 @@ namespace OperationsManager.Helpers
         public SelectList getPromotionStatusDropDown()
         {
             Dictionary<string, string> dicPromotionStatus = new Dictionary<string, string>();
-            dicPromotionStatus.Add("-1", "Select");
+            //dicPromotionStatus.Add("-1", "Select");
             dicPromotionStatus.Add("1", "Passed");
-            dicPromotionStatus.Add("2", "Promotion Confirmed");
-            dicPromotionStatus.Add("3", "Failed");
+            //dicPromotionStatus.Add("2", "Promotion Confirmed");
+            dicPromotionStatus.Add("2", "Failed");
             return new SelectList(dicPromotionStatus, "key", "value");
 
         }
