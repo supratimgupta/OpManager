@@ -1,4 +1,5 @@
 ﻿using OperationsManager.Areas.User.Models;
+using OperationsManager.Attributes;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -10,10 +11,11 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.User.Controllers
 {
+    [OpMgrAuth]
     public class UserController : Controller
     {
         private IUserSvc _userSvc;
-        private ILogSvc _logSvc;
+        //private ILogSvc _logSvc;
         private IDropdownRepo _dropDownRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
 
@@ -199,5 +201,7 @@ namespace OperationsManager.Areas.User.Controllers
 
           return View(uView);
         }
+
+
     }
 }

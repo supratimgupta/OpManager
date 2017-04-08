@@ -9,10 +9,13 @@ namespace OperationsManager.Areas.Admin.Models
 {
     public class AdminViewModel : EntitlementActionDTO
     {
-        public UserMasterDTO UserMaster { get; set; }
+        //public UserMasterDTO UserMaster { get; set; }
+        public List<AdminViewModel> entitlementactionList { get; set; }
 
         public SelectList ActionList { get; set; }
 
         public SelectList EntitlementList { get; set; }
+
+        public Boolean IsSearchSuccessful { get; set; }
     }
 }

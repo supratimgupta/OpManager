@@ -10,6 +10,8 @@ namespace OpMgr.Common.DTOs
     {
         public int RowId { get; set; }
 
+        public UserMasterDTO UserMaster { get; set; }
+
         public ActionDTO ActionDetails{ get; set; }
 
         public EntitlementDTO RoleDetails { get; set; }

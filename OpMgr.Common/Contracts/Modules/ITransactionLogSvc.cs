@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpMgr.Common.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,6 +12,16 @@ namespace OpMgr.Common.Contracts.Modules
     {
         DataTable GetPendingTransactions(DateTime? runDate);
 
-        bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty);
+        bool UpdateHasPenaltyFlag(int trnsLogId, bool? hasPenalty, DateTime dueDate, int penaltyTransactionRule);
+
+        StatusDTO<List<TransactionLogDTO>> SelectPayment(StudentDTO student);
+
+        StatusDTO<TransactionLogDTO> UpdatePayment(TransactionLogDTO tranlog);
+
+        StatusDTO<List<TransactionLogDTO>> GetPendingPrincipalApprovals(TransactionLogDTO tranlog);
+
+        bool ApproveCancelAdjustedAmt(List<TransactionLogDTO> lstTRLog);
+
+        bool ResendRequest(int transactionLogId);
     }
 }

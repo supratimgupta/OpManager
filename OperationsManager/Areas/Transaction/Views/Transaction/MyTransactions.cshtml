@@ -8,9 +8,9 @@
 }
 
 <div class="row">
-    <div>
-        <div class="panel-default">
-            <div class="panel-heading">@TransactionSearch.TransSearchPageHeader</div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>@TransactionSearch.TransSearchPageHeader</b></div>
             <div class="panel-body">
                 @using (Html.BeginForm())
                 {
@@ -51,119 +51,123 @@
                         </div>
                     </fieldset>
                 }
-                <div class="row">
-                    @if (Model.SearchResult != null && Model.SearchResult.Count > 0)
-                    {
-                        <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @TransactionSearch.Col2
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col3
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col14
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col5
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col6
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col7
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col8
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col9
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col11
-                                    </th>
-                                    <th>
-                                        @TransactionSearch.Col13
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.SearchResult.Count; i++)
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @if (Model.SearchResult != null && Model.SearchResult.Count > 0)
+                {
+                    <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @TransactionSearch.Col2
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col3
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col14
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col5
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col6
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col7
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col8
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col9
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col11
+                                </th>
+                                <th>
+                                    @TransactionSearch.Col13
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.SearchResult.Count; i++)
                                 {
-                                    <tr>
-                                        <td>
-                                            @string.Concat(Model.SearchResult[i].User.FName, " ", Model.SearchResult[i].User.MName, " ", Model.SearchResult[i].User.LName)
-                                        </td>
-                                        <td>
-                                            @if (Model.SearchResult[i].TransactionDate != null)
-                                            {
-                                                @Model.SearchResult[i].TransactionDate.Value.ToString("dd-MMM-yyyy hh:mm tt")
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (Model.SearchResult[i].TransactionDueDate != null)
-                                            {
-                                                @Model.SearchResult[i].TransactionDueDate.Value.ToString("dd-MMM-yyyy hh:mm tt")
-                                            }
-                                        </td>
-                                        <td>
-                                            @(Model.SearchResult[i].IsCompleted != null && Model.SearchResult[i].IsCompleted.Value ? "Y" : "N")
-                                        </td>
-                                        <td>
-                                            @if (Model.SearchResult[i].CompletedOn != null)
-                                            {
-                                                @Model.SearchResult[i].CompletedOn.Value.ToString("dd-MMM-yyyy hh:mm tt")
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (Model.SearchResult[i].AmountImposed != null)
-                                            {
-                                                @Model.SearchResult[i].AmountImposed.ToString()
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (Model.SearchResult[i].AmountGiven != null)
-                                            {
-                                                @Model.SearchResult[i].AmountGiven.ToString()
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (Model.SearchResult[i].DueAmount != null)
-                                            {
-                                                @Model.SearchResult[i].DueAmount.ToString()
-                                            }
-                                        </td>
-                                        <td>
-                                            @Model.SearchResult[i].TransactionType
-                                        </td>
-                                        <td>
-                                            @(Model.SearchResult[i].TransactionRule != null ? Model.SearchResult[i].TransactionRule.RuleName : "")
-                                        </td>
-                                        <td align="center">
-                                            <a href="#">Make Payment</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
                             <tr>
                                 <td>
-                                    <b>
-                                        @TransactionSearch.NoDataMsg
-                                    </b>
+                                    @string.Concat(Model.SearchResult[i].User.FName, " ", Model.SearchResult[i].User.MName, " ", Model.SearchResult[i].User.LName)
+                                </td>
+                                <td>
+                                    @if (Model.SearchResult[i].TransactionDate != null)
+                                            {
+                                            @Model.SearchResult[i].TransactionDate.Value.ToString("dd-MMM-yyyy hh:mm tt")
+                                            }
+                                </td>
+                                <td>
+                                    @if (Model.SearchResult[i].TransactionDueDate != null)
+                                            {
+                                            @Model.SearchResult[i].TransactionDueDate.Value.ToString("dd-MMM-yyyy hh:mm tt")
+                                            }
+                                </td>
+                                <td>
+                                    @(Model.SearchResult[i].IsCompleted != null && Model.SearchResult[i].IsCompleted.Value ? "Y" : "N")
+                                </td>
+                                <td>
+                                    @if (Model.SearchResult[i].CompletedOn != null)
+                                            {
+                                            @Model.SearchResult[i].CompletedOn.Value.ToString("dd-MMM-yyyy hh:mm tt")
+                                            }
+                                </td>
+                                <td>
+                                    @if (Model.SearchResult[i].AmountImposed != null)
+                                            {
+                                            @Model.SearchResult[i].AmountImposed.ToString()
+                                            }
+                                </td>
+                                <td>
+                                    @if (Model.SearchResult[i].AmountGiven != null)
+                                            {
+                                            @Model.SearchResult[i].AmountGiven.ToString()
+                                            }
+                                </td>
+                                <td>
+                                    @if (Model.SearchResult[i].DueAmount != null)
+                                            {
+                                            @Model.SearchResult[i].DueAmount.ToString()
+                                            }
+                                </td>
+                                <td>
+                                    @Model.SearchResult[i].TransactionType
+                                </td>
+                                <td>
+                                    @(Model.SearchResult[i].TransactionRule != null ? Model.SearchResult[i].TransactionRule.RuleName : "")
+                                </td>
+                                <td align="center">
+                                    <a href="#">Make Payment</a>
                                 </td>
                             </tr>
-                        </table>
-                    }
-                </div>
+                                }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                        <tr>
+                            <td>
+                                <b>
+                                    @TransactionSearch.NoDataMsg
+                                </b>
+                            </td>
+                        </tr>
+                    </table>
+                }
             </div>
         </div>
     </div>
 </div>
+    
+

@@ -47,6 +47,10 @@ namespace OpMgr.Common.DTOs
         public bool? HasPenalty { get; set; }
 
         public TransactionLogDTO OriginalTransLog { get; set; }
+        public double? AdjustedAmount { get; set; }
+
+        public int? IsPrincipalApproved { get; set; }
+
         public StandardSectionMapDTO StandardSectionMap { get; set; }
 
         public TransactionRuleDTO PenaltyTransactionRule { get; set; }
@@ -63,5 +67,11 @@ namespace OpMgr.Common.DTOs
         public string SearchLoginName { get; set; }
 
         public int? SearchStdSectionId { get; set; }
+
+        //public double? AdjustedAmount { get; set; }
+
+        public bool IsChequeEncashed { get; set; }
+
+        //public int? IsPrincipalApprroved { get; set; }
     }
 }

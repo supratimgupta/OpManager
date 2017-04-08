@@ -1,0 +1,348 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Student.Models.StudentVM
+
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2></h2>
+@section PageScripts{
+    <script>
+        $(document).ready(function () {
+            $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
+            //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
+                        
+        });
+    </script>
+    <script>
+        function addTransactionItems()
+        {
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "Transactions[" + nextRowId + "].UserTransactionId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlTrMaster = document.createElement("select");
+            ddlTrMaster.name = "Transactions[" + nextRowId + "].Transaction.TranMasterId";
+            ddlTrMaster.className = "form-control";
+            populateTrMasterDDL(ddlTrMaster);
+            scndCell.appendChild(ddlTrMaster);
+
+            var thirdCell = document.createElement("td");
+            var ddlCalcIn = document.createElement("select");
+            ddlCalcIn.name = "Transactions[" + nextRowId + "].GraceAmountIn";
+            ddlCalcIn.className = "form-control";
+            populateGraceIn(ddlCalcIn);
+            thirdCell.appendChild(ddlCalcIn);
+
+            var fourthCell = document.createElement("td");
+            var txtGraceAmt = document.createElement("input");
+            txtGraceAmt.type = "text";
+            txtGraceAmt.name = "Transactions[" + nextRowId + "].GraceAmount";
+            txtGraceAmt.className = "form-control";
+            fourthCell.appendChild(txtGraceAmt);
+
+            var fifthCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteRow(this);');
+            fifthCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+            newRow.appendChild(fourthCell);
+            newRow.appendChild(fifthCell);
+
+            tbody.appendChild(newRow);
+        }
+
+        function deleteRow(aDelete)
+        {
+            var row = aDelete.parentNode.parentNode;
+
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+
+            tbody.removeChild(row);
+        }
+
+        function populateGraceIn(ddlCalcIn)
+        {
+            $.ajax({
+                type: 'POST',
+                url: 'GetCalcIn',
+                dataType: "json",
+                success: function (resultData) { populateCalcInDDL(resultData, ddlCalcIn); },
+                error: function (error) { }
+            });
+        }
+
+        function populateCalcInDDL(trnsMasters, ddlCalcIn) {
+            var ddlTrnsMasters = ddlCalcIn;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].Key;
+                    option.innerHTML = trnsMasters[i].Value;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function populateTrMasterDDL(ddlTrMaster)
+        {
+            $.ajax({
+                type: 'POST',
+                url: 'GetTransactionMasterDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrnsMasterDDL(resultData, ddlTrMaster); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrnsMasterDDL(trnsMasters, ddlTrMaster) {
+            var ddlTrnsMasters = ddlTrMaster;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].TranMasterId;
+                    option.innerHTML = trnsMasters[i].TransactionName;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function deleteUserTrans(uTransId)
+        {
+            var uTrans = new Object();
+            uTrans.UserTransactionId = parseInt(uTransId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteUserTransaction',
+                data:uTrans,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+    </script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control" })
+                            @Html.HiddenFor(m => m.MODE)
+                            @Html.HiddenFor(m => m.UserDetails.UserMasterId)
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                        </div>
+                        @*<div class="col-lg-5">
+                                @if (Model.MODE == "EDIT")
+                                {
+                                    @Html.HiddenFor(m => m.Role.RoleId)
+                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control", disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
+                                }
+
+                            </div>*@
+                        <div id="divStudent">
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div id="divImages">
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Father (Old will be replaced)</label>
+                                    <input type="file" name="fuFatherImage" class="form-control" id="fatherImage" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Mother (Old will be replaced)</label>
+                                    <input type="file" name="fuMotherImage" class="form-control" id="motherImage" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
+                                    <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+                                </div>
+                            </div>
+                        </div>
+                        @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <div id="divcredentials">
+                                <div class="col-lg-10">
+                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-10">
+                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-10">
+                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                        }
+                        <div class="row">
+                            <table id="tblTransactions" class="table table table-striped table-bordered table-responsive table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">
+                                            Fees applicable to this student
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5">
+                                            <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="display:none;"></th>
+                                        <th>Fees</th>
+                                        <th>Grace on</th>
+                                        <th>Grace Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Transactions != null && Model.Transactions.Count > 0)
+                                    {
+                                        for (int i = 0; i < Model.Transactions.Count; i++)
+                                        {
+                                            <tr>
+                                                <td style="display:none;">
+                                                    <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
+                                                </td>
+                                                <td>
+                                                    <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
+                                                        {
+                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
+                                                        }
+                                                    </select>
+
+                                                    @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
+                                                </td>
+                                                <td>
+                                                    <select name="Transactions[@i].GraceAmountIn" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
+                                                        {
+                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
+                                                        }
+                                                    </select>
+                                                    @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
+                                                    @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
+                                                </td>
+                                                <td>
+                                                    <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="checkbox">
+                            </div>
+                            <button type="submit" class="btn btn-primary" >@UserResource.RegisterButton</button>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div><!-- /.col-->
+</div>

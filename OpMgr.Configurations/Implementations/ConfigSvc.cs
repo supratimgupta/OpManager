@@ -18,5 +18,20 @@ namespace OpMgr.Configurations.Implementations
         {
             return System.Configuration.ConfigurationManager.AppSettings["LogPath"];
         }
+
+        public string GetStudentImagesFolder()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["StudentImageFolder"];
+        }
+
+        public string GetFatherImagesFolder()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["FatherImageFolder"];
+        }
+
+        public string GetMotherImagesFolder()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["MotherImageFolder"];
+        }
     }
 }

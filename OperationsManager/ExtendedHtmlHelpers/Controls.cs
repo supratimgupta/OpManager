@@ -141,6 +141,31 @@ namespace OperationsManager.ExtendedHtmlHelpers
             return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.TextBoxFor(expression, htmlAttributes).ToString(), false, false);
         }
 
+        public static MvcHtmlString OpMgrFileUpload<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, object htmlAttributes = null)
+        {
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.TextBoxFor(expression, htmlAttributes).ToString().Replace("type=\"text\"","type=\"file\""), true, false);
+                    }
+                }
+
+            }
+            return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.TextBoxFor(expression, htmlAttributes).ToString().Replace("type=\"text\"", "type=\"file\""), false, false);
+        }
+
         public static MvcHtmlString OpMgrTextAreaFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, object htmlAttributes = null)
         {
             if (htmlAttributes != null)

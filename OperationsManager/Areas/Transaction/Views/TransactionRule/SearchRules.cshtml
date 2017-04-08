@@ -1,0 +1,326 @@
+﻿@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.TransactionRuleVM
+
+
+@{
+    ViewBag.Title = "Transaction Rules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section PageScripts
+{
+    <script language="javascript" type="text/javascript">
+        function getTrnsMasterData(ddlFreq)
+        {
+
+            var selectedFreq = ddlFreq.options[ddlFreq.selectedIndex].value;
+            var trnsMaster = new Object();
+            trnsMaster.Frequency = selectedFreq;
+            $.ajax({
+                type: 'POST',
+                url: 'GetTransactionMasters',
+                data: trnsMaster,
+                dataType: "json",
+                success: function (resultData) {  populateTrnsMasterDDL(resultData.data); },
+                error: function (error) { }
+            });
+        }
+
+        function getIsDiffTo(ddlTrnsMaster)
+        {
+
+            var selectedMaster = ddlTrnsMaster.options[ddlTrnsMaster.selectedIndex].value;
+            var trnsMaster = new Object();
+            trnsMaster.TranMasterId = parseInt(selectedMaster);
+            $.ajax({
+                type: 'POST',
+                url: 'GetIsDifferentTo',
+                data: trnsMaster,
+                dataType: "json",
+                success: function (resultData) { document.getElementById("hfIsDiffTo").value = resultData.diffTo; enableDisableControls(resultData.diffTo); },
+                error: function (error) {  }
+            });
+        }
+
+        $(document).ready(function () {
+            debugger;
+            if (document.getElementById("hfIsPostBack").value === "TRUE")
+            {
+                getIsDiffTo(document.getElementById("ddlTrnsMasters"));
+            }
+            else
+            {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlStandard").selectedIndex = 0
+                document.getElementById("ddlUser").selectedIndex = 0
+            }
+        });
+
+        function enableDisableControls(diffTo)
+        {
+            if(diffTo==="CLASS-TYPE")
+            {
+                $("#ddlClassType").prop("disabled", false);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlStandard").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlUser").selectedIndex = 0;
+            }
+            else if(diffTo=="STANDARD")
+            {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", false);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlUser").selectedIndex = 0;
+            }
+            else if(diffTo=="SECTION")
+            {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", false);
+                $("#ddlSection").prop("disabled", false);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlUser").selectedIndex = 0;
+            }
+            else if (diffTo == "USER") {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", false);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlStandard").selectedIndex = 0
+            }
+            else if (diffTo == "NONE") {
+                $("#ddlClassType").prop("disabled", true);
+                $("#ddlStandard").prop("disabled", true);
+                $("#ddlSection").prop("disabled", true);
+                $("#ddlUser").prop("disabled", true);
+
+                document.getElementById("ddlClassType").selectedIndex = 0;
+                document.getElementById("ddlSection").selectedIndex = 0;
+                document.getElementById("ddlStandard").selectedIndex = 0
+                document.getElementById("ddlUser").selectedIndex = 0
+            }
+        }
+
+        function populateTrnsMasterDDL(trnsMasters)
+        {
+            var ddlTrnsMasters = document.getElementById("ddlTrnsMasters");
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++)
+            {
+                var option = document.createElement("option");
+                if (i == -1)
+                {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else
+                {
+                    option.value = trnsMasters[i].TranMasterId;
+                    option.innerHTML = trnsMasters[i].TransactionName;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+    </script>
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>@TransactionRule.PageHeader</b></div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        @if (!string.IsNullOrEmpty(Model.SuccessMsg))
+                        {
+                        <div class="alert alert-success alert-dismissable alert-dismissible fade in">
+                            <strong>@Model.SuccessMsg</strong>
+                        </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+                        {
+                        <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                            <strong>@Model.ErrorMsg</strong>
+                        </div>
+                        }
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <input type="hidden" value="@Model.IsPostBack" name="IsPostBack" id="hfIsPostBack" />
+                                @Html.HiddenFor(m => m.IsdifferentTo, new { id = "hfIsDiffTo" })
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        @Html.OpMgrDropDownListFor(m => m.SelectedFrequency, Model.TransactionFrequencies, TransactionRule.SelectFrequency, new { @class = "form-control", onchange = "getTrnsMasterData(this);" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.OpMgrDropDownListFor(m => m.TranMaster.TranMasterId, Model.TransactionMasters, TransactionRule.TranMaster, new { @class = "form-control", id = "ddlTrnsMasters", onchange = "getIsDiffTo(this);" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.OpMgrDropDownListFor(m => m.ClassType.ClassTypeId, Model.ClassTypes, TransactionRule.ClassType, new { @class = "form-control", id = "ddlClassType" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.OpMgrDropDownListFor(m => m.Standard.StandardId, Model.Standards, TransactionRule.Standard, new { @class = "form-control", id = "ddlStandard" })
+                                    </div>
+                                    <div class="col-lg-2">
+                                        @Html.OpMgrDropDownListFor(m => m.Section.SectionId, Model.Sections, TransactionRule.Section, new { @class = "form-control", id = "ddlSection" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        @Html.OpMgrDropDownListFor(m => m.UserDTO.UserMasterId, Model.Users, TransactionRule.UserDTO, new { @class = "form-control", id = "ddlUser" })
+                                    </div>
+                                    <div class="col-lg-offset-6">
+
+                                    </div>
+                                    <div class="col-lg-2" style="margin-top:28px">
+                                        <button type="submit" class="btn btn-primary btn-block">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                }
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <fieldset>
+                    <div class="row">
+                        @if (string.Equals(Model.IsPostBack, "TRUE") && Model.SearchedResult != null && Model.SearchedResult.Count > 0)
+                        {
+                            <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction Name</th>
+                                        @if (string.Equals(Model.IsdifferentTo, "USER"))
+                                        {
+                                            <th>User Name</th>
+                                        }
+                                        @if (string.Equals(Model.IsdifferentTo, "CLASS-TYPE"))
+                                        {
+                                            <th>Class Type</th>
+                                        }
+                                        @if (string.Equals(Model.IsdifferentTo, "STANDARD"))
+                                        {
+                                            <th>Standard</th>
+                                        }
+                                        @if (string.Equals(Model.IsdifferentTo, "SECTION"))
+                                        {
+                                            <th>Standard</th>
+                                                <th>Section</th>
+                                        }
+                                        <th>Rule Name</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.SearchedResult.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Model.SearchedResult[i].TranMaster.TransactionName
+                                            </td>
+                                            @if (string.Equals(Model.IsdifferentTo, "USER"))
+                                            {
+                                                <td>@(Model.SearchedResult[i].UserDTO.FName + " " + Model.SearchedResult[i].UserDTO.MName + " " + Model.SearchedResult[i].UserDTO.LName)</td>
+                                            }
+                                            @if (string.Equals(Model.IsdifferentTo, "CLASS-TYPE"))
+                                            {
+                                                <td>@Model.SearchedResult[i].ClassType.ClassTypeName</td>
+                                            }
+                                            @if (string.Equals(Model.IsdifferentTo, "STANDARD"))
+                                            {
+                                                <td>@Model.SearchedResult[i].Standard.StandardName</td>
+                                            }
+                                            @if (string.Equals(Model.IsdifferentTo, "SECTION"))
+                                            {
+                                                <td>@Model.SearchedResult[i].Standard.StandardName</td>
+                                                <td>@Model.SearchedResult[i].Section.SectionName</td>
+                                            }
+                                            <td>@Model.SearchedResult[i].RuleName</td>
+                                            <td>@Model.SearchedResult[i].ActualAmount</td>
+                                            <td>
+                                                @if (Model.SearchedResult[i].TranRuleId > 0)
+                                                {
+                                                    <a href="/Transaction/TransactionRule/TransactionRule?mode=EDIT&id=@Model.SearchedResult[i].TranRuleId">Edit</a>
+                                                }
+                                                else
+                                                {
+                                                    switch (Model.IsdifferentTo)
+                                                    {
+                                                        case "USER":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=@Model.SearchedResult[i].UserDTO.UserMasterId&classTypeId=-1&standardId=-1&sectionId=-1">Add</a>
+                                                            break;
+                                                        case "CLASS-TYPE":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=@Model.SearchedResult[i].ClassType.ClassTypeId&standardId=-1&sectionId=-1">Add</a>
+                                                            break;
+                                                        case "STANDARD":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=-1&standardId=@Model.SearchedResult[i].Standard.StandardId&sectionId=-1">Add</a>
+                                                            break;
+                                                        case "SECTION":
+                                                            <a href="/Transaction/TransactionRule/PrepareForAdd?isDiffTo=@Model.IsdifferentTo&userId=-1&classTypeId=-1&standardId=@Model.SearchedResult[i].Standard.StandardId&sectionId=@Model.SearchedResult[i].Section.SectionId">Add</a>
+                                                            break;
+                                                    }
+
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            if (string.Equals(Model.IsPostBack, "TRUE"))
+                            {
+                                <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th align="center">
+                                                No Data Found
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            }
+                            else
+                            {
+                                <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th align="center">
+                                                Please select appropriate criteria and hit search to proceed.
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            }
+                        }
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+
+    </div>
+</div>

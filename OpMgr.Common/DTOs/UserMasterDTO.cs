@@ -65,7 +65,7 @@ namespace OpMgr.Common.DTOs
 
         public RoleDTO Role { get; set; }
 
-        public StudentDTO Student { get; set; }
+        //public StudentDTO Student { get; set; }
 
         public EmployeeDetailsDTO Employee { get; set; }
 

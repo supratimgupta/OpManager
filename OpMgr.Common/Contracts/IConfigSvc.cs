@@ -11,5 +11,11 @@ namespace OpMgr.Common.Contracts
         string GetConnectionString();
 
         string GetLogPath();
+
+        string GetStudentImagesFolder();
+
+        string GetFatherImagesFolder();
+
+        string GetMotherImagesFolder();
     }
 }

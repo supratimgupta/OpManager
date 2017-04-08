@@ -1,0 +1,42 @@
+﻿@using OpMgr.Resources.Transaction
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Transaction.Models.UserTransactionViewModel
+@{
+    ViewBag.Title = UserTransactionResource.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div>
+        <div>
+            <div class="panel-heading">UserTransactionResource.Title</div>
+            <div class="panel-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.User.UserMasterId , Model.UserFName, UserTransactionResource.UserFName, new { @class = "form-control" })
+
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.Transaction.TransactionName, Model.getTransactionMasters, UserTransactionResource.CalculationType, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.GraceAmountIn, Model.CalculationType, UserTransactionResource.CalculationType, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m =>m.GraceAmount, UserTransactionResource.GraceAmount, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-10">
+                            <button type="submit" class="btn btn-primary">@UserTransactionResource.TransactionButton</button>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

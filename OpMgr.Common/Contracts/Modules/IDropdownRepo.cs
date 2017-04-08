@@ -44,7 +44,7 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<EntitlementDTO> GetUserRole();
 
-        List<TransactionMasterDTO> GetTransactionMasters();
+        List<TransactionMasterDTO> GetTransactionMasters(string frequency=null);
 
         List<TransactionRuleDTO> GetTransactionRules();
     }

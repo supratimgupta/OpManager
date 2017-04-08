@@ -17,6 +17,8 @@ namespace OpMgr.DataAccess.Implementations
         /// Required for getting connection related configs
         /// </summary>
         private IConfigSvc _configSvc;
+        private DataTable _dtData;
+        private DataSet _dsData;
 
         /// <summary>
         /// Needed for exception handling
@@ -41,18 +43,154 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<StudentDTO> Insert(StudentDTO data)
         {
-            throw new NotImplementedException();
+
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "ins_StudentDetails";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    //data.UserDetails = new UserMasterDTO();
+                    command.Parameters.Add("@UserMasterId1", MySqlDbType.String).Value = data.UserDetails.UserMasterId;
+                    command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+                    command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                    command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.UserDetails.Gender;
+                    command.Parameters.Add("@Image", MySqlDbType.String).Value = data.UserDetails.Image;
+                    command.Parameters.Add("@DOB", MySqlDbType.DateTime).Value = data.UserDetails.DOB;
+                    command.Parameters.Add("@EmailId", MySqlDbType.String).Value = data.UserDetails.EmailId;
+                    command.Parameters.Add("@ResidentialAddress", MySqlDbType.String).Value = data.UserDetails.ResidentialAddress;
+                    command.Parameters.Add("@PermanentAddress", MySqlDbType.String).Value = data.UserDetails.PermanentAddress;
+                    command.Parameters.Add("@ContactNo", MySqlDbType.String).Value = data.UserDetails.ContactNo;
+                    command.Parameters.Add("@AlContactNo", MySqlDbType.String).Value = data.UserDetails.AltContactNo;
+                    command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.UserDetails.BloodGroup;
+                    command.Parameters.Add("@UserName", MySqlDbType.String).Value = data.UserDetails.UserName;
+                    command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.UserDetails.Password;
+                    //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
+                    command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
+
+                    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
+                    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
+                    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.AdmissionDate;
+                    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.GuardianContact;
+                    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.GuardianName;
+                    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.GuardianEmailId;
+                    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
+                    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.HouseType.HouseTypeId;
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                    
+                    if(_dtData.Columns.Count>1)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new StudentDTO();
+                        status.ReturnObj.UserDetails = new UserMasterDTO();
+                        status.ReturnObj.UserDetails.UserMasterId = (int)_dtData.Rows[0][1];
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = _dtData.Rows[0][0].ToString();
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<StudentDTO> Select(int rowId)
         {
-            throw new NotImplementedException();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "get_StudentDetails";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@UserMasterId1", MySqlDbType.Int32).Value = rowId;
+
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+                    StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                    StudentDTO studentDTO = new StudentDTO();
+                    if (_dsData != null && _dsData.Tables.Count > 0)
+                    {
+                        if (_dsData.Tables[0].Rows.Count > 0)
+                        {
+                            studentDTO.UserDetails = new UserMasterDTO();
+                            studentDTO.UserDetails.UserMasterId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["UserMasterId"]);
+                            studentDTO.UserDetails.Role = new RoleDTO();
+                            studentDTO.UserDetails.Role.RoleId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]);
+                            studentDTO.UserDetails.Location = new LocationDTO();
+                            studentDTO.UserDetails.Location.LocationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["LocationId"]);
+                            studentDTO.UserDetails.FName = _dsData.Tables[0].Rows[0]["FName"].ToString();
+                            studentDTO.UserDetails.MName = _dsData.Tables[0].Rows[0]["MName"].ToString();
+                            studentDTO.UserDetails.LName = _dsData.Tables[0].Rows[0]["LName"].ToString();
+                            studentDTO.UserDetails.Gender = _dsData.Tables[0].Rows[0]["Gender"].ToString();
+                            studentDTO.UserDetails.Image = _dsData.Tables[0].Rows[0]["Image"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DOB"].ToString()))
+                            {
+                                studentDTO.UserDetails.DOB = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["DOB"]);
+                            }
+                            else
+                            {
+                                studentDTO.UserDetails.DOB = null;
+                            }
+                            studentDTO.UserDetails.EmailId = _dsData.Tables[0].Rows[0]["EmailId"].ToString();
+                            studentDTO.UserDetails.ResidentialAddress = _dsData.Tables[0].Rows[0]["ResidentialAddress"].ToString();
+                            studentDTO.UserDetails.PermanentAddress = _dsData.Tables[0].Rows[0]["PermanentAddress"].ToString();
+                            studentDTO.UserDetails.ContactNo = _dsData.Tables[0].Rows[0]["ContactNo"].ToString();
+                            studentDTO.UserDetails.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
+                            studentDTO.UserDetails.BloodGroup = _dsData.Tables[0].Rows[0]["BloodGroup"].ToString();
+
+
+                            studentDTO.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
+                            studentDTO.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
+                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
+                                {
+                                studentDTO.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
+                                }
+                                else
+                                {
+                                studentDTO.AdmissionDate = null;
+                                }
+                            studentDTO.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
+                            studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
+                            studentDTO.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
+                            studentDTO.StandardSectionMap = new StandardSectionMapDTO();
+                            studentDTO.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
+                            studentDTO.HouseType = new HouseTypeDTO();
+                            studentDTO.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
+                            
+                        }
+                    }
+                    status.ReturnObj = studentDTO;
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+
         }
 
         public StatusDTO<List<StudentDTO>> Select(StudentDTO data)
         {
             StatusDTO<List<StudentDTO>> studLst = new StatusDTO<List<StudentDTO>>();
-            string whereClause=null;
+            string whereClause = null;
             string selectClause = null;
             DataSet dsStudentLst = null;
 
@@ -67,12 +205,12 @@ namespace OpMgr.DataAccess.Implementations
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName," +
-                                   "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber,"+
-                                   "student.GuardianContactNo "+
-                                   "FROM studentinfo student "+
-                                   " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId"+
-                                   " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId"+
-                                   " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId"+
+                                   "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
+                                   "student.GuardianContactNo " +
+                                   "FROM studentinfo student " +
+                                   " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
+                                   " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
+                                   " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
                                    " INNER JOIN Section sec ON stdSecMap.StandardId = sec.SectionId ";
 
                     //Select All students who are ACTIVE
@@ -86,16 +224,16 @@ namespace OpMgr.DataAccess.Implementations
 
                         if (!string.IsNullOrEmpty(data.UserDetails.FName))
                         {
-                            whereClause = whereClause+ " AND users.FName=@FName ";
+                            whereClause = whereClause + " AND users.FName=@FName ";
                             command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
                         }
-                        if(!string.IsNullOrEmpty(data.UserDetails.MName))
+                        if (!string.IsNullOrEmpty(data.UserDetails.MName))
                         {
                             whereClause = whereClause + " AND users.MName=@MName ";
                             command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
                         }
 
-                        if(!string.IsNullOrEmpty(data.UserDetails.LName))
+                        if (!string.IsNullOrEmpty(data.UserDetails.LName))
                         {
                             whereClause = whereClause + " AND users.LName=@LName ";
                             command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
@@ -107,16 +245,16 @@ namespace OpMgr.DataAccess.Implementations
                         //data.StandardSectionMap.Standard = new StandardDTO();
                         //data.StandardSectionMap.Section = new SectionDTO();
 
-                        if(data.StandardSectionMap.StandardSectionId!=-1)
+                        if (data.StandardSectionMap.StandardSectionId != -1)
                         {
                             whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
-                            command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value=data.StandardSectionMap.StandardSectionId;
+                            command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value = data.StandardSectionMap.StandardSectionId;
                         }
 
-                        
+
                         // Roll Number and Registration Search
 
-                        if(!string.IsNullOrEmpty(data.RegistrationNumber))
+                        if (!string.IsNullOrEmpty(data.RegistrationNumber))
                         {
                             whereClause = whereClause + " AND student.RegistrationNumber=@RegistrationNumber ";
                             command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
@@ -131,7 +269,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     }
 
-                       //command.CommandText = "select * from studentinfo";
+                    //command.CommandText = "select * from studentinfo";
 
                     command.CommandText = selectClause + whereClause;
 
@@ -140,10 +278,10 @@ namespace OpMgr.DataAccess.Implementations
                     da.Fill(dsStudentLst);
 
 
-                    if(dsStudentLst!=null && dsStudentLst.Tables.Count>0)
+                    if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
                     {
                         studLst.ReturnObj = new List<StudentDTO>();
-                        for (int i=0;i<dsStudentLst.Tables[0].Rows.Count;i++)
+                        for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
                         {
                             StudentDTO student = new StudentDTO();
                             student.Active = true;
@@ -167,16 +305,16 @@ namespace OpMgr.DataAccess.Implementations
                             student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
                             student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
 
-                           
+
                             studLst.ReturnObj.Add(student);
 
                             studLst.IsSuccess = true;
-                            
+
                         }
                     }
 
                 }
-                catch(Exception exp)
+                catch (Exception exp)
                 {
                     _logger.Log(exp);
                     studLst.IsSuccess = false;
@@ -184,9 +322,9 @@ namespace OpMgr.DataAccess.Implementations
                     studLst.ReturnObj = null;
                     studLst.ExceptionMessage = exp.Message;
                     studLst.StackTrace = exp.StackTrace;
-                   // return studLst;
+                    // return studLst;
                 }
-               
+
 
             }
 
@@ -196,7 +334,51 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<StudentDTO> Update(StudentDTO data)
         {
-            throw new NotImplementedException();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "update_StudentDetails";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@UserMasterId1", MySqlDbType.String).Value = data.UserDetails.UserMasterId;
+                    command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+                    command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                    command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.UserDetails.Gender;
+                    command.Parameters.Add("@Image", MySqlDbType.String).Value = data.UserDetails.Image;
+                    command.Parameters.Add("@DOB", MySqlDbType.DateTime).Value = data.UserDetails.DOB;
+                    command.Parameters.Add("@EmailId", MySqlDbType.String).Value = data.UserDetails.EmailId;
+                    command.Parameters.Add("@ResidentialAddress", MySqlDbType.String).Value = data.UserDetails.ResidentialAddress;
+                    command.Parameters.Add("@PermanentAddress", MySqlDbType.String).Value = data.UserDetails.PermanentAddress;
+                    command.Parameters.Add("@ContactNo", MySqlDbType.String).Value = data.UserDetails.ContactNo;
+                    command.Parameters.Add("@AltContactNo", MySqlDbType.String).Value = data.UserDetails.AltContactNo;
+                    command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.UserDetails.BloodGroup;
+                    //command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.UserDetails.Password;
+                    //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.UserDetails.Role.RoleId;
+                    command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
+                   command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
+                    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
+                    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.AdmissionDate;
+                    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.GuardianContact;
+                    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.GuardianName;
+                    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.GuardianEmailId;
+                    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
+                    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.HouseType.HouseTypeId;
+
+                    command.ExecuteNonQuery();
+                    StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                    status.IsSuccess = true;
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<List<StudentDTO>> PromoteToNewClass(List<StudentDTO> studentList, string Command, int StandardSectionId)
