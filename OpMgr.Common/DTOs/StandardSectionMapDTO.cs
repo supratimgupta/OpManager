@@ -26,6 +26,10 @@ namespace OpMgr.Common.DTOs
 
         public StandardDTO Standard { get; set; }
 
+        public int Serial { get; set; }
+
         public EmployeeDetailsDTO ClassTeacher { get; set; }
+
+        //provision for serial if needed
     }
 }

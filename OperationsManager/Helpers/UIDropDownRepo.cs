@@ -26,7 +26,7 @@ namespace OperationsManager.Helpers
             //locDto.LocationId = -1;
             locDto.LocationDescription = string.Empty;
 
-            lDto.Insert(0, locDto);
+           // lDto.Insert(0, locDto);
 
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }
@@ -116,6 +116,20 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
 
+        // return next Standard Section List w.r.t Current Standard
+        public SelectList getNextStandardSectionDropDown(int currentStandardId)
+        {
+            List<StandardSectionMapDTO> rDto = _ddlRepo.NextStandardSection(currentStandardId);
+
+            StandardSectionMapDTO ssDto = new StandardSectionMapDTO();
+            ssDto.StandardSectionId = -1;
+            ssDto.StandardSectionDesc = string.Empty;
+
+            rDto.Insert(0, ssDto);
+
+            return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
+        }
+
         public SelectList getGenderDropDown()
         {
             Dictionary<string, string> dicGender = new Dictionary<string, string>();
@@ -124,6 +138,17 @@ namespace OperationsManager.Helpers
             dicGender.Add("2", "Female");
             dicGender.Add("3", "Other");
             return new SelectList(dicGender, "key", "value");
+        }
+
+        public SelectList getPromotionStatusDropDown()
+        {
+            Dictionary<string, string> dicPromotionStatus = new Dictionary<string, string>();
+            //dicPromotionStatus.Add("-1", "Select");
+            dicPromotionStatus.Add("1", "Passed");
+            //dicPromotionStatus.Add("2", "Promotion Confirmed");
+            dicPromotionStatus.Add("2", "Failed");
+            return new SelectList(dicPromotionStatus, "key", "value");
+
         }
 
         public SelectList getUserDropDown()

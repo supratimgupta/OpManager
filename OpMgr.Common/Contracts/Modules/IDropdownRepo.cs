@@ -33,6 +33,9 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<StandardSectionMapDTO> StandardSection();
 
+        //returns only the next class w.r.t the current class
+        List<StandardSectionMapDTO> NextStandardSection(int currentStandardId);
+
         List<UserMasterDTO> GetAllActiveUsers();
 
         List<TransactionRuleDTO> GetActiveTrRules();

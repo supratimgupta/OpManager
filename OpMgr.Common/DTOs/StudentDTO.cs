@@ -40,6 +40,10 @@ namespace OpMgr.Common.DTOs
 
         public string GuardianEmailId { get; set; }
 
+        public string Status { get; set; }
+
+        public int NewStandardSectionId { get; set; }
+
         public StandardSectionMapDTO StandardSectionMap { get; set; }
 
         public HouseTypeDTO HouseType { get; set; }

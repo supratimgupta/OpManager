@@ -61,6 +61,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Blank {
+            get {
+                return ResourceManager.GetString("Blank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string Class {
@@ -70,11 +79,29 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Promotion Confirmed.
+        /// </summary>
+        public static string ConfirmPromotionCommand {
+            get {
+                return ResourceManager.GetString("ConfirmPromotionCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FName {
             get {
                 return ResourceManager.GetString("FName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard.
+        /// </summary>
+        public static string GetStandardCommand {
+            get {
+                return ResourceManager.GetString("GetStandardCommand", resourceCulture);
             }
         }
         
@@ -115,6 +142,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Class.
+        /// </summary>
+        public static string NewClass {
+            get {
+                return ResourceManager.GetString("NewClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Students.
         /// </summary>
         public static string PageHeader {
@@ -129,6 +165,42 @@ namespace OpMgr.Resources.User {
         public static string PageTitle {
             get {
                 return ResourceManager.GetString("PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promote.
+        /// </summary>
+        public static string PromoteCommand {
+            get {
+                return ResourceManager.GetString("PromoteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promote.
+        /// </summary>
+        public static string PromotionButton {
+            get {
+                return ResourceManager.GetString("PromotionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promotion Status.
+        /// </summary>
+        public static string PromotionStatus {
+            get {
+                return ResourceManager.GetString("PromotionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promotion.
+        /// </summary>
+        public static string PromotionTitle {
+            get {
+                return ResourceManager.GetString("PromotionTitle", resourceCulture);
             }
         }
         
