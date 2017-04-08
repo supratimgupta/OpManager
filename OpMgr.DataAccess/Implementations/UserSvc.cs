@@ -323,7 +323,7 @@ namespace OpMgr.DataAccess.Implementations
                     selectClause = "SELECT users.UserMasterId,users.FName,users.MName,users.LName,users.Gender,users.EmailId,users.ResidentialAddress,users.PermanentAddress," +
                                   "users.ContactNo,users.AltContactNo,users.BloodGroup,r.RoleDescription" +
                                    " FROM usermaster users" +
-                                   " INNER JOIN roles r ON users.RoleId = r.RoleId";
+                                   " INNER JOIN roles r ON users.RoleId = r.RoleId AND users.RoleId>1";
 
                     whereClause = " WHERE users.Active = 1";
 

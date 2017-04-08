@@ -165,11 +165,14 @@ namespace OperationsManager.Areas.Login.Controllers
                 //else if (dto.ReturnObj.Role.RoleId > 1)
                 //{
                 uvModel.Employee = new EmployeeDetailsDTO();
-                uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
-                uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
-                uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
-                uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
-                uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
+                if(dto.ReturnObj.Employee!=null)
+                {
+                    uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
+                    uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
+                    uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
+                    uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
+                    uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
+                }
                 //}
             }
 
@@ -230,7 +233,8 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             //uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
-            return View(uvModel);
+            //return View(uvModel);
+            return RedirectToAction("Search");
         }
 
         [HttpGet]

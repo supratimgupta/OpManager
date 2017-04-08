@@ -180,44 +180,45 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b>@TransactionMaster.TableHeader</b></div>
             <div class="panel-body">
-                @if (Model.SearchList != null && Model.SearchList.Count > 0)
-                {
-                    <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
-                        <thead>
-                            <tr>
-                                <th>@TransactionMaster.ColTrName</th>
-                                <th>@TransactionMaster.ColTrType</th>
-                                <th>@TransactionMaster.ColFreq</th>
-                                <th>@TransactionMaster.ColDiffTo</th>
-                                <th>@TransactionMaster.ColDayToRun</th>
-                                <th>@TransactionMaster.ColYearlyDayToRun</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (int i = 0; i < Model.SearchList.Count; i++)
-                            {
+                <div style="overflow:scroll;">
+                    @if (Model.SearchList != null && Model.SearchList.Count > 0)
+                    {
+                        <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        @Model.SearchList[i].TransactionName
-                                    </td>
-                                    <td>
-                                        @Model.SearchList[i].TransactionType
-                                    </td>
-                                    <td>
-                                        @Model.SearchList[i].Frequency
-                                    </td>
-                                    <td>
-                                        @Model.SearchList[i].IsDiffTo
-                                    </td>
-                                    <td>
-                                        @Model.SearchList[i].DayToRun
-                                    </td>
-                                    <td>
-                                        @Model.SearchList[i].YearlyDayToRun
-                                    </td>
-                                    <td>
-                                        <a onclick="setForEdit('@Model.SearchList[i].TranMasterId'
+                                    <th>@TransactionMaster.ColTrName</th>
+                                    <th>@TransactionMaster.ColTrType</th>
+                                    <th>@TransactionMaster.ColFreq</th>
+                                    <th>@TransactionMaster.ColDiffTo</th>
+                                    <th>@TransactionMaster.ColDayToRun</th>
+                                    <th>@TransactionMaster.ColYearlyDayToRun</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.SearchList.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Model.SearchList[i].TransactionName
+                                        </td>
+                                        <td>
+                                            @Model.SearchList[i].TransactionType
+                                        </td>
+                                        <td>
+                                            @Model.SearchList[i].Frequency
+                                        </td>
+                                        <td>
+                                            @Model.SearchList[i].IsDiffTo
+                                        </td>
+                                        <td>
+                                            @Model.SearchList[i].DayToRun
+                                        </td>
+                                        <td>
+                                            @Model.SearchList[i].YearlyDayToRun
+                                        </td>
+                                        <td>
+                                            <a onclick="setForEdit('@Model.SearchList[i].TranMasterId'
                                                                 ,'@Model.SearchList[i].TransactionName'
                                                                 ,'@Model.SearchList[i].TransactionType'
                                                                 ,'@Model.SearchList[i].Frequency'
@@ -226,12 +227,13 @@
                                                                 ,'@Model.SearchList[i].DayToRun'
                                                                 ,'@Model.SearchList[i].YearlyDayToRun'
                                                                 ,'@(Model.SearchList[i].Active?"YES":"NO")');" style="cursor:pointer;">Edit</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
             </div>
         </div>
     </div>

@@ -84,99 +84,101 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><b>@StudentResource.StudentTable</b></div>
                 <div class="panel-body">
-                    <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                            <tr>
-                                <th th data-field="name" data-checkbox="true">
-                                    @Html.CheckBox("chkStudentHeader")
+                    <div style="overflow:scroll;">
+                        <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <thead>
+                                <tr>
+                                    <th th data-field="name" data-checkbox="true">
+                                        @Html.CheckBox("chkStudentHeader")
 
-                                </th>
-                                <th th data-field="name" data-sortable="true">
-                                    @StudentResource.Name
-                                </th>
-                                <th h data-field="standard" data-sortable="true">
-                                    @StudentResource.Class
-                                </th>
-                                <th th data-field="section" data-sortable="true">
-                                    @StudentResource.Section
-                                </th>
-                                <th th data-field="roll number" data-sortable="true">
-                                    @StudentResource.RollNo
-                                </th>
-                                <th th data-field="registration" data-sortable="true">
-                                    @StudentResource.RegistrationNo
-                                </th>
+                                    </th>
+                                    <th th data-field="name" data-sortable="true">
+                                        @StudentResource.Name
+                                    </th>
+                                    <th h data-field="standard" data-sortable="true">
+                                        @StudentResource.Class
+                                    </th>
+                                    <th th data-field="section" data-sortable="true">
+                                        @StudentResource.Section
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @StudentResource.RollNo
+                                    </th>
+                                    <th th data-field="registration" data-sortable="true">
+                                        @StudentResource.RegistrationNo
+                                    </th>
 
 
-                                <th th data-field="contact" data-sortable="true">
-                                    @StudentResource.GuardianContactNo
-                                </th>
-                                <th>
-                                    @StudentResource.StudentActions
-                                </th>
+                                    <th th data-field="contact" data-sortable="true">
+                                        @StudentResource.GuardianContactNo
+                                    </th>
+                                    <th>
+                                        @StudentResource.StudentActions
+                                    </th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model != null)
-                            {
-                                if (Model.IsSearchSuccessful)
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
                                 {
+                                    if (Model.IsSearchSuccessful)
+                                    {
 
-                                
 
-                                    foreach (var student in Model.studentList)
+
+                                        foreach (var student in Model.studentList)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="chkStudent" value="@student.StudentInfoId" />
+                                                </td>
+                                                <td>
+                                                    @student.Name
+
+                                                </td>
+                                                <td>
+                                                    @student.StandardSectionMap.Standard.StandardName
+                                                </td>
+                                                <td>
+                                                    @student.StandardSectionMap.Section.SectionName
+                                                </td>
+                                                <td>
+                                                    @student.RollNumber
+                                                </td>
+                                                <td>
+                                                    @student.RegistrationNumber
+                                                </td>
+                                                <td>
+                                                    @student.GuardianContact
+
+                                                </td>
+                                                <td>
+                                                    <a href="/Student/Student/Register?mode=EDIT&id=@student.UserDetails.UserMasterId">Edit</a>
+                                                    @Html.ActionLink("Delete", "Delete", new { studentId = student.StudentInfoId }, null)
+                                                </td>
+
+                                            </tr>
+                                        }
+
+
+
+                                    }
+                                    else
                                     {
                                         <tr>
-                                            <td>
-                                                <input type="checkbox" name="chkStudent" value="@student.StudentInfoId" />
+                                            <td colspan="8" align="center" style="font-style:oblique">
+                                                No Data Found
                                             </td>
-                                            <td>
-                                                @student.Name
-
-                                            </td>
-                                            <td>
-                                                @student.StandardSectionMap.Standard.StandardName
-                                            </td>
-                                            <td>
-                                                @student.StandardSectionMap.Section.SectionName
-                                            </td>
-                                            <td>
-                                                @student.RollNumber
-                                            </td>
-                                            <td>
-                                                @student.RegistrationNumber
-                                            </td>
-                                            <td>
-                                                @student.GuardianContact
-
-                                            </td>
-                                            <td>
-                                                <a href="/Student/Student/Register?mode=EDIT&id=@student.UserDetails.UserMasterId">Edit</a>
-                                                @Html.ActionLink("Delete", "Delete", new { studentId = student.StudentInfoId }, null)
-                                            </td>
-                                            
                                         </tr>
                                     }
-
-
-                                
                                 }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="8" align="center" style="font-style:oblique">
-                                            No Data Found
-                                        </td>
-                                    </tr>
-                                }
-                            }
 
 
                             </tbody>
                         </table>
-                            
                         </div>
+                    </div>
+
                     </div>
                 </div>
             </div>

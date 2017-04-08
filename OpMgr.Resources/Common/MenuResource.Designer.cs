@@ -61,6 +61,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MAP ROLE AND ACTION.
+        /// </summary>
+        public static string ActionRoleMap {
+            get {
+                return ResourceManager.GetString("ActionRoleMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AddBooks.
         /// </summary>
         public static string AddBooks {
@@ -70,7 +79,16 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Transaction.
+        ///   Looks up a localized string similar to STUDENT.
+        /// </summary>
+        public static string AddStudent {
+            get {
+                return ResourceManager.GetString("AddStudent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FEES MANUAL ENTRY.
         /// </summary>
         public static string AddTransaction {
             get {
@@ -79,7 +97,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add User.
+        ///   Looks up a localized string similar to STAFF.
         /// </summary>
         public static string AddUser {
             get {
@@ -93,6 +111,15 @@ namespace OpMgr.Resources.Common {
         public static string AdminPanel {
             get {
                 return ResourceManager.GetString("AdminPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to APPROVE ADJUSTMENTS.
+        /// </summary>
+        public static string ApproveDues {
+            get {
+                return ResourceManager.GetString("ApproveDues", resourceCulture);
             }
         }
         
@@ -124,6 +151,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MASTER INFORMATION.
+        /// </summary>
+        public static string MasterInformation {
+            get {
+                return ResourceManager.GetString("MasterInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to My Transactions.
         /// </summary>
         public static string MyTransactions {
@@ -133,7 +169,43 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Transaction.
+        ///   Looks up a localized string similar to FEES COLLECTION.
+        /// </summary>
+        public static string Payment {
+            get {
+                return ResourceManager.GetString("Payment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PRINCIPAL PANEL.
+        /// </summary>
+        public static string PrincipalPanel {
+            get {
+                return ResourceManager.GetString("PrincipalPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PROMOTE STUDENTS.
+        /// </summary>
+        public static string PromoteStudents {
+            get {
+                return ResourceManager.GetString("PromoteStudents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RULES CREATION.
+        /// </summary>
+        public static string RulesCreation {
+            get {
+                return ResourceManager.GetString("RulesCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FEES.
         /// </summary>
         public static string SearchTransaction {
             get {
@@ -142,7 +214,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search User.
+        ///   Looks up a localized string similar to STAFF.
         /// </summary>
         public static string SearchUser {
             get {
@@ -151,7 +223,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Students.
+        ///   Looks up a localized string similar to STUDENT.
         /// </summary>
         public static string StudentSearch {
             get {
@@ -169,7 +241,16 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Master.
+        ///   Looks up a localized string similar to TRANSACTION ENTRY.
+        /// </summary>
+        public static string TransactionEntry {
+            get {
+                return ResourceManager.GetString("TransactionEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MASTER ENTRY.
         /// </summary>
         public static string TransactionMaster {
             get {
@@ -187,7 +268,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Rules.
+        ///   Looks up a localized string similar to TRANSACTION ENTRY.
         /// </summary>
         public static string TransactionRuleSearch {
             get {
@@ -201,6 +282,15 @@ namespace OpMgr.Resources.Common {
         public static string User {
             get {
                 return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USER CREATION.
+        /// </summary>
+        public static string UserCreation {
+            get {
+                return ResourceManager.GetString("UserCreation", resourceCulture);
             }
         }
     }

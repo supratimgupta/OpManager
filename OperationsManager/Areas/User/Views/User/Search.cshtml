@@ -107,105 +107,107 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><b>@UserResource.UserTableName</b></div>
                 <div class="panel-body">
-                    <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                            <tr>
-                                <th th data-field="name" data-checkbox="true">
-                                    @Html.CheckBox("chkStudentHeader")
+                    <div style="overflow:scroll;">
+                        <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <thead>
+                                <tr>
+                                    <th th data-field="name" data-checkbox="true">
+                                        @Html.CheckBox("chkStudentHeader")
 
-                                </th>
-                                <th th data-field="name" data-sortable="true">
-                                    @UserResource.Name
-                                </th>
-                                <th h data-field="standard" data-sortable="true">
-                                    @UserResource.Gender
-                                </th>
-                                <th th data-field="section" data-sortable="true">
-                                    @UserResource.EmailId
-                                </th>
-                                <th th data-field="roll number" data-sortable="true">
-                                    @UserResource.ResidentialAddress
-                                </th>
-                                <th th data-field="registration" data-sortable="true">
-                                    @UserResource.ContactNo
-                                </th>
+                                    </th>
+                                    <th th data-field="name" data-sortable="true">
+                                        @UserResource.Name
+                                    </th>
+                                    <th h data-field="standard" data-sortable="true">
+                                        @UserResource.Gender
+                                    </th>
+                                    <th th data-field="section" data-sortable="true">
+                                        @UserResource.EmailId
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @UserResource.ResidentialAddress
+                                    </th>
+                                    <th th data-field="registration" data-sortable="true">
+                                        @UserResource.ContactNo
+                                    </th>
 
-                                <th th data-field="contact" data-sortable="true">
-                                    @UserResource.BloodGrp
-                                </th>
+                                    <th th data-field="contact" data-sortable="true">
+                                        @UserResource.BloodGrp
+                                    </th>
 
-                                <th th data-field="contact" data-sortable="true">
-                                    @UserResource.Role
-                                </th>
-                                <th>
-                                    @UserResource.UserActions
-                                </th>
+                                    <th th data-field="contact" data-sortable="true">
+                                        @UserResource.Role
+                                    </th>
+                                    <th>
+                                        @UserResource.UserActions
+                                    </th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model != null)
-                            {
-                                if (Model.IsSearchSuccessful)
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
                                 {
-                                    foreach (var user in Model.UserList)
+                                    if (Model.IsSearchSuccessful)
+                                    {
+                                        foreach (var user in Model.UserList)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="chkStudent" value="@user.UserMasterId" />
+                                                </td>
+                                                <td>
+                                                    @user.Name
+                                                </td>
+                                                @if (string.Equals(user.Gender, "1"))
+                                                {
+                                                    <td>Male</td>
+                                                }
+                                                else if (string.Equals(user.Gender, "2"))
+                                                {
+                                                    <td>Female</td>
+                                                }
+                                                else if (string.Equals(user.Gender, "3"))
+                                                {
+                                                    <td>Others</td>
+                                                }
+
+
+                                                <td>
+                                                    @user.EmailId
+                                                </td>
+                                                <td>
+                                                    @user.ResidentialAddress
+                                                </td>
+                                                <td>
+                                                    @user.ContactNo
+                                                </td>
+                                                <td>
+                                                    @user.BloodGroup
+
+                                                </td>
+                                                <td>
+                                                    @user.Role.RoleDescription
+
+                                                </td>
+                                                <td>
+                                                    <a href="/Login/Login/Register?mode=EDIT&id=@user.UserMasterId">Edit</a>
+                                                    @Html.ActionLink("Delete", "Delete", new { studentId = user.UserMasterId }, null)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
                                     {
                                         <tr>
-                                            <td>
-                                                <input type="checkbox" name="chkStudent" value="@user.UserMasterId" />
-                                            </td>
-                                            <td>
-                                                @user.Name
-                                            </td>
-                                            @if (string.Equals(user.Gender, "1"))
-                                            {
-                                                <td>Male</td>
-                                            }
-                                            else if (string.Equals(user.Gender, "2"))
-                                            {
-                                                <td>Female</td>
-                                            }
-                                            else if (string.Equals(user.Gender, "3"))
-                                            {
-                                                <td>Others</td>
-                                            }
-
-
-                                            <td>
-                                                @user.EmailId
-                                            </td>
-                                            <td>
-                                                @user.ResidentialAddress
-                                            </td>
-                                            <td>
-                                                @user.ContactNo
-                                            </td>
-                                            <td>
-                                                @user.BloodGroup
-
-                                            </td>
-                                            <td>
-                                                @user.Role.RoleDescription
-
-                                            </td>
-                                            <td>
-                                                <a href="/Login/Login/Register?mode=EDIT&id=@user.UserMasterId">Edit</a>
-                                                @Html.ActionLink("Delete", "Delete", new { studentId = user.UserMasterId }, null)
+                                            <td colspan="8" align="center" style="font-style:oblique">
+                                                No Data Found
                                             </td>
                                         </tr>
                                     }
                                 }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="8" align="center" style="font-style:oblique">
-                                            No Data Found
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
