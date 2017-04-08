@@ -133,7 +133,7 @@
     <value>First Due After Days</value>
   </data>
   <data name="PageHeader" xml:space="preserve">
-    <value>Transaction Rule</value>
+    <value>Fees Rule</value>
   </data>
   <data name="PenaltyAmount" xml:space="preserve">
     <value>Penalty Amount</value>
@@ -142,7 +142,7 @@
     <value>Penalty Calc In</value>
   </data>
   <data name="PenaltyTransactionRule" xml:space="preserve">
-    <value>Penalty Trans Rule</value>
+    <value>Penalty Rule</value>
   </data>
   <data name="PenaltyTransactionType" xml:space="preserve">
     <value>Penalty Transaction Type</value>
@@ -160,7 +160,7 @@
     <value>Standard</value>
   </data>
   <data name="TranMaster" xml:space="preserve">
-    <value>Transaction</value>
+    <value>Fees</value>
   </data>
   <data name="UserDTO" xml:space="preserve">
     <value>User</value>

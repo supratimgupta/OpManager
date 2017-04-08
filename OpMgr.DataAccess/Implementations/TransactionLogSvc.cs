@@ -777,14 +777,32 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 tranlog.CompletedOn = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["CompletedOn"]);
                             }
-                            tranlog.AmountImposed = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AmountImposed"]);
-                            tranlog.AmountGiven = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AmountGiven"]);
-                            tranlog.DueAmount = Convert.ToDouble(_dsData.Tables[0].Rows[i]["DueAmount"]);
+
+                            tranlog.AmountImposed = 0.0;
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["AmountImposed"].ToString()))
+                            {
+                                tranlog.AmountImposed = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AmountImposed"]);
+                            }
+
+                            tranlog.AmountGiven = 0.0;
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["AmountGiven"].ToString()))
+                            {
+                                tranlog.AmountGiven = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AmountGiven"]);
+                            }
+
+                            tranlog.DueAmount = 0.0;
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["DueAmount"].ToString()))
+                            {
+                                tranlog.DueAmount = Convert.ToDouble(_dsData.Tables[0].Rows[i]["DueAmount"]);
+                            }
+                            
                             tranlog.TransferMode = _dsData.Tables[0].Rows[i]["TransferMode"].ToString();
                             if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["HasPenalty"].ToString()))
                             {
                                 tranlog.HasPenalty = Convert.ToBoolean(_dsData.Tables[0].Rows[i]["HasPenalty"]);
                             }
+
+                            tranlog.AdjustedAmount = 0.0;
                             if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["AdjustedAmount"].ToString()))
                             {
                                 tranlog.AdjustedAmount = Convert.ToDouble(_dsData.Tables[0].Rows[i]["AdjustedAmount"]);

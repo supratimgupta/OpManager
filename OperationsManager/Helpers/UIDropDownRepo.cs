@@ -23,7 +23,7 @@ namespace OperationsManager.Helpers
             List<LocationDTO> lDto = _ddlRepo.Location();
 
             LocationDTO locDto = new LocationDTO();
-            locDto.LocationId = -1;
+            //locDto.LocationId = -1;
             locDto.LocationDescription = string.Empty;
 
             lDto.Insert(0, locDto);
@@ -133,7 +133,7 @@ namespace OperationsManager.Helpers
         public SelectList getGenderDropDown()
         {
             Dictionary<string, string> dicGender = new Dictionary<string, string>();
-            dicGender.Add("-1", "");
+            //dicGender.Add("-1", "");
             dicGender.Add("1", "Male");
             dicGender.Add("2", "Female");
             dicGender.Add("3", "Other");

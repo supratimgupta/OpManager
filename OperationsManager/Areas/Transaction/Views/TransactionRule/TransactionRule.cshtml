@@ -43,7 +43,9 @@
         }
 
         $(document).ready(function () {
-            debugger;
+            var TransactionRuleform = $("#TransactionRuleform");
+            $("#TransactionRuleform").validate();
+
             if (document.getElementById("hfMode").value==="EDIT" || document.getElementById("hfIsPostBack").value === "TRUE")
             {
                 getIsDiffTo(document.getElementById("ddlTrnsMasters"));
@@ -146,7 +148,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b>@TransactionRule.PageHeader</b></div>
             <div class="panel-body">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("TransactionRule", "TransactionRule", FormMethod.Post, new { id = "TransactionRuleform" }))
                 {
                 @Html.AntiForgeryToken()
                 <fieldset>
@@ -176,7 +178,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.RuleName, TransactionRule.RuleName, new { @class = "form-control" })
+                                    @Html.OpMgrTextBoxFor(m => m.RuleName, TransactionRule.RuleName, new { @class = "form-control" , data_rule_required = "true", data_msg_required = "Rule Name is required" })
                                 </div>
                                 <div class="col-lg-5">
                                     @Html.OpMgrDropDownListFor(m => m.TranMaster.TranMasterId, Model.TransactionMasters, TransactionRule.TranMaster, new { @class = "form-control", id="ddlTrnsMasters", onchange= "getIsDiffTo(this);" })
@@ -200,7 +202,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.ActualAmount, TransactionRule.ActualAmount, new { @class = "form-control" })
+                                    @Html.OpMgrTextBoxFor(m => m.ActualAmount, TransactionRule.ActualAmount, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Enter Actual Amount" })
                                 </div>
                                 <div class="col-lg-5">
                                     @Html.OpMgrDropDownListFor(m => m.PenaltyCalculatedIn, Model.PenaltyCalcIn, TransactionRule.PenaltyCalculatedIn, new { @class = "form-control" })
@@ -208,7 +210,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.PenaltyAmount, TransactionRule.PenaltyAmount, new { @class = "form-control" })
+                                    @Html.OpMgrTextBoxFor(m => m.PenaltyAmount, TransactionRule.PenaltyAmount, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Enter Penalty Amount" })
                                 </div>
                                 <div class="col-lg-5">
                                     @Html.OpMgrDropDownListFor(m => m.PenaltyTransactionType, Model.PenaltyTransactionTypes, TransactionRule.PenaltyTransactionType, new { @class = "form-control" })

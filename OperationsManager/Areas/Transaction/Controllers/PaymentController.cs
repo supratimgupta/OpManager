@@ -5,6 +5,7 @@ using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -205,6 +206,95 @@ namespace OperationsManager.Areas.Transaction.Controllers
                 return Json(new { status = false, data = tranlogDTO, message = "Payment failed." }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { status = false, data = tranlogDTO, message="Paid amount is greater than due amount" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult payAllTransactions(Models.TransactionViewModel transactions)
+        {
+            double currentTotalPay = transactions.CurrentAmount;
+            double currentTotalAdjusting = transactions.CurrentAdjusting;
+            double currentTotalDue = transactions.DueAmount.Value;
+            if(currentTotalPay+currentTotalAdjusting>0)
+            {
+                if(currentTotalPay+currentTotalAdjusting <= currentTotalDue)
+                {
+                    using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            foreach (Models.TransactionViewModel tranlogDTO in transactions.paymentDetailsList)
+                            {
+                                if(tranlogDTO.DueAmount!=null && tranlogDTO.DueAmount.Value>0)
+                                {
+                                    if (tranlogDTO.AmountGiven == null)
+                                    {
+                                        tranlogDTO.AmountGiven = 0;
+                                    }
+                                    if (tranlogDTO.AdjustedAmount == null)
+                                    {
+                                        tranlogDTO.AdjustedAmount = 0;
+                                    }
+                                    if (tranlogDTO.DueAmount == null)
+                                    {
+                                        tranlogDTO.DueAmount = 0;
+                                    }
+
+                                    double currentGivenAmt = ((tranlogDTO.DueAmount.Value > currentTotalPay) ? currentTotalPay : tranlogDTO.DueAmount.Value);
+                                    tranlogDTO.AmountGiven = tranlogDTO.AmountGiven + currentGivenAmt;
+                                    tranlogDTO.DueAmount = tranlogDTO.DueAmount.Value - currentGivenAmt;
+
+                                    double currentAdjustedAmt = 0.0;
+                                    if (tranlogDTO.DueAmount.Value>0)
+                                    {
+                                        currentAdjustedAmt = (tranlogDTO.DueAmount.Value > currentTotalAdjusting) ? currentTotalAdjusting : tranlogDTO.DueAmount.Value;
+                                        tranlogDTO.AdjustedAmount = tranlogDTO.AdjustedAmount + currentAdjustedAmt;
+                                        tranlogDTO.DueAmount = tranlogDTO.DueAmount.Value - currentAdjustedAmt;
+                                    }
+                                    
+                                    bool principalApprovedChanged = false;
+                                    int? oldPrincipalApproved = null;
+                                    if (currentAdjustedAmt > 0)
+                                    {
+                                        tranlogDTO.IsPrincipalApproved = 0;
+                                        oldPrincipalApproved = 0;
+                                        principalApprovedChanged = true;
+                                    }
+                                    tranlogDTO.IsCompleted = false;
+                                    if ((tranlogDTO.IsPrincipalApproved == null || tranlogDTO.IsPrincipalApproved == 1) && tranlogDTO.DueAmount == 0)
+                                    {
+                                        tranlogDTO.IsCompleted = true;
+                                    }
+
+                                    if (!principalApprovedChanged)
+                                    {
+                                        oldPrincipalApproved = tranlogDTO.IsPrincipalApproved;
+                                        tranlogDTO.IsPrincipalApproved = null;
+                                    }
+                                    if (tranlogDTO.DueAmount >= 0)
+                                    {
+                                        StatusDTO<TransactionLogDTO> status = _transactionLogSvc.UpdatePayment(tranlogDTO);
+                                        if (!status.IsSuccess)
+                                        {
+                                            throw new Exception("Error encountered in one transaction. Rolled back.");
+                                        }
+                                    }
+
+                                    currentTotalPay = currentTotalPay - currentGivenAmt;
+                                    currentTotalAdjusting = currentTotalAdjusting - currentAdjustedAmt;
+                                }
+                            }
+                        }
+                        catch (Exception exp)
+                        {
+                            return Json(new { status = false, message = exp.Message }, JsonRequestBehavior.AllowGet);
+                        }
+                        ts.Complete();
+                        return Json(new { status = true, message = "Transaction completed successfully." }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(new { status = false, message = "Total current and adjusted amount must be less than or equal to total due." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, message = "No amount is given" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

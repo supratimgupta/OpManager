@@ -41,5 +41,7 @@ namespace OperationsManager.Areas.Student.Models
         public List<TransactionMasterDTO> TransactionMasterSelectList { get; set; }
 
         public List<KeyValueDTO> CalcInSelectList { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

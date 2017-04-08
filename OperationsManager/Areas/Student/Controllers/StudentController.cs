@@ -369,8 +369,10 @@ namespace OperationsManager.Areas.Student.Controllers
                             }
                         }
                     }
-                }                    
-                
+
+                    return RedirectToAction("Search");
+                }
+                studentView.ErrorMessage = status.FailureReason;
                 //}
             }
             else
@@ -403,14 +405,17 @@ namespace OperationsManager.Areas.Student.Controllers
                         }
                     }
 
-                    return RedirectToAction("Register", new { mode = "EDIT", id = studentView.UserDetails.UserMasterId.ToString() });
+                    //return RedirectToAction("Register", new { mode = "EDIT", id = studentView.UserDetails.UserMasterId.ToString() });
+                    return RedirectToAction("Search");
                 }
+                studentView.ErrorMessage = status.FailureReason;
                 //}                
             }
             //if(ModelState.IsValid)
             //{
             //}
             //ModelState.Clear();
+            
             studentView.TransactionMasters = _uiddlRepo.getTransactionMasters();
             studentView.GraceAmountOnList = _uiddlRepo.getCalcType();
 

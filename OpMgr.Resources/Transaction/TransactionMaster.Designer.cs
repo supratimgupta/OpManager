@@ -160,7 +160,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add / Edit Transaction Master.
+        ///   Looks up a localized string similar to Fees Master.
         /// </summary>
         public static string PageHeader {
             get {
@@ -196,7 +196,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Name.
+        ///   Looks up a localized string similar to Fees Name.
         /// </summary>
         public static string TransactionName {
             get {

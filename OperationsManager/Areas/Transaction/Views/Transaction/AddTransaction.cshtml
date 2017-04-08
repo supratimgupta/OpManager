@@ -13,7 +13,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b>@TransactionLogAdd.PageHeader</b></div>
             <div class="panel-body">
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("AddTransaction", "Transaction", FormMethod.Post, new { id = "AddTransactionform", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
@@ -22,7 +22,7 @@
                                 @Html.OpMgrDropDownListFor(m => m.User.UserMasterId, Model.UserList, TransactionLogAdd.UserSelectLabel, new { @class = "form-control", onchange="checkIsStudent(this);" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.TransactionDate, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDate, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Transaction Date is required" })
                             </div>
                         </div>
                         <div class="row">
@@ -30,12 +30,12 @@
                                 @Html.OpMgrDropDownListFor(m => m.TransactionRule.TranRuleId, Model.TransactionRuleList, TransactionLogAdd.TransactionRuleLabel, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.TransactionDueDate, TransactionLogAdd.TransactionDueDateLabel, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDueDate, TransactionLogAdd.TransactionDueDateLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Transaction Due Date is required" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AmountImposed, TransactionLogAdd.AmountImposedLabel, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.AmountImposed, TransactionLogAdd.AmountImposedLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Amount is required" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, TransactionLogAdd.LocationLabel, new { @class = "form-control" })
@@ -63,6 +63,12 @@
 </div>
 
 <script language="javascript" type="text/javascript">
+
+    $(document).ready(function () {
+        var AddTransactionform = $("#AddTransactionform");
+        $("#AddTransactionform").validate();
+    });
+
     function checkIsStudent(ddlUser)
     {
         var uId = ddlUser.options[ddlUser.selectedIndex].value;

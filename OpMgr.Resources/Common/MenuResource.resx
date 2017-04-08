@@ -117,17 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActionRoleMap" xml:space="preserve">
+    <value>MAP ROLE AND ACTION</value>
+  </data>
   <data name="AddBooks" xml:space="preserve">
     <value>AddBooks</value>
   </data>
+  <data name="AddStudent" xml:space="preserve">
+    <value>STUDENT</value>
+  </data>
   <data name="AddTransaction" xml:space="preserve">
-    <value>Add Transaction</value>
+    <value>FEES MANUAL ENTRY</value>
   </data>
   <data name="AddUser" xml:space="preserve">
-    <value>Add User</value>
+    <value>STAFF</value>
   </data>
   <data name="AdminPanel" xml:space="preserve">
     <value>Admin Panel</value>
+  </data>
+  <data name="ApproveDues" xml:space="preserve">
+    <value>APPROVE ADJUSTMENTS</value>
   </data>
   <data name="EditUser" xml:space="preserve">
     <value>Edit User</value>
@@ -138,31 +147,52 @@
   <data name="Library" xml:space="preserve">
     <value>Library</value>
   </data>
+  <data name="MasterInformation" xml:space="preserve">
+    <value>MASTER INFORMATION</value>
+  </data>
   <data name="MyTransactions" xml:space="preserve">
     <value>My Transactions</value>
   </data>
+  <data name="Payment" xml:space="preserve">
+    <value>FEES COLLECTION</value>
+  </data>
+  <data name="PrincipalPanel" xml:space="preserve">
+    <value>PRINCIPAL PANEL</value>
+  </data>
+  <data name="PromoteStudents" xml:space="preserve">
+    <value>PROMOTE STUDENTS</value>
+  </data>
+  <data name="RulesCreation" xml:space="preserve">
+    <value>RULES CREATION</value>
+  </data>
   <data name="SearchTransaction" xml:space="preserve">
-    <value>Search Transaction</value>
+    <value>FEES</value>
   </data>
   <data name="SearchUser" xml:space="preserve">
-    <value>Search User</value>
+    <value>STAFF</value>
   </data>
   <data name="StudentSearch" xml:space="preserve">
-    <value>Search Students</value>
+    <value>STUDENT</value>
   </data>
   <data name="Transaction" xml:space="preserve">
     <value>Transaction</value>
   </data>
+  <data name="TransactionEntry" xml:space="preserve">
+    <value>TRANSACTION ENTRY</value>
+  </data>
   <data name="TransactionMaster" xml:space="preserve">
-    <value>Transaction Master</value>
+    <value>MASTER ENTRY</value>
   </data>
   <data name="TransactionRuleAdd" xml:space="preserve">
     <value>Add Transaction Rule</value>
   </data>
   <data name="TransactionRuleSearch" xml:space="preserve">
-    <value>Transaction Rules</value>
+    <value>TRANSACTION ENTRY</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>User</value>
+  </data>
+  <data name="UserCreation" xml:space="preserve">
+    <value>USER CREATION</value>
   </data>
 </root>
