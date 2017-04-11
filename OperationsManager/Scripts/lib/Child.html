@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="../jquery-1.10.2.js"></script>
+    <script src="../jquery-ui.js"></script>
+    <script src="dialogPage.js"></script>
+    <link href="../../Scripts/jquery-ui.css" />
+    <script language="javascript" type="text/javascript">
+        function closeDialog()
+        {
+            $dlg.returnValue = "ABCD";
+            $dlg.dialogWindow.dialog('close');
+        }
+    </script>
+</head>
+<body>
+    I'm a dialog.
+    <button onclick="closeDialog();">Close</button>
+</body>
+</html>

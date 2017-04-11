@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="../../Scripts/jquery-ui.css" rel="stylesheet" />
+    <script src="../jquery-1.10.2.js"></script>
+    <script src="../jquery-ui.js"></script>
+    <script src="OpMgrDialog.js"></script>
+    <script language="javascript" type="text/javascript">
+        function openDialog()
+        {
+            var url = 'Child.html';
+
+            $.showModalDialog({
+                url: url,
+                height: 500,
+                width: 900,
+                scrollable: false,
+                onClose: function () { debugger; var returnedValue = this.returnValue; alert(returnedValue); }
+            });
+        }
+    </script>
+</head>
+<body>
+    <button onclick="openDialog();">Show Dialog</button>
+</body>
+</html>
