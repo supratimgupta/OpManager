@@ -151,6 +151,17 @@ namespace OperationsManager.Helpers
 
         }
 
+        public SelectList getTransferModeDropdown()
+        {
+            Dictionary<string, string> dicTransferModes = new Dictionary<string, string>();
+            dicTransferModes.Add("-1", "");
+            dicTransferModes.Add("CASH", "Cash");
+            dicTransferModes.Add("CHQ", "Cheque");
+            dicTransferModes.Add("BANK", "Bank Payment");
+            dicTransferModes.Add("ONL", "Online");
+            return new SelectList(dicTransferModes, "key", "value");
+        }
+
         public SelectList getUserDropDown()
         {
             List<UserMasterDTO> lstUserMaster = _ddlRepo.GetAllActiveUsers();

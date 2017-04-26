@@ -70,8 +70,16 @@ namespace OpMgr.Common.DTOs
 
         //public double? AdjustedAmount { get; set; }
 
-        public bool IsChequeEncashed { get; set; }
+        //public bool IsChequeEncashed { get; set; }
 
         //public int? IsPrincipalApprroved { get; set; }
+
+        public bool? HasPartialPayment { get; set; }
+
+        public bool? RevertedTotal { get; set; }
+
+        public string PaymentChequeNo { get; set; }
+
+        public DateTime? PaymentDate { get; set; }
     }
 }
