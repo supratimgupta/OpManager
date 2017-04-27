@@ -244,7 +244,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trRuleVM.IsPostBack = "TRUE";
 
 
-            return View(trRuleVM);
+            return RedirectToAction("SearchRules");
         }
 
         [OpMgrAuth]

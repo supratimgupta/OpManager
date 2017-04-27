@@ -998,5 +998,26 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public StatusDTO<List<TransactionLogDTO>> GetPaidTransaction(TransactionLogDTO trnsLog, string identifier, string role)
+        {
+            StatusDTO<List<TransactionLogDTO>> status = null;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+
+                    MySqlCommand command = new MySqlCommand();
+
+
+                    return status;
+                }
+                catch(Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }
