@@ -220,6 +220,7 @@
     <Compile Include="Attributes\OpMgrAuthAttribute.cs" />
     <Compile Include="Attributes\OpMgrHandleErrorAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -760,6 +761,7 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
