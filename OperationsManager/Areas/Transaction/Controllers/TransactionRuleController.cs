@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace OperationsManager.Areas.Transaction.Controllers
 {
     //[OpMgrAuth]
-    public class TransactionRuleController : Controller
+    public class TransactionRuleController : Controller 
     {
         private ITransactionRuleSvc _trRule;
 

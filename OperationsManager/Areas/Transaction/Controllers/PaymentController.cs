@@ -11,6 +11,8 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
+    [Attributes.OpMgrHandleError]
+    //[Attributes.OpMgrAuth]
     public class PaymentController : Controller
     {
         private ITransactionLogSvc _transactionLogSvc;
@@ -159,6 +161,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult resendRequest(Models.TransactionViewModel tranlogDTO)
         {
             if(_transactionLogSvc.ResendRequest(tranlogDTO.TransactionLogId))
@@ -169,6 +172,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult updateRowPayment(Models.TransactionViewModel tranlogDTO)
         {
             if(tranlogDTO.AmountGiven==null)
@@ -248,6 +252,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult payAllTransactions(Models.TransactionViewModel transactions)
         {
             double currentTotalPay = transactions.CurrentAmount;

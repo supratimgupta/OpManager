@@ -88,6 +88,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry! An Error Occured in the application. Dev team is notified..
+        /// </summary>
+        public static string GlobalErrorMsg {
+            get {
+                return ResourceManager.GetString("GlobalErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Augustine&apos;s School.
         /// </summary>
         public static string PageHeader {

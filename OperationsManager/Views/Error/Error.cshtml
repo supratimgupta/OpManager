@@ -1,0 +1,9 @@
+﻿@model HandleErrorInfo
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+}
+
+<h1>@OpMgr.Resources.Common.CommonResource.GlobalErrorMsg</h1>
+<h3>@Model.Exception.Message</h3>
+
