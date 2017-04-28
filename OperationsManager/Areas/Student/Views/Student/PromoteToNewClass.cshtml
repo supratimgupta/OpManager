@@ -43,15 +43,15 @@
 
                             <div class="col-lg-4" style="vertical-align:bottom;padding-top:30px">
                                 <button type="submit" name="Command" value="@StudentResource.GetStandardCommand" class="btn btn-primary">@StudentResource.SearchButton</button>
-                               
+
                             </div>
 
                             <div class="col-lg-4" style="vertical-align:bottom;padding-top:30px">
                                 <button type="submit" name="Command" value="@StudentResource.ConfirmPromotionCommand" class="btn btn-primary">@StudentResource.ConfirmPromotionCommand</button>
                             </div>
-                            
 
-</fieldset>
+
+                        </fieldset>
                     }
                 </div>
             </div>
@@ -99,7 +99,7 @@
                                             @Model.studentList[i].Name
                                         </td>
                                         <td>
-                                            @if (!Model.IsCommandPromote)
+                                            @if (string.IsNullOrEmpty(Model.studentList[i].Status))
                                             {
                                                 @*@Html.OpMgrDropDownListFor(m => m.studentList[i].Status, Model.PromotionStatusList, StudentResource.Blank, new { @class = "form-control", @id = "ddlPromotionStatus", onchange = "changePromotionStatus()" })*@
 
@@ -126,7 +126,7 @@
 
                                         </td>
                                         <td>
-                                            @if (Model.studentList[i].NewStandardSectionId == 0)
+                                            @if (string.IsNullOrEmpty(Model.studentList[i].Status))
                                             {
                                                 <select id="ddlNewStandardSectionList" name="studentList[@i].NewStandardSectionId" class="form-control">
                                                     @{ int j = 0;}
@@ -137,26 +137,15 @@
 
                                                     }
                                                 </select>
-                                                        }
-                                                        @*else
-                                                            {
-                                                                <select id="ddlNewStandardSectionList" name="studentList[@i].NewStandardSectionId" class="form-control" disabled="disabled">
-                                                                    @{ int j = 0;}
-                                                                    @foreach (var newClass in Model.NextStandardSectionList)
-                                                                    {
-                                                                        <option value="@newClass.Value" @(j == 1 ? "selected=\"selected\"" : "")>@newClass.Text</option>
-                                                                        j++;
+                                             }
+                                            else
+                                             {
+                                                @(Model.studentList[i].NewStandardSectionMap == null ? "":Model.studentList[i].NewStandardSectionMap.StandardSectionDesc)
+                                             }
+                                        </td>
+                                    </tr>
 
-                                                                    }
-                                                                </select>
-                                                                        }*@
-                                                    </td>
-                                                </tr>
-
-                                                        }
-                               
-                                    
-
+                                    }
                             </tbody>
                         </table>
 
@@ -168,7 +157,7 @@
                             <button type="submit" name="Command" value="@StudentResource.PromoteCommand" class="btn btn-primary">@StudentResource.PromotionButton</button>
                         }
 
-                        
+
 
                     </fieldset>
                 }
@@ -204,15 +193,14 @@
             </div>
         </div>
 
-     }
-    else if(Model.studentList != null && Model.studentList.Count == 0 && Model.IsSearchSuccessful)
-    {
+       }
+      else if (Model.studentList != null && Model.studentList.Count == 0 && Model.IsSearchSuccessful)
+      {
         <label class="form-control" style="">All Students of this class has been promoted</label>
 
-    }
+      }
 
 
 </body>
 
 </html>
-

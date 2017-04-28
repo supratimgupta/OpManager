@@ -116,6 +116,19 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
 
+        public SelectList getStandardSectionDropDownWithSerial()
+        {
+            List<StandardSectionMapDTO> rDto = _ddlRepo.StandardSectionWithSerial();
+
+            StandardSectionMapDTO ssDto = new StandardSectionMapDTO();
+            ssDto.StandardSectionId = -1;
+            ssDto.StandardSectionDesc = "SELECT";
+
+            rDto.Insert(0, ssDto);
+
+            return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
+        }
+
         // return next Standard Section List w.r.t Current Standard
         public SelectList getNextStandardSectionDropDown(int currentStandardId)
         {
