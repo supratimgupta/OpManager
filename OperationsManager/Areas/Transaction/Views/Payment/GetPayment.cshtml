@@ -41,6 +41,18 @@
 
         function validate(objTrnsLog)
         {
+            if(objTrnsLog.TransferMode.length==0)
+            {
+                document.getElementById("divErrorMsg").style.display = "block";
+                document.getElementById("errorMsg").innerHTML = "Please provide transfer mode.";
+                return false;
+            }
+            if(objTrnsLog.TransferMode === "CHQ" && objTrnsLog.PaymentChequeNo.length==0)
+            {
+                document.getElementById("divErrorMsg").style.display = "block";
+                document.getElementById("errorMsg").innerHTML = "Please provide cheque no for cheque payment.";
+                return false;
+            }
             if(isNaN(objTrnsLog.TransactionLogId) || (objTrnsLog.CurrentAmount + objTrnsLog.CurrentAdjusting<=0))
             {
                 document.getElementById("divErrorMsg").style.display = "block";
@@ -105,9 +117,15 @@
             var textBoxadjusting = cell10Adjusting.getElementsByTagName("input")[0];
             var adjustingval = parseFloat(textBoxadjusting.value);
 
+            var cell11TransferMode = row.cells[11];
+            var transferModeSelect = cell11TransferMode.getElementsByTagName("select")[0];
+            var transferMode = transferModeSelect.options[transferModeSelect.selectedIndex].value;
 
-            var cell11TranslogId = row.cells[11];
-            var hdnTransLogId = cell11TranslogId.getElementsByTagName("input")[0];
+            var chequeNoTxt = cell11TransferMode.getElementsByTagName("input")[0];
+            var chequeNo = chequeNoTxt.value;
+
+            var cell12TranslogId = row.cells[12];
+            var hdnTransLogId = cell12TranslogId.getElementsByTagName("input")[0];
             var trnsLogIdVal = parseInt(hdnTransLogId.value);
 
             var trnslog = new Object();
@@ -119,6 +137,9 @@
             trnslog.AmountImposed = isNaN(totalamountval) ? 0.0 : totalamountval;
             trnslog.CurrentAdjusting = isNaN(adjustingval) ? 0.0 : adjustingval;
             trnslog.IsPrincipalApproved = isNaN(approval)?null:approval;
+            trnslog.TransferMode = transferMode;
+            trnslog.PaymentChequeNo = chequeNo;
+
             debugger;
             if (!this.validate(trnslog))
             {
@@ -165,9 +186,9 @@
                 success: function (resultData) {
                     debugger;
                     if (resultData.status) {
-                        var cell11 = row.cells[11];
-                        var btn = cell11.getElementsByTagName("button")[0];
-                        cell11.removeChild(btn);
+                        var cell12 = row.cells[12];
+                        var btn = cell12.getElementsByTagName("button")[0];
+                        cell12.removeChild(btn);
 
                         var cell7Approval = row.cells[7];
                         cell7Approval.getElementsByTagName("span")[0].innerHTML = "Pending";
@@ -234,8 +255,8 @@
                     cell10Adjusting.getElementsByTagName("input")[0].value="";
                 }
 
-                var cell11TranslogId = row.cells[11];
-                var btnSubmit = cell11TranslogId.getElementsByTagName("button")[0];
+                var cell12TranslogId = row.cells[12];
+                var btnSubmit = cell12TranslogId.getElementsByTagName("button")[0];
                 $(btnSubmit).removeAttr('disabled');
                 $("#btnTotalPay").removeAttr('disabled');
                 if (data.DueAmount<=0)
@@ -247,7 +268,7 @@
                     }
                     else
                     {
-                        row.cells[11].innerHTML = "";
+                        row.cells[12].innerHTML = "";
                     }
                 }
             }
@@ -293,8 +314,15 @@
                 var textBoxadjusting = cell10Adjusting.getElementsByTagName("input")[0];
                 var adjustingval = parseFloat(textBoxadjusting.value);
 
-                var cell11TranslogId = row.cells[11];
-                var hdnTransLogId = cell11TranslogId.getElementsByTagName("input")[0];
+                var cell11TransferMode = row.cells[11];
+                var transferModeSelect = cell11TransferMode.getElementsByTagName("select")[0];
+                var transferMode = transferModeSelect.options[transferModeSelect.selectedIndex].value;
+
+                var chequeNoTxt = cell11TransferMode.getElementsByTagName("input")[0];
+                var chequeNo = chequeNoTxt.value;
+
+                var cell12TranslogId = row.cells[12];
+                var hdnTransLogId = cell12TranslogId.getElementsByTagName("input")[0];
                 var trnsLogIdVal = parseInt(hdnTransLogId.value);
 
                 var trnslog = new Object();
@@ -306,6 +334,9 @@
                 trnslog.AmountImposed = isNaN(totalamountval) ? 0.0 : totalamountval;
                 trnslog.CurrentAdjusting = isNaN(adjustingval) ? 0.0 : adjustingval;
                 trnslog.IsPrincipalApproved = isNaN(approval) ? null : approval;
+                trnslog.TransferMode = transferMode;
+                trnslog.PaymentChequeNo = chequeNo;
+
                 debugger;
                 //if (!this.validate(trnslog)) {
                 //    isValid = false;
@@ -329,6 +360,12 @@
             transLogs.CurrentAdjusting = isNaN(totalCurrentAdjustmentVal) ? 0.0 : totalCurrentAdjustmentVal;
             transLogs.DueAmount = isNaN(totalCurrentDue) ? 0.0 : totalCurrentDue;
             transLogs.TransactionLogId = 0;
+
+            var ddlPaymentMode = document.getElementById("ddlPaymentMode");
+            transLogs.TransferMode = ddlPaymentMode.options[ddlPaymentMode.selectedIndex].value;
+
+            transLogs.PaymentChequeNo = document.getElementById("txtChqNo").value;
+
             if (!this.validate(transLogs)) {
                 isValid = false;
                 return false;
@@ -360,6 +397,19 @@
             });
         }
 
+        function setChequeNo(ddlPaymentMode)
+        {
+            var selectedMode = ddlPaymentMode.options[ddlPaymentMode.selectedIndex].value;
+            if(selectedMode==="CHQ")
+            {
+                document.getElementById("divChequeNo").style.display = "block";
+            }
+            else
+            {
+                document.getElementById("divChequeNo").style.display = "none";
+            }
+        }
+
         function payAllCallback()
         {
             debugger;
@@ -368,6 +418,21 @@
 
             document.getElementById("btnPaymentSearch").click();
             return false;
+        }
+
+        function checkPaymentMode(ddlPaymentMode)
+        {debugger;
+            var selectedMode = ddlPaymentMode.options[ddlPaymentMode.selectedIndex].value;
+            var currentTd = ddlPaymentMode.parentNode.parentNode.parentNode;
+            var div = currentTd.children[1];
+            if(selectedMode==="CHQ")
+            {
+                div.style.display="block";
+            }
+            else
+            {
+                div.style.display="none";
+            }
         }
     </script>
     <script>
@@ -485,6 +550,9 @@
                                             @Payment.GridRowAdjustingAmount
                                         </th>
                                         <th>
+                                            Current Payment Mode
+                                        </th>
+                                        <th>
                                             @Payment.GridRowSubmit
                                         </th>
                                     </tr>
@@ -542,7 +610,12 @@
                                                     @Html.Label("","NA")
                                                 }
                                             </td>
-
+                                            <td>
+                                                @Html.OpMgrDropDownListFor(m=>m.paymentDetailsList[i].TransferMode, Model.PaymentModeList,"", new {@class= "form-control requiredField", onchange="checkPaymentMode(this);", style="width:150px;" })
+                                                <div style="display:none;" name="divChq">
+                                                    @Html.OpMgrTextBoxFor(m=>m.paymentDetailsList[i].PaymentChequeNo,"",new { @class= "form-control requiredField", placeholder="Cheque no", style = "width:150px;" })
+                                                </div>
+                                            </td>
                                             <td valign="middle">
                                                 @if (Model.paymentDetailsList[i].DueAmount != null && Model.paymentDetailsList[i].DueAmount.Value > 0)
                                                 {
@@ -575,6 +648,12 @@
                                 </div>
                                 <div class="col-lg-2" id="tstadjust">
                                     @Html.OpMgrTextBoxFor(m => m.LabelCurrentlyAdjust, Payment.LabelCurrentAdjustment, new { @class = "form-control", id="txtTotalAdjustment" })
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m=>m.TransferMode, Model.PaymentModeList, "Payment Mode", new {@class="form-control",id="ddlPaymentMode",onclick="setChequeNo(this);" })
+                                </div>
+                                <div class="col-lg-2" style="display:none;" id="divChequeNo">
+                                    @Html.OpMgrTextBoxFor(m=>m.PaymentChequeNo, "Cheque No", new {@class="form-control", id="txtChqNo" })
                                 </div>
                                 @*</div>
                             <div class="panel-body">*@

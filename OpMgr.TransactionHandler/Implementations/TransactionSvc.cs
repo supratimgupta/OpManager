@@ -98,8 +98,13 @@ namespace OpMgr.TransactionHandler.Implementations
             isDiffTo = string.Empty;
 
             DataRow[] drTrMasterDet = _dtTransMaster.Select("TranMasterId=" + transMasterId + " AND IsPenalty=0");
-            
-            
+
+            DateTime dtValid = new DateTime();
+            if(!DateTime.TryParse(drTrMasterDet[0]["DayToRun"].ToString(), out dtValid) && !DateTime.TryParse(drTrMasterDet[0]["YearlyDayToRun"].ToString(), out dtValid))
+            {
+                return false;
+            }
+
             if(drTrMasterDet != null && drTrMasterDet.Length > 0)
             {
                 string trnsFreq = drTrMasterDet[0]["Frequency"].ToString();
@@ -126,8 +131,7 @@ namespace OpMgr.TransactionHandler.Implementations
                         {
                             dayToRun = drTrMasterDet[0]["YearlyDayToRun"].ToString() + "-" + DateTime.Today.ToString("yyyy");
                         }
-
-                        if (_runDate >= DateTime.Parse(dayToRun))
+                        if (DateTime.TryParse(dayToRun, out dtValid) && _runDate >= DateTime.Parse(dayToRun))
                         {
                             retValue = true;
                         }

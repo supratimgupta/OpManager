@@ -25,6 +25,9 @@
   <bind service="OpMgr.Common.Contracts.Modules.ITransactionLogSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.TransactionLogSvc, OpMgr.DataAccess" />
 
+  <bind service="OpMgr.Common.Contracts.Modules.ITransactionLogPaymentSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.TransactionLogPaymentSvc, OpMgr.DataAccess" />
+
   <bind service="OpMgr.Common.Contracts.Modules.ILibraryTransactionSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.LibraryTransactionSvc, OpMgr.DataAccess" />
 

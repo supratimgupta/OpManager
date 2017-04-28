@@ -51,6 +51,7 @@
     <Compile Include="Implementations\RoleSvc.cs" />
     <Compile Include="Implementations\StudentSvc.cs" />
     <Compile Include="Implementations\EntitlementActionSvc.cs" />
+    <Compile Include="Implementations\TransactionLogPaymentSvc.cs" />
     <Compile Include="Implementations\UserSvc.cs" />
     <Compile Include="Implementations\TransactionLogSvc.cs" />
     <Compile Include="Implementations\TransactionMasterSvc.cs" />

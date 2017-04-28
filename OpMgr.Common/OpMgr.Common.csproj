@@ -55,6 +55,7 @@
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
     <Compile Include="Contracts\Modules\IStudentSvc.cs" />
+    <Compile Include="Contracts\Modules\ITransactionLogPaymentSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionLogSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionMasterSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionRuleSvc.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="DTOs\StudentDTO.cs" />
     <Compile Include="DTOs\SubjectDTO.cs" />
     <Compile Include="DTOs\TransactionLogDTO.cs" />
+    <Compile Include="DTOs\TransactionLogPaymentsDTO.cs" />
     <Compile Include="DTOs\TransactionMasterDTO.cs" />
     <Compile Include="DTOs\TransactionRuleDTO.cs" />
     <Compile Include="DTOs\ActionDTO.cs" />
