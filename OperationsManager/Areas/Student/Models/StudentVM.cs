@@ -21,6 +21,20 @@ namespace OperationsManager.Areas.Student.Models
 
         public SelectList GenderList { get; set; }
 
+        public SelectList IsChristianList { get; set; }
+
+        public SelectList IsParentTeacherList { get; set; }
+
+        public SelectList IsParentFromEngMedList { get; set; }
+
+        public SelectList JointOrNuclearFamilyList { get; set; }
+
+        public SelectList SiblingsInStdOrNotList { get; set; }
+
+        public SelectList AnyAlumunimemberList { get; set; }
+
+        public SelectList StudentinPvtTutionList { get; set; }
+
         public SelectList RoleList { get; set; }
 
         public SelectList HouseList { get; set; }

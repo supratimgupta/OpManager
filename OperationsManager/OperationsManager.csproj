@@ -585,8 +585,12 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\calendar.gif" />
+    <Content Include="Images\FieldSetBG.jpg" />
     <Content Include="Images\schoolbuilding.jpg" />
     <Content Include="Images\schoollogo.png" />
+    <Content Include="Images\tab-left.gif" />
+    <Content Include="Images\tab-right.gif" />
+    <Content Include="Images\tr_back_grey.gif" />
     <Content Include="Qubico\css\qubico-blue.css" />
     <Content Include="Qubico\css\qubico.css" />
     <Content Include="Qubico\js\qubico.js" />
@@ -640,6 +644,7 @@
     <Content Include="Content\jquery-validation-1.16.0\README.md" />
     <Content Include="Areas\Login\Views\Login\Landing.cshtml" />
     <Content Include="Areas\Student\Views\Student\PromoteToNewClass.cshtml" />
+    <Content Include="Areas\Student\Views\Student\RegisterStudent.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

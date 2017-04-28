@@ -63,6 +63,22 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpGet]
+        public ActionResult RegisterStudent()
+        {
+            Models.StudentVM studView = new Models.StudentVM();
+
+            studView.GenderList = _uiddlRepo.getGenderDropDown();
+            studView.LocationList = _uiddlRepo.getLocationDropDown();
+            studView.RoleList = _uiddlRepo.getRoleDropDown();
+            studView.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            studView.SectionList = _uiddlRepo.getSectionDropDown();
+            studView.HouseList = _uiddlRepo.getHouseDropDown();
+            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+           
+            return View(studView);
+        }
+
+        [HttpGet]
         public ActionResult Register(string mode, string id)
         {
             Models.StudentVM studView = new Models.StudentVM();
@@ -122,6 +138,14 @@ namespace OperationsManager.Areas.Student.Controllers
             studView.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
             studView.SectionList = _uiddlRepo.getSectionDropDown();
             studView.HouseList = _uiddlRepo.getHouseDropDown();
+            studView.IsChristianList = _uiddlRepo.getSelectValueDropDown();
+            studView.IsParentTeacherList = _uiddlRepo.getSelectValueDropDown();
+            studView.IsParentFromEngMedList = _uiddlRepo.getSelectValueDropDown();
+            studView.JointOrNuclearFamilyList = _uiddlRepo.getSelectJointNuclearDropDown();
+            studView.SiblingsInStdOrNotList = _uiddlRepo.getSelectValueDropDown();
+            studView.AnyAlumunimemberList = _uiddlRepo.getSelectValueDropDown();
+            studView.StudentinPvtTutionList = _uiddlRepo.getSelectValueDropDown();
+
             //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();

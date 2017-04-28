@@ -79,6 +79,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any Alumuni Member.
+        /// </summary>
+        public static string AnyAlumuniMember {
+            get {
+                return ResourceManager.GetString("AnyAlumuniMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blood Group.
         /// </summary>
         public static string BloodGrp {
@@ -178,6 +187,60 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Annual Income.
+        /// </summary>
+        public static string FatherAnnualIncome {
+            get {
+                return ResourceManager.GetString("FatherAnnualIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Name.
+        /// </summary>
+        public static string FatherName {
+            get {
+                return ResourceManager.GetString("FatherName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Occupation.
+        /// </summary>
+        public static string FatherOccupation {
+            get {
+                return ResourceManager.GetString("FatherOccupation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Organisation Name.
+        /// </summary>
+        public static string FatherOrganisationName {
+            get {
+                return ResourceManager.GetString("FatherOrganisationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Qualification.
+        /// </summary>
+        public static string FatherQualification {
+            get {
+                return ResourceManager.GetString("FatherQualification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fees Paid For Pvt Tution.
+        /// </summary>
+        public static string FeesPaidForPvtTution {
+            get {
+                return ResourceManager.GetString("FeesPaidForPvtTution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FName {
@@ -232,6 +295,42 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Christian.
+        /// </summary>
+        public static string IsChristian {
+            get {
+                return ResourceManager.GetString("IsChristian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Joint Or Nuclear Family.
+        /// </summary>
+        public static string IsJointOrNuclearFamily {
+            get {
+                return ResourceManager.GetString("IsJointOrNuclearFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Parent From English Medium.
+        /// </summary>
+        public static string IsParentFromEngMedium {
+            get {
+                return ResourceManager.GetString("IsParentFromEngMedium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is Parent Teacher.
+        /// </summary>
+        public static string IsParentTeacher {
+            get {
+                return ResourceManager.GetString("IsParentTeacher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name.
         /// </summary>
         public static string LName {
@@ -259,11 +358,74 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mother&apos;s Annual Income.
+        /// </summary>
+        public static string MotherAnnualInccome {
+            get {
+                return ResourceManager.GetString("MotherAnnualInccome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mother&apos;s Name.
+        /// </summary>
+        public static string MotherName {
+            get {
+                return ResourceManager.GetString("MotherName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mother&apos;s Occupation.
+        /// </summary>
+        public static string MotherOccupation {
+            get {
+                return ResourceManager.GetString("MotherOccupation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mother&apos;s Organisation Name.
+        /// </summary>
+        public static string MotherOrganisationName {
+            get {
+                return ResourceManager.GetString("MotherOrganisationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mother&apos;s Qualification.
+        /// </summary>
+        public static string MotherQualification {
+            get {
+                return ResourceManager.GetString("MotherQualification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mother Toungue.
+        /// </summary>
+        public static string MotherToungue {
+            get {
+                return ResourceManager.GetString("MotherToungue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Of Tution.
+        /// </summary>
+        public static string NoOfTution {
+            get {
+                return ResourceManager.GetString("NoOfTution", resourceCulture);
             }
         }
         
@@ -318,6 +480,15 @@ namespace OpMgr.Resources.User {
         public static string RegistrationNo {
             get {
                 return ResourceManager.GetString("RegistrationNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Religion.
+        /// </summary>
+        public static string Religion {
+            get {
+                return ResourceManager.GetString("Religion", resourceCulture);
             }
         }
         
@@ -385,6 +556,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Siblings in Std Or Not.
+        /// </summary>
+        public static string SiblingInStdOrNot {
+            get {
+                return ResourceManager.GetString("SiblingInStdOrNot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee Id.
         /// </summary>
         public static string StaffEmployeeId {
@@ -399,6 +579,24 @@ namespace OpMgr.Resources.User {
         public static string Standard {
             get {
                 return ResourceManager.GetString("Standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Student in Private Tution.
+        /// </summary>
+        public static string StuPrivateTution {
+            get {
+                return ResourceManager.GetString("StuPrivateTution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SubjectTheyTeach.
+        /// </summary>
+        public static string SubjectTheyTeach {
+            get {
+                return ResourceManager.GetString("SubjectTheyTeach", resourceCulture);
             }
         }
         
