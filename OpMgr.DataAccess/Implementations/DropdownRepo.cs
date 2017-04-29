@@ -399,6 +399,48 @@ namespace OpMgr.DataAccess.Implementations
         }
 
 
+       public  List<StandardSectionMapDTO> StandardSectionWithSerial()
+        {
+            List<StandardSectionMapDTO> lstStandardSection = null;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText="select StandardSectionId,concat(StandardName, ' ', SectionName) as StandardSectionDesc,Serial from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    lstStandardSection = new List<StandardSectionMapDTO>();
+
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+
+                    if(_dtData!=null && _dtData.Rows.Count>0)
+                    {
+                        StandardSectionMapDTO standardSectionMapDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            standardSectionMapDTO = new StandardSectionMapDTO();
+                            standardSectionMapDTO.StandardSectionId = (int)dr["StandardSectionId"];
+                            standardSectionMapDTO.StandardSectionDesc = dr["StandardSectionDesc"].ToString();
+                            standardSectionMapDTO.Serial = (int)dr["Serial"];
+
+                            lstStandardSection.Add(standardSectionMapDTO);
+                        }
+                    }
+                    
+
+                }
+                catch(Exception ex)
+                {
+                    
+                }
+            }
+            return lstStandardSection;
+        }
+
+
         // returns next standard section w.r.t the current standard 
         public List<StandardSectionMapDTO> NextStandardSection(int currentSerial)
         {
@@ -408,7 +450,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select StandardSectionId,concat(StandardName,' ', SectionName) as StandardSectionDesc from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1 AND ssm.StandardSectionId>=(@currentSerial+1)";
+                    command.CommandText = "select StandardSectionId,concat(StandardName,' ', SectionName) as StandardSectionDesc from standardsectionmap ssm join standard std on std.StandardId = ssm.StandardId join section sc on sc.SectionId = ssm.SectionId where ssm.Active = 1 AND ssm.Serial=(@currentSerial+1)";
                     command.Parameters.Add("@currentSerial", MySqlDbType.Int32).Value = currentSerial;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();

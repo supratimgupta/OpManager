@@ -11,6 +11,8 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
+    [Attributes.OpMgrHandleError]
+    //[Attributes.OpMgrAuth]
     public class PaymentController : Controller
     {
         private ITransactionLogSvc _transactionLogSvc;
@@ -19,11 +21,17 @@ namespace OperationsManager.Areas.Transaction.Controllers
 
         private ISessionSvc _sessionSvc;
 
-        public PaymentController(ITransactionLogSvc transactionLogSvc, ILogSvc logger, ISessionSvc sessionSvc)
+        private IDropdownRepo _ddlRepo;
+
+        private ITransactionLogPaymentSvc _paymentSvc;
+
+        public PaymentController(ITransactionLogSvc transactionLogSvc, ILogSvc logger, ISessionSvc sessionSvc, IDropdownRepo ddlRepo, ITransactionLogPaymentSvc paymentSvc)
         {
             _transactionLogSvc = transactionLogSvc;
             _logger = logger;
             _sessionSvc = sessionSvc;
+            _ddlRepo = ddlRepo;
+            _paymentSvc = paymentSvc;
         }
 
         // GET: Transaction/Payment
@@ -36,6 +44,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         public ActionResult GetPayment()
         {
             Models.PaymentVM paymentvm = new PaymentVM();
+            paymentvm.TransferMode = "-1";
             return View(paymentvm);
         }
 
@@ -131,12 +140,15 @@ namespace OperationsManager.Areas.Transaction.Controllers
                                 searchItem.TransactionRule.TranMaster = new TransactionMasterDTO();
                                 searchItem.TransactionRule.TranMaster.TransactionName = tranlog.TransactionRule.TranMaster.TransactionName;
 
+                                searchItem.TransferMode = "-1";
+
                                 paymentview.paymentDetailsList.Add(searchItem);
                                 paymentview.IsSearchSuccessful = true;
                             }
                         }
                     }
-
+                    Helpers.UIDropDownRepo uiDDLRepo = new Helpers.UIDropDownRepo(_ddlRepo);
+                    paymentview.PaymentModeList = uiDDLRepo.getTransferModeDropdown();
                 }
                 else
                 {
@@ -144,10 +156,12 @@ namespace OperationsManager.Areas.Transaction.Controllers
                     paymentvm.IsSearchSuccessful = false;
                 }
             }
+            paymentview.TransferMode = "-1";
             return View(paymentview);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult resendRequest(Models.TransactionViewModel tranlogDTO)
         {
             if(_transactionLogSvc.ResendRequest(tranlogDTO.TransactionLogId))
@@ -158,6 +172,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult updateRowPayment(Models.TransactionViewModel tranlogDTO)
         {
             if(tranlogDTO.AmountGiven==null)
@@ -171,6 +186,16 @@ namespace OperationsManager.Areas.Transaction.Controllers
             if(tranlogDTO.DueAmount==null)
             {
                 tranlogDTO.DueAmount = 0;
+            }
+            tranlogDTO.HasPartialPayment = true;
+            tranlogDTO.PaymentDate = DateTime.Now;
+            if(tranlogDTO.AmountImposed==(tranlogDTO.CurrentAmount + tranlogDTO.CurrentAdjusting))
+            {
+                tranlogDTO.HasPartialPayment = false;
+            }
+            if(!string.Equals(tranlogDTO.TransferMode,"CHQ"))
+            {
+                tranlogDTO.PaymentChequeNo = string.Empty;
             }
             tranlogDTO.AmountGiven = tranlogDTO.AmountGiven + tranlogDTO.CurrentAmount;
             tranlogDTO.AdjustedAmount = tranlogDTO.AdjustedAmount + tranlogDTO.CurrentAdjusting;
@@ -198,17 +223,36 @@ namespace OperationsManager.Areas.Transaction.Controllers
             if(tranlogDTO.DueAmount>=0)
             {
                 StatusDTO<TransactionLogDTO> status = _transactionLogSvc.UpdatePayment(tranlogDTO);
-                if(status.IsSuccess)
+                using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    tranlogDTO.IsPrincipalApproved = oldPrincipalApproved;
-                    return Json(new { status = true, data = tranlogDTO, message = "Successful" }, JsonRequestBehavior.AllowGet);
-                }
+                    if (status.IsSuccess)
+                    {
+                        tranlogDTO.IsPrincipalApproved = oldPrincipalApproved;
+
+                        if (tranlogDTO.HasPartialPayment.Value)
+                        {
+                            TransactionLogPaymentsDTO payment = new TransactionLogPaymentsDTO();
+                            payment.CurrentAmount = tranlogDTO.CurrentAmount;
+                            payment.PaymentChequeNo = tranlogDTO.PaymentChequeNo;
+                            payment.PaymentDate = tranlogDTO.PaymentDate;
+                            payment.PaymentMode = tranlogDTO.TransferMode;
+                            payment.TransactionLog = tranlogDTO;
+                            payment.CurrentAdjustingAmount = tranlogDTO.CurrentAdjusting;
+                            if(_paymentSvc.Insert(payment).IsSuccess)
+                            {
+                                ts.Complete();
+                            }
+                        }
+                        return Json(new { status = true, data = tranlogDTO, message = "Successful" }, JsonRequestBehavior.AllowGet);
+                    }
+                }  
                 return Json(new { status = false, data = tranlogDTO, message = "Payment failed." }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { status = false, data = tranlogDTO, message="Paid amount is greater than due amount" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult payAllTransactions(Models.TransactionViewModel transactions)
         {
             double currentTotalPay = transactions.CurrentAmount;
@@ -224,6 +268,9 @@ namespace OperationsManager.Areas.Transaction.Controllers
                         {
                             foreach (Models.TransactionViewModel tranlogDTO in transactions.paymentDetailsList)
                             {
+                                tranlogDTO.TransferMode = transactions.TransferMode;
+                                tranlogDTO.PaymentChequeNo = transactions.PaymentChequeNo;
+
                                 if(tranlogDTO.DueAmount!=null && tranlogDTO.DueAmount.Value>0)
                                 {
                                     if (tranlogDTO.AmountGiven == null)
@@ -243,6 +290,13 @@ namespace OperationsManager.Areas.Transaction.Controllers
                                     tranlogDTO.AmountGiven = tranlogDTO.AmountGiven + currentGivenAmt;
                                     tranlogDTO.DueAmount = tranlogDTO.DueAmount.Value - currentGivenAmt;
 
+                                    tranlogDTO.PaymentDate = DateTime.Now;
+                                    
+                                    if (!string.Equals(tranlogDTO.TransferMode, "CHQ"))
+                                    {
+                                        tranlogDTO.PaymentChequeNo = string.Empty;
+                                    }
+
                                     double currentAdjustedAmt = 0.0;
                                     if (tranlogDTO.DueAmount.Value>0)
                                     {
@@ -250,7 +304,14 @@ namespace OperationsManager.Areas.Transaction.Controllers
                                         tranlogDTO.AdjustedAmount = tranlogDTO.AdjustedAmount + currentAdjustedAmt;
                                         tranlogDTO.DueAmount = tranlogDTO.DueAmount.Value - currentAdjustedAmt;
                                     }
-                                    
+
+                                    tranlogDTO.HasPartialPayment = true;
+
+                                    if (tranlogDTO.AmountImposed == (currentGivenAmt + currentAdjustedAmt))
+                                    {
+                                        tranlogDTO.HasPartialPayment = false;
+                                    }
+
                                     bool principalApprovedChanged = false;
                                     int? oldPrincipalApproved = null;
                                     if (currentAdjustedAmt > 0)
@@ -276,6 +337,23 @@ namespace OperationsManager.Areas.Transaction.Controllers
                                         if (!status.IsSuccess)
                                         {
                                             throw new Exception("Error encountered in one transaction. Rolled back.");
+                                        }
+                                        else
+                                        {
+                                            if(tranlogDTO.HasPartialPayment.Value)
+                                            {
+                                                TransactionLogPaymentsDTO payment = new TransactionLogPaymentsDTO();
+                                                payment.CurrentAmount = currentGivenAmt;
+                                                payment.CurrentAdjustingAmount = currentAdjustedAmt;
+                                                payment.PaymentChequeNo = tranlogDTO.PaymentChequeNo;
+                                                payment.PaymentDate = tranlogDTO.PaymentDate;
+                                                payment.PaymentMode = tranlogDTO.TransferMode;
+                                                payment.TransactionLog = tranlogDTO;
+                                                if (!_paymentSvc.Insert(payment).IsSuccess)
+                                                {
+                                                    throw new Exception("Payment sub details not added");
+                                                }
+                                            }
                                         }
                                     }
 

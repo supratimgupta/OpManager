@@ -126,6 +126,9 @@
   <data name="FooterText" xml:space="preserve">
     <value>Powered by Trio</value>
   </data>
+  <data name="GlobalErrorMsg" xml:space="preserve">
+    <value>Sorry! An Error Occured in the application. Dev team is notified.</value>
+  </data>
   <data name="PageHeader" xml:space="preserve">
     <value>Augustine's School</value>
   </data>

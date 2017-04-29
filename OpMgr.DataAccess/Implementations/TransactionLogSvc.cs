@@ -855,8 +855,33 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
-                        command.CommandText = "UPDATE TransactionLog SET AmountGiven=@given, DueAmount=@due, AdjustedAmount=@adjusted, IsCompleted=@completed"+(data.IsPrincipalApproved!=null?", IsPrincipalApproved=@approved":string.Empty)+" WHERE TransactionLogId=@trLogId";
-                        
+                        command.CommandText = "UPDATE TransactionLog SET HasPartialPayment=@partialPaymentFlag, PaymentChequeNo=@paymentChequeNo, PaymentDate=@paymentDate, AmountGiven=@given, DueAmount=@due, AdjustedAmount=@adjusted, IsCompleted=@completed"+(data.IsPrincipalApproved!=null?", IsPrincipalApproved=@approved":string.Empty)+" WHERE TransactionLogId=@trLogId";
+
+                        if(data.HasPartialPayment!=null)
+                        {
+                            command.Parameters.Add("@partialPaymentFlag", MySqlDbType.Bit).Value = data.HasPartialPayment.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@partialPaymentFlag", MySqlDbType.Bit).Value = DBNull.Value;
+                        }
+                        if(!string.IsNullOrEmpty(data.PaymentChequeNo))
+                        {
+                            command.Parameters.Add("@paymentChequeNo", MySqlDbType.VarChar).Value = data.PaymentChequeNo;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@paymentChequeNo", MySqlDbType.VarChar).Value = DBNull.Value;
+                        }
+                        if(data.PaymentDate!=null)
+                        {
+                            command.Parameters.Add("@paymentDate", MySqlDbType.DateTime).Value = data.PaymentDate.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@paymentDate", MySqlDbType.DateTime).Value = DateTime.Now;
+                        }
+
                         if (data.AmountGiven != null)
                         {
                             command.Parameters.Add("@given", MySqlDbType.Double).Value = data.AmountGiven.Value;
@@ -969,6 +994,27 @@ namespace OpMgr.DataAccess.Implementations
                 catch (Exception exp)
                 {
                     _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<List<TransactionLogDTO>> GetPaidTransaction(TransactionLogDTO trnsLog, string identifier, string role)
+        {
+            StatusDTO<List<TransactionLogDTO>> status = null;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+
+                    MySqlCommand command = new MySqlCommand();
+
+
+                    return status;
+                }
+                catch(Exception exp)
+                {
                     throw exp;
                 }
             }

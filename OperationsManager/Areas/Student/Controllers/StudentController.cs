@@ -468,8 +468,7 @@ namespace OperationsManager.Areas.Student.Controllers
             StudentVM studView = new StudentVM();
 
             //Fetch the StandardSection List
-            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-
+            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();  
             return View(studView);
         }
 
@@ -478,7 +477,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult PromoteToNewClass(StudentVM studentView, string Command)
         {
             int StandardSectionId = 0;
-            int currentStandardId = 0;
+            int currentSerial = 0;
             int Serial = 0;
             StudentVM studView = null;
             List<StudentDTO> studListPass = null;
@@ -500,10 +499,22 @@ namespace OperationsManager.Areas.Student.Controllers
                     }
 
                 }
+                
+                // To store StandardSectionId for Promote and Standard
+                if (string.Equals(Command, "Promote"))
+                {
+                    StandardSectionId = (int)TempData.Peek("StandardSection");
+                    //currentStandardId = StandardSectionId;
+                }
+                else if (string.Equals(Command, "Standard"))
+                {
+                    StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
+                    TempData["StandardSection"] = StandardSectionId;
+                }
 
 
                 //For Storing exact string values instead of keys in database
-                if (string.Equals(Command, "Promote") && studentView != null)
+                if (studentView != null && (string.Equals(Command, "Promote")))
                 {
 
                     foreach (StudentVM studVM in studentView.studentList)
@@ -514,50 +525,29 @@ namespace OperationsManager.Areas.Student.Controllers
                         if (string.Equals(studVM.Status, "1"))
                         {
                             student.Status = "Promotion Confirmed";
+                            student.NewStandardSectionId = studVM.NewStandardSectionId;
                         }
                         else if (string.Equals(studVM.Status, "2"))
                         {
                             student.Status = "Failed";
+                            student.NewStandardSectionId = StandardSectionId;
                         }
 
-                        student.NewStandardSectionId = studVM.NewStandardSectionId;
-
-                        studListPass.Add(student);
+                       studListPass.Add(student);
 
                     }
                 }
-
-                // satndard section id is for both command Promote and command GetStandardStudents
-                //It is for all the students--Outer object
-                // StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
-
-
-                if (string.Equals(Command, "Promote"))
-                {
-                    StandardSectionId = (int)TempData.Peek("StandardSection");
-                    currentStandardId = StandardSectionId;
-                }
-                else if (string.Equals(Command, "Standard"))
-                {
-                    StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
-                    Serial = studentView.StandardSectionMap.Serial;
-                    TempData["StandardSection"] = StandardSectionId;
-
-                    currentStandardId = StandardSectionId;
-                }
-
-
 
                 //Get Students for that Particular class or Promote Students to New Class
                 StatusDTO<List<StudentDTO>> status = _studSvc.PromoteToNewClass(studListPass, Command, StandardSectionId);
 
                 if ((status.ReturnObj != null))
                 {
-                    studView = new StudentVM(); // Instantiating Student View model As a Whole Class
+                    studView = new StudentVM(); // Instantiating Student View model As a Parent Whole
                     studView.studentList = new List<StudentVM>(); // instantiating list of Students
 
-                    //Binding th Standard Section Id which is returned from the database
-                    studView.StandardSectionMap = new StandardSectionMapDTO();//instantiating StandardSectionMap for passing View Model
+                    //Binding the Standard Section Id which is returned from the database
+                    studView.StandardSectionMap = new StandardSectionMapDTO();
                     studView.StandardSectionMap.StandardSectionId = StandardSectionId;
 
                     //Fetch the StandardSection List for Upper Dropdown
@@ -569,11 +559,8 @@ namespace OperationsManager.Areas.Student.Controllers
                         studView.PromotionStatusList = _uiddlRepo.getPromotionStatusDropDown();
                     }
 
-
-
                     if (status.IsSuccess && !status.IsException)
                     {
-
                         StudentVM studentV = null; // for each student
                         foreach (StudentDTO stud in status.ReturnObj)
                         {
@@ -585,35 +572,27 @@ namespace OperationsManager.Areas.Student.Controllers
                                 studentV.RollNumber = stud.RollNumber;
                                 studentV.StudentInfoId = stud.StudentInfoId;
 
-
-                                if (string.Equals(Command, "Promote") && stud.Status != null && stud.NewStandardSectionId != 0)
-                                {
-                                    studentV.Status = stud.Status;
-                                    studentV.NewStandardSectionId = stud.NewStandardSectionId;
-                                }
-
-
+                                studentV.Status = stud.Status;
+                                studentV.NewStandardSectionId = stud.NewStandardSectionId;
+                               
 
                                 //Fetch the Next StandardSectionList w.r.t Current
-                                //if (string.Equals(Command, "Standard"))
-                                // {
-                                //    currentStandardId = stud.StandardSectionMap.StandardSectionId;
-                                //}
+                                if (string.Equals(Command, "Standard"))
+                                {
+                                    currentSerial = stud.StandardSectionMap.Serial;
+                                }
 
                                 //Fetch New Standard and Section if they are assigned
                                 studentV.StandardSectionMap = new StandardSectionMapDTO();
                                 studentV.StandardSectionMap.Standard = new StandardDTO();
                                 studentV.StandardSectionMap.Section = new SectionDTO();
 
-                                // studentV.StandardSectionMap.StandardSectionId = stud.StandardSectionMap.StandardSectionId;
-
-
-
-
                                 studentV.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
                                 studentV.StandardSectionMap.Section.SectionName = studentV.StandardSectionMap.Section.SectionName;
 
-
+                                studentV.NewStandardSectionMap = stud.NewStandardSectionMap;
+                                
+                                
                                 studentV.UserDetails = new UserMasterDTO();
                                 studentV.UserDetails.UserMasterId = stud.UserDetails.UserMasterId;
                                 studentV.UserDetails.FName = stud.UserDetails.FName;
@@ -627,18 +606,7 @@ namespace OperationsManager.Areas.Student.Controllers
                                 }
 
                                 studentV.Name = studentV.Name + " " + studentV.UserDetails.LName;
-
-
-                                ////Fetch the Promotion Status List 
-                                //if (string.Equals(Command, "Standard"))
-                                //{
-                                //    studentV.PromotionStatusList = _uiddlRepo.getPromotionStatusDropDown();
-                                //}
-
-                                //Fetch New Class for each student
-
-
-
+                                
                                 //Add Into Student View Model List
                                 studView.studentList.Add(studentV);
                                 studView.IsSearchSuccessful = true;
@@ -654,16 +622,13 @@ namespace OperationsManager.Areas.Student.Controllers
             }
 
             if (string.Equals(Command, "Standard"))
-                studView.NextStandardSectionList = _uiddlRepo.getNextStandardSectionDropDown(currentStandardId);
+            {
+               studView.NextStandardSectionList = _uiddlRepo.getNextStandardSectionDropDown(currentSerial);
+            }
 
-            if (string.Equals(Command, "Promote"))
-            {
-                return RedirectToAction("PromoteToNewClass");
-            }
-            else
-            {
+          
                 return View(studView);
-            }
+           
 
         }
     }

@@ -33,6 +33,9 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<StandardSectionMapDTO> StandardSection();
 
+        // returns list of standard and section along with serial
+        List<StandardSectionMapDTO> StandardSectionWithSerial();
+
         //returns only the next class w.r.t the current class
         List<StandardSectionMapDTO> NextStandardSection(int currentStandardId);
 

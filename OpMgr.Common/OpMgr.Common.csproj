@@ -45,6 +45,7 @@
     <Compile Include="Contracts\ICRUDSvc.cs" />
     <Compile Include="Contracts\IDbSvc.cs" />
     <Compile Include="Contracts\ILogSvc.cs" />
+    <Compile Include="Contracts\IMailSvc.cs" />
     <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
     <Compile Include="Contracts\Modules\IStudentSvc.cs" />
+    <Compile Include="Contracts\Modules\ITransactionLogPaymentSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionLogSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionMasterSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionRuleSvc.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="DTOs\KeyValueDTO.cs" />
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
     <Compile Include="DTOs\LocationDTO.cs" />
+    <Compile Include="DTOs\MailDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="DTOs\StudentDTO.cs" />
     <Compile Include="DTOs\SubjectDTO.cs" />
     <Compile Include="DTOs\TransactionLogDTO.cs" />
+    <Compile Include="DTOs\TransactionLogPaymentsDTO.cs" />
     <Compile Include="DTOs\TransactionMasterDTO.cs" />
     <Compile Include="DTOs\TransactionRuleDTO.cs" />
     <Compile Include="DTOs\ActionDTO.cs" />

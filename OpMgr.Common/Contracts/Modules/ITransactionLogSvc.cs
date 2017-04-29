@@ -23,5 +23,7 @@ namespace OpMgr.Common.Contracts.Modules
         bool ApproveCancelAdjustedAmt(List<TransactionLogDTO> lstTRLog);
 
         bool ResendRequest(int transactionLogId);
+
+        StatusDTO<List<TransactionLogDTO>> GetPaidTransaction(TransactionLogDTO trnsLog, string identifier, string role);
     }
 }

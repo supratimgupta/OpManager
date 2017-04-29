@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace OperationsManager.Areas.Transaction.Controllers
 {
     //[OpMgrAuth]
-    public class TransactionRuleController : Controller
+    public class TransactionRuleController : Controller 
     {
         private ITransactionRuleSvc _trRule;
 
@@ -244,7 +244,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trRuleVM.IsPostBack = "TRUE";
 
 
-            return View(trRuleVM);
+            return RedirectToAction("SearchRules");
         }
 
         [OpMgrAuth]

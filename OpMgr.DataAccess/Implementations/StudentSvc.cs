@@ -494,10 +494,7 @@ namespace OpMgr.DataAccess.Implementations
                                 if (stud != null && stud.Status != null && stud.NewStandardSectionId != 0 && stud.StudentInfoId != 0)
                                 {
                                     command.Parameters.Add("@Status", MySqlDbType.String).Value = stud.Status;
-                                    if(string.Equals(stud.Status,"Promotion Confirmed"))
-                                       command.Parameters.Add("@NewStandardSectionId", MySqlDbType.Int32).Value = stud.NewStandardSectionId;
-                                    else
-                                        command.Parameters.Add("@NewStandardSectionId", MySqlDbType.Int32).Value=DBNull.Value;
+                                    command.Parameters.Add("@NewStandardSectionId", MySqlDbType.Int32).Value = stud.NewStandardSectionId;
                                     command.Parameters.Add("@StudentInfoId", MySqlDbType.Int32).Value = stud.StudentInfoId;
                                 }
 
@@ -510,13 +507,16 @@ namespace OpMgr.DataAccess.Implementations
                                 }
                             }
                         }
-                            selectClause = "SELECT student.StudentInfoId,users.UserMasterId,users.FName, users.MName,users.LName,student.StandardSectionId,stdSecMap.StandardId," +
-                                       "student.RollNumber,student.NewStandardSectionId,student.Status,stnd.StandardName,sec.SectionName " +
-                                       "FROM studentinfo student " +
-                                       "INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId " +
-                                       "INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId " +
-                                       "INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId " +
-                                       "INNER JOIN Section sec ON stdSecMap.StandardId = sec.SectionId ";
+                        selectClause = "SELECT student.StudentInfoId,users.UserMasterId,users.FName, users.MName,users.LName,student.StandardSectionId,stdSecMap.StandardId,stdSecMap.Serial," +
+                                   "student.RollNumber,student.NewStandardSectionId,student.Status,stnd.StandardName,sec.SectionName,stnd1.StandardName AS NewStandardName,sec1.SectionName AS NewSectionName " +
+                                   "FROM studentinfo student " +
+                                   "LEFT JOIN UserMaster users ON student.UserMasterId = users.UserMasterId " +
+                                   "LEFT JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId " +
+                                   "LEFT JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId " +
+                                   "LEFT JOIN Section sec ON stdSecMap.SectionId = sec.SectionId " +
+                                   "LEFT JOIN StandardSectionMap stdSecMap1 ON student.NewStandardSectionId=stdSecMap1.StandardSectionId " +
+                                   "LEFT JOIN Standard stnd1 ON stdSecMap1.StandardId=stnd1.StandardId " +
+                                   "LEFT JOIN Section sec1 ON stdSecMap1.SectionId=sec1.SectionId ";
 
                         //Select All students who are ACTIVE
                         whereClause = "WHERE student.Active=1 ";
@@ -544,12 +544,10 @@ namespace OpMgr.DataAccess.Implementations
                                     student.Active = true;
 
                                     student.StudentInfoId = (int)dsStudentLst.Tables[0].Rows[i]["StudentInfoId"];
-                                if (string.Equals(Command, "Promote"))
-                                {
                                     student.Status = dsStudentLst.Tables[0].Rows[i]["Status"].ToString();
                                     if(!string.IsNullOrEmpty(dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"].ToString()))
                                          student.NewStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
-                                }
+                                
 
                                 student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
                                     
@@ -567,10 +565,12 @@ namespace OpMgr.DataAccess.Implementations
                                     student.StandardSectionMap.Standard.StandardId = (int)dsStudentLst.Tables[0].Rows[i]["StandardId"];
                                     student.StandardSectionMap.Standard.StandardName =dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
                                     student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
+                                    student.StandardSectionMap.Serial = (int)dsStudentLst.Tables[0].Rows[i]["Serial"];
+                                    student.NewStandardSectionMap = new StandardSectionMapDTO();
+                                    student.NewStandardSectionMap.StandardSectionDesc = dsStudentLst.Tables[0].Rows[i]["NewStandardName"].ToString() + " " + dsStudentLst.Tables[0].Rows[i]["NewSectionName"].ToString();
 
 
                                     studLst.ReturnObj.Add(student);
-
                                     studLst.IsSuccess = true;
                                 }
 
