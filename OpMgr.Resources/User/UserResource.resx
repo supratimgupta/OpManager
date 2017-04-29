@@ -312,4 +312,10 @@
   <data name="FatherDesignation" xml:space="preserve">
     <value>Father's Designation</value>
   </data>
+  <data name="FatherContactNo" xml:space="preserve">
+    <value>Father's Contact No</value>
+  </data>
+  <data name="FatherEmailId" xml:space="preserve">
+    <value>Father's Email Id</value>
+  </data>
 </root>

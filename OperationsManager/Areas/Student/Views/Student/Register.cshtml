@@ -22,8 +22,7 @@
         });
     </script>
     <script>
-        function addTransactionItems()
-        {
+        function addTransactionItems() {
             var table = document.getElementById("tblTransactions");
             var tbody = table.getElementsByTagName("tbody")[0];
             var nextRowId = tbody.getElementsByTagName("tr").length;
@@ -74,8 +73,7 @@
             tbody.appendChild(newRow);
         }
 
-        function deleteRow(aDelete)
-        {
+        function deleteRow(aDelete) {
             var row = aDelete.parentNode.parentNode;
 
             var table = document.getElementById("tblTransactions");
@@ -84,8 +82,7 @@
             tbody.removeChild(row);
         }
 
-        function populateGraceIn(ddlCalcIn)
-        {
+        function populateGraceIn(ddlCalcIn) {
             $.ajax({
                 type: 'POST',
                 url: 'GetCalcIn',
@@ -112,8 +109,7 @@
             }
         }
 
-        function populateTrMasterDDL(ddlTrMaster)
-        {
+        function populateTrMasterDDL(ddlTrMaster) {
             $.ajax({
                 type: 'POST',
                 url: 'GetTransactionMasterDDL',
@@ -140,14 +136,13 @@
             }
         }
 
-        function deleteUserTrans(uTransId)
-        {
+        function deleteUserTrans(uTransId) {
             var uTrans = new Object();
             uTrans.UserTransactionId = parseInt(uTransId);
             $.ajax({
                 type: 'POST',
                 url: 'DeleteUserTransaction',
-                data:uTrans,
+                data: uTrans,
                 dataType: "json",
                 success: function (resultData) { window.location.reload(); },
                 error: function (error) { }
@@ -258,6 +253,12 @@
                                     </div>
                                     <div class="col-lg-5">
                                         @Html.OpMgrTextBoxFor(m => m.FatherName, UserResource.FatherName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherContact, UserResource.FatherContactNo, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherEmailId, UserResource.FatherEmailId, new { @class = "form-control" })
                                     </div>
                                     <div class="col-lg-5">
                                         @Html.OpMgrTextBoxFor(m => m.FatherQualification, UserResource.FatherQualification, new { @class = "form-control" })
@@ -386,7 +387,7 @@
                                                         <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
                                                             @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
                                                                     {
-                                                                    <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
+                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
                                                                     }
                                                         </select>
 
@@ -396,7 +397,7 @@
                                                         <select name="Transactions[@i].GraceAmountIn" class="form-control">
                                                             @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
                                                                     {
-                                                                    <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
+                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
                                                                     }
                                                         </select>
                                                         @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
@@ -432,15 +433,17 @@
 
                                     }
                                 </div>
+                                @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <div class="col-lg-10">                                        
+                                        <button type="submit" class="btn btn-primary block">@UserResource.RegisterButton</button>
+                                    </div>
+                                }
                             </div>
                         }
                     </div>
 
-                    <div class="col-lg-10">
-                        <div class="checkbox">
-                        </div>
-                        <button type="submit" class="btn btn-primary block">@UserResource.RegisterButton</button>
-                    </div>
+
                 </fieldset>
             </div>
         </div>

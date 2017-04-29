@@ -74,7 +74,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.UserMasterId = int.Parse(id);
             }
             studView.Transactions = new List<UserTransactionDTO>();
-            if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            if (mode != null && (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase)))
             {
                 //Populate edit data using id passed in URL, if id==null then show error message
                 StatusDTO<StudentDTO> dto = _studSvc.Select(Convert.ToInt32(id));
@@ -350,27 +350,31 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(Models.StudentVM studentView)
+        public ActionResult Register(Models.StudentVM studentView,HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-
-            for(int i=0;i<Request.Files.Count;i++)
+            if(file != null)
             {
-                string keyName = Request.Files.Keys[i];
-                switch(keyName)
+                if (file.ContentLength > 0)
                 {
-                    case "fuFatherImage":
-                        folderName = _configSvc.GetFatherImagesFolder();
-                        break;
-                    case "fuMotherImage":
-                        folderName = _configSvc.GetFatherImagesFolder();
-                        break;
-                    case "fuStudentImage":
-                        folderName = _configSvc.GetFatherImagesFolder();
-                        break;
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        string keyName = Request.Files.Keys[i];
+                        switch (keyName)
+                        {
+                            case "fuFatherImage":
+                                folderName = _configSvc.GetFatherImagesFolder();
+                                break;
+                            case "fuMotherImage":
+                                folderName = _configSvc.GetMotherImagesFolder();
+                                break;
+                            case "fuStudentImage":
+                                folderName = _configSvc.GetStudentImagesFolder();
+                                break;
+                        }
+                        SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
+                    }
                 }
-
-                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
             }
 
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))

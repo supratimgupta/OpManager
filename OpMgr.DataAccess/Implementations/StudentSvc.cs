@@ -215,7 +215,7 @@ namespace OpMgr.DataAccess.Implementations
                             studentDTO.IsParentFromEngMedium = _dsData.Tables[0].Rows[0]["ParentFromEngMed"].ToString();
                             studentDTO.IsJointOrNuclearFamily = _dsData.Tables[0].Rows[0]["JointOrNuclearFamily"].ToString();
                             studentDTO.SiblingsInStadOrNot = _dsData.Tables[0].Rows[0]["SiblingsInStadsOrNot"].ToString();
-                            studentDTO.AnyAlumuniMember = _dsData.Tables[0].Rows[0]["AnyAlumniMember"].ToString();
+                            studentDTO.AnyAlumuniMember = _dsData.Tables[0].Rows[0]["AnyAlumuniMember"].ToString();
                             studentDTO.StuInPrivateTution = _dsData.Tables[0].Rows[0]["StudentInPvtTution"].ToString();
                             studentDTO.NoOfTution = _dsData.Tables[0].Rows[0]["NoOfTution"].ToString();
                             studentDTO.FeesPaidForTution = _dsData.Tables[0].Rows[0]["FeesPaidForTution"].ToString();
@@ -256,7 +256,7 @@ namespace OpMgr.DataAccess.Implementations
                                    " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
                                    " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
                                    " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
-                                   " INNER JOIN Section sec ON stdSecMap.StandardId = sec.SectionId ";
+                                   " INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId ";
 
                     //Select All students who are ACTIVE
                     whereClause = "WHERE student.Active=1 ";
@@ -285,17 +285,12 @@ namespace OpMgr.DataAccess.Implementations
                         }
 
                         //Class Search
-
-                        //data.StandardSectionMap = new StandardSectionMapDTO();
-                        //data.StandardSectionMap.Standard = new StandardDTO();
-                        //data.StandardSectionMap.Section = new SectionDTO();
-
+                        
                         if (data.StandardSectionMap.StandardSectionId != -1)
                         {
                             whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
                             command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value = data.StandardSectionMap.StandardSectionId;
                         }
-
 
                         // Roll Number and Registration Search
 
@@ -310,8 +305,6 @@ namespace OpMgr.DataAccess.Implementations
                             whereClause = whereClause + " AND student.RollNumber=@RollNumber ";
                             command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
                         }
-
-
                     }
 
                     //command.CommandText = "select * from studentinfo";
@@ -321,8 +314,7 @@ namespace OpMgr.DataAccess.Implementations
                     MySqlDataAdapter da = new MySqlDataAdapter(command);
                     dsStudentLst = new DataSet();
                     da.Fill(dsStudentLst);
-
-
+                    
                     if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
                     {
                         studLst.ReturnObj = new List<StudentDTO>();
@@ -341,23 +333,17 @@ namespace OpMgr.DataAccess.Implementations
                             student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
                             student.StandardSectionMap.Standard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
                             student.RegistrationNumber = dsStudentLst.Tables[0].Rows[i]["RegistrationNumber"].ToString();
-
                             student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
-
                             student.UserDetails = new UserMasterDTO();
                             student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
                             student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
                             student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
                             student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
-
-
                             studLst.ReturnObj.Add(student);
 
                             studLst.IsSuccess = true;
-
                         }
                     }
-
                 }
                 catch (Exception exp)
                 {
@@ -369,12 +355,8 @@ namespace OpMgr.DataAccess.Implementations
                     studLst.StackTrace = exp.StackTrace;
                     // return studLst;
                 }
-
-
             }
-
             return studLst;
-
         }
 
         public StatusDTO<StudentDTO> Update(StudentDTO data)

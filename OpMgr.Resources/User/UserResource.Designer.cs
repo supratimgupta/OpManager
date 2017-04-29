@@ -196,11 +196,29 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Contact No.
+        /// </summary>
+        public static string FatherContactNo {
+            get {
+                return ResourceManager.GetString("FatherContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Father&apos;s Designation.
         /// </summary>
         public static string FatherDesignation {
             get {
                 return ResourceManager.GetString("FatherDesignation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Email Id.
+        /// </summary>
+        public static string FatherEmailId {
+            get {
+                return ResourceManager.GetString("FatherEmailId", resourceCulture);
             }
         }
         
