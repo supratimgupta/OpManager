@@ -1,6 +1,7 @@
 ﻿using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,10 @@ namespace OperationsManager.Areas.Student.Models
         public SelectList StandardSectionList { get; set; }
 
         public Boolean IsSearchSuccessful { get; set; }
+
+        public string SuccessOrFailureMessage { get; set; }
+
+        public Color MsgColor { get; set; }
 
         public SelectList LocationList { get; set; }
 

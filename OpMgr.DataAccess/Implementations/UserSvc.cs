@@ -150,6 +150,10 @@ namespace OpMgr.DataAccess.Implementations
                         if (_dsData.Tables[0].Rows.Count > 0)
                         {
                             userMaster.UserMasterId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["UserMasterId"]);
+                            userMaster.UserName = _dsData.Tables[0].Rows[0]["UserName"].ToString();
+                            userMaster.FName = _dsData.Tables[0].Rows[0]["FName"].ToString();
+                            userMaster.MName = _dsData.Tables[0].Rows[0]["MName"].ToString();
+                            userMaster.LName = _dsData.Tables[0].Rows[0]["LName"].ToString();
                         }
 
                         if (_dsData.Tables[1].Rows.Count > 0)

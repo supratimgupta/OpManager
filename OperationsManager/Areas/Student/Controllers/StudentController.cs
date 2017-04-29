@@ -397,7 +397,7 @@ namespace OperationsManager.Areas.Student.Controllers
                             }
                         }
                     }
-
+                    
                     return RedirectToAction("Search");
                 }
                 studentView.ErrorMessage = status.FailureReason;
