@@ -196,6 +196,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Father&apos;s Designation.
+        /// </summary>
+        public static string FatherDesignation {
+            get {
+                return ResourceManager.GetString("FatherDesignation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Father&apos;s Name.
         /// </summary>
         public static string FatherName {

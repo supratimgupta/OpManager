@@ -63,22 +63,6 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpGet]
-        public ActionResult RegisterStudent()
-        {
-            Models.StudentVM studView = new Models.StudentVM();
-
-            studView.GenderList = _uiddlRepo.getGenderDropDown();
-            studView.LocationList = _uiddlRepo.getLocationDropDown();
-            studView.RoleList = _uiddlRepo.getRoleDropDown();
-            studView.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
-            studView.SectionList = _uiddlRepo.getSectionDropDown();
-            studView.HouseList = _uiddlRepo.getHouseDropDown();
-            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-           
-            return View(studView);
-        }
-
-        [HttpGet]
         public ActionResult Register(string mode, string id)
         {
             Models.StudentVM studView = new Models.StudentVM();
@@ -116,11 +100,31 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.RollNumber = dto.ReturnObj.RollNumber;
                 studView.RegistrationNumber = dto.ReturnObj.RegistrationNumber;
                 studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
-                studView.GuardianContact = dto.ReturnObj.GuardianContact;
+                studView.FatherContact = dto.ReturnObj.FatherContact;
                 studView.GuardianName = dto.ReturnObj.GuardianName;
-                studView.GuardianEmailId = dto.ReturnObj.GuardianEmailId;
+                studView.FatherEmailId = dto.ReturnObj.FatherEmailId;
                 studView.HouseType = dto.ReturnObj.HouseType;
                 studView.StandardSectionMap = dto.ReturnObj.StandardSectionMap;
+                studView.FatherName = dto.ReturnObj.FatherName;
+                studView.FatherQualification = dto.ReturnObj.FatherQualification;
+                studView.FatherOccupation = dto.ReturnObj.FatherOccupation;
+                studView.FatherDesignation = dto.ReturnObj.FatherDesignation;
+                studView.FatherOrganisationName = dto.ReturnObj.FatherOrganisationName;
+                studView.MotherName = dto.ReturnObj.MotherName;
+                studView.MotherQualification = dto.ReturnObj.MotherQualification;
+                studView.MotherOccupation = dto.ReturnObj.MotherOccupation;
+                studView.MotherAnnualIncome = dto.ReturnObj.MotherAnnualIncome;
+                studView.MotherOrganisationName = dto.ReturnObj.MotherOrganisationName;
+                studView.IsChristian = dto.ReturnObj.IsChristian;
+                studView.IsParentTeacher = dto.ReturnObj.IsParentTeacher;
+                studView.SubjectNameTheyTeach = dto.ReturnObj.SubjectNameTheyTeach;
+                studView.IsParentFromEngMedium = dto.ReturnObj.IsParentFromEngMedium;
+                studView.IsJointOrNuclearFamily = dto.ReturnObj.IsJointOrNuclearFamily;
+                studView.SiblingsInStadOrNot = dto.ReturnObj.SiblingsInStadOrNot;
+                studView.AnyAlumuniMember = dto.ReturnObj.AnyAlumuniMember;
+                studView.StuInPrivateTution = dto.ReturnObj.StuInPrivateTution;
+                studView.NoOfTution = dto.ReturnObj.NoOfTution;
+                studView.FeesPaidForTution = dto.ReturnObj.FeesPaidForTution;
 
                 studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
                 studView.TransactionMasters = _uiddlRepo.getTransactionMasters();
@@ -180,7 +184,7 @@ namespace OperationsManager.Areas.Student.Controllers
                             searchItem = new StudentVM(); // instantiating each student
 
                             searchItem.Active = student.Active;
-                            searchItem.GuardianContact = student.GuardianContact;
+                            searchItem.FatherContact = student.FatherContact;
                             searchItem.RegistrationNumber = student.RegistrationNumber;
                             searchItem.RollNumber = student.RollNumber;
 
@@ -283,7 +287,7 @@ namespace OperationsManager.Areas.Student.Controllers
                                 searchItem = new StudentVM(); // instantiating each student
                                 
                                 searchItem.Active = stud.Active;
-                                searchItem.GuardianContact = stud.GuardianContact;
+                                searchItem.FatherContact = stud.FatherContact;
                                 searchItem.RegistrationNumber = stud.RegistrationNumber;
                                 searchItem.RollNumber = stud.RollNumber;
 

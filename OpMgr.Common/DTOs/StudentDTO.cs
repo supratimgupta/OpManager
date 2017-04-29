@@ -32,13 +32,13 @@ namespace OpMgr.Common.DTOs
         [Required(ErrorMessage = "Admission Date is required")]
         public DateTime? AdmissionDate { get; set; }
 
-        [Required(ErrorMessage = "Guardian Contact is required")]
-        public string GuardianContact { get; set; }
+        [Required(ErrorMessage = "Father Contact is required")]
+        public string FatherContact { get; set; }
 
         [Required(ErrorMessage = "Guardian Name is required")]
         public string GuardianName { get; set; }
 
-        public string GuardianEmailId { get; set; }
+        public string FatherEmailId { get; set; }
 
         public string Religion { get; set; }
 

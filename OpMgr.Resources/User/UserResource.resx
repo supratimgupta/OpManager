@@ -309,4 +309,7 @@
   <data name="UserTableName" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="FatherDesignation" xml:space="preserve">
+    <value>Father's Designation</value>
+  </data>
 </root>
