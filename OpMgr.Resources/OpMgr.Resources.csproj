@@ -107,10 +107,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UserTransactionResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="User\ForgotPassResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ForgotPassResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="User\LoginResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="User\ResetPassword.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResetPassword.resx</DependentUpon>
     </Compile>
     <Compile Include="User\StudentResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -178,9 +188,17 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserTransactionResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="User\ForgotPassResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ForgotPassResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="User\LoginResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\ResetPassword.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResetPassword.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="User\StudentResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

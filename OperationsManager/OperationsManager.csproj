@@ -199,6 +199,8 @@
     <Compile Include="Areas\Library\Models\LibraryViewModel.cs" />
     <Compile Include="Areas\Login\Controllers\LoginController.cs" />
     <Compile Include="Areas\Login\LoginAreaRegistration.cs" />
+    <Compile Include="Areas\Login\Models\MailVM.cs" />
+    <Compile Include="Areas\Login\Models\PasswordVM.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
     <Compile Include="Areas\Student\Controllers\StudentController.cs" />
     <Compile Include="Areas\Student\Models\StudentVM.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuModel.cs" />
+    <Compile Include="PasswordGenerator\PasswordGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -640,6 +643,8 @@
     <Content Include="Content\jquery-validation-1.16.0\README.md" />
     <Content Include="Areas\Login\Views\Login\Landing.cshtml" />
     <Content Include="Areas\Student\Views\Student\PromoteToNewClass.cshtml" />
+    <Content Include="Areas\Login\Views\Login\ForgotPassword.cshtml" />
+    <Content Include="Areas\Login\Views\Login\ResetPassword.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

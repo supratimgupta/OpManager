@@ -82,6 +82,8 @@
     <Compile Include="DTOs\KeyValueDTO.cs" />
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
     <Compile Include="DTOs\LocationDTO.cs" />
+    <Compile Include="DTOs\MailDTO.cs" />
+    <Compile Include="DTOs\PasswordDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />

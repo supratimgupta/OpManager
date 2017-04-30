@@ -8,6 +8,10 @@ using System.Web;
 using System.Web.Mvc;
 using OperationsManager.Attributes;
 using OperationsManager.Models;
+using OperationsManager.Areas.Login.Models;
+using System.Net.Mail;
+using System.Net;
+using System.Drawing;
 
 namespace OperationsManager.Areas.Login.Controllers
 {
@@ -20,6 +24,7 @@ namespace OperationsManager.Areas.Login.Controllers
         private ISessionSvc _sessionSvc;
 
         private IDropdownRepo _ddlRepo;
+        private PasswordGenerator.PasswordGenerator _passGen;// taken for dependency but not used DOUBT!!!
 
         private Helpers.UIDropDownRepo _uiddlRepo;
 
@@ -165,7 +170,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 //else if (dto.ReturnObj.Role.RoleId > 1)
                 //{
                 uvModel.Employee = new EmployeeDetailsDTO();
-                if(dto.ReturnObj.Employee!=null)
+                if (dto.ReturnObj.Employee != null)
                 {
                     uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
                     uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
@@ -249,5 +254,66 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            MailVM mailVM = new MailVM();
+            return View(mailVM);
+        }
+        [HttpPost]
+        public ActionResult ForgotPassword(MailVM mailView)
+        {
+            if (mailView != null)
+            {
+                PasswordGenerator.PasswordGenerator passGen = new PasswordGenerator.PasswordGenerator();
+                passGen.InitializePasswordArrays();
+
+                PasswordVM passVM = new PasswordVM();
+                passVM.CapitalLettersLength = 1;
+                passVM.DigitsLength = 1;
+                passVM.SmallLettersLength = 3;
+                passVM.SpecialCharactersLength = 1;
+                passVM.PasswordLength = 6;
+
+                mailView.Body = passGen.GeneratePassword(passVM);
+
+                string from = "ruttu04@gmail.com";
+                using (MailMessage mailMsg = new MailMessage(from, mailView.To))
+                {
+
+                    mailMsg.Subject = "Reset Password";
+                    mailMsg.Body = mailView.Body;
+                    mailMsg.IsBodyHtml = false;
+
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.EnableSsl = true;
+                    NetworkCredential network = new NetworkCredential(from, "allcreater04");
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = network;
+                    smtp.Port = 587;
+                    smtp.Send(mailMsg);
+                    mailView.SuccessOrFailureMessage = "Your Mail Has been Sent";
+                    mailView.MessageColor = Color.Green;
+                }
+            }
+            return View(mailView);
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword()
+        {
+            SessionDTO sessionRet = _sessionSvc.GetUserSession();
+            UserViewModel userView = new UserViewModel();
+            //if(sessionRet!=null)
+            //{
+            //    userView.UserName = sessionRet.UserName;
+
+            //}
+            return View(userView);
+
+        }
     }
+
 }

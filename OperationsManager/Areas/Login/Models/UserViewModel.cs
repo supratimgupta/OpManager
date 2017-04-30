@@ -39,6 +39,8 @@ namespace OperationsManager.Areas.Login.Models
 
         public string MODE { get; set; }
         public int HdnUserMasterId { get; set; }
+        public string NewPassword { get; set; }
+
 
         //public BookMasterDTO BookMaster { get; set; }
     }

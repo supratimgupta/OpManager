@@ -58,7 +58,7 @@ jQuery.showModalDialog = function (options) {
         close: fns.close,
         resizeStop: fns.adjustWidth
     });
-
+    debugger;
     $frame.attr('src', opts.url);
     fns.adjustWidth();
 
