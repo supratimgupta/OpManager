@@ -1,4 +1,5 @@
-﻿using OpMgr.Common.DTOs;
+﻿using OperationsManager.Areas.Login.Models;
+using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace OperationsManager.PasswordGenerator
             arrCaps = new char[26];
             arrSmall = new char[26];
             arrDigits = new char[10];
-            arrSpecialCharacter = new char[193];
+            arrSpecialCharacter = new char[26];
             for (i = 0; i < 26; i++)
             {
                 arrCaps[i] = (char)(ch);
@@ -35,14 +36,15 @@ namespace OperationsManager.PasswordGenerator
             }
             ch = 0;
             i = 0;
-            while (i < 193)
+            while (i<26)
             {
-                if ((!(ch >= 65 && ch <= 90) && !(ch >= 48 && ch <= 57) && !(ch >= 97 && ch <= 122) && !(ch == 32 || ch == 5)))
+                if (((ch >= 33 && ch <= 47) || (ch >= 58 && ch <= 64) || (ch >= 123 && ch <= 126)))
                 {
                     arrSpecialCharacter[i++] = (char)(ch);
 
                 }
                 ch++;
+                
             }
         }
         public string GeneratePassword(PasswordDTO passwordConfig)

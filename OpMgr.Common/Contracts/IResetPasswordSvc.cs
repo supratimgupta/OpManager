@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.Contracts
 {
-    public interface IMailSvc
+   public  interface IResetPasswordSvc
     {
-        bool SendMail(DTOs.MailDTO mail);
+        bool ResetPassword(string newPassword,int UserMasterId);
+
+        string GetPasswordForUser(int UserMasterId);
     }
 }

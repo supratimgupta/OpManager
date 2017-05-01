@@ -63,9 +63,9 @@ namespace OpMgr.Resources.User {
         /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
-        public static string EmailText {
+        public static string Email {
             get {
-                return ResourceManager.GetString("EmailText", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
@@ -102,6 +102,15 @@ namespace OpMgr.Resources.User {
         public static string ResetCommand {
             get {
                 return ResourceManager.GetString("ResetCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Id.
+        /// </summary>
+        public static string UserId {
+            get {
+                return ResourceManager.GetString("UserId", resourceCulture);
             }
         }
     }

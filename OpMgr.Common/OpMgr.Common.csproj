@@ -64,6 +64,7 @@
     <Compile Include="Contracts\Modules\IUserEntitlementSvc.cs" />
     <Compile Include="Contracts\Modules\IUserSvc.cs" />
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
+    <Compile Include="Contracts\IResetPasswordSvc.cs" />
     <Compile Include="DTOs\BookCategoryDTO.cs" />
     <Compile Include="DTOs\BookMasterDTO.cs" />
     <Compile Include="DTOs\BookTypeDTO.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
     <Compile Include="DTOs\LocationDTO.cs" />
     <Compile Include="DTOs\MailDTO.cs" />
+    <Compile Include="DTOs\PasswordDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />

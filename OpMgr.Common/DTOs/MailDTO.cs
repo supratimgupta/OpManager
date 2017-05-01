@@ -26,7 +26,7 @@ namespace OpMgr.Common.DTOs
 
         public int SmtpPort { get; set; }
 
-        public string IsBodyHtml { get; set; }
+        public bool IsBodyHtml { get; set; }
 
         public bool UseDefaultCredentials { get; set; }
 
