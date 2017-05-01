@@ -61,7 +61,7 @@ namespace OpMgr.FileWatcher
             {
                 conn.Open();
                 DataTable dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-                string sheetname = dt.Rows[0]["TABLE_NAME"].ToString();
+                string sheetname = dt.Rows[3]["TABLE_NAME"].ToString();
                 string query = "SELECT * FROM [" + sheetname + "]";
                 OleDbCommand ocmd = new OleDbCommand(query, conn);
                 OleDbDataReader rdr = ocmd.ExecuteReader();

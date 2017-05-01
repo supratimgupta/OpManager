@@ -45,6 +45,7 @@
     <Compile Include="Contracts\ICRUDSvc.cs" />
     <Compile Include="Contracts\IDbSvc.cs" />
     <Compile Include="Contracts\ILogSvc.cs" />
+    <Compile Include="Contracts\IMailSvc.cs" />
     <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
     <Compile Include="DTOs\LocationDTO.cs" />
     <Compile Include="DTOs\MailDTO.cs" />
-    <Compile Include="DTOs\PasswordDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />

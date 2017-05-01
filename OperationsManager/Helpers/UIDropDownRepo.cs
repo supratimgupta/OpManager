@@ -153,6 +153,26 @@ namespace OperationsManager.Helpers
             return new SelectList(dicGender, "key", "value");
         }
 
+        public SelectList getSelectValueDropDown()
+        {
+            Dictionary<string, string> selectValue = new Dictionary<string, string>();
+            //dicGender.Add("-1", "");
+            selectValue.Add("1", "Yes");
+            selectValue.Add("2", "No");
+            
+            return new SelectList(selectValue, "key", "value");
+        }
+
+        public SelectList getSelectJointNuclearDropDown()
+        {
+            Dictionary<string, string> selectJointValue = new Dictionary<string, string>();
+            //dicGender.Add("-1", "");
+            selectJointValue.Add("1", "Joint");
+            selectJointValue.Add("2", "Nuclear");
+
+            return new SelectList(selectJointValue, "key", "value");
+        }
+
         public SelectList getPromotionStatusDropDown()
         {
             Dictionary<string, string> dicPromotionStatus = new Dictionary<string, string>();

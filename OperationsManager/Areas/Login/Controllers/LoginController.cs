@@ -100,9 +100,15 @@ namespace OperationsManager.Areas.Login.Controllers
                 }
 
                 SessionDTO session = new SessionDTO();
+                session.UserMasterId = status.ReturnObj.UserMasterId;
                 session.UserName = status.ReturnObj.UserName;
+                session.FName = status.ReturnObj.FName;
+                session.MName = status.ReturnObj.MName;
+                session.LName = status.ReturnObj.LName;
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;
+                
+
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }
@@ -118,6 +124,8 @@ namespace OperationsManager.Areas.Login.Controllers
         [HttpGet]
         public ActionResult Welcome()
         {
+            SessionDTO sessionRet = _sessionSvc.GetUserSession();
+            
             return View();
         }
 

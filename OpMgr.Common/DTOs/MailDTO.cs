@@ -6,12 +6,30 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.DTOs
 {
-   public class MailDTO
+    public class MailDTO
     {
-        public string To;
-        public string Cc;
-        public string Bcc;
-        public string Subject { get; set; }
-        public string Body { get; set; }
+        public string MailSubject { get; set; }
+
+        public string MailBody { get; set; }
+
+        public List<string> ToList { get; set; }
+
+        public List<string> CcList { get; set; }
+
+        public List<string> BccList { get; set; }
+
+        public string From { get; set; }
+
+        public string FromAlias { get; set; }
+
+        public string SmtpServer { get; set; }
+
+        public int SmtpPort { get; set; }
+
+        public string IsBodyHtml { get; set; }
+
+        public bool UseDefaultCredentials { get; set; }
+
+        public bool EnableSSL { get; set; }
     }
 }

@@ -32,14 +32,60 @@ namespace OpMgr.Common.DTOs
         [Required(ErrorMessage = "Admission Date is required")]
         public DateTime? AdmissionDate { get; set; }
 
-        [Required(ErrorMessage = "Guardian Contact is required")]
-        public string GuardianContact { get; set; }
+        [Required(ErrorMessage = "Father Contact is required")]
+        public string FatherContact { get; set; }
 
         [Required(ErrorMessage = "Guardian Name is required")]
         public string GuardianName { get; set; }
 
-        public string GuardianEmailId { get; set; }
+        public string FatherEmailId { get; set; }
 
+        public string Religion { get; set; }
+
+        public string MotherToungue { get; set; }
+
+        public string FatherName { get; set; }
+
+        public string FatherOccupation { get; set; }
+
+        public string FatherDesignation { get; set; }
+
+        public string FatherQualification { get; set; }
+
+        public string FatherOrganisationName { get; set; }
+
+        public string FatherAnnualIncome { get; set; }
+
+        public string MotherName { get; set; }
+
+        public string MotherOccupation { get; set; }
+
+        public string MotherOrganisationName { get; set; }
+
+        public string MotherAnnualIncome { get; set; }
+
+        public string MotherQualification { get; set; }
+
+        public string IsChristian { get; set; }
+
+        public string IsParentTeacher { get; set; }
+
+        public string SubjectNameTheyTeach { get; set; }
+
+        public string IsParentFromEngMedium { get; set; }
+
+        public string IsJointOrNuclearFamily { get; set; }
+
+        public string SiblingsInStadOrNot { get; set; }
+
+        public string AnyAlumuniMember { get; set; }
+
+        public string StuInPrivateTution { get; set; }
+
+        public string NoOfTution { get; set; }
+
+        public string FeesPaidForTution { get; set; }
+        
         public string Status { get; set; }
 
         public int NewStandardSectionId { get; set; }

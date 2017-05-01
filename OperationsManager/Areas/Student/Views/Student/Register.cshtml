@@ -3,7 +3,7 @@
 @model OperationsManager.Areas.Student.Models.StudentVM
 
 @{
-    
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -18,12 +18,11 @@
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
 
             //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
-                        
+
         });
     </script>
     <script>
-        function addTransactionItems()
-        {
+        function addTransactionItems() {
             var table = document.getElementById("tblTransactions");
             var tbody = table.getElementsByTagName("tbody")[0];
             var nextRowId = tbody.getElementsByTagName("tr").length;
@@ -74,8 +73,7 @@
             tbody.appendChild(newRow);
         }
 
-        function deleteRow(aDelete)
-        {
+        function deleteRow(aDelete) {
             var row = aDelete.parentNode.parentNode;
 
             var table = document.getElementById("tblTransactions");
@@ -84,8 +82,7 @@
             tbody.removeChild(row);
         }
 
-        function populateGraceIn(ddlCalcIn)
-        {
+        function populateGraceIn(ddlCalcIn) {
             $.ajax({
                 type: 'POST',
                 url: 'GetCalcIn',
@@ -112,8 +109,7 @@
             }
         }
 
-        function populateTrMasterDDL(ddlTrMaster)
-        {
+        function populateTrMasterDDL(ddlTrMaster) {
             $.ajax({
                 type: 'POST',
                 url: 'GetTransactionMasterDDL',
@@ -140,14 +136,13 @@
             }
         }
 
-        function deleteUserTrans(uTransId)
-        {
+        function deleteUserTrans(uTransId) {
             var uTrans = new Object();
             uTrans.UserTransactionId = parseInt(uTransId);
             $.ajax({
                 type: 'POST',
                 url: 'DeleteUserTransaction',
-                data:uTrans,
+                data: uTrans,
                 dataType: "json",
                 success: function (resultData) { window.location.reload(); },
                 error: function (error) { }
@@ -155,202 +150,301 @@
         }
     </script>
 }
+<style>
+    body {
+        padding: 10px;
+    }
+
+    #a {
+        color: #428bca;
+        text-decoration: none;
+    }
+
+    #tabStudent h3 {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+</style>
 
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
             <div class="panel-body">
-                @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { id = "registerstudentform" ,enctype = "multipart/form-data" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <fieldset>
-                        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                <fieldset>
+                    <div id="tabStudent" class="container">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#basicinfo" data-toggle="tab">Basic Details</a>
+                            </li>
+                            <li>
+                                <a href="#familyinfo" data-toggle="tab">Family Details</a>
+                            </li>
+                            <li>
+                                <a href="#schoolinfo" data-toggle="tab">School Details</a>
+                            </li>
+                            <li>
+                                <a href="#feesinfo" data-toggle="tab">Fees Details</a>
+                            </li>
+                            <li>
+                                <a href="#logininfo" data-toggle="tab">Login Details</a>
+                            </li>
+                        </ul>
+                        @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { id = "registerstudentform", enctype = "multipart/form-data" }))
                         {
-                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
-                                <strong>@Model.ErrorMessage</strong>
-                            </div>
-                        }
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
-                            @Html.HiddenFor(m => m.MODE)
-                            @Html.HiddenFor(m => m.UserDetails.UserMasterId)
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact No is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
-                        </div>
-                        @*<div class="col-lg-5">
-                                @if (Model.MODE == "EDIT")
+                            @Html.AntiForgeryToken()
+                            <div class="tab-content ">
+                                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                                 {
-                                    @Html.HiddenFor(m => m.Role.RoleId)
-                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control", disabled = "disabled" })
+                                    <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                        <strong>@Model.ErrorMessage</strong>
+                                    </div>
                                 }
-                                else
-                                {
-                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
-                                }
-
-                            </div>*@
-                        <div id="divStudent">
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Roll No is required" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", data_rule_required = "true", data_msg_required = "Admission Date is required" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div id="divImages">
-                            <div class="col-lg-5">
-                                <div class="form-group">
-                                    <label for="fatherImage">Upload Image of Father (Old will be replaced)</label>
-                                    <input type="file" name="fuFatherImage" class="form-control" id="fatherImage" />
+                                <div class="tab-pane active" id="basicinfo">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
+                                        @Html.HiddenFor(m => m.MODE)
+                                        @Html.HiddenFor(m => m.UserDetails.UserMasterId)
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact No is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
+                                            <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="form-group">
-                                    <label for="fatherImage">Upload Image of Mother (Old will be replaced)</label>
-                                    <input type="file" name="fuMotherImage" class="form-control" id="motherImage" />
+                                <div class="tab-pane" id="familyinfo">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherName, UserResource.FatherName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherContact, UserResource.FatherContactNo, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherEmailId, UserResource.FatherEmailId, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherQualification, UserResource.FatherQualification, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherOccupation, UserResource.FatherOccupation, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherDesignation, UserResource.FatherDesignation, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherOrganisationName, UserResource.FatherOrganisationName, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.FatherAnnualIncome, UserResource.FatherAnnualIncome, new { @class = "form-control" })
+                                    </div>
+                                    <div id="divImages">
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label for="fatherImage">Upload Image of Father (Old will be replaced)</label>
+                                                <input type="file" name="fuFatherImage" class="form-control" id="fatherImage" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.MotherName, UserResource.MotherName, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.MotherQualification, UserResource.MotherQualification, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.MotherOccupation, UserResource.MotherOccupation, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.MotherOrganisationName, UserResource.MotherOrganisationName, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.MotherAnnualIncome, UserResource.MotherAnnualInccome, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label for="fatherImage">Upload Image of Mother (Old will be replaced)</label>
+                                                <input type="file" name="fuMotherImage" class="form-control" id="motherImage" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.IsChristian, Model.IsChristianList, UserResource.IsChristian, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.IsParentTeacher, Model.IsParentTeacherList, UserResource.IsParentTeacher, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.SubjectNameTheyTeach, UserResource.SubjectTheyTeach, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.IsParentFromEngMedium, Model.IsParentFromEngMedList, UserResource.IsParentFromEngMedium, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.IsJointOrNuclearFamily, Model.JointOrNuclearFamilyList, UserResource.IsJointOrNuclearFamily, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.SiblingsInStadOrNot, Model.SiblingsInStdOrNotList, UserResource.SiblingInStdOrNot, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.AnyAlumuniMember, Model.AnyAlumunimemberList, UserResource.AnyAlumuniMember, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.StuInPrivateTution, Model.StudentinPvtTutionList, UserResource.StuPrivateTution, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.NoOfTution, UserResource.NoOfTution, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FeesPaidForTution, UserResource.FeesPaidForPvtTution, new { @class = "form-control" })
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="form-group">
-                                    <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
-                                    <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+                                <div class="tab-pane" id="schoolinfo">
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Roll No is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", data_rule_required = "true", data_msg_required = "Admission Date is required" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-5">
+                                        @Html.OpMgrDropDownListFor(m => m.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
-                        {
-                            <div id="divcredentials">
-                                <div class="col-lg-10">
-                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control" , data_rule_required = "true", data_msg_required = "UserName is required" })
-                                </div>
-                                <div class="col-lg-10">
-                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control" , data_rule_required = "true", data_msg_required = "Password is required" })
-                                </div>
-                                <div class="col-lg-10">
-                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
-                                </div>
-                            </div>
-
-                        }
-                        <div class="row">
-                            <table id="tblTransactions" class="table table table-striped table-bordered table-responsive table-hover">
-                                <thead>
-                                    <tr>
-                                        <th colspan="5">
-                                            Fees applicable to this student
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="5">
-                                            <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th style="display:none;"></th>
-                                        <th>Fees</th>
-                                        <th>Grace on</th>
-                                        <th>Grace Amount</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model.Transactions != null && Model.Transactions.Count > 0)
-                                    {
-                                        for (int i = 0; i < Model.Transactions.Count; i++)
-                                        {
-                                            <tr>
-                                                <td style="display:none;">
-                                                    <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
-                                                </td>
-                                                <td>
-                                                    <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
-                                                        @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
-                                                        {
+                                <div class="tab-pane" id="feesinfo">
+                                    <div class="row">
+                                        <table id="tblTransactions" class="table table table-striped table-bordered table-responsive table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="5">
+                                                        Fees applicable to this student
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="5">
+                                                        <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="display:none;"></th>
+                                                    <th>Fees</th>
+                                                    <th>Grace on</th>
+                                                    <th>Grace Amount</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Transactions != null && Model.Transactions.Count > 0)
+                                                {
+                                                    for (int i = 0; i < Model.Transactions.Count; i++)
+                                                    {
+                                                <tr>
+                                                    <td style="display:none;">
+                                                        <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
+                                                    </td>
+                                                    <td>
+                                                        <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
+                                                            @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
+                                                                    {
                                                             <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
-                                                        }
-                                                    </select>
+                                                                    }
+                                                        </select>
 
-                                                    @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
-                                                </td>
-                                                <td>
-                                                    <select name="Transactions[@i].GraceAmountIn" class="form-control">
-                                                        @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
-                                                        {
+                                                        @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
+                                                    </td>
+                                                    <td>
+                                                        <select name="Transactions[@i].GraceAmountIn" class="form-control">
+                                                            @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
+                                                                    {
                                                             <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
-                                                        }
-                                                    </select>
-                                                    @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
-                                                    @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
-                                                </td>
-                                                <td>
-                                                    <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
-                                                </td>
-                                            </tr>
-                                        }
+                                                                    }
+                                                        </select>
+                                                        @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
+                                                        @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
+                                                    </td>
+                                                    <td>
+                                                        <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
+                                                    </td>
+                                                </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="logininfo">
+                                    @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <div id="divcredentials">
+                                            <div class="col-lg-10">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "UserName is required" })
+                                            </div>
+                                            <div class="col-lg-10">
+                                                @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
+                                            </div>
+                                            <div class="col-lg-10">
+                                                @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
+                                            </div>
+                                        </div>
+
                                     }
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-10">
-                            <div class="checkbox">
+                                </div>
+                                @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <div class="col-lg-10">                                        
+                                        <button type="submit" class="btn btn-primary block">@UserResource.RegisterButton</button>
+                                    </div>
+                                }
                             </div>
-                            <button type="submit" class="btn btn-primary" >@UserResource.RegisterButton</button>
-                        </div>
-                    </fieldset>
-                }
+                        }
+                    </div>
+
+
+                </fieldset>
             </div>
         </div>
     </div><!-- /.col-->

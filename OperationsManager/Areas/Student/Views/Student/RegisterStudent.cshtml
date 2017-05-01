@@ -1,0 +1,519 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Student.Models.StudentVM
+
+@{
+    ViewBag.Title = "RegisterStudent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #divAVMenu {
+        width: 12em;
+        border-right: 1px solid #000;
+        margin-bottom: 1em;
+        font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, Lucida, Geneva, Helvetica, Arial, sans-serif;
+        background-color: #90bade;
+        color: #333;
+        display: inline;
+    }
+
+        #divAVMenu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+    #sidebarmenu1 li {
+        display: inline;
+    }
+
+    #divAVMenu li a {
+        border-left: 10px solid #1958b7;
+        border-right: 10px solid #508fc4;
+        background-color: #2175bc;
+        color: #fff;
+        text-decoration: none;
+    }
+
+        #divAVMenu li a:hover {
+            border-left: 10px solid #1c64d1;
+            border-right: 10px solid #5ba3e0;
+            background-color: #2586d7;
+            color: #fff;
+        }
+</style>
+<style type="text/css">
+    #navigation {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none; /*background: url("../../Images/bg-nav.gif") repeat-x scroll 0 0 #AFD5E0;*/
+        background: repeat-x scroll 0 0 white;
+        border-color: #F2F2F0;
+        border-image: none;
+        border-style: solid;
+        border-width: 1px 0;
+        font-size: 1.1em;
+        margin-top: 1em;
+    }
+
+        #navigation ul, #navigation ul li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #navigation ul {
+            text-align: center;
+        }
+
+            #navigation ul li {
+                display: inline;
+                margin-right: .75em;
+            }
+
+                #navigation ul li.last {
+                    margin-right: 0;
+                }
+
+        #navigation li a {
+            padding: 5px 1em;
+        }
+
+        #navigation ul li a {
+            background: url("../../Images/tab-right.gif") no-repeat 100% 0;
+            color: #06C;
+            padding: 5px 0;
+            text-decoration: none;
+        }
+
+            #navigation ul li a span {
+                background: url("../../Images/tab-left.gif") no-repeat;
+                padding: 5px 1em;
+            }
+
+            #navigation ul li a:hover span {
+                color: #69C;
+                text-decoration: underline blink;
+            }
+
+        * html #navigation ul li a {
+            padding: 0;
+        }
+    /**/
+    #tabContent {
+        background-image: url("../../images/FieldSetBG.jpg");
+        background-repeat: repeat-x;
+        background-position: left;
+    }
+
+    #legendstyle {
+        background-color: #F2F2F0;
+        border-color: Black;
+        border-style: solid;
+        border-width: 1px 1px 1px 10px;
+        color: Black;
+        font-size: 90%;
+        font-weight: bolder;
+        padding: 3px 5px;
+        position: relative;
+        text-align: center;
+        top: -14px;
+        width: 186px;
+    }
+
+    #Active {
+        color: HighlightText;
+    }
+</style>
+<style type="text/css">
+    .button {
+        display: inline-block;
+        line-height: 1;
+        padding: 7px 10px;
+        text-decoration: none;
+        font-weight: bold;
+        color: #fff;
+        background-color: #482710;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -khtml-border-radius: 5px;
+    }
+
+    #menuDiv select {
+        width: 205px;
+        color: Black;
+    }
+
+    #menuDiv tr {
+        padding-bottom: 20px;
+    }
+
+    #menuDiv table {
+        border-collapse: separate;
+    }
+
+        #menuDiv table td, table th {
+            padding: 1px; /* 'cellpadding' equivalent */
+            padding-right: 20px;
+        }
+</style>
+
+<style type="text/css">
+    .style table, td {
+        font: 100% Arial,Helvetica,sans-serif;
+    }
+
+    .style table {
+        border-collapse: collapse;
+        margin: 1em 0;
+        width: 100%;
+    }
+
+    .style th {
+        background: url("../images/tr_back_grey.gif") repeat-x scroll 0 0 #328AA4;
+        border: 1px solid #FFFFFF;
+        color: #FFFFFF;
+        padding: 0.5em;
+        text-align: left;
+    }
+
+    .style td {
+        border: 1px solid #FFFFFF;
+        padding: 0.5em;
+        text-align: left;
+    }
+
+    .style td {
+        background: none repeat scroll 0 0 #F8FBFC;
+    }
+</style>
+@section PageScripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Hideall();
+            $("#divBasicDetails").show();
+            $(".litab").click(function () {
+                Hideall();
+                $($(this).attr("href")).show();
+                $(this).css('color', 'Black').css("font-weight", "bold").css("text-decoration", "underline blink");
+            })
+        });
+
+        function Hideall() {
+            
+            $(".litab").each(function () {
+                $(this).css('color', 'Black').css("font-weight", "normal").css("text-decoration", "none");
+            });
+            $("#divBasicDetails").hide();
+            $("#divLocationDetails").hide();
+            $("#divPoDetails").hide();
+        }
+    </script>
+}
+
+<div class="row">
+    <div id="navigation">
+        <ul>
+            <li><a class="litab" id="aAssetTab" href="#divAssetDetails"><span>Basic Details</span></a></li>
+            <li><a class="litab" href="#divLocationDetails"><span>Family Details</span></a></li>
+            <li><a class="litab" href="#divPoDetails"><span>School Details</span></a></li>
+        </ul>
+    </div>
+    <div id="divBasicDetails" style="background-color: #d9d9d8;">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact No is required" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divLocationDetails" style="background-color: #d9d9d8;">        
+        <center>
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+        </center>
+    </div>
+    <div id="divPoDetails" style="background-color: #d9d9d8;">
+        <br />
+        <center>
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Roll No is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", data_rule_required = "true", data_msg_required = "Admission Date is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </center>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
+            <div class="panel-body">
+                @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { id = "registerstudentform", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                <strong>@Model.ErrorMessage</strong>
+                            </div>
+                        }
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
+                            @Html.HiddenFor(m => m.MODE)
+                            @Html.HiddenFor(m => m.UserDetails.UserMasterId)
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact No is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                        </div>
+                        @*<div class="col-lg-5">
+                                @if (Model.MODE == "EDIT")
+                                {
+                                    @Html.HiddenFor(m => m.Role.RoleId)
+                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control", disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
+                                }
+
+                            </div>*@
+                        <div id="divStudent">
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Roll No is required" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", data_rule_required = "true", data_msg_required = "Admission Date is required" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrTextBoxFor(m => m.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div id="divImages">
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Father (Old will be replaced)</label>
+                                    <input type="file" name="fuFatherImage" class="form-control" id="fatherImage" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Mother (Old will be replaced)</label>
+                                    <input type="file" name="fuMotherImage" class="form-control" id="motherImage" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
+                                    <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+                                </div>
+                            </div>
+                        </div>
+                        @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <div id="divcredentials">
+                                <div class="col-lg-10">
+                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "UserName is required" })
+                                </div>
+                                <div class="col-lg-10">
+                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
+                                </div>
+                                <div class="col-lg-10">
+                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
+                                </div>
+                            </div>
+
+                        }
+                        <div class="row">
+                            <table id="tblTransactions" class="table table table-striped table-bordered table-responsive table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">
+                                            Fees applicable to this student
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="5">
+                                            <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="display:none;"></th>
+                                        <th>Fees</th>
+                                        <th>Grace on</th>
+                                        <th>Grace Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Transactions != null && Model.Transactions.Count > 0)
+                                    {
+                                        for (int i = 0; i < Model.Transactions.Count; i++)
+                                        {
+                                            <tr>
+                                                <td style="display:none;">
+                                                    <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
+                                                </td>
+                                                <td>
+                                                    <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
+                                                        {
+                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
+                                                        }
+                                                    </select>
+
+                                                    @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
+                                                </td>
+                                                <td>
+                                                    <select name="Transactions[@i].GraceAmountIn" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
+                                                        {
+                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
+                                                        }
+                                                    </select>
+                                                    @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
+                                                    @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
+                                                </td>
+                                                <td>
+                                                    <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="checkbox">
+                            </div>
+                            <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div><!-- /.col-->
+</div>
+
+
