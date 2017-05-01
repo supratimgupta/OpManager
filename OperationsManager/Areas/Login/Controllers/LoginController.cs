@@ -31,7 +31,7 @@ namespace OperationsManager.Areas.Login.Controllers
 
         Encryption encrypt = new Encryption();
 
-        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc, IResetPasswordSvc resetPassSvc)
+        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc, IResetPasswordSvc resetPassSvc, IMailSvc mail)
         {
             _userSvc = userSvc;
             _ddlRepo = ddlRepo;
@@ -41,7 +41,7 @@ namespace OperationsManager.Areas.Login.Controllers
 
             _sessionSvc = sessionSvc;
             _resetPassSvc = resetPassSvc;
-           // _mail = mail;//dependency injected for sending mails
+            _mail = mail;//dependency injected for sending mails
         }
 
         // GET: Login/Login
@@ -313,33 +313,33 @@ namespace OperationsManager.Areas.Login.Controllers
                     }
 
                 }
-                
 
-                //mail.From = "ruttu04@gmail.com";
-                //mail.IsBodyHtml = false;
-                //mail.MailSubject = "Reset Password";
-                //mail.SmtpPort = 587;
-                //mail.SmtpServer = "smtp.gmail.com";
-                //mail.EnableSSL = true;
-                //mail.UseDefaultCredentials = true;
-                ////split the ';' separated string To a List
-                //mailTo = mailView.To.Split(';');
-                //for(int i=0;i<mailTo.Length;i++)
-                //{
-                //    mail.ToList.Add(mailTo[i]);
-                //}
 
-                // isMailSent=_mail.SendMail(mail);// call SendMail method to send the mail ONLY TO,FROM,BODY SET
-                //if (!string.IsNullOrEmpty(mail.MailBody))
-                //{
-                //    mailView.SuccessOrFailureMessage = "Your passowrd has been reset";
-                //    mailView.MessageColor = Color.LawnGreen;
-                //}
-                //else
-                //{
-                //  mailView.SuccessOrFailureMessage = "Your password was not reset in aproper manner";
-                //    mailView.MessageColor = Color.Red;
-                //}
+                mail.From = "ruttu04@gmail.com";
+                mail.IsBodyHtml = false;
+                mail.MailSubject = "Reset Password";
+                mail.SmtpPort = 587;
+                mail.SmtpServer = "smtp.gmail.com";
+                mail.EnableSSL = true;
+                mail.UseDefaultCredentials = true;
+                //split the ';' separated string To a List
+                mailTo = mailView.To.Split(';');
+                for (int i = 0; i < mailTo.Length; i++)
+                {
+                    mail.ToList.Add(mailTo[i]);
+                }
+
+                isMailSent = _mail.SendMail(mail);// call SendMail method to send the mail ONLY TO,FROM,BODY SET
+                if (!string.IsNullOrEmpty(mail.MailBody))
+                {
+                    mailView.SuccessOrFailureMessage = "Your passowrd has been reset";
+                    mailView.MessageColor = Color.LawnGreen;
+                }
+                else
+                {
+                    mailView.SuccessOrFailureMessage = "Your password was not reset in aproper manner";
+                    mailView.MessageColor = Color.Red;
+                }
             }
             return View(mailView);
         }

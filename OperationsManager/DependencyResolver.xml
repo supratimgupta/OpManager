@@ -9,6 +9,8 @@
   <bind service="OpMgr.Common.Contracts.ILogSvc, OpMgr.Common"
     to="OpMgr.Logger.Implementations.TextLogSvc, OpMgr.Logger" />
 
+  <bind service="OpMgr.Common.Contracts.IMailSvc, OpMgr.Common"
+    to="OpMgr.Mailer.MailSvc, OpMgr.Mailer" />
 
   <bind service="OpMgr.Common.Contracts.ISessionSvc, OpMgr.Common"
     to="OperationsManager.Helpers.SessionSvc, OperationsManager" />
