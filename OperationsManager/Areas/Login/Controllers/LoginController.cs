@@ -8,24 +8,30 @@ using System.Web;
 using System.Web.Mvc;
 using OperationsManager.Attributes;
 using OperationsManager.Models;
+using OperationsManager.Areas.Login.Models;
+using System.Net.Mail;
+using System.Net;
+using System.Drawing;
 
 namespace OperationsManager.Areas.Login.Controllers
 {
     public class LoginController : Controller
     {
         private IUserSvc _userSvc;
+        private IResetPasswordSvc _resetPassSvc;
 
         //private ILogSvc _logger;
 
         private ISessionSvc _sessionSvc;
-
         private IDropdownRepo _ddlRepo;
+        private PasswordGenerator.PasswordGenerator _passGen;// taken for dependency but not used DOUBT!!!
+        private IMailSvc _mail;
 
         private Helpers.UIDropDownRepo _uiddlRepo;
 
         Encryption encrypt = new Encryption();
 
-        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc)
+        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc, IResetPasswordSvc resetPassSvc)
         {
             _userSvc = userSvc;
             _ddlRepo = ddlRepo;
@@ -34,6 +40,8 @@ namespace OperationsManager.Areas.Login.Controllers
             //_logger = logger;
 
             _sessionSvc = sessionSvc;
+            _resetPassSvc = resetPassSvc;
+           // _mail = mail;//dependency injected for sending mails
         }
 
         // GET: Login/Login
@@ -173,7 +181,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 //else if (dto.ReturnObj.Role.RoleId > 1)
                 //{
                 uvModel.Employee = new EmployeeDetailsDTO();
-                if(dto.ReturnObj.Employee!=null)
+                if (dto.ReturnObj.Employee != null)
                 {
                     uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
                     uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
@@ -257,5 +265,131 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            MailVM mailVM = new MailVM();
+            return View(mailVM);
+        }
+        [HttpPost]
+        public ActionResult ForgotPassword(MailVM mailView)
+        {
+            string[] mailTo;
+            MailDTO mail;
+            bool isMailSent = false; ;
+            bool isResetPassword = false;
+
+            int UserMasterId;
+            string newPassword=null;
+            string newPasswordEncrypted = null;
+            if (mailView != null)
+            {
+                PasswordGenerator.PasswordGenerator passGen = new PasswordGenerator.PasswordGenerator();
+                passGen.InitializePasswordArrays();
+
+                PasswordVM passVM = new PasswordVM();
+                passVM.CapitalLettersLength = 1;
+                passVM.DigitsLength = 1;
+                passVM.SmallLettersLength = 3;
+                passVM.SpecialCharactersLength = 1;
+                passVM.PasswordLength = 6;
+
+                mail = new MailDTO();
+                newPassword =passGen.GeneratePassword(passVM); // get password
+
+                
+                if(!string.IsNullOrEmpty(newPassword))
+                {
+                    newPasswordEncrypted=encrypt.encryption(newPassword);//Encrypt Password
+                    UserMasterId = mailView.UserId;
+
+                  isResetPassword= _resetPassSvc.ResetPassword(newPasswordEncrypted, UserMasterId);
+                    if(isResetPassword)
+                    {
+                        mailView.MailBody = "Your new password is:" + newPassword;
+                        mailView.SuccessOrFailureMessage = "Your passowrd has been reset";
+                        mailView.MessageColor = Color.LawnGreen;
+                    }
+
+                }
+                
+
+                //mail.From = "ruttu04@gmail.com";
+                //mail.IsBodyHtml = false;
+                //mail.MailSubject = "Reset Password";
+                //mail.SmtpPort = 587;
+                //mail.SmtpServer = "smtp.gmail.com";
+                //mail.EnableSSL = true;
+                //mail.UseDefaultCredentials = true;
+                ////split the ';' separated string To a List
+                //mailTo = mailView.To.Split(';');
+                //for(int i=0;i<mailTo.Length;i++)
+                //{
+                //    mail.ToList.Add(mailTo[i]);
+                //}
+
+                // isMailSent=_mail.SendMail(mail);// call SendMail method to send the mail ONLY TO,FROM,BODY SET
+                //if (!string.IsNullOrEmpty(mail.MailBody))
+                //{
+                //    mailView.SuccessOrFailureMessage = "Your passowrd has been reset";
+                //    mailView.MessageColor = Color.LawnGreen;
+                //}
+                //else
+                //{
+                //  mailView.SuccessOrFailureMessage = "Your password was not reset in aproper manner";
+                //    mailView.MessageColor = Color.Red;
+                //}
+            }
+            return View(mailView);
+        }
+
+        [HttpGet]
+        public ActionResult ResetPassword()
+        {
+            UserViewModel userView = null;
+            SessionDTO sessionRet = _sessionSvc.GetUserSession();//Get Data from User Seesion
+            if(sessionRet!=null)
+            {
+                userView = new UserViewModel();
+                userView.Name = sessionRet.FName;
+                if(!string.IsNullOrEmpty(sessionRet.MName))
+                {
+                    userView.Name = userView.Name + " " + sessionRet.MName;
+                }
+                if(!string.IsNullOrEmpty(sessionRet.LName))
+                {
+                    userView.Name = userView.Name + " " + sessionRet.LName;
+                }
+                userView.UserMasterId = sessionRet.UserMasterId;
+            }          
+            return View(userView);
+        }
+        [HttpPost]
+        public ActionResult ResetPassword(UserViewModel userView)
+        {
+            bool IsPasswordReset = false;
+            if(userView!=null)
+            {
+                if (!string.Equals(userView.NewPassword, userView.ConfirmPassword))
+                {
+                    userView.SuccessorFailureMessage = "New Password and Confirm Password does not match!!";
+                }
+                else if(!string.Equals(encrypt.encryption(userView.Password),_resetPassSvc.GetPasswordForUser(userView.UserMasterId)))
+                {
+                    userView.SuccessorFailureMessage = "Password is Incorrect!!";
+                }
+                else
+                {
+                    IsPasswordReset=_resetPassSvc.ResetPassword(encrypt.encryption(userView.Password), userView.UserMasterId);
+                    if(IsPasswordReset)
+                    {
+                        userView.SuccessorFailureMessage = "Your password has been successfully reset";// Sucess
+                    }
+                }
+            }
+            return View(userView);
+        }
     }
+
 }

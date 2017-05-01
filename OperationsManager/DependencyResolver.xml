@@ -46,6 +46,9 @@
   
   <bind service="OpMgr.Common.Contracts.Modules.IStudentSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.StudentSvc, OpMgr.DataAccess" />
+   
+<bind service="OpMgr.Common.Contracts.IResetPasswordSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.ResetPasswordSvc, OpMgr.DataAccess" />  
 
   <bind service="OpMgr.Common.Contracts.Modules.IBookMasterSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.BookMasterSvc, OpMgr.DataAccess" />

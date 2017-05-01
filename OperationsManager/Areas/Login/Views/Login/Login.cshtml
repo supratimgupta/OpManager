@@ -11,14 +11,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@LoginResource.PageTitle</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/datepicker3.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
 
+    <link href="~/template/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/template/css/styles.css" rel="stylesheet">
+    <link href="~/Content/OpMgrCommonStyles.css" rel="stylesheet" />
+     <!--Icons-->
+    <script src="~/template/js/lumino.glyphs.js"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/lib/OpMgrDialog.js"></script>
+      
+    <link href="~/Scripts/jquery-ui.css" rel="stylesheet" />
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
+    
+
+    <script type="text/javascript" language="javascript">
+
+
+        function forgotPassword() {
+            debugger;
+            $.showModalDialog({
+                url: "../Scripts/lib/Child.html",
+                height: 600,
+                width: 800,
+                position: { my: "center", at: "middle", of: "window" },
+                scrollable: false,
+                open: function (event, ui) {
+                    this.css('overflow', 'scroll');
+                },
+                onclose: function () {
+                    var returnedValue = this.returnValue;
+                    if (returnedValue) {
+                        //do something
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+    <script>
+            $(document).ready(function () {
+                var loginForm = $("#loginForm");
+	        $("#loginForm").validate();
+            });
+    </script>
+   
 
 </head>
 
@@ -47,6 +88,11 @@
                             <div class="checkbox">
                                 <label style="color:red">@Model.LoginFailedMsg</label>
                             </div>
+                            <br />
+                            <br />
+                            <div class="forgotPassword" style="text-align:right">
+                                <a style="cursor:pointer" href="/Login/Login/ForgotPassword">Forgot Password</a>
+                            </div>
                         </fieldset>
                     }
 
@@ -54,16 +100,6 @@
             </div>
         </div><!-- /.col-->
     </div><!-- /.row -->
-</body>
-@section PageScripts
-{
-    <script>
-            $(document).ready(function () {
-                var loginForm = $("#loginForm");
-	        $("#loginForm").validate();
-	    });
-    </script>
-}
-
-
+    
+</body>    
 </html>
