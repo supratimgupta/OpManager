@@ -35,22 +35,21 @@
         function forgotPassword() {
             debugger;
             $.showModalDialog({
-                url: "../Scripts/lib/Child.html",
+                url: "/Login/Login/ForgotPassword",
                 height: 600,
                 width: 800,
-                position: { my: "center", at: "middle", of: "window" },
+                position: { my: "center", at: "middle", of: window },
                 scrollable: false,
                 open: function (event, ui) {
                     this.css('overflow', 'scroll');
                 },
                 onclose: function () {
-                    var returnedValue = this.returnValue;
-                    if (returnedValue) {
+                    //var returnedValue = this.returnValue;
+                    //if (returnedValue) {
                         //do something
-                    }
+                    //}
                 }
             });
-            return false;
         }
     </script>
     <script>
@@ -91,7 +90,7 @@
                             <br />
                             <br />
                             <div class="forgotPassword" style="text-align:right">
-                                <a style="cursor:pointer" href="/Login/Login/ForgotPassword">Forgot Password</a>
+                                <a style="cursor:pointer" onclick="forgotPassword();">Forgot Password</a>
                             </div>
                         </fieldset>
                     }
