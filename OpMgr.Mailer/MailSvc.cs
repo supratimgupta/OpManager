@@ -32,7 +32,7 @@ namespace OpMgr.Mailer
 
                         SmtpClient smtp = new SmtpClient();// instantiating to send mail
                         smtp.EnableSsl = mail.EnableSSL;
-                        smtp.UseDefaultCredentials = mail.UseDefaultCredentials;
+                        smtp.UseDefaultCredentials = true;// mail.UseDefaultCredentials; NOT TAKING TRUE VALUE??
                         NetworkCredential network = new NetworkCredential(mailMsg.From.ToString(), "allcreater04");
                         smtp.Credentials = network;
                         smtp.Port = mail.SmtpPort;
