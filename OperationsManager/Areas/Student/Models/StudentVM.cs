@@ -68,5 +68,11 @@ namespace OperationsManager.Areas.Student.Models
         public SelectList PromotionStatusList { get; set; }
 
         public Boolean IsCommandPromote { get; set; }
+
+        public string StudentImagePath { get; set; }
+
+        public string FatherImagePath { get; set; }
+
+        public string MotherImagePath { get; set; }
     }
 }

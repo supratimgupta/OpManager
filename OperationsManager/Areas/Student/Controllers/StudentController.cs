@@ -128,6 +128,15 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
                 studView.TransactionMasters = _uiddlRepo.getTransactionMasters();
+
+
+                string studentImageFolder = _configSvc.GetStudentImagesFolder();
+                string fatherImageFolder = _configSvc.GetFatherImagesFolder();
+                string motherImageFolder = _configSvc.GetMotherImagesFolder();
+
+                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder);
+                studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder);
+                studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder);
             }
 
             //studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
@@ -156,8 +165,26 @@ namespace OperationsManager.Areas.Student.Controllers
             studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             studView.GraceAmountOnList = _uiddlRepo.getCalcType();
 
+            
+
             return View(studView);
         }
+
+
+        public string GetImageFileName(string registrationNo, string folder)
+        {
+            string fileName = string.Empty;
+            string[] similarFiles = Directory.GetFiles(folder, registrationNo + ".*");
+            if(similarFiles!=null && similarFiles.Length>0)
+            {
+                fileName = similarFiles[0];
+                string[] fileParts = fileName.Split('\\');
+                fileName = fileParts[fileParts.Length - 1];
+            }
+            return fileName;
+        }
+
+
         [HttpGet]
         public ActionResult Search()
         {

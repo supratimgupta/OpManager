@@ -33,5 +33,20 @@ namespace OpMgr.Configurations.Implementations
         {
             return System.Configuration.ConfigurationManager.AppSettings["MotherImageFolder"];
         }
+
+        public string GetStudentImagesRelPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["StudentImageRelPath"];
+        }
+
+        public string GetFatherImagesRelPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["FatherImageRelPath"];
+        }
+
+        public string GetMotherImagesRelPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["MotherImageRelPath"];
+        }
     }
 }

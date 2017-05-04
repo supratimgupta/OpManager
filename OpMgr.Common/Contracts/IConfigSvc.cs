@@ -17,5 +17,11 @@ namespace OpMgr.Common.Contracts
         string GetFatherImagesFolder();
 
         string GetMotherImagesFolder();
+
+        string GetStudentImagesRelPath();
+
+        string GetFatherImagesRelPath();
+
+        string GetMotherImagesRelPath();
     }
 }
