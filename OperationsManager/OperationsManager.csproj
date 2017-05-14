@@ -774,6 +774,9 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
+    <Folder Include="Images\Father\" />
+    <Folder Include="Images\Mother\" />
+    <Folder Include="Images\Student\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

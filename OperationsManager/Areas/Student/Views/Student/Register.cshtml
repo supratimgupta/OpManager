@@ -202,6 +202,11 @@
                                     </div>
                                 }
                                 <div class="tab-pane active" id="basicinfo">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <img src="@Model.StudentImagePath" alt="No image found" height="332" width="236" />
+                                        </div>
+                                    </div>
                                     <div class="col-lg-5">
                                         @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                                         @Html.HiddenFor(m => m.MODE)
@@ -248,6 +253,14 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="familyinfo">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <img src="@Model.FatherImagePath" alt="No image found" height="332" width="236" />
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <img src="@Model.MotherImagePath" alt="No image found" height="332" width="236" />
+                                        </div>
+                                    </div>
                                     <div class="col-lg-5">
                                         @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
                                     </div>
