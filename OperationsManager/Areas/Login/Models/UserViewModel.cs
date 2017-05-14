@@ -29,7 +29,7 @@ namespace OperationsManager.Areas.Login.Models
         public string Name { get; set; }
 
         public string SuccessorFailureMessage { get; set; }
-        public Color MessageColor { get; set; } 
+        public string MessageColor { get; set; } 
 
 
         //public BookMasterDTO BookMaster { get; set; }

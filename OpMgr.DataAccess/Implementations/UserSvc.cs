@@ -338,19 +338,22 @@ namespace OpMgr.DataAccess.Implementations
 
                         if (!string.IsNullOrEmpty(data.FName))
                         {
-                            whereClause = whereClause + " AND users.FName=@FName";
+                            data.FName = data.FName + "%";
+                            whereClause = whereClause + " AND users.FName LIKE @FName";
                             command.Parameters.Add("@FName", MySqlDbType.String).Value = data.FName;
                         }
 
                         if (!string.IsNullOrEmpty(data.MName))
                         {
-                            whereClause = whereClause + " AND users.MName=@MName ";
+                            data.MName = data.MName + "%";
+                            whereClause = whereClause + " AND users.MName LIKE @MName ";
                             command.Parameters.Add("@MName", MySqlDbType.String).Value = data.MName;
                         }
 
                         if (!string.IsNullOrEmpty(data.LName))
                         {
-                            whereClause = whereClause + " AND users.LName=@LName ";
+                            data.LName = data.LName + "%";
+                            whereClause = whereClause + " AND users.LName LIKE @LName ";
                             command.Parameters.Add("@LName", MySqlDbType.String).Value = data.LName;
                         }
 

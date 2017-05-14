@@ -106,6 +106,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ADMIN CONTROL.
+        /// </summary>
+        public static string AdminControl {
+            get {
+                return ResourceManager.GetString("AdminControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Admin Panel.
         /// </summary>
         public static string AdminPanel {
@@ -115,7 +124,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to APPROVE ADJUSTMENTS.
+        ///   Looks up a localized string similar to APPROVE.
         /// </summary>
         public static string ApproveDues {
             get {
@@ -169,7 +178,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FEES COLLECTION.
+        ///   Looks up a localized string similar to PAYMENT HISTORY.
         /// </summary>
         public static string Payment {
             get {
@@ -241,7 +250,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TRANSACTION ENTRY.
+        ///   Looks up a localized string similar to RULES FOR FEES STRUCTURE.
         /// </summary>
         public static string TransactionEntry {
             get {
@@ -250,7 +259,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MASTER ENTRY.
+        ///   Looks up a localized string similar to RULES FOR FEES STYLE.
         /// </summary>
         public static string TransactionMaster {
             get {

@@ -96,8 +96,12 @@
                                 @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
                             </div>
 
-                            <div class="col-lg-2" style="vertical-align:bottom;margin-top:40px">
+                            <div class="col-lg-2">
                                 <button type="submit" class="btn btn-primary btn-block">@UserResource.SearchButton</button>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>
                             </div>
                         </fieldset>
                     }

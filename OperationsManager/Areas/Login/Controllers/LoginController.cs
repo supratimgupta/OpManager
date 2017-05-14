@@ -279,66 +279,73 @@ namespace OperationsManager.Areas.Login.Controllers
             MailDTO mail;
             bool isMailSent = false; ;
             bool isResetPassword = false;
-
             int UserMasterId;
+
             string newPassword = null;
             string newPasswordEncrypted = null;
             if (mailView != null)
             {
-                PasswordGenerator.PasswordGenerator passGen = new PasswordGenerator.PasswordGenerator();
-                passGen.InitializePasswordArrays();
-
-                PasswordVM passVM = new PasswordVM();
-                passVM.CapitalLettersLength = 1;
-                passVM.DigitsLength = 1;
-                passVM.SmallLettersLength = 3;
-                passVM.SpecialCharactersLength = 1;
-                passVM.PasswordLength = 6;
-
-               newPassword = passGen.GeneratePassword(passVM); // get password
-
-                if (!string.IsNullOrEmpty(newPassword))
+                UserMasterId = _mail.CheckMail(mailView.To);
+                if (UserMasterId != 0)
                 {
-                    newPasswordEncrypted = encrypt.encryption(newPassword);//Encrypt Password
-                    UserMasterId = mailView.UserId;
 
-                    isResetPassword = _resetPassSvc.ResetPassword(newPasswordEncrypted, UserMasterId);
-                    if (isResetPassword)
+                    PasswordGenerator.PasswordGenerator passGen = new PasswordGenerator.PasswordGenerator();
+                    passGen.InitializePasswordArrays();
+
+                    PasswordVM passVM = new PasswordVM();
+                    passVM.CapitalLettersLength = 1;
+                    passVM.DigitsLength = 1;
+                    passVM.SmallLettersLength = 3;
+                    passVM.SpecialCharactersLength = 1;
+                    passVM.PasswordLength = 6;
+
+                    newPassword = passGen.GeneratePassword(passVM); // get password
+
+                    if (!string.IsNullOrEmpty(newPassword))
                     {
-                        mail = new MailDTO();
-                        mail.From = "ruttu04@gmail.com";
-                        mail.IsBodyHtml = false;
-                        mail.MailSubject = "Reset Password";
-                        mail.MailBody = "Your new password which is reset is: " + newPassword;
-                        mail.SmtpPort = 587;
-                        mail.SmtpServer = "smtp.gmail.com";
-                        mail.EnableSSL = true;
-                        mail.UseDefaultCredentials = true;
-                        //split the ';' separated string To a List
-                        mailTo = mailView.To.Split(';');
-                        mail.ToList = new List<string>();
-                        for (int i = 0; i < mailTo.Length; i++)
+                        newPasswordEncrypted = encrypt.encryption(newPassword);//Encrypt Password
+
+                        isResetPassword = _resetPassSvc.ResetPassword(newPasswordEncrypted, UserMasterId);
+                        if (isResetPassword)
                         {
-                            mail.ToList.Add(mailTo[i]);
-                        }
-                        //instantiate CC and Bcc List if possible
-                        isMailSent = _mail.SendMail(mail);// call SendMail method to send the mail 
-                        if (isMailSent)
-                        {
-                            mailView.SuccessOrFailureMessage = "Your passowrd has been reset. The new password:" + newPassword + "is sent to mail";
-                            mailView.MessageColor = Color.LawnGreen;
-                        }
-                        else
-                        {
-                            mailView.SuccessOrFailureMessage = "Your password was not reset in aproper manner";
-                            mailView.MessageColor = Color.Red;
+                            mail = new MailDTO();
+                            mail.From = "ruttu04@gmail.com";
+                            mail.IsBodyHtml = false;
+                            mail.MailSubject = "Reset Password";
+                            mail.MailBody = "Your new password which is reset is: " + newPassword;
+                            mail.SmtpPort = 587;
+                            mail.SmtpServer = "smtp.gmail.com";
+                            mail.EnableSSL = true;
+                            mail.UseDefaultCredentials = true;
+                            //split the ';' separated string To a List
+                            mailTo = mailView.To.Split(';');
+                            mail.ToList = new List<string>();
+                            for (int i = 0; i < mailTo.Length; i++)
+                            {
+                                mail.ToList.Add(mailTo[i]);
+                            }
+                            //instantiate CC and Bcc List if possible
+                            isMailSent = _mail.SendMail(mail);// call SendMail method to send the mail 
+                            if (isMailSent)
+                            {
+                                mailView.SuccessOrFailureMessage = "Your new password: " + newPassword + " is sent to mail";
+                                mailView.MessageColor = "green";
+                            }
+                            else
+                            {
+                                mailView.SuccessOrFailureMessage = "Your password was not reset in a proper manner";
+                                mailView.MessageColor = "red";
+                            }
                         }
                     }
 
                 }
+                else
+                {
+                    mailView.SuccessOrFailureMessage = "Sorry your email was incorect. Please enter again";
+                    mailView.MessageColor = "red";
 
-
-
+                }
             }
             return View(mailView);
         }
@@ -373,10 +380,17 @@ namespace OperationsManager.Areas.Login.Controllers
                 if (!string.Equals(userView.NewPassword, userView.ConfirmPassword))
                 {
                     userView.SuccessorFailureMessage = "New Password and Confirm Password does not match!!";
+                     userView.MessageColor = "red";
+                }
+                else if(string.Equals(userView.Password,userView.NewPassword))
+                {
+                    userView.SuccessorFailureMessage = "Password and New Password should not match!!";
+                    userView.MessageColor = "red";
                 }
                 else if (!string.Equals(encrypt.encryption(userView.Password), _resetPassSvc.GetPasswordForUser(userView.UserMasterId)))
                 {
                     userView.SuccessorFailureMessage = "Password is Incorrect!!";
+                    userView.MessageColor = "red";
                 }
                 else
                 {
@@ -384,6 +398,7 @@ namespace OperationsManager.Areas.Login.Controllers
                     if (IsPasswordReset)
                     {
                         userView.SuccessorFailureMessage = "Your password has been successfully reset";// Sucess
+                        userView.MessageColor = "green";
                     }
                 }
             }

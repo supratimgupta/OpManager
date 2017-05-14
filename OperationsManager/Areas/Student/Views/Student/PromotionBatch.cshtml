@@ -1,0 +1,92 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Student.Models.StudentVM
+
+@{
+    // Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@StudentResource.BatchTitle</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>@StudentResource.BatchHeading</b></div>
+        <div class="panel-body">
+            <div style="overflow:scroll;">
+                @if (Model!=null && string.IsNullOrEmpty(Model.SuccessOrFailureMessage))
+                {
+                    using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                                <thead>
+                                    <tr>
+                                        <th h data-field="standard" data-sortable="true">
+                                            @StudentResource.Class
+                                        </th>
+                                        <th th data-field="registration" data-sortable="true">
+                                            @StudentResource.PromotionStatus
+                                        </th>
+                                        <th th data-field="contact" data-sortable="true">
+                                            @StudentResource.NoOfStudents
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.studentList!=null && Model.studentList.Count > 0)
+                                    {
+                                        foreach (var student in Model.studentList)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @student.StandardSectionMap.StandardSectionDesc
+                                                </td>
+                                                <td>
+                                                    @student.Status
+                                                </td>
+                                                <td>
+                                                    @student.NoOfStudents
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8" align="center" style="font-style:oblique">
+                                                No Students are eligible for Promotion
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <button type="submit" name="Command" value="@StudentResource.PromoteCommand" class="btn btn-primary">@StudentResource.BatchPromotion</button>
+                        </fieldset>
+                    }
+                }
+                else
+                {
+                    <div class="lblSuccessOrFail" style="text-align:center">
+                        <label style="text-align:center;font-size:large;color:@Model.MsgColor">@Model.SuccessOrFailureMessage</label>
+                    </div>
+                }
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

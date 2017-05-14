@@ -94,6 +94,8 @@ namespace OpMgr.Common.DTOs
 
         public StandardSectionMapDTO NewStandardSectionMap { get; set; }
 
+        public string NoOfStudents { get; set; }
+
         public HouseTypeDTO HouseType { get; set; }
 
         

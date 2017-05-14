@@ -61,6 +61,51 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Student.
+        /// </summary>
+        public static string AddButton {
+            get {
+                return ResourceManager.GetString("AddButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string AddCommand {
+            get {
+                return ResourceManager.GetString("AddCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promotion Status.
+        /// </summary>
+        public static string BatchHeading {
+            get {
+                return ResourceManager.GetString("BatchHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promote To New Class.
+        /// </summary>
+        public static string BatchPromotion {
+            get {
+                return ResourceManager.GetString("BatchPromotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promotion Batch.
+        /// </summary>
+        public static string BatchTitle {
+            get {
+                return ResourceManager.GetString("BatchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string Blank {
@@ -147,6 +192,15 @@ namespace OpMgr.Resources.User {
         public static string NewClass {
             get {
                 return ResourceManager.GetString("NewClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No of Students.
+        /// </summary>
+        public static string NoOfStudents {
+            get {
+                return ResourceManager.GetString("NoOfStudents", resourceCulture);
             }
         }
         

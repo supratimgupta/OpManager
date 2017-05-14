@@ -12,20 +12,21 @@ using System.IO;
 
 namespace OperationsManager.Areas.Student.Controllers
 {
-    [OpMgrAuth]
+   // [OpMgrAuth]
     [HandleError()]
     public class StudentController : Controller
     {
         private IStudentSvc _studSvc;
         //private ILogSvc _logSvc;
         private IDropdownRepo _dropDwnRepo;
+        private ISessionSvc _sessionSvc;
         private Helpers.UIDropDownRepo _uiddlRepo;
         Encryption encrypt = new Encryption();
         private IUserTransactionSvc _userTrans;
 
         private IConfigSvc _configSvc;
 
-        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc)
+        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc,ISessionSvc sessionSvc)
         {
             _studSvc = studSvc;
             _dropDwnRepo = dropDwnRepo;
@@ -33,6 +34,7 @@ namespace OperationsManager.Areas.Student.Controllers
             //_logSvc = logSvc;
             _userTrans = userTrans;
             _configSvc = configSvc;
+            _sessionSvc = sessionSvc;
         }
         // GET: Student/Student
 
@@ -43,7 +45,7 @@ namespace OperationsManager.Areas.Student.Controllers
         {
             return Json(_dropDwnRepo.GetTransactionMasters(), JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         public JsonResult GetCalcIn()
@@ -55,7 +57,7 @@ namespace OperationsManager.Areas.Student.Controllers
         [AllowAnonymous]
         public JsonResult DeleteUserTransaction(UserTransactionDTO uTrans)
         {
-            if(_userTrans.Delete(uTrans).IsSuccess)
+            if (_userTrans.Delete(uTrans).IsSuccess)
             {
                 return Json(new { status = true, message = "Deleted successfully." }, JsonRequestBehavior.AllowGet);
             }
@@ -68,7 +70,7 @@ namespace OperationsManager.Areas.Student.Controllers
             Models.StudentVM studView = new Models.StudentVM();
             studView.UserDetails = new UserMasterDTO();
             studView.MODE = mode;
-            
+
             if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 studView.UserDetails.UserMasterId = int.Parse(id);
@@ -207,7 +209,7 @@ namespace OperationsManager.Areas.Student.Controllers
                             searchItem.StandardSectionMap = new StandardSectionMapDTO();
                             searchItem.StandardSectionMap.Standard = new StandardDTO();
                             searchItem.StandardSectionMap.Section = new SectionDTO();
-                            
+
                             searchItem.StandardSectionMap.Standard.StandardName = student.StandardSectionMap.Standard.StandardName;
                             searchItem.StandardSectionMap.Section.SectionName = student.StandardSectionMap.Section.SectionName;
 
@@ -223,6 +225,15 @@ namespace OperationsManager.Areas.Student.Controllers
                     throw new Exception(status.ExceptionMessage);
                 }
             }
+            else
+            {
+                studView = new StudentVM();
+                //Fetch the StandardSection List
+                studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                studView.IsSearchSuccessful = true;
+                studView.MsgColor = "green";
+                studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
+            }
 
             return View(studView);
         }
@@ -233,8 +244,13 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(StudentVM studentView)
+        public ActionResult Search(StudentVM studentView,string Command)
         {
+            //if Command Add then Redirect it to Add
+            if(string.Equals(Command,"Add"))
+            {
+               return RedirectToAction("Register");
+            }
             StudentVM studView = null;
             StudentDTO student = null;
 
@@ -255,7 +271,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 student.StandardSectionMap = new StandardSectionMapDTO();
                 student.StandardSectionMap.Standard = new StandardDTO();
                 student.StandardSectionMap.Section = new SectionDTO();
-               
+
                 // Search for Class
 
                 student.StandardSectionMap.StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
@@ -285,7 +301,7 @@ namespace OperationsManager.Areas.Student.Controllers
                             if (stud != null)
                             {
                                 searchItem = new StudentVM(); // instantiating each student
-                                
+
                                 searchItem.Active = stud.Active;
                                 searchItem.FatherContact = stud.FatherContact;
                                 searchItem.RegistrationNumber = stud.RegistrationNumber;
@@ -350,10 +366,10 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(Models.StudentVM studentView,HttpPostedFileBase file)
+        public ActionResult Register(Models.StudentVM studentView, HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-            if(file != null)
+            if (file != null)
             {
                 if (file.ContentLength > 0)
                 {
@@ -383,13 +399,13 @@ namespace OperationsManager.Areas.Student.Controllers
                 //if (ModelState.IsValid)
                 //{ 
                 StatusDTO<StudentDTO> status = _studSvc.Update(studentView);
-                if(status.IsSuccess)
+                if (status.IsSuccess)
                 {
-                    if(studentView.Transactions!=null && studentView.Transactions.Count>0)
+                    if (studentView.Transactions != null && studentView.Transactions.Count > 0)
                     {
-                        for(int i=0;i<studentView.Transactions.Count;i++)
+                        for (int i = 0; i < studentView.Transactions.Count; i++)
                         {
-                            if(studentView.Transactions[i].UserTransactionId>0)
+                            if (studentView.Transactions[i].UserTransactionId > 0)
                             {
                                 _userTrans.Update(studentView.Transactions[i]);
                             }
@@ -401,7 +417,7 @@ namespace OperationsManager.Areas.Student.Controllers
                             }
                         }
                     }
-                    
+
                     return RedirectToAction("Search");
                 }
                 studentView.ErrorMessage = status.FailureReason;
@@ -447,7 +463,7 @@ namespace OperationsManager.Areas.Student.Controllers
             //{
             //}
             //ModelState.Clear();
-            
+
             studentView.TransactionMasters = _uiddlRepo.getTransactionMasters();
             studentView.GraceAmountOnList = _uiddlRepo.getCalcType();
 
@@ -476,7 +492,7 @@ namespace OperationsManager.Areas.Student.Controllers
             StudentVM studView = new StudentVM();
 
             //Fetch the StandardSection List
-            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();  
+            studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             return View(studView);
         }
 
@@ -507,7 +523,7 @@ namespace OperationsManager.Areas.Student.Controllers
                     }
 
                 }
-                
+
                 // To store StandardSectionId for Promote and Standard
                 if (string.Equals(Command, "Promote"))
                 {
@@ -541,7 +557,7 @@ namespace OperationsManager.Areas.Student.Controllers
                             student.NewStandardSectionId = StandardSectionId;
                         }
 
-                       studListPass.Add(student);
+                        studListPass.Add(student);
 
                     }
                 }
@@ -582,7 +598,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 studentV.Status = stud.Status;
                                 studentV.NewStandardSectionId = stud.NewStandardSectionId;
-                               
+
 
                                 //Fetch the Next StandardSectionList w.r.t Current
                                 if (string.Equals(Command, "Standard"))
@@ -599,8 +615,8 @@ namespace OperationsManager.Areas.Student.Controllers
                                 studentV.StandardSectionMap.Section.SectionName = studentV.StandardSectionMap.Section.SectionName;
 
                                 studentV.NewStandardSectionMap = stud.NewStandardSectionMap;
-                                
-                                
+
+
                                 studentV.UserDetails = new UserMasterDTO();
                                 studentV.UserDetails.UserMasterId = stud.UserDetails.UserMasterId;
                                 studentV.UserDetails.FName = stud.UserDetails.FName;
@@ -614,31 +630,87 @@ namespace OperationsManager.Areas.Student.Controllers
                                 }
 
                                 studentV.Name = studentV.Name + " " + studentV.UserDetails.LName;
-                                
+
                                 //Add Into Student View Model List
                                 studView.studentList.Add(studentV);
                                 studView.IsSearchSuccessful = true;
 
-                                if (studentV.Status != null)
+                                if (!string.IsNullOrEmpty(studentV.Status))
                                     studView.IsCommandPromote = true;
-
                             }
                         }
                     }
 
                 }
             }
-
             if (string.Equals(Command, "Standard"))
             {
-               studView.NextStandardSectionList = _uiddlRepo.getNextStandardSectionDropDown(currentSerial);
+                studView.NextStandardSectionList = _uiddlRepo.getNextStandardSectionDropDown(currentSerial);
             }
+            return View(studView);
+        }
+        [HttpGet]
+        public ActionResult PromotionBatch()
+        {
+            StudentVM studView = null;
 
-          
-                return View(studView);
-           
-
+            StatusDTO<List<StudentDTO>> studList = _studSvc.RunPromotionBatch();
+            if(studList!=null && studList.IsSuccess)
+            {
+                if(studList.ReturnObj!=null && studList.ReturnObj.Count>0)
+                {
+                    studView = new StudentVM();// instantiating parent
+                    studView.studentList = new List<StudentVM>();//instantiating list of parent
+                    foreach(StudentDTO student in studList.ReturnObj)
+                    {
+                        if(student!=null)
+                        {
+                            StudentVM studV = new StudentVM();// for each student
+                            studV.StandardSectionMap = new StandardSectionMapDTO();
+                            studV.StandardSectionMap.StandardSectionDesc = student.StandardSectionMap.StandardSectionDesc;
+                            studV.Status = student.Status;
+                            studV.NoOfStudents = student.NoOfStudents;
+                            studView.studentList.Add(studV);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                studView = new StudentVM();
+            }
+            return View(studView);
+        }
+        [HttpPost]
+        public  ActionResult PromotionBatch(StudentVM studView)
+        {
+            bool isSuccess = false;
+            int loggedInUser;
+            DateTime date;
+            string status;// right now hard coded
+            if(studView!=null)
+            {
+                SessionDTO sessionRet = _sessionSvc.GetUserSession();//Get Data from User Seesion
+                status = "Promotion Confirmed";
+                loggedInUser = sessionRet.UserMasterId;
+                if(status!=null && loggedInUser!=0)
+                {
+                    isSuccess = _studSvc.UpdatePromotedStudents(loggedInUser,status);
+                    if(isSuccess)
+                    {
+                        date = DateTime.Now;
+                        studView.SuccessOrFailureMessage = "The students of all classes have been promoted for academic year" + (int)(date.Year - 1) + "/" + (date.Year);
+                        studView.MsgColor = "green";
+                    }
+                    else
+                    {
+                        studView.SuccessOrFailureMessage = "All students have not been Promoted yet";
+                        studView.MsgColor = "red";
+                    }
+                }                
+            }
+            return View(studView);
         }
     }
 }
-    
+

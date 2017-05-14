@@ -44,9 +44,6 @@
                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, StudentResource.LName, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.Name, StudentResource.Name, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.RollNumber, StudentResource.RollNo, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-2">
@@ -55,13 +52,19 @@
                             <div class="col-lg-2">
                                 @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
                             </div>
-                            <div class="col-lg-2" style="vertical-align:bottom;padding-top:20px">
-                                <button type="submit" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton</button>
+                            <div class="col-lg-2">
+                                <button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton</button>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>
                             </div>
                         </fieldset>
                     }
                 </div>
             </div>
+            @if (Model != null && Model.studentList != null && Model.studentList.Count > 0)
+            {
             <div class="panel panel-default">
                 <div class="panel-heading"><b>@StudentResource.StudentTable</b></div>
                 <div class="panel-body">
@@ -145,8 +148,14 @@
                         </table>
                     </div>
                 </div>
-
             </div>
+            }
+            else
+            {
+                <div class="lblSuccessOrFail" style="text-align:center">
+                    <label style="text-align:center;font-size:large;color:@Model.MsgColor">@Model.SuccessOrFailureMessage</label>
+                </div>
+            }
         </div>
     </div>
 </body>

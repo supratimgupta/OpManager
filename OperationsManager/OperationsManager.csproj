@@ -655,6 +655,7 @@
     <Content Include="Areas\Student\Views\Student\RegisterStudent.cshtml" />
     <Content Include="Areas\Login\Views\Login\ForgotPassword.cshtml" />
     <Content Include="Areas\Login\Views\Login\ResetPassword.cshtml" />
+    <Content Include="Areas\Student\Views\Student\PromotionBatch.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

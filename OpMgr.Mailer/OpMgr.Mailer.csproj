@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +49,10 @@
     <ProjectReference Include="..\OpMgr.Common\OpMgr.Common.csproj">
       <Project>{31813560-3d31-4b02-b7fa-40d5c61050bb}</Project>
       <Name>OpMgr.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.DataAccess\OpMgr.DataAccess.csproj">
+      <Project>{48BFC7FB-8015-4A52-B404-5CFC383402BF}</Project>
+      <Name>OpMgr.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

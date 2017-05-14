@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace OpMgr.DataAccess.Implementations
 {
@@ -82,7 +83,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@FathersDesignation", MySqlDbType.String).Value = data.FatherDesignation;
                     command.Parameters.Add("@FathersOccupation", MySqlDbType.String).Value = data.FatherOccupation;
                     command.Parameters.Add("@FathersOrganisationName", MySqlDbType.String).Value = data.FatherOrganisationName;
-                    command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;    
+                    command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;
                     command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
                     command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.HouseType.HouseTypeId;
                     command.Parameters.Add("@MothersName", MySqlDbType.String).Value = data.MotherName;
@@ -107,8 +108,8 @@ namespace OpMgr.DataAccess.Implementations
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
-                    
-                    if(_dtData.Columns.Count>1)
+
+                    if (_dtData.Columns.Count > 1)
                     {
                         status.IsSuccess = true;
                         status.ReturnObj = new StudentDTO();
@@ -180,14 +181,14 @@ namespace OpMgr.DataAccess.Implementations
 
                             studentDTO.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
                             studentDTO.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
-                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
-                                {
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
+                            {
                                 studentDTO.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
-                                }
-                                else
-                                {
+                            }
+                            else
+                            {
                                 studentDTO.AdmissionDate = null;
-                                }
+                            }
                             //studentDTO.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
                             studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
                             studentDTO.FatherEmailId = _dsData.Tables[0].Rows[0]["FathersEmailId"].ToString();
@@ -239,121 +240,128 @@ namespace OpMgr.DataAccess.Implementations
             string selectClause = null;
             DataSet dsStudentLst = null;
 
-            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            if (data != null)
             {
-                try
+
+                using (IDbSvc dbSvc = new DbSvc(_configSvc))
                 {
-                    dbSvc.OpenConnection();//openning the connection
-
-                    MySqlCommand command = new MySqlCommand();// creating my sql command for queries
-
-                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
-
-                    selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName," +
-                                   "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
-                                   "student.FathersContactNo " +
-                                   "FROM studentinfo student " +
-                                   " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
-                                   " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
-                                   " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
-                                   " INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId ";
-
-                    //Select All students who are ACTIVE
-                    whereClause = "WHERE student.Active=1 ";
-
-
-                    if (data != null)
+                    try
                     {
-                        //Name Search
-                        //data.UserDetails = new UserMasterDTO();
+                        dbSvc.OpenConnection();//openning the connection
 
-                        if (!string.IsNullOrEmpty(data.UserDetails.FName))
+                        MySqlCommand command = new MySqlCommand();// creating my sql command for queries
+
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                        selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName," +
+                                       "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
+                                       "student.FathersContactNo " +
+                                       "FROM studentinfo student " +
+                                       " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
+                                       " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
+                                       " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
+                                       " INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId ";
+
+                        //Select All students who are ACTIVE
+                        whereClause = "WHERE student.Active=1 ";
+
+
+                        if (data != null)
                         {
-                            whereClause = whereClause + " AND users.FName=@FName ";
-                            command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                            //Name Search
+                            //data.UserDetails = new UserMasterDTO();
+
+                            if (!string.IsNullOrEmpty(data.UserDetails.FName))
+                            {
+                                data.UserDetails.FName = data.UserDetails.FName + "%";
+                                whereClause = whereClause + " AND users.FName LIKE @FName";
+                                command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                            }
+                            if (!string.IsNullOrEmpty(data.UserDetails.MName))
+                            {
+                                data.UserDetails.MName = data.UserDetails.MName + "%";
+                                whereClause = whereClause + " AND users.MName LIKE @MName ";
+                                command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+                            }
+
+                            if (!string.IsNullOrEmpty(data.UserDetails.LName))
+                            {
+                                data.UserDetails.LName = data.UserDetails.LName + "%";
+                                whereClause = whereClause + " AND users.LName LIKE @LName ";
+                                command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                            }
+
+                            //Class Search
+
+                            if (data.StandardSectionMap.StandardSectionId != -1)
+                            {
+                                whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
+                                command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value = data.StandardSectionMap.StandardSectionId;
+                            }
+
+                            // Roll Number and Registration Search
+
+                            if (!string.IsNullOrEmpty(data.RegistrationNumber))
+                            {
+                                whereClause = whereClause + " AND student.RegistrationNumber=@RegistrationNumber ";
+                                command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
+                            }
+
+                            if (!string.IsNullOrEmpty(data.RollNumber))
+                            {
+                                whereClause = whereClause + " AND student.RollNumber=@RollNumber ";
+                                command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
+                            }
                         }
-                        if (!string.IsNullOrEmpty(data.UserDetails.MName))
-                        {
-                            whereClause = whereClause + " AND users.MName=@MName ";
-                            command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
-                        }
 
-                        if (!string.IsNullOrEmpty(data.UserDetails.LName))
-                        {
-                            whereClause = whereClause + " AND users.LName=@LName ";
-                            command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
-                        }
+                        //command.CommandText = "select * from studentinfo";
 
-                        //Class Search
-                        
-                        if (data.StandardSectionMap.StandardSectionId != -1)
-                        {
-                            whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
-                            command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value = data.StandardSectionMap.StandardSectionId;
-                        }
+                        command.CommandText = selectClause + whereClause;
 
-                        // Roll Number and Registration Search
+                        MySqlDataAdapter da = new MySqlDataAdapter(command);
+                        dsStudentLst = new DataSet();
+                        da.Fill(dsStudentLst);
 
-                        if (!string.IsNullOrEmpty(data.RegistrationNumber))
+                        if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
                         {
-                            whereClause = whereClause + " AND student.RegistrationNumber=@RegistrationNumber ";
-                            command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
-                        }
+                            studLst.ReturnObj = new List<StudentDTO>();
+                            for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
+                            {
+                                StudentDTO student = new StudentDTO();
+                                student.Active = true;
+                                student.FatherContact = dsStudentLst.Tables[0].Rows[i]["FathersContactNo"].ToString();
 
-                        if (!string.IsNullOrEmpty(data.RollNumber))
-                        {
-                            whereClause = whereClause + " AND student.RollNumber=@RollNumber ";
-                            command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
+                                student.StandardSectionMap = new StandardSectionMapDTO();
+
+                                student.StandardSectionMap.Standard = new StandardDTO();
+
+                                student.StandardSectionMap.Section = new SectionDTO();
+
+                                student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
+                                student.StandardSectionMap.Standard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
+                                student.RegistrationNumber = dsStudentLst.Tables[0].Rows[i]["RegistrationNumber"].ToString();
+                                student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
+                                student.UserDetails = new UserMasterDTO();
+                                student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
+                                student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
+                                student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
+                                student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
+                                studLst.ReturnObj.Add(student);
+
+                                studLst.IsSuccess = true;
+                            }
                         }
                     }
-
-                    //command.CommandText = "select * from studentinfo";
-
-                    command.CommandText = selectClause + whereClause;
-
-                    MySqlDataAdapter da = new MySqlDataAdapter(command);
-                    dsStudentLst = new DataSet();
-                    da.Fill(dsStudentLst);
-                    
-                    if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
+                    catch (Exception exp)
                     {
-                        studLst.ReturnObj = new List<StudentDTO>();
-                        for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
-                        {
-                            StudentDTO student = new StudentDTO();
-                            student.Active = true;
-                            student.FatherContact = dsStudentLst.Tables[0].Rows[i]["FathersContactNo"].ToString();
-
-                            student.StandardSectionMap = new StandardSectionMapDTO();
-
-                            student.StandardSectionMap.Standard = new StandardDTO();
-
-                            student.StandardSectionMap.Section = new SectionDTO();
-
-                            student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
-                            student.StandardSectionMap.Standard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
-                            student.RegistrationNumber = dsStudentLst.Tables[0].Rows[i]["RegistrationNumber"].ToString();
-                            student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
-                            student.UserDetails = new UserMasterDTO();
-                            student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
-                            student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
-                            student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
-                            student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
-                            studLst.ReturnObj.Add(student);
-
-                            studLst.IsSuccess = true;
-                        }
+                        _logger.Log(exp);
+                        studLst.IsSuccess = false;
+                        studLst.IsException = true;
+                        studLst.ReturnObj = null;
+                        studLst.ExceptionMessage = exp.Message;
+                        studLst.StackTrace = exp.StackTrace;
+                        // return studLst;
                     }
-                }
-                catch (Exception exp)
-                {
-                    _logger.Log(exp);
-                    studLst.IsSuccess = false;
-                    studLst.IsException = true;
-                    studLst.ReturnObj = null;
-                    studLst.ExceptionMessage = exp.Message;
-                    studLst.StackTrace = exp.StackTrace;
-                    // return studLst;
                 }
             }
             return studLst;
@@ -387,7 +395,7 @@ namespace OpMgr.DataAccess.Implementations
                     //command.Parameters.Add("@UserPassword", MySqlDbType.String).Value = data.UserDetails.Password;
                     //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.UserDetails.Role.RoleId;
                     command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
-                   command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
+                    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
                     command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
                     command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.AdmissionDate;
                     command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
@@ -395,7 +403,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@SponsorOrGuardianName", MySqlDbType.String).Value = data.GuardianName;
                     command.Parameters.Add("@FathersName", MySqlDbType.String).Value = data.FatherName;
-                    command.Parameters.Add("@FathersContactNo", MySqlDbType.String).Value = data.FatherContact;                    
+                    command.Parameters.Add("@FathersContactNo", MySqlDbType.String).Value = data.FatherContact;
                     command.Parameters.Add("@FathersEmailId", MySqlDbType.String).Value = data.FatherEmailId;
                     command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
                     command.Parameters.Add("@FathersOccupation", MySqlDbType.String).Value = data.FatherOccupation;
@@ -441,35 +449,35 @@ namespace OpMgr.DataAccess.Implementations
             int noOfUpdateSuccessful = 0;
 
             if (!string.IsNullOrEmpty(Command))
+            {
+
+                using (IDbSvc dbSvc = new DbSvc(_configSvc))
                 {
-                   
-                    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                    try
                     {
-                        try
+                        dbSvc.OpenConnection();//openning the connection
+
+                        MySqlCommand command = new MySqlCommand();// creating my sql command for queries
+
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                        if (string.Equals(Command, "Promotion Confirmed"))
                         {
-                            dbSvc.OpenConnection();//openning the connection
-
-                            MySqlCommand command = new MySqlCommand();// creating my sql command for queries
-
+                            updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                            command = new MySqlCommand();
                             command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                            if(string.Equals(Command,"Promotion Confirmed"))
+                            command.CommandText = updateClause;
+
+                            if (command.ExecuteNonQuery() > 0)
                             {
-                                 updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status='Promoted' WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
-                                command = new MySqlCommand();
-                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                                noOfUpdateSuccessful++;
+                            }
 
-                                command.CommandText = updateClause;
-                               
-                                if (command.ExecuteNonQuery() > 0)
-                                 {
-                                        noOfUpdateSuccessful++;
-                                 }
+                        }
 
-                             }
-
-                            if (string.Equals(Command, "Promote"))
-                           {
+                        if (string.Equals(Command, "Promote"))
+                        {
 
                             foreach (StudentDTO stud in studentList)
                             {
@@ -489,7 +497,7 @@ namespace OpMgr.DataAccess.Implementations
 
                                 if (command.ExecuteNonQuery() > 0)
                                 {
-                                    
+
                                     noOfUpdateSuccessful++;
                                 }
                             }
@@ -525,53 +533,223 @@ namespace OpMgr.DataAccess.Implementations
                         if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
                         {
                             studLst.ReturnObj = new List<StudentDTO>();
-                                for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
-                                {
-                                    StudentDTO student = new StudentDTO();
-                                    student.Active = true;
+                            for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
+                            {
+                                StudentDTO student = new StudentDTO();
+                                student.Active = true;
 
-                                    student.StudentInfoId = (int)dsStudentLst.Tables[0].Rows[i]["StudentInfoId"];
-                                    student.Status = dsStudentLst.Tables[0].Rows[i]["Status"].ToString();
-                                    if(!string.IsNullOrEmpty(dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"].ToString()))
-                                         student.NewStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
-                                
+                                student.StudentInfoId = (int)dsStudentLst.Tables[0].Rows[i]["StudentInfoId"];
+                                student.Status = dsStudentLst.Tables[0].Rows[i]["Status"].ToString();
+                                if (!string.IsNullOrEmpty(dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"].ToString()))
+                                    student.NewStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
+
 
                                 student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
-                                    
-
-                                    student.UserDetails = new UserMasterDTO();
-                                    student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
-                                    student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
-                                    student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
-                                    student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
-
-                                    student.StandardSectionMap = new StandardSectionMapDTO();
-                                    student.StandardSectionMap.Standard = new StandardDTO();
-                                    student.StandardSectionMap.Section = new SectionDTO();
-                                    student.StandardSectionMap.StandardSectionId= (int)dsStudentLst.Tables[0].Rows[i]["StandardSectionId"];
-                                    student.StandardSectionMap.Standard.StandardId = (int)dsStudentLst.Tables[0].Rows[i]["StandardId"];
-                                    student.StandardSectionMap.Standard.StandardName =dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
-                                    student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
-                                    student.StandardSectionMap.Serial = (int)dsStudentLst.Tables[0].Rows[i]["Serial"];
-                                    student.NewStandardSectionMap = new StandardSectionMapDTO();
-                                    student.NewStandardSectionMap.StandardSectionDesc = dsStudentLst.Tables[0].Rows[i]["NewStandardName"].ToString() + " " + dsStudentLst.Tables[0].Rows[i]["NewSectionName"].ToString();
 
 
-                                    studLst.ReturnObj.Add(student);
-                                    studLst.IsSuccess = true;
-                                }
+                                student.UserDetails = new UserMasterDTO();
+                                student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
+                                student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
+                                student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
+                                student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
 
+                                student.StandardSectionMap = new StandardSectionMapDTO();
+                                student.StandardSectionMap.Standard = new StandardDTO();
+                                student.StandardSectionMap.Section = new SectionDTO();
+                                student.StandardSectionMap.StandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["StandardSectionId"];
+                                student.StandardSectionMap.Standard.StandardId = (int)dsStudentLst.Tables[0].Rows[i]["StandardId"];
+                                student.StandardSectionMap.Standard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
+                                student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
+                                student.StandardSectionMap.Serial = (int)dsStudentLst.Tables[0].Rows[i]["Serial"];
+                                student.NewStandardSectionMap = new StandardSectionMapDTO();
+                                student.NewStandardSectionMap.StandardSectionDesc = dsStudentLst.Tables[0].Rows[i]["NewStandardName"].ToString() + " " + dsStudentLst.Tables[0].Rows[i]["NewSectionName"].ToString();
+
+
+                                studLst.ReturnObj.Add(student);
+                                studLst.IsSuccess = true;
                             }
+
+                        }
                     }
                     catch (Exception ex)
                     {
 
                     }
 
-                  }
-             }
+                }
+            }
 
-            return studLst; 
+            return studLst;
+        }
+        public StatusDTO<List<StudentDTO>> RunPromotionBatch()
+        {
+            StatusDTO<List<StudentDTO>> studList = null;
+            string selectClause = null;
+            string whereClause = null;
+            DataSet dsStudentList = null;
+
+            try
+            {
+                using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                {
+                    dbSvc.OpenConnection();//openning the connection
+                    MySqlCommand command = new MySqlCommand();// creating my sql command for queries
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    selectClause = "SELECT stnd.StandardName,sec.SectionName,student.Status,Count(*) AS Students" +
+                                  " FROM studentinfo student" +
+                                  " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
+                                  " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
+                                 " INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId" +
+                                 " WHERE student.Status = 'Promotion Confirmed' AND student.Active=1" +
+                                 " GROUP BY student.StandardSectionId";
+
+                    command.CommandText = selectClause;
+
+                    MySqlDataAdapter msda = new MySqlDataAdapter(command);
+                    dsStudentList = new DataSet();
+                    msda.Fill(dsStudentList);
+
+                    if (dsStudentList != null && dsStudentList.Tables.Count > 0)
+                    {
+                        if (dsStudentList.Tables[0].Rows.Count > 0)
+                        {
+                            studList = new StatusDTO<List<StudentDTO>>();
+                            studList.ReturnObj = new List<StudentDTO>();
+                            for (int i = 0; i < dsStudentList.Tables[0].Rows.Count; i++)
+                            {
+                                StudentDTO student = new StudentDTO();
+                                student.StandardSectionMap = new StandardSectionMapDTO();
+                                student.StandardSectionMap.StandardSectionDesc = (dsStudentList.Tables[0].Rows[i]["StandardName"] + " " + dsStudentList.Tables[0].Rows[i]["SectionName"]).ToString();
+                                student.Status = dsStudentList.Tables[0].Rows[i]["Status"].ToString();
+                                student.NoOfStudents = dsStudentList.Tables[0].Rows[i]["Students"].ToString();
+
+                                studList.ReturnObj.Add(student);
+                                studList.IsSuccess = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+            }
+            return studList;
+        }
+        public bool UpdatePromotedStudents(int loggedInUser, string status = "Promotion Confirmed")
+        {
+            string selectClause;
+            string whereClause;
+            string updateClause; // taken for query
+            string insertClause;
+
+            int studentInfoId;
+            int newStandardSectionId;
+            string newStatus = "Promoted"; // taken for update and insert
+            int standardSectionId = 0;
+            DateTime date;
+            DateTime currentYear;
+            DateTime previousYear;
+            int active;
+
+            bool IsPromoted=false;
+            int noOfStudentsPromoted = 0;
+            DataSet dsStudentLst = null;
+            using (TransactionScope tran = new TransactionScope(TransactionScopeOption.RequiresNew)) // multiple updates hence using transaction scope
+            {
+                try
+                {
+                    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                        selectClause = "SELECT users.UserMasterId,student.StudentInfoId," +
+                        "stnd.StandardName,sec.SectionName,student.Status,student.StandardSectionId,student.NewStandardSectionId,student.RollNumber,student.RegistrationNumber " +
+                        "FROM studentinfo student " +
+                        "INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId " +
+                        "INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId " +
+                        "INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId " +
+                        "INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId ";
+
+                        whereClause = "WHERE student.status=@status AND student.Active=1";
+
+                        command.Parameters.Add("@status", MySqlDbType.String).Value = status;
+
+                        command.CommandText = selectClause + whereClause;
+
+                        dsStudentLst = new DataSet();
+                        MySqlDataAdapter msda = new MySqlDataAdapter(command);
+                        msda.Fill(dsStudentLst);
+
+                        if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
+                        {
+                            if (dsStudentLst.Tables[0].Rows.Count > 0)
+                            {
+                                for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
+                                {
+                                    studentInfoId = (int)dsStudentLst.Tables[0].Rows[i]["StudentInfoId"];
+                                    newStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
+                                    standardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["StandardSectionId"];
+                                    if (studentInfoId != 0 && newStandardSectionId!=0 && standardSectionId!=0)
+                                    {
+                                        updateClause = "UPDATE studentinfo SET Status=@newStatus1,StandardSectionId=@newStandardSectionId1,NewStandardSectionId=null" +
+                                                       " WHERE StudentInfoId=@studentInfoId1 AND Active=1 ";
+
+                                        command.Parameters.Add("@newStatus1", MySqlDbType.String).Value = newStatus;
+                                        command.Parameters.Add("@newStandardSectionId1", MySqlDbType.Int32).Value = newStandardSectionId;
+                                        command.Parameters.Add("@studentInfoId1", MySqlDbType.Int32).Value = studentInfoId;
+
+                                        command.CommandText = updateClause; // update the student ingfo in student info table
+
+                                        int n = command.ExecuteNonQuery();
+                                        if (n > 0) // insert into StudentClassMap History Table
+                                        {
+                                            date = DateTime.Now;
+                                            currentYear = date;
+                                            previousYear = date.AddYears(-1);
+                                            active = 1;
+
+                                            insertClause = "INSERT INTO studentclassmap(StudentInfoId,StandardSectionId,UpdatedBy,UpdatedDate,CourseTo,CourseFrom,Active) values(@studentinfoId1,@standardSectionId,@loggedInUser,@date,@currentYear,@previousYear,@active)";
+                                           
+                                            if (standardSectionId != 0)
+                                                command.Parameters.Add("@standardSectionId", MySqlDbType.Int32).Value = standardSectionId;
+                                            if (loggedInUser != 0)
+                                                command.Parameters.Add("@loggedInUser", MySqlDbType.Int32).Value = loggedInUser;
+                                            command.Parameters.Add("@date", MySqlDbType.DateTime).Value = date;
+                                            command.Parameters.Add("@currentYear", MySqlDbType.DateTime).Value = currentYear;
+                                            command.Parameters.Add("@previousYear", MySqlDbType.DateTime).Value = previousYear;
+                                            command.Parameters.Add("@active", MySqlDbType.Int32).Value = active;
+
+                                            command.CommandText = insertClause;
+                                            if (command.ExecuteNonQuery() > 0)
+                                            {
+                                                noOfStudentsPromoted++;
+                                                if (noOfStudentsPromoted == dsStudentLst.Tables[0].Rows.Count)
+                                                {
+                                                    IsPromoted = true;
+                                                }
+                                            }                                           
+                                        }
+                                        command.Parameters.Clear();// to clear the parameters after every iteration
+                                    }                                    
+                                }
+                                tran.Complete();// Transaction is successful, and hence comitting else revert back
+                            }
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    string excep = ex.Message;
+                   tran.Dispose();
+                }
+            }
+            return IsPromoted;
         }
     }
 }
+

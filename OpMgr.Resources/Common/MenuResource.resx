@@ -132,11 +132,14 @@
   <data name="AddUser" xml:space="preserve">
     <value>STAFF</value>
   </data>
+  <data name="AdminControl" xml:space="preserve">
+    <value>ADMIN CONTROL</value>
+  </data>
   <data name="AdminPanel" xml:space="preserve">
     <value>Admin Panel</value>
   </data>
   <data name="ApproveDues" xml:space="preserve">
-    <value>APPROVE ADJUSTMENTS</value>
+    <value>APPROVE</value>
   </data>
   <data name="EditUser" xml:space="preserve">
     <value>Edit User</value>
@@ -154,7 +157,7 @@
     <value>My Transactions</value>
   </data>
   <data name="Payment" xml:space="preserve">
-    <value>FEES COLLECTION</value>
+    <value>PAYMENT HISTORY</value>
   </data>
   <data name="PrincipalPanel" xml:space="preserve">
     <value>PRINCIPAL PANEL</value>
@@ -178,10 +181,10 @@
     <value>Transaction</value>
   </data>
   <data name="TransactionEntry" xml:space="preserve">
-    <value>TRANSACTION ENTRY</value>
+    <value>RULES FOR FEES STRUCTURE</value>
   </data>
   <data name="TransactionMaster" xml:space="preserve">
-    <value>MASTER ENTRY</value>
+    <value>RULES FOR FEES STYLE</value>
   </data>
   <data name="TransactionRuleAdd" xml:space="preserve">
     <value>Add Transaction Rule</value>

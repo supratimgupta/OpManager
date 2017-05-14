@@ -318,4 +318,10 @@
   <data name="FatherEmailId" xml:space="preserve">
     <value>Father's Email Id</value>
   </data>
+  <data name="AddButton" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="AddCommand" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

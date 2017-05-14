@@ -11,6 +11,8 @@ namespace OpMgr.Common.Contracts.Modules
    public interface IStudentSvc: ICRUDSvc<StudentDTO,StudentDTO>
     {
          StatusDTO<List<StudentDTO>> PromoteToNewClass(List<StudentDTO> studentList,string Command,int StandardSectionId);
+         StatusDTO<List<StudentDTO>> RunPromotionBatch();
+         bool UpdatePromotedStudents(int loggedInUser, string status = "Promotion Confirmed");
         
     }
 }

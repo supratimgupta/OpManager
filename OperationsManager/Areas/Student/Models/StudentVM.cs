@@ -20,7 +20,7 @@ namespace OperationsManager.Areas.Student.Models
 
         public string SuccessOrFailureMessage { get; set; }
 
-        public Color MsgColor { get; set; }
+        public string MsgColor { get; set; }
 
         public SelectList LocationList { get; set; }
 

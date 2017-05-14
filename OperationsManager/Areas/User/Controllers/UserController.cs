@@ -96,12 +96,15 @@ namespace OperationsManager.Areas.User.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(UserVM userView)
+        public ActionResult Search(UserVM userView,string Command)
         {
             UserVM uView = null;
             UserMasterDTO user = null;
 
-            
+            if(string.Equals(Command,"Add"))
+            {
+                return RedirectToAction("Register", "Login", new { area = "Login" });
+            }
 
 
 
