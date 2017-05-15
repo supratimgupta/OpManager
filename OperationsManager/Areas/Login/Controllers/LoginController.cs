@@ -12,10 +12,11 @@ using OperationsManager.Areas.Login.Models;
 using System.Net.Mail;
 using System.Net;
 using System.Drawing;
+using OperationsManager.Controllers;
 
 namespace OperationsManager.Areas.Login.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private IUserSvc _userSvc;
         private IResetPasswordSvc _resetPassSvc;
@@ -47,6 +48,7 @@ namespace OperationsManager.Areas.Login.Controllers
         // GET: Login/Login
         // GET: Login/Login
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Login()
         {
             UserMasterDTO userDto = new UserMasterDTO();
@@ -70,6 +72,7 @@ namespace OperationsManager.Areas.Login.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult Login(UserMasterDTO data)
         {
             List<EntitlementDTO> lstEntitleMent = new List<EntitlementDTO>();
@@ -125,6 +128,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Welcome()
         {
             SessionDTO sessionRet = _sessionSvc.GetUserSession();
@@ -208,7 +212,6 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpPost]
-        [OpMgrAuth]
         [ValidateAntiForgeryToken]
         public ActionResult Register(Models.UserViewModel uvModel)
         {
@@ -254,6 +257,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Logout()
         {
             _sessionSvc.Logout();
@@ -261,18 +265,21 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult AccessDenied()
         {
             return View();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             MailVM mailVM = new MailVM();
             return View(mailVM);
         }
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult ForgotPassword(MailVM mailView)
         {
             string[] mailTo;

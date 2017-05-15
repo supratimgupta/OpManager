@@ -10,9 +10,9 @@ using System.Web;
 
 namespace OperationsManager.Helpers
 {
-    public static class MenuHelper
+    public class MenuHelper
     {
-        public static List<MenuModel> GetMenuItems(ISessionSvc sessionSvc)
+        public List<MenuModel> GetMenuItems(ISessionSvc sessionSvc)
         {
             SessionDTO sessionDto = sessionSvc.GetUserSession();
             List<ActionDTO> actions = new List<ActionDTO>();
@@ -95,7 +95,7 @@ namespace OperationsManager.Helpers
         }
 
 
-        public static MvcHtmlString GetMenuDesign(List<MenuModel> lstMenu)
+        public MvcHtmlString GetMenuDesign(List<MenuModel> lstMenu)
         {
             StringBuilder sbMenuHtml = new StringBuilder(string.Empty);
 

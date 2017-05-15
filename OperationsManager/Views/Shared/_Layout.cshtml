@@ -7,7 +7,9 @@
     NinjectControllerFactory ncf = new NinjectControllerFactory();
     IKernel kernel = ncf.GetNinjectKernel();
     List<OperationsManager.Models.MenuModel> menu = new List<OperationsManager.Models.MenuModel>();
-    menu = OperationsManager.Helpers.MenuHelper.GetMenuItems(kernel.Get<ISessionSvc>());
+
+    OperationsManager.Helpers.MenuHelper menuHelper = new OperationsManager.Helpers.MenuHelper();
+    menu = menuHelper.GetMenuItems(kernel.Get<ISessionSvc>());
     SessionDTO session = kernel.Get<ISessionSvc>().GetUserSession();
 
     System.Web.HttpContext.Current.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
@@ -76,7 +78,7 @@
         <ul class="nav menu">
             @if(menu!=null)
             {
-                @OperationsManager.Helpers.MenuHelper.GetMenuDesign(menu);
+                @menuHelper.GetMenuDesign(menu);
             }
             @*<li><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
             <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
