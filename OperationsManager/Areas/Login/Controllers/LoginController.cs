@@ -12,11 +12,10 @@ using OperationsManager.Areas.Login.Models;
 using System.Net.Mail;
 using System.Net;
 using System.Drawing;
-using OperationsManager.Controllers;
 
 namespace OperationsManager.Areas.Login.Controllers
 {
-    public class LoginController : BaseController
+    public class LoginController : Controller
     {
         private IUserSvc _userSvc;
         private IResetPasswordSvc _resetPassSvc;
@@ -48,7 +47,6 @@ namespace OperationsManager.Areas.Login.Controllers
         // GET: Login/Login
         // GET: Login/Login
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult Login()
         {
             UserMasterDTO userDto = new UserMasterDTO();
@@ -72,7 +70,6 @@ namespace OperationsManager.Areas.Login.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
         public ActionResult Login(UserMasterDTO data)
         {
             List<EntitlementDTO> lstEntitleMent = new List<EntitlementDTO>();
@@ -257,7 +254,6 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult Logout()
         {
             _sessionSvc.Logout();
