@@ -1,5 +1,6 @@
 ﻿using OperationsManager.Areas.Transaction.Models;
 using OperationsManager.Attributes;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -11,8 +12,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
-    //[OpMgrAuth]
-    public class TransactionRuleController : Controller 
+    public class TransactionRuleController : BaseController
     {
         private ITransactionRuleSvc _trRule;
 
@@ -118,6 +118,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult GetTransactionMasters(TransactionMasterDTO trnsMaster)
         {
             List<TransactionMasterDTO> transactionMasters = _ddlRepo.GetTransactionMasters(trnsMaster.Frequency);
@@ -125,6 +126,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult GetIsDifferentTo(TransactionMasterDTO trnsMaster)
         {
             string isDiffTo = _trnsMaster.GetIsDifferentTo(trnsMaster.TranMasterId);

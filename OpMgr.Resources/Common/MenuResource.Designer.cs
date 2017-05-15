@@ -205,6 +205,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CONFIRM PROMOTION.
+        /// </summary>
+        public static string PromotionBatch {
+            get {
+                return ResourceManager.GetString("PromotionBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RULES CREATION.
         /// </summary>
         public static string RulesCreation {

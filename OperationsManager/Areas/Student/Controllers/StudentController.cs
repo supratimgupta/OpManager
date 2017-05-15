@@ -9,12 +9,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using OperationsManager.Controllers;
 
 namespace OperationsManager.Areas.Student.Controllers
 {
-   // [OpMgrAuth]
-    [HandleError()]
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         private IStudentSvc _studSvc;
         //private ILogSvc _logSvc;

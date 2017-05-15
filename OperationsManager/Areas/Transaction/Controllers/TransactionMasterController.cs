@@ -1,5 +1,6 @@
 ﻿using OperationsManager.Areas.Transaction.Models;
 using OperationsManager.Attributes;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -11,8 +12,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
-    [OpMgrAuth]
-    public class TransactionMasterController : Controller
+    public class TransactionMasterController : BaseController
     {
         private ITransactionMasterSvc _trMaster;
 

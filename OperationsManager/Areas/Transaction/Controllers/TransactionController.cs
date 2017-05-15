@@ -1,4 +1,5 @@
 ﻿using OperationsManager.Attributes;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -10,8 +11,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
-    [OpMgrAuth]
-    public class TransactionController : Controller
+    public class TransactionController : BaseController
     {
         private IDropdownRepo _ddlRepo;
 

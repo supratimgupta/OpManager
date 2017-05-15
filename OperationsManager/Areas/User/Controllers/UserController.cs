@@ -1,5 +1,6 @@
 ﻿using OperationsManager.Areas.User.Models;
 using OperationsManager.Attributes;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -11,8 +12,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.User.Controllers
 {
-    [OpMgrAuth]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private IUserSvc _userSvc;
         //private ILogSvc _logSvc;

@@ -1,4 +1,5 @@
 ﻿using OperationsManager.Areas.Admin.Models;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Admin.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         //private ILogSvc _logger;
 

@@ -12,8 +12,7 @@ using OperationsManager.Models;
 
 namespace OperationsManager.Controllers
 {
-    [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

@@ -33,7 +33,8 @@
                     {
                         @Html.AntiForgeryToken()
                         <fieldset>
-                            <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <button type="submit" name="Command" value="@StudentResource.PromoteCommand" class="btn btn-primary">@StudentResource.BatchPromotion</button>
+                            <table style="margin-top:10px;" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                                 <thead>
                                     <tr>
                                         <th h data-field="standard" data-sortable="true">
@@ -75,7 +76,6 @@
                                     }
                                 </tbody>
                             </table>
-                            <button type="submit" name="Command" value="@StudentResource.PromoteCommand" class="btn btn-primary">@StudentResource.BatchPromotion</button>
                         </fieldset>
                     }
                 }

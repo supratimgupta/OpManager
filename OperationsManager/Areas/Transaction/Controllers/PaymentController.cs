@@ -1,4 +1,5 @@
 ﻿using OperationsManager.Areas.Transaction.Models;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
@@ -11,9 +12,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Transaction.Controllers
 {
-    [Attributes.OpMgrHandleError]
-    //[Attributes.OpMgrAuth]
-    public class PaymentController : Controller
+    public class PaymentController : BaseController
     {
         private ITransactionLogSvc _transactionLogSvc;
 

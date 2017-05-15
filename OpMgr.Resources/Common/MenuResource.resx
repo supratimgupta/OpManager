@@ -165,6 +165,9 @@
   <data name="PromoteStudents" xml:space="preserve">
     <value>PROMOTE STUDENTS</value>
   </data>
+  <data name="PromotionBatch" xml:space="preserve">
+    <value>CONFIRM PROMOTION</value>
+  </data>
   <data name="RulesCreation" xml:space="preserve">
     <value>RULES CREATION</value>
   </data>

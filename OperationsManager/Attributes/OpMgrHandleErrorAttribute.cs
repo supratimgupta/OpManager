@@ -18,7 +18,7 @@ namespace OperationsManager.Attributes
             string diResolverPath = System.Configuration.ConfigurationManager.AppSettings["DIXMLPath"];
             StandardKernel kernel = new StandardKernel();
             kernel.Load(diResolverPath);
-            _logger = kernel.Get<ILogSvc>(); ;
+            _logger = kernel.Get<ILogSvc>();
         }
 
         public override void OnException(ExceptionContext filterContext)

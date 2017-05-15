@@ -8,11 +8,11 @@ using System.Web.Mvc;
 using OperationsManager.Areas.Library.Models;
 using OpMgr.Common.DTOs;
 using OperationsManager.Attributes;
+using OperationsManager.Controllers;
 
 namespace OperationsManager.Areas.Library.Controllers
 {
-    [OpMgrAuth]
-    public class LibraryController : Controller
+    public class LibraryController : BaseController
     {
         private IBookMasterSvc _bookmasterSvc;
 
