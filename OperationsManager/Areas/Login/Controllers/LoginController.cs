@@ -102,7 +102,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 }
                 else
                 {
-                    Response.Cookies.Clear();
+                    Response.Cookies.Remove("userDetails");
                 }
 
                 SessionDTO session = new SessionDTO();
