@@ -166,6 +166,54 @@ namespace OperationsManager.ExtendedHtmlHelpers
             return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.TextBoxFor(expression, htmlAttributes).ToString().Replace("type=\"text\"", "type=\"file\""), false, false);
         }
 
+        public static MvcHtmlString OpMgrActionLinkMultiple(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName,  object routeValues, object htmlAttributes)
+        {
+            if(htmlAttributes!=null)
+            {
+                object objId = GetPropValue(htmlAttributes, "name");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        return htmlHelper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
+                    }
+                }
+            }
+            return htmlHelper.ActionLink(linkText, actionName, controllerName, routeValues, htmlAttributes);
+        }
+
+        public static MvcHtmlString OpMgrActionLinkMultiple(this HtmlHelper htmlHelper, string linkText, string actionName, object routeValues, object htmlAttributes)
+        {
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "name");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Url));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        return htmlHelper.ActionLink(linkText, actionName, routeValues, htmlAttributes);
+                    }
+                }
+            }
+            return htmlHelper.ActionLink(linkText, actionName, routeValues, htmlAttributes);
+        }
+
         public static MvcHtmlString OpMgrTextAreaFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, object htmlAttributes = null)
         {
             if (htmlAttributes != null)
