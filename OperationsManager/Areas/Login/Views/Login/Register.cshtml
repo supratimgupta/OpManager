@@ -53,6 +53,91 @@
             });
 
         });
+
+        function assignRoles() {
+            debugger;
+            var table = document.getElementById("tblRoles");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "UserEntitlementList[" + nextRowId + "].RowId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlTrUserEntitle = document.createElement("select");
+            ddlTrUserEntitle.name = "UserEntitlementList[" + nextRowId + "].RoleDetails.UserRoleId";
+            ddlTrUserEntitle.className = "form-control";
+            populateTrUserEntDDL(ddlTrUserEntitle);
+            scndCell.appendChild(ddlTrUserEntitle);
+
+            var thirdCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteRow(this);');
+            thirdCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+
+            tbody.appendChild(newRow);
+        }
+
+        function deleteRow(aDelete) {
+            var row = aDelete.parentNode.parentNode;
+            var table = document.getElementById("tblRoles");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            tbody.removeChild(row);
+        }
+
+        function populateTrUserEntDDL(ddlTrUserEntitle) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetUserEntitlementDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrUserEntityDDL(resultData, ddlTrUserEntitle); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrUserEntityDDL(trnsUserEnt, ddlTrUserEntitle) {
+            debugger;
+            var ddlTrUserEntitles = ddlTrUserEntitle;
+            ddlTrUserEntitles.innerHTML = "";
+            for (i = -1; i < trnsUserEnt.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsUserEnt[i].UserRoleId;
+                    option.innerHTML = trnsUserEnt[i].RoleName;
+                }
+                ddlTrUserEntitles.appendChild(option);
+            }
+        }
+
+
+        function deleteUserEntitleMent(uEntId) {
+            var uEnts = new Object();
+            uEnts.RowId = parseInt(uEntId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteUserEntitlement',
+                data: uEnts,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
     </script>
 }
 <div class="row">
@@ -103,47 +188,6 @@
                         <div class="col-lg-5">
                             @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Gender is required" })
                         </div>
-                        @*<div class="col-lg-5">
-                                @if(Model.MODE=="EDIT")
-                                {
-                                    @Html.HiddenFor(m=>m.Role.RoleId)
-                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control", disabled="disabled" })
-                                }
-                                else
-                                {
-                                    @Html.OpMgrDropDownListFor(m => m.Role.RoleId, Model.RoleList, UserResource.Role, new { @class = "form-control" })
-                                }
-
-                            </div>*@
-
-                        @*<div id="divStudent">
-                                <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.Student.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control" })
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.Student.RollNumber, UserResource.RollNo, new { @class = "form-control" })
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.Student.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control" })
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.Student.GuardianName, UserResource.GuardianName, new { @class = "form-control" })
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.Student.GuardianContact, UserResource.GuardianContactNo, new { @class = "form-control" })
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.Student.GuardianEmailId, UserResource.GuardianEmailId, new { @class = "form-control" })
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrDropDownListFor(m => m.Student.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
-
-                                </div>
-                                <div class="col-lg-5">
-                                    @Html.OpMgrDropDownListFor(m => m.Student.HouseType.HouseTypeId, Model.HouseList, UserResource.HouseName, new { @class = "form-control" })
-                                </div>
-                            </div>*@
-                        @*<div id="divStaff">*@
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.Employee.DateOfJoining, UserResource.DateOfJoining, new { @class = "dateofjoining form-control", data_rule_required = "true", data_msg_required = "Date of joining is required" })
                         </div>
@@ -160,6 +204,52 @@
                             @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
                         </div>
                         @*</div>*@
+                         <div class="row">
+                             <table id="tblRoles" class="table table table-striped table-bordered table-responsive table-hover">
+                                 <thead>
+                                     <tr>
+                                         <th colspan="5">
+                                             Assign Role
+                                         </th>
+                                     </tr>
+                                     <tr>
+                                         <th colspan="5">
+                                             <input type="button" class="btn btn-primary" style="width:70px" onclick="assignRoles();" value="+Add" />
+                                         </th>
+                                     </tr>
+                                     <tr>
+                                         <th style="display:none;"></th>
+                                         <th>Roles</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     @if (Model.UserEntitlementList != null && Model.UserEntitlementList.Count > 0)
+                                     {
+                                         for (int i = 0; i < Model.UserEntitlementList.Count; i++)
+                                         {
+                                             <tr>
+                                                 <td style="display:none;">
+                                                     <input type="hidden" name="UserEntitlementList[@i].RowId" value="@Model.UserEntitlementList[i].RowId" />
+                                                 </td>
+                                                 <td>
+                                                     <select name="UserEntitlementList[@i].RoleDetails.UserRoleId" class="form-control">
+                                                         @foreach (OpMgr.Common.DTOs.EntitlementDTO trUEnt in Model.SelectUserEntitlement)
+                                                         {
+                                                             <option value="@trUEnt.UserRoleId" @(Model.UserEntitlementList[i].RoleDetails.UserRoleId == trUEnt.UserRoleId ? "selected=\"selected\"" : "")>@trUEnt.RoleName</option>
+                                                         }
+                                                     </select>
+                                                 </td>
+                                                 <td>
+                                                     <a onclick="deleteUserEntitleMent('@Model.UserEntitlementList[i].RowId');" style="cursor:pointer;">Delete</a>
+                                                 </td>
+                                             </tr>
+                                         }
+                                     }
+                                 </tbody>
+
+                             </table>
+
+                         </div>
                         @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
                         {
                             <div id="divcredentials">

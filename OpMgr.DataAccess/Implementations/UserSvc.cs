@@ -20,7 +20,7 @@ namespace OpMgr.DataAccess.Implementations
         private DataSet _dsData;
         private ILogSvc _logger;
 
-        public UserSvc(IConfigSvc configSvc,ILogSvc logger)
+        public UserSvc(IConfigSvc configSvc, ILogSvc logger)
         {
             _configSvc = configSvc;
             _logger = logger;
@@ -66,50 +66,30 @@ namespace OpMgr.DataAccess.Implementations
                     //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
                     command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Location.LocationId;
 
-                    //if (data.Student != null)
-                    //{
-                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
-                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
-                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
-                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
-                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
-                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
-                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.Student.StandardSectionMap.StandardSectionId;
-                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.Student.HouseType.HouseTypeId;
-                    //}
-                    //else
-                    //{
-                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = DBNull.Value;
-                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //}
-
-                    //if (data.Employee != null)
-                    //{
-                        command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
-                        command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
-                        command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
-                        command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
-                        command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
-                    //}
-                    //else
-                    //{
-                    //    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
-                    //    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //    command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //}
+                    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
+                    command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
+                    command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
+                    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                    command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
+                    
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
                     StatusDTO<UserMasterDTO> status = new StatusDTO<UserMasterDTO>();
+
+                    if (_dtData.Rows.Count > 0 && !String.IsNullOrEmpty(_dtData.Rows[0]["Message"].ToString()))
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new UserMasterDTO();
+                        status.ReturnObj.UserMasterId = (int)_dtData.Rows[0]["Message"];
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "User Insertion Failed";
+                    }
                     return status;
+
                 }
                 catch (Exception exp)
                 {
@@ -251,27 +231,27 @@ namespace OpMgr.DataAccess.Implementations
                             usermasterDTO.ContactNo = _dsData.Tables[0].Rows[0]["ContactNo"].ToString();
                             usermasterDTO.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
                             usermasterDTO.BloodGroup = _dsData.Tables[0].Rows[0]["BloodGroup"].ToString();
-                            
+
                             //if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) == 1)
                             //{
-                                //usermasterDTO.Student = new StudentDTO();
-                                //usermasterDTO.Student.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
-                                //usermasterDTO.Student.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
-                                //if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
-                                //{
-                                //    usermasterDTO.Student.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
-                                //}
-                                //else
-                                //{
-                                //    usermasterDTO.Student.AdmissionDate = null;
-                                //}
-                                //usermasterDTO.Student.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
-                                //usermasterDTO.Student.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
-                                //usermasterDTO.Student.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
-                                //usermasterDTO.Student.StandardSectionMap = new StandardSectionMapDTO();
-                                //usermasterDTO.Student.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
-                                //usermasterDTO.Student.HouseType = new HouseTypeDTO();
-                                //usermasterDTO.Student.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
+                            //usermasterDTO.Student = new StudentDTO();
+                            //usermasterDTO.Student.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
+                            //usermasterDTO.Student.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
+                            //if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
+                            //{
+                            //    usermasterDTO.Student.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
+                            //}
+                            //else
+                            //{
+                            //    usermasterDTO.Student.AdmissionDate = null;
+                            //}
+                            //usermasterDTO.Student.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
+                            //usermasterDTO.Student.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
+                            //usermasterDTO.Student.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
+                            //usermasterDTO.Student.StandardSectionMap = new StandardSectionMapDTO();
+                            //usermasterDTO.Student.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
+                            //usermasterDTO.Student.HouseType = new HouseTypeDTO();
+                            //usermasterDTO.Student.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
                             //}
                             //else if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) > 1)
                             //{
@@ -359,7 +339,7 @@ namespace OpMgr.DataAccess.Implementations
 
                         //Gender Search
 
-                        if (!string.IsNullOrEmpty(data.Gender) && !string.Equals(data.Gender,"-1"))
+                        if (!string.IsNullOrEmpty(data.Gender) && !string.Equals(data.Gender, "-1"))
                         {
                             whereClause = whereClause + " AND users.Gender=@Gender ";
                             command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.Gender;
@@ -417,7 +397,7 @@ namespace OpMgr.DataAccess.Implementations
                             user.Role = new RoleDTO();
                             user.Role.RoleDescription = dsUserLst.Tables[0].Rows[i]["RoleDescription"].ToString();
 
-                           
+
                             userList.ReturnObj.Add(user);
 
                             userList.IsSuccess = true;
@@ -468,47 +448,15 @@ namespace OpMgr.DataAccess.Implementations
                     //command.Parameters.Add("@RoleId", MySqlDbType.Int32).Value = data.Role.RoleId;
                     command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Location.LocationId;
 
-                    //if (data.Student != null)
-                    //{
-                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.Student.RollNumber;
-                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.Student.RegistrationNumber;
-                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = data.Student.AdmissionDate;
-                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = data.Student.GuardianContact;
-                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = data.Student.GuardianName;
-                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = data.Student.GuardianEmailId;
-                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.Student.StandardSectionMap.StandardSectionId;
-                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.Student.HouseType.HouseTypeId;
-                    //}
-                    //else
-                    //{
-                    //    command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@AdmissionDate", MySqlDbType.DateTime).Value = DBNull.Value;
-                    //    command.Parameters.Add("@GuardianContactNo", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@GuardianName", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@GuardianEmailId", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //    command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //}
+                    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
+                    command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
+                    command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
+                    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                    command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
 
-                    //if (data.Employee != null)
-                    //{
-                       command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
-                        command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
-                        command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
-                        command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
-                        command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
-                    //}
-                    //else
-                    //{
-                    //    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = DBNull.Value;
-                    //    command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = DBNull.Value;
-                    //    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //    command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = DBNull.Value;
-                    //}
                     command.ExecuteNonQuery();
                     StatusDTO<UserMasterDTO> status = new StatusDTO<UserMasterDTO>();
+                    status.IsSuccess = true;
                     return status;
                 }
                 catch (Exception exp)
@@ -517,5 +465,137 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        //To get user entitlementlist
+        public List<UserEntitlementDTO> GetUserEntitlement(int userMasterId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT UserEntitleMentId, UserMasterId, UserRoleId FROM userentitlement WHERE UserMasterId=@umId";
+                    command.Parameters.Add("@umId", MySqlDbType.Int32).Value = userMasterId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    _dtData = new DataTable();
+                    mDa.Fill(_dtData);
+                    List<UserEntitlementDTO> lstUEnt = null;
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        lstUEnt = new List<UserEntitlementDTO>();
+                        UserEntitlementDTO uEntDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            uEntDTO = new UserEntitlementDTO();
+                            uEntDTO.UserDetails = new UserMasterDTO();
+                            uEntDTO.RoleDetails = new EntitlementDTO();
+
+                            uEntDTO.RowId = (int)dr["UserEntitleMentId"];
+                            uEntDTO.UserDetails.UserMasterId = (int)dr["UserMasterId"];
+                            uEntDTO.RoleDetails.UserRoleId = (int)dr["UserRoleId"];
+
+                            lstUEnt.Add(uEntDTO);
+                        }
+                    }
+                    return lstUEnt;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<UserEntitlementDTO> InsertUserEntitlement(UserEntitlementDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UserEntitlementMap";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@UserMasterId1", MySqlDbType.String).Value = data.UserDetails.UserMasterId;
+                    command.Parameters.Add("@UserRoleId1", MySqlDbType.String).Value = data.RoleDetails.UserRoleId;
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<UserEntitlementDTO> status = new StatusDTO<UserEntitlementDTO>();
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data)
+        {
+            StatusDTO<UserEntitlementDTO> status = new StatusDTO<UserEntitlementDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "DELETE FROM userentitlement WHERE UserEntitleMentId=@UserEntitleMentId";
+                    command.Parameters.Add("@UserEntitleMentId", MySqlDbType.Int32).Value = data.RowId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data)
+        {
+            StatusDTO<UserEntitlementDTO> status = new StatusDTO<UserEntitlementDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE userentitlement set UserRoleId=@UserRoleId1 WHERE UserEntitleMentId=@UserEntitleMentId";
+                    command.Parameters.Add("@UserEntitleMentId", MySqlDbType.Int32).Value = data.RowId;
+                    command.Parameters.Add("@UserRoleId1", MySqlDbType.Int32).Value = data.RoleDetails.UserRoleId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
     }
 }

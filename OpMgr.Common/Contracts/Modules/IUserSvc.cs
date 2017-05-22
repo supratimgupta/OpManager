@@ -10,5 +10,13 @@ namespace OpMgr.Common.Contracts.Modules
     public interface IUserSvc : ICRUDSvc<UserMasterDTO, UserMasterDTO>
     {
         StatusDTO<UserMasterDTO> Login(UserMasterDTO data, out List<EntitlementDTO> roleList, out List<ActionDTO> actionList);
+
+        List<DTOs.UserEntitlementDTO> GetUserEntitlement(int userMasterId);
+
+        StatusDTO<UserEntitlementDTO> InsertUserEntitlement(UserEntitlementDTO data);
+
+        StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data);
+
+        StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data);
     }
 }

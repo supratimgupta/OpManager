@@ -32,20 +32,15 @@ namespace OperationsManager.Areas.User.Controllers
         {
             StatusDTO<List<UserMasterDTO>> status = _userSvc.Select(null);
 
-            UserVM userView = null;
-
+            UserVM userView = userView = new UserVM(); 
+            userView.GenderList = _uiddlRepo.getGenderDropDown();
             if (status != null && status.ReturnObj != null && status.ReturnObj.Count > 0)
             {
-                userView = new UserVM();
-
                 userView.IsSearchSuccessful = true;// Grid is displayed with records
-
-                userView = new UserVM(); // Instantiating Student View model
                 userView.UserList = new List<UserVM>(); // instantiating list of Students
 
                 //Fetch the Gender List
-                userView.GenderList = _uiddlRepo.getGenderDropDown();
-
+                
                 if (status.IsSuccess && !status.IsException)
                 {
                     UserVM searchItem = null;

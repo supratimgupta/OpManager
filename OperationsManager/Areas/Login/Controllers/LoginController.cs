@@ -171,19 +171,9 @@ namespace OperationsManager.Areas.Login.Controllers
                 uvModel.BloodGroup = dto.ReturnObj.BloodGroup;
                 uvModel.Location = dto.ReturnObj.Location;
                 uvModel.Role = dto.ReturnObj.Role;
-                //if (dto.ReturnObj.Role.RoleId == 1)
-                //{
-                //    uvModel.Student = new StudentDTO();
-                //    uvModel.Student.RollNumber = dto.ReturnObj.Student.RollNumber;
-                //    uvModel.Student.RegistrationNumber = dto.ReturnObj.Student.RegistrationNumber;
-                //    uvModel.Student.GuardianContact = dto.ReturnObj.Student.GuardianContact;
-                //    uvModel.Student.GuardianName = dto.ReturnObj.Student.GuardianName;
-                //    uvModel.Student.GuardianEmailId = dto.ReturnObj.Student.GuardianEmailId;
-                //    uvModel.Student.HouseType = dto.ReturnObj.Student.HouseType;
-                //    uvModel.Student.StandardSectionMap = dto.ReturnObj.Student.StandardSectionMap;
-                //}
-                //else if (dto.ReturnObj.Role.RoleId > 1)
-                //{
+                uvModel.UserEntitlementList = _userSvc.GetUserEntitlement(dto.ReturnObj.UserMasterId);
+                uvModel.SelectUserEntitlement = _ddlRepo.GetUserRole();
+
                 uvModel.Employee = new EmployeeDetailsDTO();
                 if (dto.ReturnObj.Employee != null)
                 {
@@ -193,21 +183,14 @@ namespace OperationsManager.Areas.Login.Controllers
                     uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
                     uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
                 }
-                //}
             }
 
             uvModel.GenderList = _uiddlRepo.getGenderDropDown();
             uvModel.LocationList = _uiddlRepo.getLocationDropDown();
             uvModel.RoleList = _uiddlRepo.getRoleDropDown();
-            // uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
-            //uvModel.SectionList = _uiddlRepo.getSectionDropDown();
-            //uvModel.HouseList = _uiddlRepo.getHouseDropDown();
-            //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
-            //uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-
-
+            uvModel.SelectUserEntitlement = _ddlRepo.GetUserRole();
             return View(uvModel);
         }
 
@@ -218,42 +201,60 @@ namespace OperationsManager.Areas.Login.Controllers
             if (string.Equals(uvModel.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 //Call update
-                //if (ModelState.IsValid)
-                //{
 
-                _userSvc.Update(uvModel);
+                StatusDTO<UserMasterDTO> status = _userSvc.Update(uvModel);
 
-                //}
+                if (status.IsSuccess)
+                {
+                    if (uvModel.UserEntitlementList != null && uvModel.UserEntitlementList.Count > 0)
+                    {
+                        for (int i = 0; i < uvModel.UserEntitlementList.Count; i++)
+                        {
+                            if (uvModel.UserEntitlementList[i].RowId > 0)
+                            {
+                                _userSvc.UpdateUserEntitlement(uvModel.UserEntitlementList[i]);
+                            }
+                            else
+                            {
+                                uvModel.UserEntitlementList[i].UserDetails = new UserMasterDTO();
+                                uvModel.UserEntitlementList[i].UserDetails.UserMasterId = uvModel.UserMasterId;
+                                _userSvc.InsertUserEntitlement(uvModel.UserEntitlementList[i]);
+                            }
+                        }
+                    }
+                }
+                
+                return RedirectToAction("Search", "User", new { area = "User" });
             }
             else
             {
                 //Call insert
 
-                //if (ModelState.IsValid)
-                //{
                 string pass = encrypt.encryption(uvModel.Password);
                 uvModel.Password = pass;
-                _userSvc.Insert(uvModel);
+                StatusDTO<UserMasterDTO> status = _userSvc.Insert(uvModel);
 
-                //}                
-            }
-            //if(ModelState.IsValid)
-            //{
-            //}
+                if (status.IsSuccess)
+                {
+                    if (uvModel.UserEntitlementList != null && uvModel.UserEntitlementList.Count > 0)
+                    {
+                        for (int i = 0; i < uvModel.UserEntitlementList.Count; i++)
+                        {
+                            uvModel.UserEntitlementList[i].UserDetails = new UserMasterDTO();
+                            uvModel.UserEntitlementList[i].UserDetails.UserMasterId = status.ReturnObj.UserMasterId;
+                            _userSvc.InsertUserEntitlement(uvModel.UserEntitlementList[i]);
+                        }
+                    }
+                }
+                uvModel.GenderList = _uiddlRepo.getGenderDropDown();
+                uvModel.LocationList = _uiddlRepo.getLocationDropDown();
+                uvModel.RoleList = _uiddlRepo.getRoleDropDown();
+                uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
+                uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
 
-            uvModel.GenderList = _uiddlRepo.getGenderDropDown();
-            uvModel.LocationList = _uiddlRepo.getLocationDropDown();
-            uvModel.RoleList = _uiddlRepo.getRoleDropDown();
-            //uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
-            //uvModel.SectionList = _uiddlRepo.getSectionDropDown();
-            //uvModel.HouseList = _uiddlRepo.getHouseDropDown();
-            //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
-            uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
-            uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
-            //uvModel.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-
-            //return View(uvModel);
-            return RedirectToAction("Search");
+                //return View(uvModel);           
+                return RedirectToAction("Search", "User", new { area = "User" });
+            }                
         }
 
         [HttpGet]
@@ -387,9 +388,9 @@ namespace OperationsManager.Areas.Login.Controllers
                 if (!string.Equals(userView.NewPassword, userView.ConfirmPassword))
                 {
                     userView.SuccessorFailureMessage = "New Password and Confirm Password does not match!!";
-                     userView.MessageColor = "red";
+                    userView.MessageColor = "red";
                 }
-                else if(string.Equals(userView.Password,userView.NewPassword))
+                else if (string.Equals(userView.Password, userView.NewPassword))
                 {
                     userView.SuccessorFailureMessage = "Password and New Password should not match!!";
                     userView.MessageColor = "red";
@@ -410,6 +411,24 @@ namespace OperationsManager.Areas.Login.Controllers
                 }
             }
             return View(userView);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetUserEntitlementDDL()
+        {
+            return Json(_ddlRepo.GetUserRole(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeleteUserEntitlement(UserEntitlementDTO uTrans)
+        {
+            if (_userSvc.DeleteUserEntitlement(uTrans).IsSuccess)
+            {
+                return Json(new { status = true, message = "Deleted successfully." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, message = "Delete failed." }, JsonRequestBehavior.AllowGet);
         }
     }
 
