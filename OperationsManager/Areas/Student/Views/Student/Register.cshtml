@@ -12,7 +12,7 @@
     <script>
         $(document).ready(function () {
             var registerstudentform = $("#registerstudentform");
-            $("#registerstudentform").validate();
+            $("#registerstudentform").validate({ ignore: "" });
 
             $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
