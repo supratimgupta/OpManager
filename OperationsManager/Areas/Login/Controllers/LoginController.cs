@@ -185,6 +185,9 @@ namespace OperationsManager.Areas.Login.Controllers
                 {
                     uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
                     uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
+
+                    uvModel.DOJString = uvModel.Employee.DateOfJoining.HasValue ? uvModel.Employee.DateOfJoining.Value.ToString("dd-MM-yyyy") : string.Empty;
+
                     uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
                     uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
                     uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
@@ -209,6 +212,15 @@ namespace OperationsManager.Areas.Login.Controllers
             if (DateTime.TryParse(uvModel.DOBString, out dtValidator))
             {
                 uvModel.DOB = dtValidator;
+            }
+
+            if(DateTime.TryParse(uvModel.DOJString, out dtValidator))
+            {
+                if(uvModel.Employee==null)
+                {
+                    uvModel.Employee = new EmployeeDetailsDTO();
+                }
+                uvModel.Employee.DateOfJoining = dtValidator;
             }
 
             if (string.Equals(uvModel.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))

@@ -40,5 +40,7 @@ namespace OperationsManager.Areas.Login.Models
         public string DisabledClass { get; set; }
 
         public string DOBString { get; set; }
+
+        public string DOJString { get; set; }
     }
 }

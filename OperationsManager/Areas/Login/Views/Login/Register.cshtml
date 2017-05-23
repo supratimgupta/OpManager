@@ -195,7 +195,7 @@
                                 @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Gender is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.Employee.DateOfJoining, UserResource.DateOfJoining, new { @class = "dateofjoining form-control", data_rule_required = "true", data_msg_required = "Date of joining is required" })
+                                @Html.OpMgrTextBoxFor(m => m.DOJString, UserResource.DateOfJoining, new { @class = "dateofjoining form-control", data_rule_required = "true", data_msg_required = "Date of joining is required" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Staff EmployeeId is required" })
