@@ -92,7 +92,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
                 studView.UserDetails.Image = dto.ReturnObj.UserDetails.Image;
                 studView.UserDetails.DOB = dto.ReturnObj.UserDetails.DOB;
-                studView.DOBString = studView.UserDetails.DOB.HasValue ? studView.UserDetails.DOB.Value.ToString("dd-MM-yyyy") : string.Empty;
+                studView.DOBString = studView.UserDetails.DOB.HasValue ? studView.UserDetails.DOB.Value.ToString("dd-MMM-yyyy") : string.Empty;
                 studView.UserDetails.EmailId = dto.ReturnObj.UserDetails.EmailId;
                 studView.UserDetails.ResidentialAddress = dto.ReturnObj.UserDetails.ResidentialAddress;
                 studView.UserDetails.PermanentAddress = dto.ReturnObj.UserDetails.PermanentAddress;
@@ -470,7 +470,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 //if (ModelState.IsValid)
                 //{   
-                string pass = encrypt.encryption(studentView.UserDetails.Password);
+                string pass = !string.IsNullOrEmpty(studentView.UserDetails.Password)? encrypt.encryption(studentView.UserDetails.Password):null;
                 studentView.UserDetails.Password = pass;
                 StatusDTO<StudentDTO> status = _studSvc.Insert(studentView);
                 studentView.UserDetails = new UserMasterDTO();

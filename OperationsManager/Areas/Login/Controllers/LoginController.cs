@@ -168,7 +168,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 uvModel.Gender = dto.ReturnObj.Gender;
                 uvModel.Image = dto.ReturnObj.Image;
                 uvModel.DOB = dto.ReturnObj.DOB;
-                uvModel.DOBString = uvModel.DOB.HasValue ? uvModel.DOB.Value.ToString("dd-MM-yyyy") : string.Empty;
+                uvModel.DOBString = uvModel.DOB.HasValue ? uvModel.DOB.Value.ToString("dd-MMM-yyyy") : string.Empty;
                 uvModel.EmailId = dto.ReturnObj.EmailId;
                 uvModel.ResidentialAddress = dto.ReturnObj.ResidentialAddress;
                 uvModel.PermanentAddress = dto.ReturnObj.PermanentAddress;
@@ -186,7 +186,7 @@ namespace OperationsManager.Areas.Login.Controllers
                     uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
                     uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
 
-                    uvModel.DOJString = uvModel.Employee.DateOfJoining.HasValue ? uvModel.Employee.DateOfJoining.Value.ToString("dd-MM-yyyy") : string.Empty;
+                    uvModel.DOJString = uvModel.Employee.DateOfJoining.HasValue ? uvModel.Employee.DateOfJoining.Value.ToString("dd-MMM-yyyy") : string.Empty;
 
                     uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
                     uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
