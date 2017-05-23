@@ -201,7 +201,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Register(Models.UserViewModel uvModel)
         {
 
