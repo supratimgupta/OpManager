@@ -184,7 +184,7 @@
     <value>Transaction</value>
   </data>
   <data name="TransactionEntry" xml:space="preserve">
-    <value>RULES FOR FEES STRUCTURE</value>
+    <value>TRANSACTION ENTRY</value>
   </data>
   <data name="TransactionMaster" xml:space="preserve">
     <value>RULES FOR FEES STYLE</value>
@@ -193,7 +193,7 @@
     <value>Add Transaction Rule</value>
   </data>
   <data name="TransactionRuleSearch" xml:space="preserve">
-    <value>TRANSACTION ENTRY</value>
+    <value>RULES FOR FEES STRUCTURE</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>User</value>

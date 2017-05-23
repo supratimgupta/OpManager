@@ -259,7 +259,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RULES FOR FEES STRUCTURE.
+        ///   Looks up a localized string similar to TRANSACTION ENTRY.
         /// </summary>
         public static string TransactionEntry {
             get {
@@ -286,7 +286,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TRANSACTION ENTRY.
+        ///   Looks up a localized string similar to RULES FOR FEES STRUCTURE.
         /// </summary>
         public static string TransactionRuleSearch {
             get {
