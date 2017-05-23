@@ -149,7 +149,7 @@
                 @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform" }))
                 {
                     @Html.AntiForgeryToken()
-                     <fieldset>
+                    <fieldset>
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                             @Html.HiddenFor(m => m.MODE)
@@ -204,53 +204,59 @@
                             @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
                         </div>
                         @*</div>*@
-                         <div class="row">
-                             <table id="tblRoles" class="table table table-striped table-bordered table-responsive table-hover">
-                                 <thead>
-                                     <tr>
-                                         <th colspan="5">
-                                             Assign Role
-                                         </th>
-                                     </tr>
-                                     <tr>
-                                         <th colspan="5">
-                                             <input type="button" class="btn btn-primary" style="width:70px" onclick="assignRoles();" value="+Add" />
-                                         </th>
-                                     </tr>
-                                     <tr>
-                                         <th style="display:none;"></th>
-                                         <th>Roles</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                     @if (Model.UserEntitlementList != null && Model.UserEntitlementList.Count > 0)
-                                     {
-                                         for (int i = 0; i < Model.UserEntitlementList.Count; i++)
-                                         {
-                                             <tr>
-                                                 <td style="display:none;">
-                                                     <input type="hidden" name="UserEntitlementList[@i].RowId" value="@Model.UserEntitlementList[i].RowId" />
-                                                 </td>
-                                                 <td>
-                                                     <select name="UserEntitlementList[@i].RoleDetails.UserRoleId" class="form-control">
-                                                         @foreach (OpMgr.Common.DTOs.EntitlementDTO trUEnt in Model.SelectUserEntitlement)
-                                                         {
-                                                             <option value="@trUEnt.UserRoleId" @(Model.UserEntitlementList[i].RoleDetails.UserRoleId == trUEnt.UserRoleId ? "selected=\"selected\"" : "")>@trUEnt.RoleName</option>
-                                                         }
-                                                     </select>
-                                                 </td>
-                                                 <td>
-                                                     <a onclick="deleteUserEntitleMent('@Model.UserEntitlementList[i].RowId');" style="cursor:pointer;">Delete</a>
-                                                 </td>
-                                             </tr>
-                                         }
-                                     }
-                                 </tbody>
+                        <div class="row">
+                            <table id="tblRoles" class="table table table-striped table-bordered table-responsive table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">
+                                            Assign Role
+                                        </th>
+                                    </tr>
+                                    @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <tr>
+                                            <th colspan="5">
+                                                <input type="button" class="btn btn-primary" style="width:70px" onclick="assignRoles();" value="+Add" />
+                                            </th>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <th style="display:none;"></th>
+                                        <th>Roles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.UserEntitlementList != null && Model.UserEntitlementList.Count > 0)
+                                    {
+                                        for (int i = 0; i < Model.UserEntitlementList.Count; i++)
+                                        {
+                                            <tr>
+                                                <td style="display:none;">
+                                                    <input type="hidden" name="UserEntitlementList[@i].RowId" value="@Model.UserEntitlementList[i].RowId" />
+                                                </td>
+                                                <td>
+                                                    <select name="UserEntitlementList[@i].RoleDetails.UserRoleId" class="form-control">
+                                                        @foreach (OpMgr.Common.DTOs.EntitlementDTO trUEnt in Model.SelectUserEntitlement)
+                                                        {
+                                                            <option value="@trUEnt.UserRoleId" @(Model.UserEntitlementList[i].RoleDetails.UserRoleId == trUEnt.UserRoleId ? "selected=\"selected\"" : "")>@trUEnt.RoleName</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                                    {
+                                                        <a onclick="deleteUserEntitleMent('@Model.UserEntitlementList[i].RowId');" style="cursor:pointer;">Delete</a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
 
-                             </table>
+                            </table>
 
-                         </div>
-                        @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                        </div>
+                        @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase) && !string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                         {
                             <div id="divcredentials">
                                 <div class="col-lg-10">
@@ -264,13 +270,15 @@
                                 </div>
                             </div>
                         }
-                        <div class="col-lg-4">
-                            <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
-                        </div>
+                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <div class="col-lg-4">
+                                <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
+                            </div>
+                        }
                     </fieldset>
                 }
             </div>
         </div>
     </div><!-- /.col-->
 </div>
-

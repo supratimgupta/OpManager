@@ -147,11 +147,11 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
             uvModel.MODE = mode;
-            if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
                 uvModel.UserMasterId = int.Parse(id);
             }
-            if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
                 //Populate edit data using id passed in URL, if id==null then show error message
                 StatusDTO<UserMasterDTO> dto = _userSvc.Select(Convert.ToInt32(id));

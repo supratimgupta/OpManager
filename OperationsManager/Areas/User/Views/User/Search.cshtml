@@ -193,9 +193,10 @@
                                                     @user.Role.RoleDescription
 
                                                 </td>
-                                                <td>
-                                                    <a href="/Login/Login/Register?mode=EDIT&id=@user.UserMasterId">Edit</a>
-                                                    @Html.ActionLink("Delete", "Delete", new { studentId = user.UserMasterId }, null)
+                                                <td>                                                    
+                                                    @Html.OpMgrActionLinkMultiple("View", "Register", "Login", new { mode = "VIEW", id = user.UserMasterId ,Area="Login"}, new { name = "viewStaff" })
+                                                    @Html.OpMgrActionLinkMultiple("Edit", "Register", "Login", new { mode = "EDIT", id = user.UserMasterId ,Area="Login"}, new { name = "editStaff" })
+                                                    @Html.OpMgrActionLinkMultiple("Delete", "Delete", new { userMasterId = user.UserMasterId }, new { name = "delStaff" })
                                                 </td>
                                             </tr>
                                         }

@@ -377,11 +377,14 @@
                                                         Fees applicable to this student
                                                     </th>
                                                 </tr>
-                                                <tr>
-                                                    <th colspan="5">
-                                                        <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
-                                                    </th>
-                                                </tr>
+                                                @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            <input type="button" class="btn btn-primary" style="width:70px" onclick="addTransactionItems();" value="+Add" />
+                                                        </th>
+                                                    </tr>
+                                                }
                                                 <tr>
                                                     <th style="display:none;"></th>
                                                     <th>Fees</th>
@@ -395,37 +398,40 @@
                                                 {
                                                     for (int i = 0; i < Model.Transactions.Count; i++)
                                                     {
-                                                <tr>
-                                                    <td style="display:none;">
-                                                        <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
-                                                    </td>
-                                                    <td>
-                                                        <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
-                                                            @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
+                                                        <tr>
+                                                            <td style="display:none;">
+                                                                <input type="hidden" name="Transactions[@i].UserTransactionId" value="@Model.Transactions[i].UserTransactionId" />
+                                                            </td>
+                                                            <td>
+                                                                <select name="Transactions[@i].Transaction.TranMasterId" class="form-control">
+                                                                    @foreach (OpMgr.Common.DTOs.TransactionMasterDTO trMaster in Model.TransactionMasterSelectList)
                                                                     {
-                                                            <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
+                                                                        <option value="@trMaster.TranMasterId" @(Model.Transactions[i].Transaction.TranMasterId == trMaster.TranMasterId ? "selected=\"selected\"" : "")>@trMaster.TransactionName</option>
                                                                     }
-                                                        </select>
+                                                                </select>
 
-                                                        @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
-                                                    </td>
-                                                    <td>
-                                                        <select name="Transactions[@i].GraceAmountIn" class="form-control">
-                                                            @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
+                                                                @*@Html.OpMgrDropDownListFor(m => m.Transactions[i].Transaction.TranMasterId, Model.TransactionMasters, "")*@
+                                                            </td>
+                                                            <td>
+                                                                <select name="Transactions[@i].GraceAmountIn" class="form-control">
+                                                                    @foreach (OpMgr.Common.DTOs.KeyValueDTO keyVal in Model.CalcInSelectList)
                                                                     {
-                                                            <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
+                                                                        <option value="@keyVal.Key" @(string.Equals(Model.Transactions[i].GraceAmountIn, keyVal.Key, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : "")>@keyVal.Value</option>
                                                                     }
-                                                        </select>
-                                                        @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
-                                                        @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
-                                                    </td>
-                                                    <td>
-                                                        <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
-                                                    </td>
-                                                </tr>
+                                                                </select>
+                                                                @*@Html.OpMgrDropDownListFor(m=>m.Transactions[i].GraceAmountIn, Model.GraceAmountOnList, "")*@
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="Transactions[@i].GraceAmount" value="@Model.Transactions[i].GraceAmount" class="form-control" />
+                                                                @*@Html.OpMgrTextBoxFor(m=>m.Transactions[i].GraceAmount,"")*@
+                                                            </td>
+                                                            <td>
+                                                                @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                                                {
+                                                                    <a onclick="deleteUserTrans('@Model.Transactions[i].UserTransactionId');" style="cursor:pointer;">Delete</a>
+                                                                }
+                                                            </td>
+                                                        </tr>
                                                     }
                                                 }
                                             </tbody>
@@ -433,7 +439,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="logininfo">
-                                    @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                                    @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase) && !string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                                     {
                                         <div id="divcredentials">
                                             <div class="col-lg-10">
@@ -451,7 +457,7 @@
                                 </div>
                                 @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    <div class="col-lg-10">                                        
+                                    <div class="col-lg-10">
                                         <button type="submit" class="btn btn-primary block">@UserResource.RegisterButton</button>
                                     </div>
                                 }
