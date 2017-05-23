@@ -69,10 +69,14 @@ namespace OperationsManager.Areas.Student.Controllers
             Models.StudentVM studView = new Models.StudentVM();
             studView.UserDetails = new UserMasterDTO();
             studView.MODE = mode;
-
+            studView.DisabledClass = "";
             if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 studView.UserDetails.UserMasterId = int.Parse(id);
+            }
+            if(string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
+            {
+                studView.DisabledClass = "disabledDiv";
             }
             studView.Transactions = new List<UserTransactionDTO>();
             if (mode != null && (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase)))
@@ -88,6 +92,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
                 studView.UserDetails.Image = dto.ReturnObj.UserDetails.Image;
                 studView.UserDetails.DOB = dto.ReturnObj.UserDetails.DOB;
+                studView.DOBString = studView.UserDetails.DOB.HasValue ? studView.UserDetails.DOB.Value.ToString("dd-MM-yyyy") : string.Empty;
                 studView.UserDetails.EmailId = dto.ReturnObj.UserDetails.EmailId;
                 studView.UserDetails.ResidentialAddress = dto.ReturnObj.UserDetails.ResidentialAddress;
                 studView.UserDetails.PermanentAddress = dto.ReturnObj.UserDetails.PermanentAddress;
@@ -417,6 +422,16 @@ namespace OperationsManager.Areas.Student.Controllers
                         SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
                     }
                 }
+            }
+
+            DateTime dtValidator = new DateTime();
+            if(DateTime.TryParse(studentView.DOBString, out dtValidator))
+            {
+                if(studentView.UserDetails==null)
+                {
+                    studentView.UserDetails = new UserMasterDTO();
+                }
+                studentView.UserDetails.DOB = dtValidator;
             }
 
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))

@@ -74,5 +74,9 @@ namespace OperationsManager.Areas.Student.Models
         public string FatherImagePath { get; set; }
 
         public string MotherImagePath { get; set; }
+
+        public string DisabledClass { get; set; }
+
+        public string DOBString { get; set; }
     }
 }
