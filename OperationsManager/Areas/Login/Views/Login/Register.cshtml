@@ -150,6 +150,9 @@
                 {
                     @Html.AntiForgeryToken()
                     <div class="@Model.DisabledClass">
+                        <div class="row">
+                            @Html.ActionLink("Back", "Search", "User", new {Area="User" }, null)
+                        </div>
                         <fieldset>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
