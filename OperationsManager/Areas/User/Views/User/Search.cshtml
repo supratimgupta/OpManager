@@ -30,6 +30,11 @@
             });
         });
 
+        function redirectToAdd()
+        {
+            window.location.href = "../../Login/Login/Register";
+        }
+
         function rowStyle(row, index) {
             var classes = ['active', 'success', 'info', 'warning', 'danger'];
 
@@ -101,7 +106,8 @@
                             </div>
 
                             <div class="col-lg-2">
-                                <button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>
+                                @Html.OpMgrButton("btnAdd", UserResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", style = "", onclick = "redirectToAdd();" })
+                                @*<button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>*@
                             </div>
                         </fieldset>
                     }

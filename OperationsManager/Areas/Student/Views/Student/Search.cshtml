@@ -21,7 +21,12 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
-
+    <script language="javascript" type="text/javascript">
+        function redirectToAdd()
+        {
+            window.location.href = "Register";
+        }
+    </script>
 </head>
 <body>
 
@@ -57,7 +62,8 @@
                             </div>
 
                             <div class="col-lg-2">
-                                <button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>
+                                @Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })
+                                @*<button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>*@
                             </div>
                         </fieldset>
                     }
