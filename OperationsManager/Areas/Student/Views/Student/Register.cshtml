@@ -172,10 +172,11 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
             <div class="panel-body">
+                <div class="row">
+                    @Html.ActionLink("Back", "Search")
+                </div>
                 <div class="@Model.DisabledClass">
-                    <div class="row">
-                        @Html.ActionLink("Back", "Search")
-                    </div>
+                    
                     <fieldset>
                         <div id="tabStudent" class="container">
                             <ul class="nav nav-tabs">
