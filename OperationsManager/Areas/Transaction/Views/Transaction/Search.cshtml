@@ -95,7 +95,7 @@
                                         <th>
                                             @TransactionSearch.Col13
                                         </th>
-                                        <th></th>
+                                        @*<th></th>*@
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -156,13 +156,13 @@
                                             <td>
                                                 @(Model.SearchResult[i].TransactionRule != null ? Model.SearchResult[i].TransactionRule.RuleName : "")
                                             </td>
-                                            <td align="center">
+                                            @*<td align="center">
                                                 @if (Model.SearchResult[i].IsCompleted == null || !Model.SearchResult[i].IsCompleted.Value)
                                                 {
                                                     @Html.ActionLink(TransactionSearch.PaymentLinkText, "WorkOnTransaction", new { id = Model.SearchResult[i].TransactionLogId })
                                                 }
 
-                                            </td>
+                                            </td>*@
                                         </tr>
                                     }
                                 </tbody>

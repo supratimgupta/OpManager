@@ -71,6 +71,8 @@
             newRow.appendChild(fifthCell);
 
             tbody.appendChild(newRow);
+
+            return false;
         }
 
         function deleteRow(aDelete) {
@@ -175,31 +177,31 @@
                 <div class="row">
                     @Html.ActionLink("Back", "Search")
                 </div>
-                <div class="@Model.DisabledClass">
-                    
-                    <fieldset>
-                        <div id="tabStudent" class="container">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#basicinfo" data-toggle="tab">Basic Details</a>
-                                </li>
-                                <li>
-                                    <a href="#familyinfo" data-toggle="tab">Family Details</a>
-                                </li>
-                                <li>
-                                    <a href="#schoolinfo" data-toggle="tab">School Details</a>
-                                </li>
-                                <li>
-                                    <a href="#feesinfo" data-toggle="tab">Fees Details</a>
-                                </li>
-                                <li>
-                                    <a href="#logininfo" data-toggle="tab">Login Details</a>
-                                </li>
-                            </ul>
-                            @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { id = "registerstudentform", enctype = "multipart/form-data" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <div class="tab-content ">
+
+                <fieldset>
+                    <div id="tabStudent" class="container">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#basicinfo" data-toggle="tab">Basic Details</a>
+                            </li>
+                            <li>
+                                <a href="#familyinfo" data-toggle="tab">Family Details</a>
+                            </li>
+                            <li>
+                                <a href="#schoolinfo" data-toggle="tab">School Details</a>
+                            </li>
+                            <li>
+                                <a href="#feesinfo" data-toggle="tab">Fees Details</a>
+                            </li>
+                            <li>
+                                <a href="#logininfo" data-toggle="tab">Login Details</a>
+                            </li>
+                        </ul>
+                        @using (Html.BeginForm("Register", "Student", FormMethod.Post, new { id = "registerstudentform", enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div>
+                                <div class="tab-content @Model.DisabledClass">
                                     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                                     {
                                         <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
@@ -467,12 +469,12 @@
                                         </div>
                                     }
                                 </div>
-                            }
-                        </div>
+                            </div>
+                        }
+                    </div>
 
 
-                    </fieldset>
-                </div>
+                </fieldset>
             </div>
         </div>
     </div><!-- /.col-->

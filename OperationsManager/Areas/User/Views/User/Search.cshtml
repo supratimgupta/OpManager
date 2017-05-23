@@ -199,10 +199,10 @@
                                                     @user.Role.RoleDescription
 
                                                 </td>
-                                                <td>                                                    
-                                                    @Html.OpMgrActionLinkMultiple("View", "Register", "Login", new { mode = "VIEW", id = user.UserMasterId ,Area="Login"}, new { name = "viewStaff" })
-                                                    @Html.OpMgrActionLinkMultiple("Edit", "Register", "Login", new { mode = "EDIT", id = user.UserMasterId ,Area="Login"}, new { name = "editStaff" })
-                                                    @Html.OpMgrActionLinkMultiple("Delete", "Delete", new { userMasterId = user.UserMasterId }, new { name = "delStaff" })
+                                                <td>
+                                                    @Html.OpMgrActionLinkMultiple("VIEW", "../../Login/Login/Register?mode=VIEW&id="+user.UserMasterId, new { name = "viewStaff" })                                                    
+                                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../Login/Login/Register?mode=EDIT&id=" + user.UserMasterId, new { name = "editStaff" })
+                                                    @Html.OpMgrActionLinkMultiple("DELETE", "../../Login/Login/Delete?id=" + user.UserMasterId, new { name = "delStaff" })
                                                 </td>
                                             </tr>
                                         }

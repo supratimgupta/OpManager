@@ -154,7 +154,7 @@ namespace OperationsManager.Areas.Login.Controllers
             }
             if(string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
-                uvModel.DisabledClass = "disabledDiv";
+                uvModel.DisabledClass = "disabledPlace";
             }
             if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {

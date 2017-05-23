@@ -134,9 +134,9 @@
                                                     @student.FatherContact
                                                 </td>
                                                 <td>
-                                                    @Html.OpMgrActionLinkMultiple("View","Register",new { mode="VIEW",id= student.UserDetails.UserMasterId }, new {name="viewStudent" })
-                                                    @Html.OpMgrActionLinkMultiple("Edit", "Register", new { mode = "EDIT", id = student.UserDetails.UserMasterId }, new { name = "editStudent" })
-                                                    @Html.OpMgrActionLinkMultiple("Delete", "Delete", new { studentId = student.UserDetails.UserMasterId }, new { name = "delStudent" })
+                                                    @Html.OpMgrActionLinkMultiple("VIEW", "Register?mode=VIEW&id="+ student.UserDetails.UserMasterId, new { name = "viewStudent" })
+                                                    @Html.OpMgrActionLinkMultiple("EDIT", "Register?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
+                                                    @Html.OpMgrActionLinkMultiple("DELETE", "Delete?id=" + student.UserDetails.UserMasterId, new { name = "delStudent" })
                                                 </td>
                                             </tr>
                                         }

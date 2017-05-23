@@ -88,6 +88,8 @@
             newRow.appendChild(thirdCell);
 
             tbody.appendChild(newRow);
+
+            return false;
         }
 
         function deleteRow(aDelete) {
@@ -152,8 +154,8 @@
                     <div class="row">
                         @Html.ActionLink("Back", "Search", "User", new { Area = "User" }, null)
                     </div>
-                    <div class="@Model.DisabledClass">
-                        <fieldset>
+                    <div>
+                        <fieldset class="@Model.DisabledClass">
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                                 @Html.HiddenFor(m => m.MODE)
