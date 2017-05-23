@@ -159,6 +159,9 @@
   <data name="Col9" xml:space="preserve">
     <value>Due Amt</value>
   </data>
+  <data name="ColAdjstAmt" xml:space="preserve">
+    <value>Adjusted Amt</value>
+  </data>
   <data name="EmployeeId" xml:space="preserve">
     <value>Employee Id</value>
   </data>

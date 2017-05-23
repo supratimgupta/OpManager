@@ -178,7 +178,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PAYMENT HISTORY.
+        ///   Looks up a localized string similar to PAYMENT.
         /// </summary>
         public static string Payment {
             get {
@@ -223,7 +223,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FEES.
+        ///   Looks up a localized string similar to PAYMENT HISTORY.
         /// </summary>
         public static string SearchTransaction {
             get {

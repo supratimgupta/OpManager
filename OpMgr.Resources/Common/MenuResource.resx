@@ -157,7 +157,7 @@
     <value>My Transactions</value>
   </data>
   <data name="Payment" xml:space="preserve">
-    <value>PAYMENT HISTORY</value>
+    <value>PAYMENT</value>
   </data>
   <data name="PrincipalPanel" xml:space="preserve">
     <value>PRINCIPAL PANEL</value>
@@ -172,7 +172,7 @@
     <value>RULES CREATION</value>
   </data>
   <data name="SearchTransaction" xml:space="preserve">
-    <value>FEES</value>
+    <value>PAYMENT HISTORY</value>
   </data>
   <data name="SearchUser" xml:space="preserve">
     <value>STAFF</value>

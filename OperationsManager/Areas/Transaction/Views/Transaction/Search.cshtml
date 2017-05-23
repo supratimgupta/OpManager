@@ -87,6 +87,9 @@
                                             @TransactionSearch.Col9
                                         </th>
                                         <th>
+                                            @TransactionSearch.ColAdjstAmt
+                                        </th>
+                                        <th>
                                             @TransactionSearch.Col11
                                         </th>
                                         <th>
@@ -139,6 +142,12 @@
                                                 @if (Model.SearchResult[i].DueAmount != null)
                                                 {
                                                     @Model.SearchResult[i].DueAmount.ToString()
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.SearchResult[i].AdjustedAmount != null)
+                                                {
+                                                    @Model.SearchResult[i].AdjustedAmount.ToString()
                                                 }
                                             </td>
                                             <td>

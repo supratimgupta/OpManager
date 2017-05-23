@@ -187,6 +187,15 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adjusted Amt.
+        /// </summary>
+        public static string ColAdjstAmt {
+            get {
+                return ResourceManager.GetString("ColAdjstAmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee Id.
         /// </summary>
         public static string EmployeeId {

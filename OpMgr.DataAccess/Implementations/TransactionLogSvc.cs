@@ -480,7 +480,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "SELECT DISTINCT um.FName, um.MName, um.LName, tl.TransactionLogId" +
-                                          ", tl.TransactionDate, tl.TransactionDueDate, tl.ParentTransactionLogId, tl.IsCompleted, tm.TransactionName, tl.CompletedOn, tl.AmountImposed, tl.AmountGiven, tl.DueAmount" +
+                                          ", tl.TransactionDate, tl.TransactionDueDate, tl.ParentTransactionLogId, tl.IsCompleted, tm.TransactionName, tl.CompletedOn, tl.AmountImposed, tl.AmountGiven, tl.DueAmount, tl.AdjustedAmount, tl.IsPrincipalApproved" +
                                           ", tl.TransferMode, l.LocationDescription, tl.TransactionType, tl.HasPenalty, tl.OriginalTransactionLogId, tr.RuleName FROM transactionlog tl LEFT JOIN usermaster um" +
                                           " ON um.UserMasterId=tl.UserMasterId LEFT JOIN transactionmaster tm ON tm.TranMasterId=tl.TranMasterId LEFT JOIN transactionrule tr ON tr.TranRuleId=tl.TranRuleId" +
                                           " LEFT JOIN studentinfo si ON tl.UserMasterId=si.UserMasterId LEFT JOIN employeedetails ed ON ed.UserMasterId=tl.UserMasterId LEFT JOIN location l ON l.LocationId=tl.LocationId WHERE tl.Active=1";
@@ -574,6 +574,7 @@ namespace OpMgr.DataAccess.Implementations
                             trLog.OriginalTransLog.TransactionLogId = string.IsNullOrEmpty(dr["OriginalTransactionLogId"].ToString()) ? -1 : (int)dr["OriginalTransactionLogId"];
                             trLog.TransactionRule = new TransactionRuleDTO();
                             trLog.TransactionRule.RuleName = dr["RuleName"].ToString();
+                            trLog.AdjustedAmount = string.IsNullOrEmpty(dr["AdjustedAmount"].ToString()) ? 0.0 : double.Parse(dr["AdjustedAmount"].ToString());
                             status.ReturnObj.Add(trLog);
                         }
                     }
