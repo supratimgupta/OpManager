@@ -36,5 +36,9 @@ namespace OperationsManager.Areas.Login.Models
 
 
         //public BookMasterDTO BookMaster { get; set; }
+
+        public string DisabledClass { get; set; }
+
+        public string DOBString { get; set; }
     }
 }

@@ -147,9 +147,14 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             Models.UserViewModel uvModel = new Models.UserViewModel();
             uvModel.MODE = mode;
+            uvModel.DisabledClass = string.Empty;
             if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
                 uvModel.UserMasterId = int.Parse(id);
+            }
+            if(string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
+            {
+                uvModel.DisabledClass = "disabledDiv";
             }
             if (mode != null && string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
@@ -163,6 +168,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 uvModel.Gender = dto.ReturnObj.Gender;
                 uvModel.Image = dto.ReturnObj.Image;
                 uvModel.DOB = dto.ReturnObj.DOB;
+                uvModel.DOBString = uvModel.DOB.HasValue ? uvModel.DOB.Value.ToString("dd-MM-yyyy") : string.Empty;
                 uvModel.EmailId = dto.ReturnObj.EmailId;
                 uvModel.ResidentialAddress = dto.ReturnObj.ResidentialAddress;
                 uvModel.PermanentAddress = dto.ReturnObj.PermanentAddress;
@@ -198,6 +204,13 @@ namespace OperationsManager.Areas.Login.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(Models.UserViewModel uvModel)
         {
+
+            DateTime dtValidator = new DateTime();
+            if (DateTime.TryParse(uvModel.DOBString, out dtValidator))
+            {
+                uvModel.DOB = dtValidator;
+            }
+
             if (string.Equals(uvModel.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 //Call update
