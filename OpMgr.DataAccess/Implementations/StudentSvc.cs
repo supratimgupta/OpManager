@@ -84,7 +84,14 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@FathersOccupation", MySqlDbType.String).Value = data.FatherOccupation;
                     command.Parameters.Add("@FathersOrganisationName", MySqlDbType.String).Value = data.FatherOrganisationName;
                     command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;
-                    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
+                    if (Convert.ToInt32(data.StandardSectionMap.StandardSectionId) > 0)
+                    {
+                        command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     command.Parameters.Add("@HouseTypeId", MySqlDbType.Int32).Value = data.HouseType.HouseTypeId;
                     command.Parameters.Add("@MothersName", MySqlDbType.String).Value = data.MotherName;
                     command.Parameters.Add("@MothersQualification", MySqlDbType.String).Value = data.MotherQualification;
