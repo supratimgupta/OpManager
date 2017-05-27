@@ -20,6 +20,10 @@ namespace OperationsManager.Areas.Login.Models
 
         public SelectList DesignationList { get; set; }
 
+        public SelectList ClassTypeList { get; set; }
+
+        public SelectList SubjectList { get; set; }
+
         public string MODE { get; set; }
 
         public int HdnUserMasterId { get; set; }

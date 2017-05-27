@@ -158,6 +158,40 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public List<SubjectDTO> Subject()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select SubjectId,SubjectName from Subject where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<SubjectDTO> lstClassType = new List<SubjectDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        SubjectDTO subjectDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            subjectDTO = new SubjectDTO();
+                            subjectDTO.SubjectId = (int)dr["SubjectId"];
+                            subjectDTO.SubjectName = dr["SubjectName"].ToString();
+                            lstClassType.Add(subjectDTO);
+                        }
+                    }
+                    return lstClassType;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
         public List<SectionDTO> Section()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))

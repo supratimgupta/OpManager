@@ -324,4 +324,7 @@
   <data name="AddCommand" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="SubjectType" xml:space="preserve">
+    <value>Select Specilization</value>
+  </data>
 </root>

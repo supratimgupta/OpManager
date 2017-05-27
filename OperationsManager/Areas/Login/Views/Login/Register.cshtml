@@ -18,38 +18,60 @@
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
             $('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
 
-            var roleId = $("#Role_RoleId").val();
-            if (roleId == 1) {
-                $("#divStudent").show();
-                $("#divStaff").hide();
-            }
-            else if (roleId == 3 || roleId == 4) {
-                $("#divStudent").hide();
-                $("#divStaff").show();
-            }
+            // If Department = Teaching THEN ClassType will display, If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
+            var deptId = $("#Employee_Department_DepartmentId").val();
+            if (deptId == 1) {
+                $("#divClasstype").show();
+                
+                var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
+                if(classTypeId > 2)
+                {
+                    $("#divSpecilizaion").show();
+                }
+                else
+                {
+                    $("#divSpecilizaion").hide();
+                }
+            }            
             else {
-                $("#divStudent").hide();
-                $("#divStaff").hide();
+                $("#divClasstype").hide();
+                $("#divSpecilizaion").hide();
             }
 
-            $("#Role_RoleId").change(function () {
-                var roleId = $("#Role_RoleId").val();
+            // If Selected Department = Teaching THEN ClassType will display, If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
+            $("#Employee_Department_DepartmentId").change(function () {
+                var deptId = $("#Employee_Department_DepartmentId").val();
 
-                if (roleId == 1) {
-                    $("#divStudent").show();
+                if (deptId == 1) {
+                    $("#divClasstype").show();
 
+                    $("#Employee_ClassType_ClassTypeId").change(function () {
+                        var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
+                        if (classTypeId > 2) {
+                            $("#divSpecilizaion").show();
+                        }
+                        else
+                        {
+                            $("#divSpecilizaion").hide();
+                        }
+                    });                    
                 }
                 else {
-                    $("#divStudent").hide();
-                }
-
-                if (roleId == 3 || roleId == 4) {
-                    $("#divStaff").show();
-                }
-                else {
-                    $("#divStaff").hide();
+                    $("#divClasstype").hide();
+                    $("#divSpecilizaion").hide();
                 }
                 return false;
+            });
+
+            //If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
+            $("#Employee_ClassType_ClassTypeId").change(function () {
+                var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
+                if (classTypeId > 2) {
+                    $("#divSpecilizaion").show();
+                }
+                else {
+                    $("#divSpecilizaion").hide();
+                }
             });
 
         });
@@ -174,7 +196,7 @@
                                 @Html.OpMgrTextBoxFor(m => m.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control email", data_rule_required = "true", data_msg_required = "Valid Email is required" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.DOBString, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
@@ -204,10 +226,17 @@
                                 @Html.OpMgrTextBoxFor(m => m.Employee.EducationalQualification, UserResource.EducationQualification, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Education Qualificattion is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5" id="divClasstype">
+                                @Html.OpMgrDropDownListFor(m => m.Employee.ClassType.ClassTypeId, Model.ClassTypeList, UserResource.ClassType, new { @class = "form-control" })
+                            </div>
+
+                            <div class="col-lg-5" id="divSpecilizaion">
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Subject.SubjectId, Model.SubjectList, UserResource.SubjectType, new { @class = "form-control" })
                             </div>
                             @*</div>*@
                             <div class="row">

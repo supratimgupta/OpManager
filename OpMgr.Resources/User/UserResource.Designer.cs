@@ -646,6 +646,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Specilization.
+        /// </summary>
+        public static string SubjectType {
+            get {
+                return ResourceManager.GetString("SubjectType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload Image.
         /// </summary>
         public static string UploadImage {

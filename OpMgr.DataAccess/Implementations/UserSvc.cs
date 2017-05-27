@@ -70,6 +70,23 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
                     command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                     command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                    if(data.Employee.Department.DepartmentId == 1 && data.Employee.ClassType.ClassTypeId > 0)
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = data.Employee.ClassType.ClassTypeId;
+                        if(data.Employee.ClassType.ClassTypeId > 2)
+                        {
+                            command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = data.Employee.Subject.SubjectId;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                        }
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                        command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
                     
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
@@ -240,29 +257,6 @@ namespace OpMgr.DataAccess.Implementations
                             usermasterDTO.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
                             usermasterDTO.BloodGroup = _dsData.Tables[0].Rows[0]["BloodGroup"].ToString();
 
-                            //if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) == 1)
-                            //{
-                            //usermasterDTO.Student = new StudentDTO();
-                            //usermasterDTO.Student.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
-                            //usermasterDTO.Student.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
-                            //if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
-                            //{
-                            //    usermasterDTO.Student.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
-                            //}
-                            //else
-                            //{
-                            //    usermasterDTO.Student.AdmissionDate = null;
-                            //}
-                            //usermasterDTO.Student.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
-                            //usermasterDTO.Student.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
-                            //usermasterDTO.Student.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
-                            //usermasterDTO.Student.StandardSectionMap = new StandardSectionMapDTO();
-                            //usermasterDTO.Student.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
-                            //usermasterDTO.Student.HouseType = new HouseTypeDTO();
-                            //usermasterDTO.Student.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
-                            //}
-                            //else if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) > 1)
-                            //{
                             usermasterDTO.Employee = new EmployeeDetailsDTO();
                             usermasterDTO.Employee.EducationalQualification = _dsData.Tables[0].Rows[0]["EducationQualification"].ToString();
                             if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DateOfJoining"].ToString()))
@@ -278,7 +272,17 @@ namespace OpMgr.DataAccess.Implementations
                             usermasterDTO.Employee.StaffEmployeeId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
                             usermasterDTO.Employee.Designation = new DesignationDTO();
                             usermasterDTO.Employee.Designation.DesignationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
-                            //}
+
+                            usermasterDTO.Employee.ClassType = new ClassTypeDTO();
+                            usermasterDTO.Employee.Subject = new SubjectDTO();
+                            if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]) > 0)
+                            {
+                                usermasterDTO.Employee.ClassType.ClassTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]);
+                                if(Convert.ToInt32(_dsData.Tables[0].Rows[0]["SubjectId"]) > 0)
+                                {
+                                    usermasterDTO.Employee.Subject.SubjectId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["SubjectId"]);
+                                }
+                            }
                         }
                     }
                     status.ReturnObj = usermasterDTO;
@@ -460,6 +464,23 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
                     command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                     command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                    if (data.Employee.Department.DepartmentId == 1)
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = data.Employee.ClassType.ClassTypeId;
+                        if (data.Employee.ClassType.ClassTypeId > 2)
+                        {
+                            command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = data.Employee.Subject.SubjectId;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                        }
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                        command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
 
                     command.ExecuteNonQuery();

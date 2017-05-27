@@ -191,6 +191,14 @@ namespace OperationsManager.Areas.Login.Controllers
                     uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
                     uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
                     uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
+                    if(dto.ReturnObj.Employee.ClassType !=null)
+                    {
+                        uvModel.Employee.ClassType = dto.ReturnObj.Employee.ClassType;
+                    }                    
+                    if(dto.ReturnObj.Employee.ClassType != null)
+                    {
+                        uvModel.Employee.Subject = dto.ReturnObj.Employee.Subject;
+                    }
                 }
             }
 
@@ -200,6 +208,9 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             uvModel.SelectUserEntitlement = _ddlRepo.GetUserRole();
+            uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
+            uvModel.SubjectList = _uiddlRepo.getSubjectDropDown();
+
             return View(uvModel);
         }
 
@@ -207,7 +218,6 @@ namespace OperationsManager.Areas.Login.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Register(Models.UserViewModel uvModel)
         {
-
             DateTime dtValidator = new DateTime();
             if (DateTime.TryParse(uvModel.DOBString, out dtValidator))
             {
