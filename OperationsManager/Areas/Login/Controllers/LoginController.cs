@@ -179,10 +179,13 @@ namespace OperationsManager.Areas.Login.Controllers
                 uvModel.Role = dto.ReturnObj.Role;
                 uvModel.UserEntitlementList = _userSvc.GetUserEntitlement(dto.ReturnObj.UserMasterId);
                 uvModel.SelectUserEntitlement = _ddlRepo.GetUserRole();
-
+                uvModel.Subject = _ddlRepo.Subject();
+                
                 uvModel.Employee = new EmployeeDetailsDTO();
                 if (dto.ReturnObj.Employee != null)
                 {
+                    uvModel.Employee.EmployeeId = dto.ReturnObj.Employee.EmployeeId;
+                    uvModel.hdnEmployeeId = dto.ReturnObj.Employee.EmployeeId;
                     uvModel.Employee.EducationalQualification = dto.ReturnObj.Employee.EducationalQualification;
                     uvModel.Employee.DateOfJoining = dto.ReturnObj.Employee.DateOfJoining;
 
@@ -191,14 +194,16 @@ namespace OperationsManager.Areas.Login.Controllers
                     uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
                     uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
                     uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
-                    if(dto.ReturnObj.Employee.ClassType !=null)
+
+                    uvModel.FacultyCourseList = _userSvc.GetFacultyCourseMap(dto.ReturnObj.Employee.EmployeeId);
+                    if (dto.ReturnObj.Employee.ClassType != null)
                     {
                         uvModel.Employee.ClassType = dto.ReturnObj.Employee.ClassType;
-                    }                    
-                    if(dto.ReturnObj.Employee.ClassType != null)
-                    {
-                        uvModel.Employee.Subject = dto.ReturnObj.Employee.Subject;
                     }
+                    //if(dto.ReturnObj.Employee.ClassType != null)
+                    //{
+                    //    uvModel.Employee.Subject = dto.ReturnObj.Employee.Subject;
+                    //}
                 }
             }
 
@@ -209,7 +214,7 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             uvModel.SelectUserEntitlement = _ddlRepo.GetUserRole();
             uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
-            uvModel.SubjectList = _uiddlRepo.getSubjectDropDown();
+            //uvModel.SubjectList = _uiddlRepo.getSubjectDropDown();
 
             return View(uvModel);
         }
@@ -257,6 +262,23 @@ namespace OperationsManager.Areas.Login.Controllers
                             }
                         }
                     }
+
+                    if (uvModel.FacultyCourseList != null && uvModel.FacultyCourseList.Count > 0)
+                    {
+                        for (int i = 0; i < uvModel.FacultyCourseList.Count; i++)
+                        {
+                            if (uvModel.FacultyCourseList[i].FacultyCourseMapId > 0)
+                            {
+                                _userSvc.UpdateFacultyCourseMap(uvModel.FacultyCourseList[i]);
+                            }
+                            else
+                            {
+                                uvModel.FacultyCourseList[i].Employee = new EmployeeDetailsDTO();
+                                uvModel.FacultyCourseList[i].Employee.EmployeeId = uvModel.hdnEmployeeId;
+                                _userSvc.InsertFacultyCourse(uvModel.FacultyCourseList[i]);
+                            }
+                        }
+                    }
                 }
                 
                 return RedirectToAction("Search", "User", new { area = "User" });
@@ -267,6 +289,9 @@ namespace OperationsManager.Areas.Login.Controllers
 
                 string pass = encrypt.encryption(uvModel.Password);
                 uvModel.Password = pass;
+                SessionDTO sessionRet = _sessionSvc.GetUserSession();
+                
+                uvModel.CreatedBy = sessionRet;
                 StatusDTO<UserMasterDTO> status = _userSvc.Insert(uvModel);
 
                 if (status.IsSuccess)
@@ -278,6 +303,16 @@ namespace OperationsManager.Areas.Login.Controllers
                             uvModel.UserEntitlementList[i].UserDetails = new UserMasterDTO();
                             uvModel.UserEntitlementList[i].UserDetails.UserMasterId = status.ReturnObj.UserMasterId;
                             _userSvc.InsertUserEntitlement(uvModel.UserEntitlementList[i]);
+                        }
+                    }
+
+                    if(uvModel.FacultyCourseList != null && uvModel.FacultyCourseList.Count > 0)
+                    {
+                        for (int i=0; i<uvModel.FacultyCourseList.Count; i++)
+                        {
+                            uvModel.FacultyCourseList[i].Employee = new EmployeeDetailsDTO();
+                            uvModel.FacultyCourseList[i].Employee.EmployeeId = status.ReturnObj.Employee.EmployeeId;
+                            _userSvc.InsertFacultyCourse(uvModel.FacultyCourseList[i]);
                         }
                     }
                 }
@@ -465,6 +500,26 @@ namespace OperationsManager.Areas.Login.Controllers
             }
             return Json(new { status = false, message = "Delete failed." }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetSubjectDDL()
+        {
+            return Json(_ddlRepo.Subject(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeleteFacultyCourseMap(FacultyCourseMapDTO facultyCourseMap)
+        {
+            if (_userSvc.DeleteFacultyCourseMap(facultyCourseMap).IsSuccess)
+            {
+                return Json(new { status = true, message = "Deleted successfully." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, message = "Delete failed." }, JsonRequestBehavior.AllowGet);
+        }
     }
+
+
 
 }

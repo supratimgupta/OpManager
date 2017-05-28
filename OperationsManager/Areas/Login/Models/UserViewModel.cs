@@ -38,6 +38,9 @@ namespace OperationsManager.Areas.Login.Models
 
         public List<EntitlementDTO> SelectUserEntitlement { get; set; }
 
+        public List<FacultyCourseMapDTO> FacultyCourseList { get; set; }
+
+        public List<SubjectDTO> Subject { get; set; }
 
         //public BookMasterDTO BookMaster { get; set; }
 
@@ -46,5 +49,7 @@ namespace OperationsManager.Areas.Login.Models
         public string DOBString { get; set; }
 
         public string DOJString { get; set; }
+
+        public int hdnEmployeeId { get; set; }
     }
 }

@@ -76,8 +76,8 @@
 
         });
 
-        function assignRoles() {
-            debugger;
+        //Start-- To Assign Multiple Role -- code start from here
+        function assignRoles() {            
             var table = document.getElementById("tblRoles");
             var tbody = table.getElementsByTagName("tbody")[0];
             var nextRowId = tbody.getElementsByTagName("tr").length;
@@ -132,7 +132,7 @@
         }
 
         function populateTrUserEntityDDL(trnsUserEnt, ddlTrUserEntitle) {
-            debugger;
+            
             var ddlTrUserEntitles = ddlTrUserEntitle;
             ddlTrUserEntitles.innerHTML = "";
             for (i = -1; i < trnsUserEnt.length; i++) {
@@ -148,8 +148,7 @@
                 ddlTrUserEntitles.appendChild(option);
             }
         }
-
-
+        
         function deleteUserEntitleMent(uEntId) {
             var uEnts = new Object();
             uEnts.RowId = parseInt(uEntId);
@@ -162,6 +161,97 @@
                 error: function (error) { }
             });
         }
+
+        //End -- Assign Multiple role
+
+        //Start -- Assign Multiple Specilization/subject to a faculty
+
+        function assignSpecialzation() {
+            
+            var table = document.getElementById("tblSubject");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "FacultyCourseList[" + nextRowId + "].FacultyCourseMapId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlFacultyCourse = document.createElement("select");
+            ddlFacultyCourse.name = "FacultyCourseList[" + nextRowId + "].Subject.SubjectId";
+            ddlFacultyCourse.className = "form-control";
+            populateSubject(ddlFacultyCourse);
+            scndCell.appendChild(ddlFacultyCourse);
+
+            var thirdCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteSubjectRow(this);');
+            thirdCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+
+            tbody.appendChild(newRow);
+            
+            return false;
+        }
+
+        function deleteSubjectRow(aDelete) {
+            var row = aDelete.parentNode.parentNode;
+            var table = document.getElementById("tblSubject");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            tbody.removeChild(row);
+        }
+
+        function populateSubject(ddlFacultyCourse) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetSubjectDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrSubjectDDL(resultData, ddlFacultyCourse); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrSubjectDDL(facultyCoursedata, ddlFacultyCourse) {
+            
+            var ddlFacultyCourses = ddlFacultyCourse;
+            ddlFacultyCourses.innerHTML = "";
+            for (i = -1; i < facultyCoursedata.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = facultyCoursedata[i].SubjectId;
+                    option.innerHTML = facultyCoursedata[i].SubjectName;
+                }
+                ddlFacultyCourses.appendChild(option);
+            }
+        }
+
+        function deleteFacultyCourseMap(uFacultyCourseId) {
+            var facultyCourse = new Object();
+            facultyCourse.FacultyCourseMapId = parseInt(uFacultyCourseId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteFacultyCourseMap',
+                data: facultyCourse,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+        //End -- Assign Multiple Specilization/ Subject to a faculty
     </script>
 }
 <div class="row">
@@ -220,6 +310,7 @@
                                 @Html.OpMgrTextBoxFor(m => m.DOJString, UserResource.DateOfJoining, new { @class = "dateofjoining form-control", data_rule_required = "true", data_msg_required = "Date of joining is required" })
                             </div>
                             <div class="col-lg-5">
+                                @Html.HiddenFor(m => m.hdnEmployeeId)
                                 @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Staff EmployeeId is required" })
                             </div>
                             <div class="col-lg-5">
@@ -235,10 +326,59 @@
                                 @Html.OpMgrDropDownListFor(m => m.Employee.ClassType.ClassTypeId, Model.ClassTypeList, UserResource.ClassType, new { @class = "form-control" })
                             </div>
 
-                            <div class="col-lg-5" id="divSpecilizaion">
+                            @*<div class="col-lg-5" id="divSpecilizaion">
                                 @Html.OpMgrDropDownListFor(m => m.Employee.Subject.SubjectId, Model.SubjectList, UserResource.SubjectType, new { @class = "form-control" })
+                            </div>*@
+                            <div class="row" id="divSpecilizaion">
+                                <table id="tblSubject" class="table table table-striped table-bordered table-responsive table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5">
+                                                Add Specialization
+                                            </th>
+                                        </tr>
+                                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <tr>
+                                                <th colspan="5">
+                                                    <input type="button" class="btn btn-primary" style="width:70px" onclick="assignSpecialzation();" value="+Add" />
+                                                </th>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <th style="display:none;"></th>
+                                            <th>Specializations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.FacultyCourseList != null && Model.FacultyCourseList.Count > 0)
+                                        {
+                                            for (int i = 0; i < Model.FacultyCourseList.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td style="display:none;">
+                                                        <input type="hidden" name="FacultyCourseList[@i].FacultyCourseMapId" value="@Model.FacultyCourseList[i].FacultyCourseMapId" />
+                                                    </td>
+                                                    <td>
+                                                        <select name="FacultyCourseList[@i].Subject.SubjectId" class="form-control">
+                                                            @foreach (OpMgr.Common.DTOs.SubjectDTO trSub in Model.Subject)
+                                                            {
+                                                                <option value="@trSub.SubjectId" @(Model.FacultyCourseList[i].Subject.SubjectId == trSub.SubjectId ? "selected=\"selected\"" : "")>@trSub.SubjectName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                                        {
+                                                            <a onclick="deleteFacultyCourseMap('@Model.FacultyCourseList[i].FacultyCourseMapId');" style="cursor:pointer;">Delete</a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
-                            @*</div>*@
                             <div class="row">
                                 <table id="tblRoles" class="table table table-striped table-bordered table-responsive table-hover">
                                     <thead>
