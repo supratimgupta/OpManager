@@ -127,7 +127,7 @@
     <value>STUDENT</value>
   </data>
   <data name="AddTransaction" xml:space="preserve">
-    <value>FEES MANUAL ENTRY</value>
+    <value>SPECIAL FEES ENTRY</value>
   </data>
   <data name="AddUser" xml:space="preserve">
     <value>STAFF</value>
@@ -157,7 +157,7 @@
     <value>My Transactions</value>
   </data>
   <data name="Payment" xml:space="preserve">
-    <value>PAYMENT</value>
+    <value>FEES COLLECTION ENTRY</value>
   </data>
   <data name="PrincipalPanel" xml:space="preserve">
     <value>PRINCIPAL PANEL</value>

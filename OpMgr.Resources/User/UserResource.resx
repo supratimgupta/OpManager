@@ -253,7 +253,7 @@
     <value>Password</value>
   </data>
   <data name="RegisterButton" xml:space="preserve">
-    <value>Register</value>
+    <value>Submit</value>
   </data>
   <data name="RegistrationNo" xml:space="preserve">
     <value>Registration No</value>
@@ -319,9 +319,15 @@
     <value>Father's Email Id</value>
   </data>
   <data name="AddButton" xml:space="preserve">
-    <value>Add User</value>
+    <value>Add Staff</value>
   </data>
   <data name="AddCommand" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="SubjectType" xml:space="preserve">
+    <value>Select Specilization</value>
+  </data>
+  <data name="UpdateRegisterButton" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

@@ -182,7 +182,7 @@
                     <div id="tabStudent" class="container">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#basicinfo" data-toggle="tab">Basic Details</a>
+                                <a href="#basicinfo" data-toggle="tab">Personal Information</a>
                             </li>
                             <li>
                                 <a href="#familyinfo" data-toggle="tab">Family Details</a>
@@ -450,13 +450,13 @@
                                         {
                                             <div id="divcredentials">
                                                 <div class="col-lg-10">
-                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "UserName is required" })
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control" })
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
+                                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control"})
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Password is required" })
+                                                    @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control" })
                                                 </div>
                                             </div>
 

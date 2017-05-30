@@ -20,6 +20,10 @@ namespace OperationsManager.Areas.Login.Models
 
         public SelectList DesignationList { get; set; }
 
+        public SelectList ClassTypeList { get; set; }
+
+        public SelectList SubjectList { get; set; }
+
         public string MODE { get; set; }
 
         public int HdnUserMasterId { get; set; }
@@ -34,6 +38,9 @@ namespace OperationsManager.Areas.Login.Models
 
         public List<EntitlementDTO> SelectUserEntitlement { get; set; }
 
+        public List<FacultyCourseMapDTO> FacultyCourseList { get; set; }
+
+        public List<SubjectDTO> Subject { get; set; }
 
         //public BookMasterDTO BookMaster { get; set; }
 
@@ -42,5 +49,9 @@ namespace OperationsManager.Areas.Login.Models
         public string DOBString { get; set; }
 
         public string DOJString { get; set; }
+
+        public int hdnEmployeeId { get; set; }
+
+        public string employeeimagepath { get; set; }
     }
 }

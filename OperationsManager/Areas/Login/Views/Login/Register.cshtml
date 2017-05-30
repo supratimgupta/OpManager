@@ -18,44 +18,63 @@
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
             $('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
 
-            var roleId = $("#Role_RoleId").val();
-            if (roleId == 1) {
-                $("#divStudent").show();
-                $("#divStaff").hide();
-            }
-            else if (roleId == 3 || roleId == 4) {
-                $("#divStudent").hide();
-                $("#divStaff").show();
+            // If Department = Teaching THEN ClassType will display, If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
+            var deptId = $("#Employee_Department_DepartmentId").val();
+            if (deptId == 1) {
+                $("#divClasstype").show();
+
+                var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
+                if (classTypeId > 2) {
+                    $("#divSpecilizaion").show();
+                }
+                else {
+                    $("#divSpecilizaion").hide();
+                }
             }
             else {
-                $("#divStudent").hide();
-                $("#divStaff").hide();
+                $("#divClasstype").hide();
+                $("#divSpecilizaion").hide();
             }
 
-            $("#Role_RoleId").change(function () {
-                var roleId = $("#Role_RoleId").val();
+            // If Selected Department = Teaching THEN ClassType will display, If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
+            $("#Employee_Department_DepartmentId").change(function () {
+                var deptId = $("#Employee_Department_DepartmentId").val();
 
-                if (roleId == 1) {
-                    $("#divStudent").show();
+                if (deptId == 1) {
+                    $("#divClasstype").show();
 
+                    $("#Employee_ClassType_ClassTypeId").change(function () {
+                        var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
+                        if (classTypeId > 2) {
+                            $("#divSpecilizaion").show();
+                        }
+                        else {
+                            $("#divSpecilizaion").hide();
+                        }
+                    });
                 }
                 else {
-                    $("#divStudent").hide();
-                }
-
-                if (roleId == 3 || roleId == 4) {
-                    $("#divStaff").show();
-                }
-                else {
-                    $("#divStaff").hide();
+                    $("#divClasstype").hide();
+                    $("#divSpecilizaion").hide();
                 }
                 return false;
             });
 
+            //If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
+            $("#Employee_ClassType_ClassTypeId").change(function () {
+                var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
+                if (classTypeId > 2) {
+                    $("#divSpecilizaion").show();
+                }
+                else {
+                    $("#divSpecilizaion").hide();
+                }
+            });
+
         });
 
+        //Start-- To Assign Multiple Role -- code start from here
         function assignRoles() {
-            debugger;
             var table = document.getElementById("tblRoles");
             var tbody = table.getElementsByTagName("tbody")[0];
             var nextRowId = tbody.getElementsByTagName("tr").length;
@@ -110,7 +129,7 @@
         }
 
         function populateTrUserEntityDDL(trnsUserEnt, ddlTrUserEntitle) {
-            debugger;
+
             var ddlTrUserEntitles = ddlTrUserEntitle;
             ddlTrUserEntitles.innerHTML = "";
             for (i = -1; i < trnsUserEnt.length; i++) {
@@ -127,7 +146,6 @@
             }
         }
 
-
         function deleteUserEntitleMent(uEntId) {
             var uEnts = new Object();
             uEnts.RowId = parseInt(uEntId);
@@ -140,6 +158,97 @@
                 error: function (error) { }
             });
         }
+
+        //End -- Assign Multiple role
+
+        //Start -- Assign Multiple Specilization/subject to a faculty
+
+        function assignSpecialzation() {
+
+            var table = document.getElementById("tblSubject");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "FacultyCourseList[" + nextRowId + "].FacultyCourseMapId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlFacultyCourse = document.createElement("select");
+            ddlFacultyCourse.name = "FacultyCourseList[" + nextRowId + "].Subject.SubjectId";
+            ddlFacultyCourse.className = "form-control";
+            populateSubject(ddlFacultyCourse);
+            scndCell.appendChild(ddlFacultyCourse);
+
+            var thirdCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteSubjectRow(this);');
+            thirdCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+
+            tbody.appendChild(newRow);
+
+            return false;
+        }
+
+        function deleteSubjectRow(aDelete) {
+            var row = aDelete.parentNode.parentNode;
+            var table = document.getElementById("tblSubject");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            tbody.removeChild(row);
+        }
+
+        function populateSubject(ddlFacultyCourse) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetSubjectDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrSubjectDDL(resultData, ddlFacultyCourse); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrSubjectDDL(facultyCoursedata, ddlFacultyCourse) {
+
+            var ddlFacultyCourses = ddlFacultyCourse;
+            ddlFacultyCourses.innerHTML = "";
+            for (i = -1; i < facultyCoursedata.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = facultyCoursedata[i].SubjectId;
+                    option.innerHTML = facultyCoursedata[i].SubjectName;
+                }
+                ddlFacultyCourses.appendChild(option);
+            }
+        }
+
+        function deleteFacultyCourseMap(uFacultyCourseId) {
+            var facultyCourse = new Object();
+            facultyCourse.FacultyCourseMapId = parseInt(uFacultyCourseId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteFacultyCourseMap',
+                data: facultyCourse,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+        //End -- Assign Multiple Specilization/ Subject to a faculty
     </script>
 }
 <div class="row">
@@ -148,7 +257,7 @@
             <div class="panel-heading"><b>@UserResource.PageHeader</b></div>
             <div class="panel-body">
 
-                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform" }))
+                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform" , enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="row">
@@ -156,6 +265,16 @@
                     </div>
                     <div>
                         <fieldset class="@Model.DisabledClass">
+
+                            @if (string.Equals(Model.MODE, "EDIT") || string.Equals(Model.MODE, "VIEW"))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <img src="@Model.employeeimagepath" alt="No image found" height="320" width="230" />
+                                    </div>
+                                </div>
+                            }
+
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                                 @Html.HiddenFor(m => m.MODE)
@@ -174,7 +293,7 @@
                                 @Html.OpMgrTextBoxFor(m => m.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control email", data_rule_required = "true", data_msg_required = "Valid Email is required" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.DOBString, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
@@ -198,18 +317,75 @@
                                 @Html.OpMgrTextBoxFor(m => m.DOJString, UserResource.DateOfJoining, new { @class = "dateofjoining form-control", data_rule_required = "true", data_msg_required = "Date of joining is required" })
                             </div>
                             <div class="col-lg-5">
+                                @Html.HiddenFor(m => m.hdnEmployeeId)
                                 @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Staff EmployeeId is required" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.Employee.EducationalQualification, UserResource.EducationQualification, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Education Qualificattion is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
                                 @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
                             </div>
-                            @*</div>*@
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-5" id="divClasstype">
+                                @Html.OpMgrDropDownListFor(m => m.Employee.ClassType.ClassTypeId, Model.ClassTypeList, UserResource.ClassType, new { @class = "form-control" })
+                            </div>
+
+                            @*<div class="col-lg-5" id="divSpecilizaion">
+                                    @Html.OpMgrDropDownListFor(m => m.Employee.Subject.SubjectId, Model.SubjectList, UserResource.SubjectType, new { @class = "form-control" })
+                                </div>*@
+                            <div class="row" id="divSpecilizaion">
+                                <table id="tblSubject" class="table table table-striped table-bordered table-responsive table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5">
+                                                Add Specialization
+                                            </th>
+                                        </tr>
+                                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <tr>
+                                                <th colspan="5">
+                                                    <input type="button" class="btn btn-primary" style="width:70px" onclick="assignSpecialzation();" value="+Add" />
+                                                </th>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <th style="display:none;"></th>
+                                            <th>Specializations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.FacultyCourseList != null && Model.FacultyCourseList.Count > 0)
+                                        {
+                                            for (int i = 0; i < Model.FacultyCourseList.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td style="display:none;">
+                                                        <input type="hidden" name="FacultyCourseList[@i].FacultyCourseMapId" value="@Model.FacultyCourseList[i].FacultyCourseMapId" />
+                                                    </td>
+                                                    <td>
+                                                        <select name="FacultyCourseList[@i].Subject.SubjectId" class="form-control">
+                                                            @foreach (OpMgr.Common.DTOs.SubjectDTO trSub in Model.Subject)
+                                                            {
+                                                                <option value="@trSub.SubjectId" @(Model.FacultyCourseList[i].Subject.SubjectId == trSub.SubjectId ? "selected=\"selected\"" : "")>@trSub.SubjectName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                                        {
+                                                            <a onclick="deleteFacultyCourseMap('@Model.FacultyCourseList[i].FacultyCourseMapId');" style="cursor:pointer;">Delete</a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="row">
                                 <table id="tblRoles" class="table table table-striped table-bordered table-responsive table-hover">
                                     <thead>
@@ -262,6 +438,14 @@
                                 </table>
 
                             </div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label for="fatherImage">Upload Image of Employee (Old will be replaced)</label>
+                                        <input type="file" name="fuEmployeeImage" class="form-control" id="employeeImage" />
+                                    </div>
+                                </div>
+                            </div>
                             @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase) && !string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                             {
                                 <div id="divcredentials">
@@ -276,12 +460,23 @@
                                     </div>
                                 </div>
                             }
-                            @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                            @if (string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                            {
+                                
+                            }
+                            else if (string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <div class="col-lg-4">
+                                    <button type="submit" class="btn btn-primary">@UserResource.UpdateRegisterButton</button>
+                                </div>
+                            }
+                            else
                             {
                                 <div class="col-lg-4">
                                     <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
                                 </div>
                             }
+
                         </fieldset>
                     </div>
                 }

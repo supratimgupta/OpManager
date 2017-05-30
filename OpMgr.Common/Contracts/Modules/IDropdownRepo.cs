@@ -18,6 +18,8 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<ClassTypeDTO> ClassType();
 
+        List<SubjectDTO> Subject();
+
         List<SectionDTO> Section();
 
         List<BookCategoryDTO> BookCategry();

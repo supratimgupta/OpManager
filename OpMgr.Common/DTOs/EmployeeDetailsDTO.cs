@@ -33,6 +33,10 @@ namespace OpMgr.Common.DTOs
 
         public DesignationDTO Designation { get; set; }
 
+        public ClassTypeDTO ClassType { get; set; }
+
+        public SubjectDTO Subject { get; set; }
+
         [Required(ErrorMessage = "Staff Employee Id is required")]
         public string StaffEmployeeId { get; set; }
 
