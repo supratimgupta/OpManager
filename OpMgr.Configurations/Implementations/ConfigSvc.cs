@@ -48,5 +48,15 @@ namespace OpMgr.Configurations.Implementations
         {
             return System.Configuration.ConfigurationManager.AppSettings["MotherImageRelPath"];
         }
+
+        public string GetEmployeeImagesFolder()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["EmployeeImageFolder"];
+        }
+
+        public string GetEmployeeImagesRelPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["EmployeeImageRelPath"];
+        }
     }
 }

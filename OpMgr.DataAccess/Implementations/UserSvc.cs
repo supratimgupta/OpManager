@@ -702,14 +702,14 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@EmployeeId", MySqlDbType.String).Value = data.Employee.EmployeeId;
                     command.Parameters.Add("@SubjectId", MySqlDbType.String).Value = data.Subject.SubjectId;
-                    if(Convert.ToInt32(data.CreatedBy) > 0)
-                    {
-                        command.Parameters.Add("@CreatedBy", MySqlDbType.String).Value = data.CreatedBy.CreatedBy;
-                    }
-                    else
-                    {
+                    //if(Convert.ToInt32(data.CreatedBy.UserMasterId) > 0)
+                    //{
+                    //    command.Parameters.Add("@CreatedBy", MySqlDbType.String).Value = data.CreatedBy.UserMasterId;
+                    //}
+                    //else
+                    //{
                         command.Parameters.Add("@CreatedBy", MySqlDbType.String).Value = DBNull.Value;
-                    }
+                    //}
 
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();

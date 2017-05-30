@@ -593,6 +593,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\calendar.gif" />
+    <Content Include="Images\Employee\875462.png" />
     <Content Include="Images\FieldSetBG.jpg" />
     <Content Include="Images\schoolbuilding.jpg" />
     <Content Include="Images\schoollogo.png" />

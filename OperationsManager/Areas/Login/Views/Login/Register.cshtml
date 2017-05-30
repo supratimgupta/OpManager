@@ -22,17 +22,15 @@
             var deptId = $("#Employee_Department_DepartmentId").val();
             if (deptId == 1) {
                 $("#divClasstype").show();
-                
+
                 var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
-                if(classTypeId > 2)
-                {
+                if (classTypeId > 2) {
                     $("#divSpecilizaion").show();
                 }
-                else
-                {
+                else {
                     $("#divSpecilizaion").hide();
                 }
-            }            
+            }
             else {
                 $("#divClasstype").hide();
                 $("#divSpecilizaion").hide();
@@ -50,11 +48,10 @@
                         if (classTypeId > 2) {
                             $("#divSpecilizaion").show();
                         }
-                        else
-                        {
+                        else {
                             $("#divSpecilizaion").hide();
                         }
-                    });                    
+                    });
                 }
                 else {
                     $("#divClasstype").hide();
@@ -77,7 +74,7 @@
         });
 
         //Start-- To Assign Multiple Role -- code start from here
-        function assignRoles() {            
+        function assignRoles() {
             var table = document.getElementById("tblRoles");
             var tbody = table.getElementsByTagName("tbody")[0];
             var nextRowId = tbody.getElementsByTagName("tr").length;
@@ -132,7 +129,7 @@
         }
 
         function populateTrUserEntityDDL(trnsUserEnt, ddlTrUserEntitle) {
-            
+
             var ddlTrUserEntitles = ddlTrUserEntitle;
             ddlTrUserEntitles.innerHTML = "";
             for (i = -1; i < trnsUserEnt.length; i++) {
@@ -148,7 +145,7 @@
                 ddlTrUserEntitles.appendChild(option);
             }
         }
-        
+
         function deleteUserEntitleMent(uEntId) {
             var uEnts = new Object();
             uEnts.RowId = parseInt(uEntId);
@@ -167,7 +164,7 @@
         //Start -- Assign Multiple Specilization/subject to a faculty
 
         function assignSpecialzation() {
-            
+
             var table = document.getElementById("tblSubject");
             var tbody = table.getElementsByTagName("tbody")[0];
             var nextRowId = tbody.getElementsByTagName("tr").length;
@@ -200,7 +197,7 @@
             newRow.appendChild(thirdCell);
 
             tbody.appendChild(newRow);
-            
+
             return false;
         }
 
@@ -222,7 +219,7 @@
         }
 
         function populateTrSubjectDDL(facultyCoursedata, ddlFacultyCourse) {
-            
+
             var ddlFacultyCourses = ddlFacultyCourse;
             ddlFacultyCourses.innerHTML = "";
             for (i = -1; i < facultyCoursedata.length; i++) {
@@ -260,7 +257,7 @@
             <div class="panel-heading"><b>@UserResource.PageHeader</b></div>
             <div class="panel-body">
 
-                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform" }))
+                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform" , enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="row">
@@ -268,6 +265,16 @@
                     </div>
                     <div>
                         <fieldset class="@Model.DisabledClass">
+
+                            @if (string.Equals(Model.MODE, "EDIT") || string.Equals(Model.MODE, "VIEW"))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <img src="@Model.employeeimagepath" alt="No image found" height="320" width="230" />
+                                    </div>
+                                </div>
+                            }
+
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                                 @Html.HiddenFor(m => m.MODE)
@@ -327,8 +334,8 @@
                             </div>
 
                             @*<div class="col-lg-5" id="divSpecilizaion">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Subject.SubjectId, Model.SubjectList, UserResource.SubjectType, new { @class = "form-control" })
-                            </div>*@
+                                    @Html.OpMgrDropDownListFor(m => m.Employee.Subject.SubjectId, Model.SubjectList, UserResource.SubjectType, new { @class = "form-control" })
+                                </div>*@
                             <div class="row" id="divSpecilizaion">
                                 <table id="tblSubject" class="table table table-striped table-bordered table-responsive table-hover">
                                     <thead>
@@ -431,6 +438,14 @@
                                 </table>
 
                             </div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <label for="fatherImage">Upload Image of Employee (Old will be replaced)</label>
+                                        <input type="file" name="fuEmployeeImage" class="form-control" id="employeeImage" />
+                                    </div>
+                                </div>
+                            </div>
                             @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase) && !string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                             {
                                 <div id="divcredentials">
@@ -445,12 +460,23 @@
                                     </div>
                                 </div>
                             }
-                            @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                            @if (string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                            {
+                                
+                            }
+                            else if (string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <div class="col-lg-4">
+                                    <button type="submit" class="btn btn-primary">@UserResource.UpdateRegisterButton</button>
+                                </div>
+                            }
+                            else
                             {
                                 <div class="col-lg-4">
                                     <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
                                 </div>
                             }
+
                         </fieldset>
                     </div>
                 }

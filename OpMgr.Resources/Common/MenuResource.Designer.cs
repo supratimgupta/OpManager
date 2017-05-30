@@ -88,7 +88,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FEES MANUAL ENTRY.
+        ///   Looks up a localized string similar to SPECIAL FEES ENTRY.
         /// </summary>
         public static string AddTransaction {
             get {
@@ -178,7 +178,7 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PAYMENT.
+        ///   Looks up a localized string similar to FEES COLLECTION ENTRY.
         /// </summary>
         public static string Payment {
             get {

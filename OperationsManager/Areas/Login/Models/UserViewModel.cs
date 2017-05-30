@@ -51,5 +51,7 @@ namespace OperationsManager.Areas.Login.Models
         public string DOJString { get; set; }
 
         public int hdnEmployeeId { get; set; }
+
+        public string employeeimagepath { get; set; }
     }
 }
