@@ -106,6 +106,15 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registration No.
+        /// </summary>
+        public static string RegistrationNo {
+            get {
+                return ResourceManager.GetString("RegistrationNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Standard Section.
         /// </summary>
         public static string StandardSectionLabel {
@@ -147,6 +156,15 @@ namespace OpMgr.Resources.Transaction {
         public static string TransactionDueDateLabel {
             get {
                 return ResourceManager.GetString("TransactionDueDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Transaction Master.
+        /// </summary>
+        public static string TransactionMasterLabel {
+            get {
+                return ResourceManager.GetString("TransactionMasterLabel", resourceCulture);
             }
         }
         

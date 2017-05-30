@@ -25,5 +25,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<TransactionRuleDTO> GetStandardSectionLevelRules(int transactionMasterId, int standardId, int? sectionId=null);
 
         List<TransactionRuleDTO> GetNoneLevelRules(int? transactionMasterId=null);
+
+        int? GetFirstDueAfterDays(int trRuleId);
     }
 }

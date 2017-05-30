@@ -23,13 +23,25 @@ namespace OperationsManager.Areas.Transaction.Controllers
 
         private ISessionSvc _sessionSvc;
 
-        public TransactionController(IDropdownRepo ddlRepo, IUserSvc userSvc, ICommonConfigSvc commonConfig, ITransactionLogSvc transactionLog, ISessionSvc sessionSvc)
+        private IStudentSvc _studentSvc;
+
+        private ITransactionMasterSvc _trMaster;
+
+        private ITransactionRuleSvc _trRule;
+
+        private IUserTransactionSvc _uTranSvc;
+
+        public TransactionController(IDropdownRepo ddlRepo, IUserSvc userSvc, ICommonConfigSvc commonConfig, ITransactionLogSvc transactionLog, ISessionSvc sessionSvc, IStudentSvc studentSvc, ITransactionMasterSvc trMaster, ITransactionRuleSvc trRule, IUserTransactionSvc uTranSvc)
         {
             _ddlRepo = ddlRepo;
             _userSvc = userSvc;
             _commonConfig = commonConfig;
             _transactionLog = transactionLog;
             _sessionSvc = sessionSvc;
+            _studentSvc = studentSvc;
+            _trMaster = trMaster;
+            _trRule = trRule;
+            _uTranSvc = uTranSvc;
         }
         [HttpGet]
         public ActionResult AddTransaction()
@@ -41,6 +53,9 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trViewModel.TransactionTypeList = uiDDLRepo.getTransactionTypes();
             trViewModel.TransactionRuleList = uiDDLRepo.getTransactionRules();
             trViewModel.StandardSectionList = uiDDLRepo.getStandardSectionDropDown();
+            trViewModel.TransactionMasterList = uiDDLRepo.getTransactionMasters();
+            trViewModel.TransactionDate = DateTime.Today;
+            trViewModel.TransactionDateString = DateTime.Today.ToString("dd-MMM-yyyy");
             return View(trViewModel);
         }
 
@@ -49,6 +64,8 @@ namespace OperationsManager.Areas.Transaction.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddTransaction(Models.TransactionViewModel trViewModel)
         {
+            trViewModel.TransactionDate = DateTime.Parse(trViewModel.TransactionDateString);
+            trViewModel.TransactionDueDate = DateTime.Parse(trViewModel.TransactionDueDateString);
             trViewModel.Active = true;
             trViewModel.IsCompleted = false;
             trViewModel.CreatedDate = DateTime.Today.Date;
@@ -57,15 +74,18 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trViewModel = new Models.TransactionViewModel();
             ModelState.Clear();
             Helpers.UIDropDownRepo uiDDLRepo = new Helpers.UIDropDownRepo(_ddlRepo);
-            
+
             trViewModel.UserList = uiDDLRepo.getUserDropDown();
             trViewModel.LocationList = uiDDLRepo.getLocationDropDown();
             trViewModel.TransactionTypeList = uiDDLRepo.getTransactionTypes();
             trViewModel.TransactionRuleList = uiDDLRepo.getTransactionRules();
             trViewModel.StandardSectionList = uiDDLRepo.getStandardSectionDropDown();
+            trViewModel.TransactionMasterList = uiDDLRepo.getTransactionMasters();
+            trViewModel.TransactionDate = DateTime.Today;
+            trViewModel.TransactionDateString = DateTime.Today.ToString("dd-MMM-yyyy");
 
             //Add user session when implemented
-            
+
             return View(trViewModel);
         }
 
@@ -441,7 +461,104 @@ namespace OperationsManager.Areas.Transaction.Controllers
             return View(trModel);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetStudentDetails(StudentDTO student)
+        {
+            StatusDTO<StudentDTO> status = _studentSvc.GetStudentDetails(student.RegistrationNumber);
+            if(status.IsSuccess)
+            {
+                return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
+            }
+            if(status.IsException)
+            {
+                return Json(new { data = new StudentDTO(), message = "Exception: "+status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { data = new StudentDTO(), message = "Invalid registration no", status = true }, JsonRequestBehavior.AllowGet);
+        }
 
-        
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetStudentPaymentDetails(Models.TransactionViewModel trDetails)
+        {
+            string dueDate = string.Empty;
+            StatusDTO<TransactionMasterDTO> status = _trMaster.Select(trDetails.TransactionMasterId);
+            if(status.IsSuccess)
+            {
+                StatusDTO<StudentDTO> studStatus = _studentSvc.GetStudentTransactionInfo(trDetails.StudentInfoId);
+                TransactionRuleDTO rule = null;
+                List<TransactionRuleDTO> rules = null;
+                string isDiffTo = status.ReturnObj.IsDiffTo.ToUpper();
+                switch(isDiffTo)
+                {
+                    case "NONE":
+                        rules = _trRule.GetNoneLevelRules(trDetails.TransactionMasterId);
+                        if(rules!=null && rules.Count>0)
+                        {
+                            rule = rules[0];
+                        }
+                        break;
+                    case "USER":
+                        rules = _trRule.GetUserLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.UserDetails.UserMasterId);
+                        if(rules!=null && rules.Count>0)
+                        {
+                            rule = rules[0];
+                        }
+                        break;
+                    case "STANDARD":
+                        rules = _trRule.GetStandardLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.StandardId);
+                        if(rules!=null && rules.Count>0)
+                        {
+                            rule = rules[0];
+                        }
+                        break;
+                    case "SECTION":
+                        rules = _trRule.GetStandardSectionLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.StandardId, studStatus.ReturnObj.StandardSectionMap.Section.SectionId);
+                        if(rules!=null && rules.Count>0)
+                        {
+                            rule = rules[0];
+                        }
+                        break;
+                    case "CLASS-TYPE":
+                        rules = _trRule.GetClassTypeLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.ClassType.ClassTypeId);
+                        if(rules!=null && rules.Count>0)
+                        {
+                            rule = rules[0];
+                        }
+                        break;
+                }
+                List<UserTransactionDTO> uTrans = _uTranSvc.GetUserTransactions(trDetails.TransactionMasterId, studStatus.ReturnObj.UserDetails.UserMasterId);
+                if(uTrans!=null && uTrans.Count>0 && rule!=null)
+                {
+                    if(string.Equals(uTrans[0].GraceAmountIn,"ACTUAL", StringComparison.OrdinalIgnoreCase))
+                    {
+                        rule.ActualAmount = rule.ActualAmount - uTrans[0].GraceAmount;
+                    }
+                    if (string.Equals(uTrans[0].GraceAmountIn, "PERCENT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        rule.ActualAmount = rule.ActualAmount - ((uTrans[0].GraceAmount * rule.ActualAmount)/100);
+                    }
+                }
+                if(rule!=null)
+                {
+                    int? dueAfterDays = _trRule.GetFirstDueAfterDays(rule.TranRuleId);
+                    if (dueAfterDays.HasValue)
+                    {
+                        DateTime dtValid = new DateTime();
+                        if (DateTime.TryParse(trDetails.TransactionDateString, out dtValid))
+                        {
+                            dueDate = dtValid.AddDays(dueAfterDays.Value).ToString("dd-MMM-yyyy");
+                        }
+                        else
+                        {
+                            dueDate = DateTime.Today.AddDays(dueAfterDays.Value).ToString("dd-MMM-yyyy");
+                        }
+                    }
+                }
+                return Json(new { status = true, message = "", ruleData = rule, tranMasterData = status.ReturnObj, dueDateString = dueDate });
+            }
+
+            return Json(new { status = false, message = "Failed to fetch data", ruleData = new TransactionRuleDTO(), tranMasterData = new TransactionMasterDTO(), dueDateString = dueDate });
+        }
     }
 }

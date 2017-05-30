@@ -132,6 +132,9 @@
   <data name="PageHeader" xml:space="preserve">
     <value>Add a New Transaction</value>
   </data>
+  <data name="RegistrationNo" xml:space="preserve">
+    <value>Registration No</value>
+  </data>
   <data name="StandardSectionLabel" xml:space="preserve">
     <value>Select Standard Section</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="TransactionDueDateLabel" xml:space="preserve">
     <value>Due Date</value>
+  </data>
+  <data name="TransactionMasterLabel" xml:space="preserve">
+    <value>Select Transaction Master</value>
   </data>
   <data name="TransactionRuleLabel" xml:space="preserve">
     <value>Select Transaction Rule</value>

@@ -121,7 +121,37 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<TransactionMasterDTO> Select(int rowId)
         {
-            throw new NotImplementedException();
+            StatusDTO<TransactionMasterDTO> status = new StatusDTO<TransactionMasterDTO>();
+            status.IsException = false;
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT TranMasterId, TransactionType, IsPenalty, Frequency, DayToRun, YearlyDayToRun, IsdifferentTo FROM transactionmaster WHERE TranMasterId=@trMaster";
+                    command.Parameters.Add("@trMaster", MySqlDbType.Int32).Value = rowId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable("TRANS_MASTER");
+                    dataAdap.Fill(_dtResult);
+                    if(_dtResult!=null && _dtResult.Rows.Count>0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new TransactionMasterDTO();
+                        status.ReturnObj.TranMasterId = rowId;
+                        status.ReturnObj.TransactionType = _dtResult.Rows[0]["TransactionType"].ToString();
+                        status.ReturnObj.IsPenalty = string.Equals(_dtResult.Rows[0]["IsPenalty"].ToString(), "1") ? true : false;
+                        status.ReturnObj.IsDiffTo = _dtResult.Rows[0]["IsdifferentTo"].ToString();
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
         }
 
         public DataTable GetAllTransactions()

@@ -746,5 +746,35 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+
+        public int? GetFirstDueAfterDays(int trRuleId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                int? retValue = null;
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT FirstDueAfterDays FROM transactionrule WHERE TranRuleId=@ruleId";
+                    command.Parameters.Add("@ruleId", MySqlDbType.Int32).Value = trRuleId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtResult = new DataTable();
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    mDa.Fill(_dtResult);
+                    int validator = 0;
+                    if(_dtResult!=null && _dtResult.Rows.Count>0 && Int32.TryParse(_dtResult.Rows[0]["FirstDueAfterDays"].ToString(), out validator))
+                    {
+                        retValue = validator;
+                    }
+                    return retValue;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

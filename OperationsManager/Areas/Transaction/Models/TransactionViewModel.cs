@@ -19,6 +19,8 @@ namespace OperationsManager.Areas.Transaction.Models
 
         public SelectList StandardSectionList { get; set; }
 
+        public SelectList TransactionMasterList { get; set; }
+
         public List<TransactionViewModel> SearchResult { get; set; }
 
         public MvcHtmlString Message { get; set; }
@@ -38,5 +40,17 @@ namespace OperationsManager.Areas.Transaction.Models
         public string MODE { get; set; }
 
         public List<TransactionViewModel> paymentDetailsList { get; set; }
+
+        public string RegistrationNo { get; set; }
+
+        public string StudentName { get; set; }
+
+        public string TransactionDateString { get; set; }
+
+        public string TransactionDueDateString { get; set; }
+
+        public int StudentInfoId { get; set; }
+
+        public int TransactionMasterId { get; set; }
     }
 }
