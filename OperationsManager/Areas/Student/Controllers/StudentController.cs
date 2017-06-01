@@ -180,6 +180,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public string GetImageFileName(string registrationNo, string folder)
         {
             string fileName = string.Empty;
+            registrationNo = registrationNo.Replace('/', '_').Replace('\\', '_');
             string[] similarFiles = Directory.GetFiles(folder, registrationNo + ".*");
             if(similarFiles!=null && similarFiles.Length>0)
             {
@@ -381,6 +382,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
         private void SaveImageFiles(string directoryPath, string uploadedFileName, string regNo)
         {
+            regNo = regNo.Replace('/', '_').Replace('\\', '_');
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
