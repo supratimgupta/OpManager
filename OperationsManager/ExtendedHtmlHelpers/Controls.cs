@@ -207,12 +207,31 @@ namespace OperationsManager.ExtendedHtmlHelpers
                     }
                     if (disabledControl != null)
                     {
-                        return new MvcHtmlString("<a href=\""+url+"\" disabled=\"disabled\">"+linkText+"</a>");
+                        IDictionary<string, object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
+                        if (!attributes.ContainsKey("disabled"))
+                        {
+                            attributes.Add("disabled", "disabled");
+                        }
+                        var tag = new TagBuilder("a");
+                        if(attributes!=null)
+                        {
+                            tag.MergeAttributes(attributes);
+                        }
+                        tag.SetInnerText(linkText);
+                        tag.MergeAttribute("href", url);
+                        return MvcHtmlString.Create(tag.ToString());
                     }
                 }
             }
-
-            return new MvcHtmlString("<a href=\"" + url + "\">" + linkText + "</a>");
+            IDictionary<string, object> attributes1 = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
+            var tag1 = new TagBuilder("a");
+            if (attributes1 != null)
+            {
+                tag1.MergeAttributes(attributes1);
+            }
+            tag1.SetInnerText(linkText);
+            tag1.MergeAttribute("href", url);
+            return MvcHtmlString.Create(tag1.ToString());
         }
 
         public static MvcHtmlString OpMgrTextAreaFor<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, object htmlAttributes = null)
