@@ -18,5 +18,7 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data);
 
         StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data);
+
+        //bool DeleteUser(int id);
     }
 }

@@ -39,7 +39,33 @@ namespace OpMgr.DataAccess.Implementations
         /// <returns>Status with deleted record</returns>
         public StatusDTO<StudentDTO> Delete(StudentDTO data)
         {
-            throw new NotImplementedException();
+            StatusDTO<StudentDTO> status = null;
+            try
+            {
+                if (data != null && data.UserDetails.UserMasterId != 0)
+                {
+                    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        dbSvc.GetConnection();
+                        command.CommandText = "UPDATE studentinfo SET Active=0 WHERE UserMasterId=@UserMasterId";
+                        command.Parameters.Add("@UserMasterId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
+
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            status = new StatusDTO<StudentDTO>();
+                            status.IsSuccess = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                throw ex;
+            }
+            return status;
         }
 
         public StatusDTO<StudentDTO> Insert(StudentDTO data)
