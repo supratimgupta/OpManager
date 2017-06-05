@@ -19,39 +19,46 @@
                     <fieldset>
                         <div class="row">
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.User.UserMasterId, Model.UserList, TransactionLogAdd.UserSelectLabel, new { @class = "form-control", onchange="checkIsStudent(this);" })
+                                @*@Html.OpMgrDropDownListFor(m => m.User.UserMasterId, Model.UserList, TransactionLogAdd.UserSelectLabel, new { @class = "form-control", onchange="checkIsStudent(this);" })*@
+                                @Html.OpMgrTextBoxFor(m=>m.RegistrationNo, TransactionLogAdd.RegistrationNo, new { @class= "form-control requiredField", onblur= "getStudentDetails(this);", data_rule_required = "true", data_msg_required = "Please enter registration no", id="txtRegNo" })
+                                @Html.HiddenFor(m=>m.User.UserMasterId, new {id="hfUserMasterId" })
+                                @Html.HiddenFor(m=>m.StudentInfoId, new {id="hfStudentInfoId" })
+                                @Html.HiddenFor(m=>m.TransactionRule.TranRuleId, new { id = "hfLogId" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.TransactionDate, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Transaction Date is required" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.TransactionRule.TranRuleId, Model.TransactionRuleList, TransactionLogAdd.TransactionRuleLabel, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.TransactionDueDate, TransactionLogAdd.TransactionDueDateLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Transaction Due Date is required" })
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDateString, TransactionLogAdd.TransactionDateLabel, new { @class = "form-control DOB-picker", data_rule_required = "true", data_msg_required = "Transaction Date is required", id="txtTransDate" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.AmountImposed, TransactionLogAdd.AmountImposedLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Amount is required" })
+                                @Html.OpMgrDropDownListFor(m => m.TransactionMasterId, Model.TransactionMasterList, TransactionLogAdd.TransactionMasterLabel, new { @class = "form-control", disabled="disabled", id="ddlTranMaster", onchange="getTransactionInfo();" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, TransactionLogAdd.LocationLabel, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.TransactionDueDateString, TransactionLogAdd.TransactionDueDateLabel, new { @class = "form-control DOB-picker", data_rule_required = "true", data_msg_required = "Transaction Due Date is required", disabled="disabled", id="txtDueDate" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.TransactionType, Model.TransactionTypeList, TransactionLogAdd.TransactionTypeLabel, new { @class = "form-control" })
+                                @Html.OpMgrTextBoxFor(m => m.AmountImposed, TransactionLogAdd.AmountImposedLabel, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Amount is required", disabled="disabled", id="txtAmount" })
+                                @Html.HiddenFor(m=>m.AmountImposed, new {id="hfAmount" })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, TransactionLogAdd.LocationLabel, new { @class = "form-control", disabled="disabled", id="ddlLocation" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                @Html.OpMgrDropDownListFor(m => m.TransactionType, Model.TransactionTypeList, TransactionLogAdd.TransactionTypeLabel, new { @class = "form-control", disabled="disabled", id="ddlTranType" })
+                                @Html.HiddenFor(m=>m.TransactionType, new {id="hfTranType" })
                             </div>
                             <div class="col-lg-5" id="standardSectionDiv">
-                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, TransactionLogAdd.StandardSectionLabel, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, TransactionLogAdd.StandardSectionLabel, new { @class = "form-control", disabled="disabled", id="ddlStandSectionMap" })
+                                @Html.HiddenFor(m=>m.StandardSectionMap.StandardSectionId, new {id="hfStandSecMap" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-5">
-                                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                <button type="submit" class="btn btn-primary btn-block" disabled="disabled" id="btnSubmit">Save</button>
                             </div>
                         </div>
 
@@ -61,21 +68,178 @@
         </div>
     </div><!-- /.col-->
 </div>
+@section PageScripts
+{
+    <script language="javascript" type="text/javascript">
 
-<script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            var AddTransactionform = $("#AddTransactionform");
+            $("#AddTransactionform").validate();
 
-    $(document).ready(function () {
-        var AddTransactionform = $("#AddTransactionform");
-        $("#AddTransactionform").validate();
-    });
+            $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
+        });
 
-    function checkIsStudent(ddlUser)
-    {
-        var uId = ddlUser.options[ddlUser.selectedIndex].value;
-        if(uId && uId.length>0)
+        function checkIsStudent(ddlUser)
         {
+            var uId = ddlUser.options[ddlUser.selectedIndex].value;
+            if(uId && uId.length>0)
+            {
 
+            }
         }
-    }
-</script>
+
+        function getStudentDetails(txtReg)
+        {
+            var regNo = document.getElementById("txtRegNo").value;
+            if(regNo.length>0)
+            {
+                var student = new Object();
+                student.RegistrationNumber = regNo;
+                $.ajax({
+                    type: 'POST',
+                    url: 'GetStudentDetails',
+                    dataType: "json",
+                    data: student,
+                    success: function (resultData) { getStudentDetails_callback(resultData); },
+                    error: function (error) { }
+                });
+            }
+        }
+
+        function getStudentDetails_callback(result)
+        {
+            if(result.status)
+            {
+                var data = result.data;
+                document.getElementById("txtRegNo").value = data.RegistrationNumber;
+                document.getElementById("hfUserMasterId").value = data.UserDetails.UserMasterId;
+                document.getElementById("hfStudentInfoId").value = data.StudentInfoId;
+                $("#ddlTranMaster").removeAttr('disabled');
+                $("#txtDueDate").removeAttr('disabled');
+                $("#ddlLocation").removeAttr('disabled');
+
+                if (data.StandardSectionMap && data.StandardSectionMap.StandardSectionId)
+                {
+                    document.getElementById("hfStandSecMap").value = data.StandardSectionMap.StandardSectionId;
+
+                    var ddlStandSectionMap = document.getElementById("ddlStandSectionMap");
+
+                    for(i=0;i<ddlStandSectionMap.options.length;i++)
+                    {
+                        if(ddlStandSectionMap.options[i].value==data.StandardSectionMap.StandardSectionId.toString())
+                        {
+                            ddlStandSectionMap.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    document.getElementById("ddlStandSectionMap").selectedIndex = 0;
+                }
+            }
+            else
+            {
+                alert('Registration number is not valid');
+                document.getElementById("txtRegNo").value = "";
+
+                document.getElementById("hfUserMasterId").value = "";
+                document.getElementById("hfStudentInfoId").value = "";
+
+                $("#ddlTranMaster").attr('disabled','disabled');
+                $("#txtDueDate").attr('disabled', 'disabled');
+                $("#ddlLocation").attr('disabled', 'disabled');
+                $("#btnSubmit").attr('disabled', 'disabled');
+
+                document.getElementById("hfStandSecMap").value = "";
+                document.getElementById("ddlStandSectionMap").selectedIndex = 0;
+            }
+        }
+
+        function getTransactionInfo()
+        {
+            var ddlTranMaster = document.getElementById("ddlTranMaster");
+            var selectedTrMaster = ddlTranMaster.options[ddlTranMaster.selectedIndex].value;
+            if (selectedTrMaster.length > 0 && selectedTrMaster != "-1")
+            {
+                var trDetails = new Object();
+                trDetails.TransactionMasterId = selectedTrMaster;
+                trDetails.StudentInfoId = document.getElementById("hfStudentInfoId").value;
+                trDetails.TransactionDateString = document.getElementById("txtTransDate").value;
+                $.ajax({
+                    type: 'POST',
+                    url: 'GetStudentPaymentDetails',
+                    dataType: "json",
+                    data: trDetails,
+                    success: function (resultData) { getTransactionInfo_callback(resultData); },
+                    error: function (error) { }
+                });
+            }
+            else
+            {
+                document.getElementById("txtDueDate").value = "";
+                document.getElementById("txtAmount").value = "";
+                $("#txtAmount").attr('disabled', 'disabled');
+                document.getElementById("hfAmount").value = "";
+                document.getElementById("ddlLocation").selectedIndex = 0;
+                document.getElementById("ddlTranType").selectedIndex = 0;
+                $("#ddlTranType").attr('disabled', 'disabled');
+                document.getElementById("hfTranType").value = "";
+                $("#btnSubmit").attr('disabled', 'disabled');
+            }
+        }
+
+        function getTransactionInfo_callback(result)
+        {
+            if(result.status)
+            {
+                if(result.ruleData!=null)
+                {
+                    document.getElementById("hfLogId").value = result.ruleData.TranRuleId;
+                    document.getElementById("txtDueDate").value = (result.dueDateString == undefined || result.dueDateString == null) ? "" : result.dueDateString;
+                    document.getElementById("txtAmount").value = result.ruleData.ActualAmount;
+                    document.getElementById("hfAmount").value = result.ruleData.ActualAmount;
+                    document.getElementById("hfTranType").value = result.tranMasterData.TransactionType;
+                    var ddlTranType = document.getElementById("ddlTranType");
+                    for(i=0;i<ddlTranType.options.length;i++)
+                    {
+                        if(ddlTranType.options[i].value==result.tranMasterData.TransactionType)
+                        {
+                            ddlTranType.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    $("#btnSubmit").removeAttr('disabled');
+                }
+                else
+                {
+                    alert("No corresponding rule for this transaction is found. Please add rule first.");
+                    document.getElementById("txtDueDate").value = "";
+                    document.getElementById("txtAmount").value = "";
+                    $("#txtAmount").attr('disabled', 'disabled');
+                    document.getElementById("hfAmount").value = "";
+                    document.getElementById("ddlLocation").selectedIndex = 0;
+                    document.getElementById("ddlTranType").selectedIndex = 0;
+                    $("#ddlTranType").attr('disabled', 'disabled');
+                    document.getElementById("hfTranType").value = "";
+                    $("#btnSubmit").attr('disabled', 'disabled');
+                }
+            }
+            else
+            {
+                alert(result.message);
+                document.getElementById("txtDueDate").value = "";
+                document.getElementById("txtAmount").value = "";
+                $("#txtAmount").attr('disabled', 'disabled');
+                document.getElementById("hfAmount").value = "";
+                document.getElementById("ddlLocation").selectedIndex = 0;
+                document.getElementById("ddlTranType").selectedIndex = 0;
+                $("#ddlTranType").attr('disabled', 'disabled');
+                document.getElementById("hfTranType").value = "";
+                $("#btnSubmit").attr('disabled', 'disabled');
+            }
+        }
+    </script>
+}
+
 

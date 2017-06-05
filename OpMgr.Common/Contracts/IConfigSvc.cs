@@ -23,5 +23,9 @@ namespace OpMgr.Common.Contracts
         string GetFatherImagesRelPath();
 
         string GetMotherImagesRelPath();
+
+        string GetEmployeeImagesFolder();
+
+        string GetEmployeeImagesRelPath();
     }
 }

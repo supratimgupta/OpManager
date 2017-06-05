@@ -61,7 +61,7 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add User.
+        ///   Looks up a localized string similar to Add Staff.
         /// </summary>
         public static string AddButton {
             get {
@@ -511,7 +511,7 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Register.
+        ///   Looks up a localized string similar to Submit.
         /// </summary>
         public static string RegisterButton {
             get {
@@ -642,6 +642,24 @@ namespace OpMgr.Resources.User {
         public static string SubjectTheyTeach {
             get {
                 return ResourceManager.GetString("SubjectTheyTeach", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Specilization.
+        /// </summary>
+        public static string SubjectType {
+            get {
+                return ResourceManager.GetString("SubjectType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string UpdateRegisterButton {
+            get {
+                return ResourceManager.GetString("UpdateRegisterButton", resourceCulture);
             }
         }
         

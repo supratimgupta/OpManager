@@ -43,6 +43,12 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "HouseTypeId", "HouseTypeDescription");
         }
 
+        public SelectList getSubjectDropDown()
+        {
+            List<SubjectDTO> rDto = _ddlRepo.Subject();
+            return new SelectList(rDto, "SubjectId", "SubjectName");
+        }
+
         public SelectList getClassTypeDropDown()
         {
             List<ClassTypeDTO> rDto = _ddlRepo.ClassType();

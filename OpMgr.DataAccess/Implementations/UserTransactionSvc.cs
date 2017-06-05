@@ -266,6 +266,55 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public List<UserTransactionDTO> GetUserTransactions(int trMasterId, int userMasterId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT UserTransactionId, TranMasterId, GraceAmountOn, GraceAmount FROM UserTransaction WHERE UserMasterId=@umId AND TranMasterId=@tranMasterId AND Active=1";
+                    command.Parameters.Add("@umId", MySqlDbType.Int32).Value = userMasterId;
+                    command.Parameters.Add("@tranMasterId", MySqlDbType.Int32).Value = trMasterId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable();
+                    mDa.Fill(_dtResult);
+                    List<UserTransactionDTO> lstUTrans = null;
+                    if (_dtResult != null && _dtResult.Rows.Count > 0)
+                    {
+                        lstUTrans = new List<UserTransactionDTO>();
+                        UserTransactionDTO uTrans = null;
+                        foreach (DataRow dr in _dtResult.Rows)
+                        {
+                            uTrans = new UserTransactionDTO();
+                            uTrans.UserTransactionId = (int)dr["UserTransactionId"];
+                            uTrans.Transaction = new TransactionMasterDTO();
+                            uTrans.Transaction.TranMasterId = (int)dr["TranMasterId"];
+                            uTrans.GraceAmountIn = string.IsNullOrEmpty(dr["GraceAmountOn"].ToString()) ? "-1" : dr["GraceAmountOn"].ToString();
+                            if (string.IsNullOrEmpty(dr["GraceAmount"].ToString()))
+                            {
+                                uTrans.GraceAmount = null;
+                            }
+                            else
+                            {
+                                uTrans.GraceAmount = double.Parse(dr["GraceAmount"].ToString());
+                            }
+                            lstUTrans.Add(uTrans);
+                        }
+                    }
+                    return lstUTrans;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
         public DataTable GetUserTransactions(DateTime? runDate)
         {
             using(IDbSvc dbSvc = new DbSvc(_configSvc))

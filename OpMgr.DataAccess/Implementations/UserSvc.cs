@@ -70,6 +70,23 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
                     command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                     command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                    if(data.Employee.Department.DepartmentId == 1 && data.Employee.ClassType.ClassTypeId > 0)
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = data.Employee.ClassType.ClassTypeId;
+                        //if(data.Employee.ClassType.ClassTypeId > 2)
+                        //{
+                        //    command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = data.Employee.Subject.SubjectId;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                        //}
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                        //command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
                     
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
@@ -82,6 +99,12 @@ namespace OpMgr.DataAccess.Implementations
                         status.IsSuccess = true;
                         status.ReturnObj = new UserMasterDTO();
                         status.ReturnObj.UserMasterId = (int)_dtData.Rows[0]["Message"];
+
+                        if(!String.IsNullOrEmpty(_dtData.Rows[0]["Message1"].ToString()))
+                        {
+                            status.ReturnObj.Employee = new EmployeeDetailsDTO();
+                            status.ReturnObj.Employee.EmployeeId = (int)_dtData.Rows[0]["Message1"];
+                        }
                     }
                     else
                     {
@@ -240,30 +263,8 @@ namespace OpMgr.DataAccess.Implementations
                             usermasterDTO.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
                             usermasterDTO.BloodGroup = _dsData.Tables[0].Rows[0]["BloodGroup"].ToString();
 
-                            //if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) == 1)
-                            //{
-                            //usermasterDTO.Student = new StudentDTO();
-                            //usermasterDTO.Student.RollNumber = _dsData.Tables[0].Rows[0]["RollNumber"].ToString();
-                            //usermasterDTO.Student.RegistrationNumber = _dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString();
-                            //if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AdmissionDate"].ToString()))
-                            //{
-                            //    usermasterDTO.Student.AdmissionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]);
-                            //}
-                            //else
-                            //{
-                            //    usermasterDTO.Student.AdmissionDate = null;
-                            //}
-                            //usermasterDTO.Student.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
-                            //usermasterDTO.Student.GuardianName = _dsData.Tables[0].Rows[0]["GuardianName"].ToString();
-                            //usermasterDTO.Student.GuardianEmailId = _dsData.Tables[0].Rows[0]["GuardianEmailId"].ToString();
-                            //usermasterDTO.Student.StandardSectionMap = new StandardSectionMapDTO();
-                            //usermasterDTO.Student.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
-                            //usermasterDTO.Student.HouseType = new HouseTypeDTO();
-                            //usermasterDTO.Student.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
-                            //}
-                            //else if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["RoleId"]) > 1)
-                            //{
                             usermasterDTO.Employee = new EmployeeDetailsDTO();
+                            usermasterDTO.Employee.EmployeeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["EmployeeId"]);
                             usermasterDTO.Employee.EducationalQualification = _dsData.Tables[0].Rows[0]["EducationQualification"].ToString();
                             if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DateOfJoining"].ToString()))
                             {
@@ -278,7 +279,17 @@ namespace OpMgr.DataAccess.Implementations
                             usermasterDTO.Employee.StaffEmployeeId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
                             usermasterDTO.Employee.Designation = new DesignationDTO();
                             usermasterDTO.Employee.Designation.DesignationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
-                            //}
+
+                            usermasterDTO.Employee.ClassType = new ClassTypeDTO();
+                            //usermasterDTO.Employee.Subject = new SubjectDTO();
+                            if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]) > 0)
+                            {
+                                usermasterDTO.Employee.ClassType.ClassTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]);
+                                //if(Convert.ToInt32(_dsData.Tables[0].Rows[0]["SubjectId"]) > 0)
+                                //{
+                                //    usermasterDTO.Employee.Subject.SubjectId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["SubjectId"]);
+                                //}
+                            }
                         }
                     }
                     status.ReturnObj = usermasterDTO;
@@ -302,10 +313,8 @@ namespace OpMgr.DataAccess.Implementations
 
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
-
                 try
                 {
-
                     dbSvc.OpenConnection();//openning the connection
 
                     MySqlCommand command = new MySqlCommand();// creating my sql command for queries
@@ -321,9 +330,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     if (data != null)
                     {
-
                         //Name Search
-
                         if (!string.IsNullOrEmpty(data.FName))
                         {
                             data.FName = data.FName + "%";
@@ -366,8 +373,6 @@ namespace OpMgr.DataAccess.Implementations
                             whereClause = whereClause + " AND users.BloodGroup=@BloodGroup";
                             command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.BloodGroup;
                         }
-
-
                     }
 
                     command.CommandText = selectClause + whereClause;
@@ -376,40 +381,28 @@ namespace OpMgr.DataAccess.Implementations
                     dsUserLst = new DataSet();
                     da.Fill(dsUserLst);
 
-
                     if (dsUserLst != null && dsUserLst.Tables.Count > 0)
                     {
                         userList.ReturnObj = new List<UserMasterDTO>();
                         for (int i = 0; i < dsUserLst.Tables[0].Rows.Count; i++)
                         {
                             UserMasterDTO user = new UserMasterDTO();
-
                             user.UserMasterId = Convert.ToInt32(dsUserLst.Tables[0].Rows[i]["UserMasterId"]);
-
                             user.FName = dsUserLst.Tables[0].Rows[i]["FName"].ToString();
                             user.MName = dsUserLst.Tables[0].Rows[i]["MName"].ToString();
                             user.LName = dsUserLst.Tables[0].Rows[i]["LName"].ToString();
-
-
                             user.Gender = dsUserLst.Tables[0].Rows[i]["Gender"].ToString();
-
                             user.EmailId = dsUserLst.Tables[0].Rows[i]["EmailId"].ToString();
                             user.ResidentialAddress = dsUserLst.Tables[0].Rows[i]["ResidentialAddress"].ToString();
                             user.PermanentAddress = dsUserLst.Tables[0].Rows[i]["PermanentAddress"].ToString();
-
                             user.ContactNo = dsUserLst.Tables[0].Rows[i]["ContactNo"].ToString();
                             user.AltContactNo = dsUserLst.Tables[0].Rows[i]["AltContactNo"].ToString();
-
                             user.BloodGroup = dsUserLst.Tables[0].Rows[i]["BloodGroup"].ToString();
 
                             user.Role = new RoleDTO();
                             user.Role.RoleDescription = dsUserLst.Tables[0].Rows[i]["RoleDescription"].ToString();
-
-
                             userList.ReturnObj.Add(user);
-
                             userList.IsSuccess = true;
-
                         }
                     }
                 }
@@ -460,6 +453,23 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@EducationQualification", MySqlDbType.String).Value = data.Employee.EducationalQualification;
                     command.Parameters.Add("@DateOfJoining", MySqlDbType.DateTime).Value = data.Employee.DateOfJoining;
                     command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                    if (data.Employee.Department.DepartmentId == 1)
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = data.Employee.ClassType.ClassTypeId;
+                        //if (data.Employee.ClassType.ClassTypeId > 2)
+                        //{
+                        //    command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = data.Employee.Subject.SubjectId;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                        //}
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                        //command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     command.Parameters.Add("@DesignationId", MySqlDbType.Int32).Value = data.Employee.Designation.DesignationId;
 
                     command.ExecuteNonQuery();
@@ -635,5 +645,143 @@ namespace OpMgr.DataAccess.Implementations
             return status;
         }
 
+        //to get Faculty Course map
+        public List<FacultyCourseMapDTO> GetFacultyCourseMap(int employeeId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT FacultyCourseMapId, EmployeeId, SubjectId FROM facultycoursemap WHERE EmployeeId=@employeeId";
+                    command.Parameters.Add("@employeeId", MySqlDbType.Int32).Value = employeeId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    _dtData = new DataTable();
+                    mDa.Fill(_dtData);
+                    List<FacultyCourseMapDTO> lstFCMap = null;
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        lstFCMap = new List<FacultyCourseMapDTO>();
+                        FacultyCourseMapDTO fcmpDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            fcmpDTO = new FacultyCourseMapDTO();
+                            fcmpDTO.Employee = new EmployeeDetailsDTO();
+                            fcmpDTO.Subject = new SubjectDTO();
+
+                            fcmpDTO.FacultyCourseMapId = (int)dr["FacultyCourseMapId"];
+                            fcmpDTO.Employee.EmployeeId = (int)dr["EmployeeId"];
+                            fcmpDTO.Subject.SubjectId = (int)dr["SubjectId"];
+
+                            lstFCMap.Add(fcmpDTO);
+                        }
+                    }
+                    return lstFCMap;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<FacultyCourseMapDTO> DeleteFacultyCourseMap(FacultyCourseMapDTO data)
+        {
+            StatusDTO<FacultyCourseMapDTO> status = new StatusDTO<FacultyCourseMapDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "DELETE FROM facultycoursemap WHERE FacultyCourseMapId=@FacultyCourseMapId";
+                    command.Parameters.Add("@FacultyCourseMapId", MySqlDbType.Int32).Value = data.FacultyCourseMapId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<FacultyCourseMapDTO> InsertFacultyCourse(FacultyCourseMapDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "Teacher_Course_Map";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@EmployeeId", MySqlDbType.String).Value = data.Employee.EmployeeId;
+                    command.Parameters.Add("@SubjectId", MySqlDbType.String).Value = data.Subject.SubjectId;
+                    //if(Convert.ToInt32(data.CreatedBy.UserMasterId) > 0)
+                    //{
+                    //    command.Parameters.Add("@CreatedBy", MySqlDbType.String).Value = data.CreatedBy.UserMasterId;
+                    //}
+                    //else
+                    //{
+                        command.Parameters.Add("@CreatedBy", MySqlDbType.String).Value = DBNull.Value;
+                    //}
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<FacultyCourseMapDTO> status = new StatusDTO<FacultyCourseMapDTO>();
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<FacultyCourseMapDTO> UpdateFacultyCourseMap(FacultyCourseMapDTO data)
+        {
+            StatusDTO<FacultyCourseMapDTO> status = new StatusDTO<FacultyCourseMapDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE facultycoursemap set SubjectId=@SubjectId WHERE FacultyCourseMapId=@FacultyCourseMapId";
+                    command.Parameters.Add("@FacultyCourseMapId", MySqlDbType.Int32).Value = data.FacultyCourseMapId;
+                    command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = data.Subject.SubjectId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
     }
 }

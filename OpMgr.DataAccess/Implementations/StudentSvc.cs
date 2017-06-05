@@ -783,6 +783,98 @@ namespace OpMgr.DataAccess.Implementations
             }
             return IsPromoted;
         }
+
+        public StatusDTO<StudentDTO> GetStudentDetails(string registrationNo)
+        {
+            StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT usr.UserMasterId, student.StudentInfoId, usr.FName, usr.MName, usr.LName, student.StandardSectionId FROM usermaster usr, studentinfo student WHERE usr.UserMasterId=student.UserMasterId AND student.RegistrationNumber=@regNo";
+                    command.Parameters.Add("@regNo", MySqlDbType.String).Value = registrationNo;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter mDA = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    mDA.Fill(_dsData);
+                    if(_dsData!=null && _dsData.Tables[0].Rows.Count>0)
+                    {
+                        status.IsSuccess = true;
+                        StudentDTO student = new StudentDTO();
+                        student.RegistrationNumber = registrationNo;
+                        student.UserDetails = new UserMasterDTO();
+                        student.UserDetails.UserMasterId = (int)_dsData.Tables[0].Rows[0]["UserMasterId"];
+                        student.StudentInfoId = (int)_dsData.Tables[0].Rows[0]["StudentInfoId"];
+                        student.UserDetails.FName = _dsData.Tables[0].Rows[0]["FName"].ToString();
+                        student.UserDetails.MName = _dsData.Tables[0].Rows[0]["MName"].ToString();
+                        student.UserDetails.LName = _dsData.Tables[0].Rows[0]["LName"].ToString();
+                        if(!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["StandardSectionId"].ToString()))
+                        {
+                            student.StandardSectionMap = new StandardSectionMapDTO();
+                            student.StandardSectionMap.StandardSectionId = (int)_dsData.Tables[0].Rows[0]["StandardSectionId"];
+                        }
+                        student.RegistrationNumber = student.UserDetails.FName + " " + student.UserDetails.MName + " " + student.UserDetails.LName + " ("+student.RegistrationNumber+")";
+                        status.ReturnObj = student;
+                    }
+                }
+                catch(Exception exp)
+                {
+                    _logger.Log(exp);
+                    status.IsSuccess = false;
+                    status.IsException = true;
+                    status.StackTrace = exp.StackTrace;
+                    status.ExceptionMessage = exp.Message;
+                }
+            }
+            return status;
+        }
+
+        public StatusDTO<StudentDTO> GetStudentTransactionInfo(int studentInfoId)
+        {
+            StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+            status.IsSuccess = false;
+            status.IsException = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT s.UserMasterId, s.StandardSectionId, ssm.StandardId, ssm.SectionId, std.ClassTypeId FROM StudentInfo s, StandardSectionMap ssm, Standard std WHERE s.StandardSectionId=ssm.StandardSectionId AND ssm.StandardId=std.StandardId AND s.StudentInfoId=@studInfoId";
+                    command.Parameters.Add("@studInfoId", MySqlDbType.Int32).Value = studentInfoId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter mDA = new MySqlDataAdapter(command);
+                    mDA.Fill(_dtData);
+                    if(_dtData!=null && _dtData.Rows.Count>0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new StudentDTO();
+                        status.ReturnObj.UserDetails = new UserMasterDTO();
+                        status.ReturnObj.UserDetails.UserMasterId = Convert.ToInt32(_dtData.Rows[0]["UserMasterId"]);
+                        status.ReturnObj.StandardSectionMap = new StandardSectionMapDTO();
+                        status.ReturnObj.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dtData.Rows[0]["StandardSectionId"]);
+                        status.ReturnObj.StandardSectionMap.Standard = new StandardDTO();
+                        status.ReturnObj.StandardSectionMap.Standard.StandardId = Convert.ToInt32(_dtData.Rows[0]["StandardId"]);
+                        status.ReturnObj.StandardSectionMap.Section = new SectionDTO();
+                        status.ReturnObj.StandardSectionMap.Section.SectionId = Convert.ToInt32(_dtData.Rows[0]["SectionId"]);
+                        status.ReturnObj.StandardSectionMap.Standard.ClassType = new ClassTypeDTO();
+                        status.ReturnObj.StandardSectionMap.Standard.ClassType.ClassTypeId = Convert.ToInt32(_dtData.Rows[0]["ClassTypeId"]);
+                    }
+                }
+                catch (Exception exp)
+                {
+                    status.IsSuccess = false;
+                    status.IsException = true;
+                    status.ExceptionMessage = exp.Message;
+                    status.StackTrace = exp.StackTrace;
+                }
+            }
+            return status;
+        }
     }
 }
 

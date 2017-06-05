@@ -15,10 +15,16 @@ namespace OpMgr.Common.Contracts.Modules
 
         StatusDTO<UserEntitlementDTO> InsertUserEntitlement(UserEntitlementDTO data);
 
-        StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data);
+        StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data); 
 
-        StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data);
+         StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data);
 
-        //bool DeleteUser(int id);
+        StatusDTO<FacultyCourseMapDTO> DeleteFacultyCourseMap(FacultyCourseMapDTO data);
+
+        List<DTOs.FacultyCourseMapDTO> GetFacultyCourseMap(int employeeId);
+
+        StatusDTO<FacultyCourseMapDTO> InsertFacultyCourse(FacultyCourseMapDTO data);
+
+        StatusDTO<FacultyCourseMapDTO> UpdateFacultyCourseMap(FacultyCourseMapDTO data);
     }
 }
