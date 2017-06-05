@@ -66,6 +66,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkOnTransaction.resx</DependentUpon>
     </Compile>
+    <Compile Include="Exam\ExamMarks.Designer.cs" />
     <Compile Include="Library\Library.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -154,6 +155,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>WorkOnTransaction.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Exam\ExamMarks.resx" />
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Library.Designer.cs</LastGenOutput>
