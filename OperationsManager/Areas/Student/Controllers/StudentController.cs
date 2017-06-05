@@ -754,6 +754,23 @@ namespace OperationsManager.Areas.Student.Controllers
             }
             return View(studView);
         }
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            StudentDTO stud = null;
+            if (id != 0)
+            {
+                stud = new StudentDTO();
+                stud.UserDetails = new UserMasterDTO();
+                stud.UserDetails.UserMasterId = id;
+                StatusDTO<StudentDTO> status = _studSvc.Delete(stud);
+                if (status != null && status.IsSuccess)
+                {
+
+                }
+            }
+            return RedirectToAction("Search");
+        }
     }
 }
 

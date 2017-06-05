@@ -45,6 +45,28 @@
             }
             return {};
         }
+        function confirmDelete(id) {
+            debugger;
+            var flag = confirm("Are you sure you want to delete this Staff");
+            return flag;
+            if(flag)
+            {
+                
+                $.ajax({
+                    dataType:'JSON',
+                    url: "DeleteUser",
+                    type:"POST",
+                    data:{"":id},
+                    success: function (data) {
+                        alert("Success");
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        alert("Eror");
+                    }
+                });
+            }
+        }
     </script>
 }
 
@@ -202,7 +224,9 @@
                                                 <td>
                                                     @Html.OpMgrActionLinkMultiple("VIEW", "../../Login/Login/Register?mode=VIEW&id="+user.UserMasterId, new { name = "viewStaff" })                                                    
                                                     @Html.OpMgrActionLinkMultiple("EDIT", "../../Login/Login/Register?mode=EDIT&id=" + user.UserMasterId, new { name = "editStaff" })
-                                                    @Html.OpMgrActionLinkMultiple("DELETE", "../../Login/Login/Delete?id=" + user.UserMasterId, new { name = "delStaff" })
+                                                    @Html.OpMgrActionLinkMultiple("DELETE","", new { name = "delStaff",onclick= "confirmDelete('"+@user.UserMasterId+"')" })
+                                                   
+                                                    
                                                 </td>
                                             </tr>
                                         }
