@@ -145,10 +145,10 @@
                         <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                             <thead>
                                 <tr>
-                                    <th th data-field="name" data-checkbox="true">
+                                    @*<th th data-field="name" data-checkbox="true">
                                         @Html.CheckBox("chkStudentHeader")
 
-                                    </th>
+                                    </th>*@
                                     <th th data-field="name" data-sortable="true">
                                         @UserResource.Name
                                     </th>
@@ -186,9 +186,9 @@
                                         foreach (var user in Model.UserList)
                                         {
                                             <tr>
-                                                <td>
+                                                @*<td>
                                                     <input type="checkbox" name="chkStudent" value="@user.UserMasterId" />
-                                                </td>
+                                                </td>*@
                                                 <td>
                                                     @user.Name
                                                 </td>
