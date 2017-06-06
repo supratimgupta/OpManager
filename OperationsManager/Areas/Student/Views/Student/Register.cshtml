@@ -19,8 +19,8 @@
                     var errors = validator.numberOfInvalids();
                     if (errors) {
                         var message = errors == 1
-                          ? 'You missed 1 field. It has been highlighted'
-                          : 'You missed ' + errors + ' fields. They have been highlighted';
+                          ? 'You missed 1 field. It has been highlighted. Please check all tabs.'
+                          : 'You missed ' + errors + ' fields. They have been highlighted. Please check all tabs.';
                         //$("div.error span").html(message);
                         //$("div.error").show();
                         alert(message);
