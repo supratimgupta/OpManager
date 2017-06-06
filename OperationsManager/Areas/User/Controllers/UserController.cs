@@ -200,6 +200,23 @@ namespace OperationsManager.Areas.User.Controllers
           return View(uView);
         }
 
+        [HttpPost]
+        public ActionResult DeleteUser(int id)
+        {
+            UserMasterDTO user = null;
+            if (id!=0)
+            {
+                user = new UserMasterDTO();
+                user.UserMasterId = id;
+               StatusDTO<UserMasterDTO> status=_userSvc.Delete(user);
+                if(status!=null && status.IsSuccess)
+                {
+
+                }
+            }
+            return Json( new { message = "success", status = "true" },JsonRequestBehavior.AllowGet);
+        }
+
 
     }
 }

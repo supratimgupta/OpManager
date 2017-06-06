@@ -26,10 +26,10 @@ namespace OpMgr.DataAccess.Implementations
             _logger = logger;
         }
 
-        public StatusDTO<UserMasterDTO> Delete(UserMasterDTO data)
-        {
-            throw new NotImplementedException();
-        }
+        //public StatusDTO<UserMasterDTO> Delete(UserMasterDTO data)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void Dispose()
         {
@@ -613,6 +613,36 @@ namespace OpMgr.DataAccess.Implementations
                     throw exp;
                 }
             }
+        }
+        public StatusDTO<UserMasterDTO> Delete(UserMasterDTO user)
+        {
+            StatusDTO<UserMasterDTO> status = null;
+            try
+            {
+                if (user != null && user.UserMasterId != 0)
+                {
+                    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        dbSvc.GetConnection();
+                        command.CommandText = "UPDATE usermaster SET Active=0 WHERE UserMasterId=@UserMasterId";
+                        command.Parameters.Add("@UserMasterId", MySqlDbType.Int32).Value = user.UserMasterId;
+
+                        if(command.ExecuteNonQuery()>0)
+                        {
+                            status = new StatusDTO<UserMasterDTO>();
+                            status.IsSuccess = true;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.Log(ex);
+                throw ex;
+            }
+            return status;
         }
 
         //to get Faculty Course map
