@@ -755,21 +755,22 @@ namespace OperationsManager.Areas.Student.Controllers
             return View(studView);
         }
         [HttpPost]
-        public ActionResult Delete(int id)
+        [AllowAnonymous]
+        public JsonResult Delete(StudentDTO stud)
         {
-            StudentDTO stud = null;
-            if (id != 0)
+            //StudentDTO stud = null;
+            if (stud.UserDetails!=null && stud.UserDetails.UserMasterId != 0)
             {
-                stud = new StudentDTO();
-                stud.UserDetails = new UserMasterDTO();
-                stud.UserDetails.UserMasterId = id;
+                //stud = new StudentDTO();
+                //stud.UserDetails = new UserMasterDTO();
+                //stud.UserDetails.UserMasterId = id;
                 StatusDTO<StudentDTO> status = _studSvc.Delete(stud);
                 if (status != null && status.IsSuccess)
                 {
 
                 }
             }
-            return RedirectToAction("Search");
+            return Json(new { status="true", message="Deleted!!!" },JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -625,7 +625,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
-                        dbSvc.GetConnection();
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
                         command.CommandText = "UPDATE usermaster SET Active=0 WHERE UserMasterId=@UserMasterId";
                         command.Parameters.Add("@UserMasterId", MySqlDbType.Int32).Value = user.UserMasterId;
 
