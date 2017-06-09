@@ -212,7 +212,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
                     if (string.Equals(trRuleVM.MODE, "EDIT"))
                     {
                         _trRule.Update(trRuleVM);
-                        return RedirectToAction("Search");
+                        return RedirectToAction("SearchRules");
                     }
                     _trRule.Insert(trRuleVM);
                     ModelState.Clear();
