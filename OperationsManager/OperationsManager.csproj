@@ -194,6 +194,9 @@
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Models\AdminViewModel.cs" />
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
+    <Compile Include="Areas\Exam\Controllers\ExamMarksController.cs" />
+    <Compile Include="Areas\Exam\ExamAreaRegistration.cs" />
+    <Compile Include="Areas\Exam\Models\ExamMarksVM.cs" />
     <Compile Include="Areas\Library\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Library\LibraryAreaRegistration.cs" />
     <Compile Include="Areas\Library\Models\LibraryViewModel.cs" />
@@ -657,6 +660,8 @@
     <Content Include="Areas\Login\Views\Login\ForgotPassword.cshtml" />
     <Content Include="Areas\Login\Views\Login\ResetPassword.cshtml" />
     <Content Include="Areas\Student\Views\Student\PromotionBatch.cshtml" />
+    <Content Include="Areas\Exam\Views\web.config" />
+    <Content Include="Areas\Exam\Views\ExamMarks\Register.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -773,6 +778,7 @@
     <Folder Include="Areas\Employee\Controllers\" />
     <Folder Include="Areas\Employee\Models\" />
     <Folder Include="Areas\Employee\Views\Shared\" />
+    <Folder Include="Areas\Exam\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Images\Father\" />

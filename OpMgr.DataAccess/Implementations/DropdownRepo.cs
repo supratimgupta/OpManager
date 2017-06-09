@@ -731,5 +731,73 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<ExamTypeDTO> getExamTypeList()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select ExamTypeId, ExamTypeDescription from examtypes where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<ExamTypeDTO> lstexamType = new List<ExamTypeDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        ExamTypeDTO examType = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            examType = new ExamTypeDTO();
+                            examType.ExamTypeId = (int)dr["ExamTypeId"];
+                            examType.ExamTypeDescription = dr["ExamTypeDescription"].ToString();
+                            lstexamType.Add(examType);
+                        }
+                    }
+                    return lstexamType;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<ExamSubTypeDTO> getExamSubTypeList()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select ExamSubTypeId, ExamSubTypeDescription from examsubtype where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<ExamSubTypeDTO> lstexamsubType = new List<ExamSubTypeDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        ExamSubTypeDTO examsubType = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            examsubType = new ExamSubTypeDTO();
+                            examsubType.ExamSubTypeId = (int)dr["ExamSubTypeId"];
+                            examsubType.ExamSubTypeDescription = dr["ExamSubTypeDescription"].ToString();
+                            lstexamsubType.Add(examsubType);
+                        }
+                    }
+                    return lstexamsubType;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }
