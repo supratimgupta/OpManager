@@ -36,13 +36,13 @@ namespace OpMgr.Logger.Implementations
         public void Log(string message)
         {
             string logMessage = "MESSAGE\t|\t"+DateTime.Now+"\t|\t"+message;
-            WriteLog(logMessage);
+            WriteLog(logMessage+Environment.NewLine);
         }
 
         public void Log(Exception exception)
         {
             string logMessage = "EXCEPTION\t|\t" + DateTime.Now + "\t|\t" + exception.ToString().Replace("\n","-->");
-            WriteLog(logMessage);
+            WriteLog(logMessage + Environment.NewLine);
         }
     }
 }

@@ -33,6 +33,7 @@
             });
 
             $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            $("#admissiondate").datepicker({ maxDate: 0 });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
 
             //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
@@ -381,10 +382,10 @@
                                             @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
                                         </div>
                                         <div class="col-lg-5">
-                                            @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Roll No is required" })
+                                            @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-5">
-                                            @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", data_rule_required = "true", data_msg_required = "Admission Date is required" })
+                                            @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", id="txtAdmissionDate" })
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
