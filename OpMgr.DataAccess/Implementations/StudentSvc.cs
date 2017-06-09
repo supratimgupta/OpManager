@@ -249,7 +249,7 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["MothersName"].ToString();
                             }
-                            studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
+                            //studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
                             studentDTO.FatherEmailId = _dsData.Tables[0].Rows[0]["FathersEmailId"].ToString();
                             studentDTO.StandardSectionMap = new StandardSectionMapDTO();
                             studentDTO.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
