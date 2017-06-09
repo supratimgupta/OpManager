@@ -137,6 +137,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
                         trSR.HasPenalty = status.ReturnObj[i].HasPenalty;
                         trSR.OriginalTransLog = status.ReturnObj[i].OriginalTransLog;
                         trSR.TransactionRule = status.ReturnObj[i].TransactionRule;
+                        trSR.AdjustedAmount = status.ReturnObj[i].AdjustedAmount;
 
                         trVM.SearchResult.Add(trSR);
                     }

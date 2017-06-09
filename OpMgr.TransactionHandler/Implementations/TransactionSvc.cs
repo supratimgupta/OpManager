@@ -100,10 +100,10 @@ namespace OpMgr.TransactionHandler.Implementations
             DataRow[] drTrMasterDet = _dtTransMaster.Select("TranMasterId=" + transMasterId + " AND IsPenalty=0");
 
             DateTime dtValid = new DateTime();
-            if(!DateTime.TryParse(drTrMasterDet[0]["DayToRun"].ToString(), out dtValid) && !DateTime.TryParse(drTrMasterDet[0]["YearlyDayToRun"].ToString(), out dtValid))
-            {
-                return false;
-            }
+            //if(!DateTime.TryParse(drTrMasterDet[0]["DayToRun"].ToString(), out dtValid) && !DateTime.TryParse(drTrMasterDet[0]["YearlyDayToRun"].ToString(), out dtValid))
+            //{
+            //    return false;
+            //}
 
             if(drTrMasterDet != null && drTrMasterDet.Length > 0)
             {

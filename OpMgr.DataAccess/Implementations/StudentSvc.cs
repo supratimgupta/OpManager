@@ -48,14 +48,21 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
-                        dbSvc.GetConnection();
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
                         command.CommandText = "UPDATE studentinfo SET Active=0 WHERE UserMasterId=@UserMasterId";
                         command.Parameters.Add("@UserMasterId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
 
                         if (command.ExecuteNonQuery() > 0)
                         {
-                            status = new StatusDTO<StudentDTO>();
-                            status.IsSuccess = true;
+                            command = new MySqlCommand();
+                            command.CommandText = "UPDATE usermaster SET Active=0 WHERE UserMasterId=@umId";
+                            command.Parameters.Add("@umId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
+                            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                            if(command.ExecuteNonQuery()>0)
+                            {
+                                status = new StatusDTO<StudentDTO>();
+                                status.IsSuccess = true;
+                            }
                         }
                     }
                 }

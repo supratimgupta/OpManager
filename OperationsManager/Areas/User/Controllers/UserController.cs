@@ -201,14 +201,15 @@ namespace OperationsManager.Areas.User.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteUser(int id)
+        [AllowAnonymous]
+        public ActionResult DeleteUser(UserMasterDTO user)
         {
-            UserMasterDTO user = null;
-            if (id!=0)
+            //UserMasterDTO user = null;
+            if (user.UserMasterId!=0)
             {
-                user = new UserMasterDTO();
-                user.UserMasterId = id;
-               StatusDTO<UserMasterDTO> status=_userSvc.Delete(user);
+                //user = new UserMasterDTO();
+                //user.UserMasterId = id;
+                StatusDTO<UserMasterDTO> status=_userSvc.Delete(user);
                 if(status!=null && status.IsSuccess)
                 {
 

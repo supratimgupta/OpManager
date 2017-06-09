@@ -26,11 +26,30 @@
         {
             window.location.href = "Register";
         }
-        function confirmDelete()
+        function confirmDelete(id)
         {
             debugger;
             var flag = confirm("Are you sure you want to delete this Student");
-            return flag;
+            var stud = new Object();
+            stud.UserDetails = new Object();
+            stud.UserDetails.UserMasterId = id;
+            if (flag) {
+
+                $.ajax({
+                    dataType: 'JSON',
+                    url: "Delete",
+                    type: "POST",
+                    data: stud,
+                    success: function (data) {
+                        alert("Student has been deleted successfully.");
+                        window.location.href="../../Student/Student/Search";
+                    },
+                    error: function (data) {
+                        alert("Eror");
+                    }
+                });
+            }
+            return false;
         }
     </script>
 </head>
@@ -84,9 +103,9 @@
                         <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                             <thead>
                                 <tr>
-                                    <th th data-field="name" data-checkbox="true">
+                                    @*<th th data-field="name" data-checkbox="true">
                                         @Html.CheckBox("chkStudentHeader")
-                                    </th>
+                                    </th>*@
                                     <th th data-field="name" data-sortable="true">
                                         @StudentResource.Name
                                     </th>
@@ -118,9 +137,9 @@
                                         foreach (var student in Model.studentList)
                                         {
                                             <tr>
-                                                <td>
+                                                @*<td>
                                                     <input type="checkbox" name="chkStudent" value="@student.StudentInfoId" />
-                                                </td>
+                                                </td>*@
                                                 <td>
                                                     @student.Name
                                                 </td>
@@ -142,7 +161,7 @@
                                                 <td>
                                                     @Html.OpMgrActionLinkMultiple("VIEW", "Register?mode=VIEW&id="+ student.UserDetails.UserMasterId, new { name = "viewStudent" })
                                                     @Html.OpMgrActionLinkMultiple("EDIT", "Register?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
-                                                    @Html.OpMgrActionLinkMultiple("DELETE", "Delete?id=" + student.UserDetails.UserMasterId, new { name = "delStudent",onclick="return confirmDelete();" })
+                                                    @Html.OpMgrActionLinkMultiple("DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
                                                 </td>
                                             </tr>
                                         }
