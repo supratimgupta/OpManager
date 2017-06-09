@@ -32,8 +32,8 @@
 
             });
 
-            $('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
-            $("#admissiondate").datepicker({ maxDate: 0 });
+            //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            $(".admissiondate").datepicker({ maxDate: 0 });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
 
             //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
@@ -263,7 +263,7 @@
                                             @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
                                         </div>
                                         <div class="col-lg-5">
-                                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
+                                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })

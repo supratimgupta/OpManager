@@ -212,7 +212,14 @@ namespace OpMgr.DataAccess.Implementations
                                 studentDTO.UserDetails.DOB = null;
                             }
                             studentDTO.UserDetails.EmailId = _dsData.Tables[0].Rows[0]["EmailId"].ToString();
-                            studentDTO.UserDetails.ResidentialAddress = _dsData.Tables[0].Rows[0]["ResidentialAddress"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["ResidentialAddress"].ToString()))
+                            {
+                                studentDTO.UserDetails.ResidentialAddress = _dsData.Tables[0].Rows[0]["ResidentialAddress"].ToString();
+                            }
+                            else
+                            {
+                                studentDTO.UserDetails.ResidentialAddress = _dsData.Tables[0].Rows[0]["PermanentAddress"].ToString();
+                            }
                             studentDTO.UserDetails.PermanentAddress = _dsData.Tables[0].Rows[0]["PermanentAddress"].ToString();
                             studentDTO.UserDetails.ContactNo = _dsData.Tables[0].Rows[0]["ContactNo"].ToString();
                             studentDTO.UserDetails.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
@@ -230,6 +237,18 @@ namespace OpMgr.DataAccess.Implementations
                                 studentDTO.AdmissionDate = null;
                             }
                             //studentDTO.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
+                            if(!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString()))
+                            {
+                                studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
+                            }
+                            else if(!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["FathersName"].ToString()))
+                            {
+                                studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["FathersName"].ToString();
+                            }
+                            else
+                            {
+                                studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["MothersName"].ToString();
+                            }
                             studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
                             studentDTO.FatherEmailId = _dsData.Tables[0].Rows[0]["FathersEmailId"].ToString();
                             studentDTO.StandardSectionMap = new StandardSectionMapDTO();
