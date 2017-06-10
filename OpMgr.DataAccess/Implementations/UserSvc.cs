@@ -275,14 +275,20 @@ namespace OpMgr.DataAccess.Implementations
                                 usermasterDTO.Employee.DateOfJoining = null;
                             }
                             usermasterDTO.Employee.Department = new DepartmentDTO();
-                            usermasterDTO.Employee.Department.DepartmentId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                            if(!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DepartmentId"].ToString()))
+                            {
+                                usermasterDTO.Employee.Department.DepartmentId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                            }
                             usermasterDTO.Employee.StaffEmployeeId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
                             usermasterDTO.Employee.Designation = new DesignationDTO();
-                            usermasterDTO.Employee.Designation.DesignationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                            if(!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DepartmentId"].ToString()))
+                            {
+                                usermasterDTO.Employee.Designation.DesignationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["DepartmentId"]);
+                            }
 
                             usermasterDTO.Employee.ClassType = new ClassTypeDTO();
                             //usermasterDTO.Employee.Subject = new SubjectDTO();
-                            if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]) > 0)
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["ClassTypeId"].ToString()) && Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]) > 0)
                             {
                                 usermasterDTO.Employee.ClassType.ClassTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["ClassTypeId"]);
                                 //if(Convert.ToInt32(_dsData.Tables[0].Rows[0]["SubjectId"]) > 0)
