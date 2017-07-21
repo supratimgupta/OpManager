@@ -140,5 +140,13 @@ namespace OpMgr.Resources.Exam {
                 return ResourceManager.GetString("Subject", resourceCulture);
             }
         }
+
+        public static string RegistrationNo
+        {
+            get
+            {
+                return ResourceManager.GetString("RegistrationNo", resourceCulture);
+            }
+        }
     }
 }

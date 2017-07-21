@@ -135,6 +135,9 @@
   <data name="MarksObtained" xml:space="preserve">
     <value>Marks Obtained</value>
   </data>
+  <data name="RegistrationNo" xml:space="preserve">
+    <value>Registration No</value>
+  </data>
   <data name="RollNumber" xml:space="preserve">
     <value>Roll Number</value>
   </data>

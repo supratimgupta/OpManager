@@ -35,5 +35,9 @@ namespace OpMgr.Common.DTOs
         public double? TotalMarks { get; set; }
 
         public ExamSubTypeDTO ExamSubType { get; set; }
+
+        public StudentDTO Student { get; set; }
+
+        public StandardSectionMapDTO StandardSection { get; set; }
     }
 }
