@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = Payment.Title;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 <h2></h2>
 @section PageScripts{
@@ -473,7 +473,7 @@
 <div class="row">
     <div class="col-lg-12">
 
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading">@Payment.PageHeader</div>
             <div class="panel-body">
                 <div class="alert alert-danger alert-dismissable alert-dismissible fade in" id="divErrorMsg" style="display:none;">
@@ -504,7 +504,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading">@Payment.TableTransaction</div>
             <div class="panel-body">
                 @if (Model != null)

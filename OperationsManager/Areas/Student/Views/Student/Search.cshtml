@@ -57,7 +57,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
+            <div class="panel panel-color panel-primary">
                 <div class="panel-heading"><b>@StudentResource.PageTitle</b></div>
                 <div class="panel-body">
                     @using (Html.BeginForm())
@@ -83,11 +83,11 @@
                                 @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-2">
-                                <button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton</button>
+                                <button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>
                             </div>
 
-                            <div class="col-lg-2">
-                                @Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })
+                            <div class="col-lg-2" style="padding-top:8px">
+                                @Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block ion-person-add", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })
                                 @*<button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>*@
                             </div>
                         </fieldset>
@@ -96,7 +96,7 @@
             </div>
             @if (Model != null && Model.studentList != null && Model.studentList.Count > 0)
             {
-            <div class="panel panel-default">
+            <div class="panel panel-color panel-primary">
                 <div class="panel-heading"><b>@StudentResource.StudentTable</b></div>
                 <div class="panel-body">
                     <div style="overflow:scroll;">

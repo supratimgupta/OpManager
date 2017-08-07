@@ -6,7 +6,7 @@
 
 @{
     ViewBag.Title = "Transaction Master";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 @section PageScripts
@@ -125,7 +125,7 @@
 }
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@TransactionMaster.PageHeader</b></div>
             <div class="panel-body">
                 @using (Html.BeginForm())
@@ -177,7 +177,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@TransactionMaster.TableHeader</b></div>
             <div class="panel-body">
                 <div style="overflow:scroll;">

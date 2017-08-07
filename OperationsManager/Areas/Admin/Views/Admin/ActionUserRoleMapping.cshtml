@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = AdminResource.Title;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 <script src="~/Scripts/paging.js"></script>
 
@@ -24,7 +24,7 @@
 }
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@AdminResource.Header</b></div>
             <div class="panel-body">
                 @using (Html.BeginForm())
@@ -47,7 +47,7 @@
         </div>
 
 
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@AdminResource.Header</b></div>
             <div class="panel-body">
                 <div style="overflow:scroll;">

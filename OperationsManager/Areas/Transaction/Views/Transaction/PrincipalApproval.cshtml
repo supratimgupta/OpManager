@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "Transactions";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 @section PageScripts
@@ -29,11 +29,9 @@
 {
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@TransactionSearch.TransSearchPageHeader</b></div>
-            <div class="panel-body">
-
-                
+            <div class="panel-body">                
                     @Html.AntiForgeryToken()
                     <fieldset>
                         @if (!Model.IsSuccessMessage && Model.Message != null && !string.IsNullOrEmpty(Model.Message.ToHtmlString()))
@@ -60,7 +58,6 @@
                                 <strong>@Model.Message</strong>
                             </div>
                             }
-
                         }
                         @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
                         <div class="row">
@@ -81,12 +78,10 @@
                             </div>
                         </div>
                     </fieldset>
-                
-
             </div>
         </div>
 
-        <div class="panel panel-default">            
+        <div class="panel panel-color panel-primary">            
             <div class="panel-body">
                 <div style="overflow:scroll;">
                     @if (Model.SearchResult != null && Model.SearchResult.Count > 0)
