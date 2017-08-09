@@ -34,6 +34,7 @@ namespace OperationsManager.Helpers
                             if(menu == null)
                             {
                                 menu = new MenuModel();
+                                menu.MenuImage = actions[i].MenuImage;
                                 menu.MenuText = menuText;
                                 menu.IsSelfRedirectable = true;
                                 menu.ChildItems = null;
@@ -51,6 +52,7 @@ namespace OperationsManager.Helpers
                         else
                         {
                             menu = new MenuModel();
+                            menu.MenuImage = actions[i].MenuImage;
                             menu.MenuText = menuText;
                             menu.IsSelfRedirectable = true;
                             menu.ChildItems = null;

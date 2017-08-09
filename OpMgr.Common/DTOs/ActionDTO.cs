@@ -27,5 +27,7 @@ namespace OpMgr.Common.DTOs
         public string GroupName { get; set; }
 
         public string MenuText { get; set; }
+
+        public string MenuImage { get; set; }
     }
 }

@@ -184,8 +184,9 @@ namespace OpMgr.DataAccess.Implementations
                                 useractionDTO.DisabledControlId = _dsData.Tables[2].Rows[i]["DisabledControlId"].ToString();
                                 useractionDTO.HiddenControlId = _dsData.Tables[2].Rows[i]["HiddenControlId"].ToString();
                                 useractionDTO.GroupName = _dsData.Tables[2].Rows[i]["GroupName"].ToString();
+                                useractionDTO.MenuImage = _dsData.Tables[2].Rows[i]["MenuImage"].ToString();
 
-                                if(useractionDTO.IsChildAction || !string.IsNullOrEmpty(_dsData.Tables[2].Rows[i]["ParentActionId"].ToString()))
+                                if (useractionDTO.IsChildAction || !string.IsNullOrEmpty(_dsData.Tables[2].Rows[i]["ParentActionId"].ToString()))
                                 {
                                     useractionDTO.ParentAction = new ActionDTO();
                                     useractionDTO.ParentAction.RowId = Convert.ToInt32(_dsData.Tables[2].Rows[i]["ParentActionId"]);
