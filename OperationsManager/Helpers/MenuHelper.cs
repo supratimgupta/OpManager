@@ -35,6 +35,7 @@ namespace OperationsManager.Helpers
                             {
                                 menu = new MenuModel();
                                 menu.MenuText = menuText;
+                                menu.MenuImage = actions[i].MenuImage;
                                 menu.IsSelfRedirectable = true;
                                 menu.ChildItems = null;
                                 menu.UrlToRedirect = actions[i].ActionLink;
@@ -52,6 +53,7 @@ namespace OperationsManager.Helpers
                         {
                             menu = new MenuModel();
                             menu.MenuText = menuText;
+                            menu.MenuImage = actions[i].MenuImage;
                             menu.IsSelfRedirectable = true;
                             menu.ChildItems = null;
                             menu.UrlToRedirect = actions[i].ActionLink;
@@ -70,6 +72,7 @@ namespace OperationsManager.Helpers
                                 addedRoot.ChildItems = null;
                                 addedRoot.IsSelfRedirectable = false;
                                 addedRoot.MenuText = groupName;
+                                addedRoot.MenuImage = actions[i].MenuImage;
                                 addedRoot.UrlToRedirect = string.Empty;
                                 addedRoot.MenuCode = actions[i].GroupName;
                                 lstMenu.Add(addedRoot);

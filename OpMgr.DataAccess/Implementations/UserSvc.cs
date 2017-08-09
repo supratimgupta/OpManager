@@ -181,6 +181,7 @@ namespace OpMgr.DataAccess.Implementations
                                 useractionDTO.ActionLink = _dsData.Tables[2].Rows[i]["ActionLink"].ToString();
                                 useractionDTO.IsChildAction = Convert.ToBoolean(_dsData.Tables[2].Rows[i]["IsChildAction"]);
                                 useractionDTO.MenuText = _dsData.Tables[2].Rows[i]["MenuText"].ToString();
+                                useractionDTO.MenuImage = _dsData.Tables[2].Rows[i]["MenuImage"].ToString();
                                 useractionDTO.DisabledControlId = _dsData.Tables[2].Rows[i]["DisabledControlId"].ToString();
                                 useractionDTO.HiddenControlId = _dsData.Tables[2].Rows[i]["HiddenControlId"].ToString();
                                 useractionDTO.GroupName = _dsData.Tables[2].Rows[i]["GroupName"].ToString();
