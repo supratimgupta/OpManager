@@ -61,74 +61,81 @@ namespace OpMgr.FileWatcher
             {
                 conn.Open();
                 DataTable dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-                string sheetname = dt.Rows[3]["TABLE_NAME"].ToString();
-                string query = "SELECT * FROM [" + sheetname + "]";
-                OleDbCommand ocmd = new OleDbCommand(query, conn);
-                OleDbDataReader rdr = ocmd.ExecuteReader();
 
-                //*******************************************************
-                string conString = System.Configuration.ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(conString))
+                for(int sc=0;sc<dt.Rows.Count;sc++)
                 {
-                    try
+                    string sheetname = dt.Rows[0]["TABLE_NAME"].ToString();
+                    string query = "SELECT * FROM [" + sheetname + "]";
+                    OleDbCommand ocmd = new OleDbCommand(query, conn);
+                    OleDbDataAdapter rdr = new OleDbDataAdapter(ocmd);
+                    DataTable dtdata = new DataTable();
+                    rdr.Fill(dtdata);
+
+                    //*******************************************************
+                    string conString = System.Configuration.ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
+                    using (MySqlConnection con = new MySqlConnection(conString))
                     {
-                        con.Open();
-                        while (rdr.Read())
+                        try
                         {
-                            string Name = rdr[0].ToString();
-                            string Class = rdr[1].ToString();
-                            string Stream = rdr[2].ToString();
-                            string DateOfBirth = rdr[3].ToString();
-                            string RegistrationNo = rdr[4].ToString();
-                            string DateOfAdmission = rdr[5].ToString();
-                            string ResidentialAddress = rdr[6].ToString();
-                            string FatherName = rdr[7].ToString();
-                            string Occupation = rdr[8].ToString();
-                            string Designation = rdr[9].ToString();
-                            string NameOfOrgAdress = rdr[10].ToString();
-                            string ContactNo = rdr[11].ToString();
-
-                            using (MySqlCommand cmd = new MySqlCommand("insert into operationsmanager.studentupload values(@Name,@Class,@Stream,@DateOfBirth,@RegistrationNo,@DateOfAdmission,@ResidentialAddress,@FatherName,@Occupation,@Designation,@NameOfOrgAdress,@ContactNo)", con))
+                            con.Open();
+                            for (int i = 0; i < dtdata.Rows.Count; i++)
                             {
-                                cmd.Parameters.Add("@Name", MySqlDbType.VarChar, 100);
-                                cmd.Parameters.Add("@Class", MySqlDbType.VarChar, 30);
-                                cmd.Parameters.Add("@Stream", MySqlDbType.VarChar, 30);
-                                cmd.Parameters.Add("@DateOfBirth", MySqlDbType.Datetime);
-                                cmd.Parameters.Add("@RegistrationNo", MySqlDbType.VarChar, 30);
-                                cmd.Parameters.Add("@DateOfAdmission", MySqlDbType.Datetime);
-                                cmd.Parameters.Add("@ResidentialAddress", MySqlDbType.VarChar, 2000);
-                                cmd.Parameters.Add("@FatherName", MySqlDbType.VarChar, 100);
-                                cmd.Parameters.Add("@Occupation", MySqlDbType.VarChar, 100);
-                                cmd.Parameters.Add("@Designation", MySqlDbType.VarChar, 100);
-                                cmd.Parameters.Add("@NameOfOrgAdress", MySqlDbType.VarChar, 500);
-                                cmd.Parameters.Add("@ContactNo", MySqlDbType.VarChar, 100);
+                                string Name = dtdata.Rows[i][0].ToString();
+                                string Class = dtdata.Rows[i][1].ToString();
+                                string Stream = dtdata.Rows[i][2].ToString();
+                                string DateOfBirth = dtdata.Rows[i][3].ToString();
+                                string RegistrationNo = dtdata.Rows[i][4].ToString();
+                                string DateOfAdmission = dtdata.Rows[i][5].ToString();
+                                string ResidentialAddress = dtdata.Rows[i][6].ToString();
+                                string FatherName = dtdata.Rows[i][7].ToString();
+                                string Occupation = dtdata.Rows[i][8].ToString();
+                                string Designation = dtdata.Rows[i][9].ToString();
+                                string NameOfOrgAdress = dtdata.Rows[i][10].ToString();
+                                string ContactNo = dtdata.Rows[i][11].ToString();
 
-                                cmd.Parameters["@Name"].Value = Name;
-                                cmd.Parameters["@Class"].Value = Class;
-                                cmd.Parameters["@Stream"].Value = Stream;
+                                using (MySqlCommand cmd = new MySqlCommand("insert into operationsmanager.studentuploadExcel values(@Name,@Class,@Stream,@DateOfBirth,@RegistrationNo,@DateOfAdmission,@ResidentialAddress,@FatherName,@Occupation,@Designation,@NameOfOrgAdress,@ContactNo)", con))
+                                {
+                                    cmd.Parameters.Add("@Name", MySqlDbType.VarChar, 100);
+                                    cmd.Parameters.Add("@Class", MySqlDbType.VarChar, 30);
+                                    cmd.Parameters.Add("@Stream", MySqlDbType.VarChar, 30);
+                                    cmd.Parameters.Add("@DateOfBirth", MySqlDbType.VarChar,30);
+                                    cmd.Parameters.Add("@RegistrationNo", MySqlDbType.VarChar, 30);
+                                    cmd.Parameters.Add("@DateOfAdmission", MySqlDbType.VarChar, 30);
+                                    cmd.Parameters.Add("@ResidentialAddress", MySqlDbType.VarChar, 2000);
+                                    cmd.Parameters.Add("@FatherName", MySqlDbType.VarChar, 100);
+                                    cmd.Parameters.Add("@Occupation", MySqlDbType.VarChar, 100);
+                                    cmd.Parameters.Add("@Designation", MySqlDbType.VarChar, 100);
+                                    cmd.Parameters.Add("@NameOfOrgAdress", MySqlDbType.VarChar, 1000);
+                                    cmd.Parameters.Add("@ContactNo", MySqlDbType.VarChar, 100);
 
-                                cmd.Parameters["@DateOfBirth"].Value = DateOfBirth;
-                                cmd.Parameters["@RegistrationNo"].Value = RegistrationNo;
-                                cmd.Parameters["@DateOfAdmission"].Value = DateOfAdmission;
+                                    cmd.Parameters["@Name"].Value = Name;
+                                    cmd.Parameters["@Class"].Value = Class;
+                                    cmd.Parameters["@Stream"].Value = Stream;
 
-                                cmd.Parameters["@ResidentialAddress"].Value = ResidentialAddress;
-                                cmd.Parameters["@FatherName"].Value = FatherName;
-                                cmd.Parameters["@Occupation"].Value = Occupation;
+                                    cmd.Parameters["@DateOfBirth"].Value = DateOfBirth;
+                                    cmd.Parameters["@RegistrationNo"].Value = RegistrationNo;
+                                    cmd.Parameters["@DateOfAdmission"].Value = DateOfAdmission;
 
-                                cmd.Parameters["@Designation"].Value = Designation;
-                                cmd.Parameters["@NameOfOrgAdress"].Value = NameOfOrgAdress;
-                                cmd.Parameters["@ContactNo"].Value = ContactNo;
-                                cmd.ExecuteScalar();
+                                    cmd.Parameters["@ResidentialAddress"].Value = ResidentialAddress;
+                                    cmd.Parameters["@FatherName"].Value = FatherName;
+                                    cmd.Parameters["@Occupation"].Value = Occupation;
 
+                                    cmd.Parameters["@Designation"].Value = Designation;
+                                    cmd.Parameters["@NameOfOrgAdress"].Value = NameOfOrgAdress;
+                                    cmd.Parameters["@ContactNo"].Value = ContactNo;
+                                    cmd.ExecuteScalar();
+
+                                }
                             }
-                        }
 
-                    }
-                    catch (Exception exp)
-                    {
-                        throw exp;
+                        }
+                        catch (Exception exp)
+                        {
+                            throw exp;
+                        }
                     }
                 }
+                
                 //*******************************************************
             }
 
