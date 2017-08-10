@@ -9,6 +9,8 @@ namespace OperationsManager.Models
     {
         public string MenuText { get; set; }
 
+        public string MenuImage { get; set; }
+
         public string UrlToRedirect { get; set; }
 
         public bool IsSelfRedirectable { get; set; }
