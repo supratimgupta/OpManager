@@ -111,44 +111,54 @@ namespace OperationsManager.Helpers
                     {
                         if (lstMenu[i].IsSelected)
                         {
-                            sbMenuHtml.AppendLine("<li class=\"active\"><a href=\""+lstMenu[i].UrlToRedirect+"\"> " + lstMenu[i].MenuText + "</a></li>");
+                            sbMenuHtml.AppendLine("<li class=\"active\"><a href=\""+lstMenu[i].UrlToRedirect+"\">");
+                            sbMenuHtml.AppendLine("<a href=\"" + lstMenu[i].UrlToRedirect + "\"><i class=\""+lstMenu[i].MenuImage+"\"></i>");
+                            sbMenuHtml.Append(" <span class=\"nav-label\">"+lstMenu[i].MenuText+"</span>");
+                            sbMenuHtml.AppendLine("</a></li>");
                         }
                         else
                         {
-                            sbMenuHtml.AppendLine("<li class=\"\"><a href=\"" + lstMenu[i].UrlToRedirect + "\"> " + lstMenu[i].MenuText + "</a></li>");
+                            sbMenuHtml.AppendLine("<li class=\"\"><a href=\"" + lstMenu[i].UrlToRedirect + "\">");
+                            sbMenuHtml.AppendLine("<a href=\"" + lstMenu[i].UrlToRedirect + "\"><i class=\"" + lstMenu[i].MenuImage + "\"></i>");
+                            sbMenuHtml.Append(" <span class=\"nav-label\">" + lstMenu[i].MenuText + "</span>");
+                            sbMenuHtml.AppendLine("</a></li>");
                         }
                     }
                     else
                     {
                         subItemCounter++;
                         var selectedChild = lstMenu[i].ChildItems.FirstOrDefault(m => m.IsSelected);
-                        sbMenuHtml.AppendLine("<li class=\"parent\">");
-                        sbMenuHtml.AppendLine("<a href=\"#\">");
-                        sbMenuHtml.AppendLine("<span data-toggle=\"collapse\" href=\"#sub-item-" + subItemCounter + "\"><svg class=\"glyph stroked chevron-down\"><use xlink:href=\"#stroked-chevron-down\"></use></svg></span> " + lstMenu[i].MenuText);
-                        sbMenuHtml.AppendLine("</a>");
-                        if (selectedChild != null)
+                        if(selectedChild!=null)
                         {
-                            sbMenuHtml.AppendLine("<ul class=\"children\" id=\"sub-item-"+subItemCounter+"\">");
+                            sbMenuHtml.AppendLine("<li class=\"has-submenu active\">");
                         }
                         else
                         {
-                            sbMenuHtml.AppendLine("<ul class=\"children collapse\" id=\"sub-item-" + subItemCounter + "\">");
+                            sbMenuHtml.AppendLine("<li class=\"has-submenu\">");
                         }
+                        sbMenuHtml.AppendLine("<a href=\"#\">");
+                        if(!string.IsNullOrEmpty(lstMenu[i].MenuImage))
+                        {
+                            sbMenuHtml.AppendLine("<i class=\""+lstMenu[i].MenuImage+"\"></i>");
+                        }
+                        sbMenuHtml.AppendLine("<span class=\"nav-label\">"+lstMenu[i].MenuText+"</span>");
+                        sbMenuHtml.AppendLine("</a>");
+                        sbMenuHtml.AppendLine("<ul class=\"list-unstyled\">");
                         for(int j=0;j<lstMenu[i].ChildItems.Count;j++)
                         {
                             if(lstMenu[i].ChildItems[j].IsSelected)
                             {
                                 sbMenuHtml.AppendLine("<li class=\"active\">");
-                                sbMenuHtml.AppendLine("<a class=\"active\" href=\""+lstMenu[i].ChildItems[j].UrlToRedirect+"\">");
-                                sbMenuHtml.AppendLine("<svg class=\"glyph stroked chevron-right\" style=\"color:white;\"><use xlink:href=\"#stroked-chevron-right\" style=\"color:white;\"></use></svg><span style=\"color:white;\"> " + lstMenu[i].ChildItems[j].MenuText+"</span>");
+                                sbMenuHtml.AppendLine("<a href=\""+lstMenu[i].ChildItems[j].UrlToRedirect+"\">");
+                                sbMenuHtml.AppendLine(lstMenu[i].ChildItems[j].MenuText);
                                 sbMenuHtml.AppendLine("</a>");
                                 sbMenuHtml.AppendLine("</li>");
                             }
                             else
                             {
                                 sbMenuHtml.AppendLine("<li>");
-                                sbMenuHtml.AppendLine("<a class=\"\" href=\"" + lstMenu[i].ChildItems[j].UrlToRedirect + "\">");
-                                sbMenuHtml.AppendLine("<svg class=\"glyph stroked chevron-right\"><use xlink:href=\"#stroked-chevron-right\"></use></svg> " + lstMenu[i].ChildItems[j].MenuText);
+                                sbMenuHtml.AppendLine("<a href=\"" + lstMenu[i].ChildItems[j].UrlToRedirect + "\">");
+                                sbMenuHtml.AppendLine(lstMenu[i].ChildItems[j].MenuText);
                                 sbMenuHtml.AppendLine("</a>");
                                 sbMenuHtml.AppendLine("</li>");
                             }

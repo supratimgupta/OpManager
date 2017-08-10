@@ -80,7 +80,11 @@
         <!-- Navbar Start -->
         <nav class="navigation">
             <ul class="list-unstyled">
-                <li class="has-submenu active">
+                @if (menu != null)
+                {
+                    @menuHelper.GetMenuDesign(menu);
+                }
+                @*<li class="has-submenu active">
                     <a href="#"><i class="ion-home"></i> <span class="nav-label">Dashboard</span></a>
                     <ul class="list-unstyled">
                         <li class="active"><a href="index.html">Dashboard v1</a></li>
@@ -176,7 +180,7 @@
                         <li><a href="404_alt.html">404 alt</a></li>
                         <li><a href="500.html">500 Error</a></li>
                     </ul>
-                </li>
+                </li>*@
             </ul>
         </nav>
 
