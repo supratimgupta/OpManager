@@ -157,6 +157,10 @@ namespace OpMgr.DataAccess.Implementations
                             userMaster.FName = _dsData.Tables[0].Rows[0]["FName"].ToString();
                             userMaster.MName = _dsData.Tables[0].Rows[0]["MName"].ToString();
                             userMaster.LName = _dsData.Tables[0].Rows[0]["LName"].ToString();
+                            userMaster.StudentCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["studentcount"].ToString());
+                            userMaster.StaffCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["staffcount"].ToString());
+                            userMaster.PaidStudentCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["paidstudentcount"].ToString());
+                            userMaster.PendingPaymentCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["pendingpaymentcount"].ToString());
                         }
 
                         if (_dsData.Tables[1].Rows.Count > 0)

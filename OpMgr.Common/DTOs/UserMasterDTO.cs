@@ -72,5 +72,13 @@ namespace OpMgr.Common.DTOs
         public bool RememberMe { get; set; }
         
         public string LoginFailedMsg { get; set; }      
+
+        public int StudentCount { get; set; }
+
+        public int StaffCount { get; set; }
+
+        public int PaidStudentCount { get; set; }
+
+        public int PendingPaymentCount { get; set; }
     }
 }

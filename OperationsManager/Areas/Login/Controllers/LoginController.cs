@@ -113,6 +113,11 @@ namespace OperationsManager.Areas.Login.Controllers
                 session.FName = status.ReturnObj.FName;
                 session.MName = status.ReturnObj.MName;
                 session.LName = status.ReturnObj.LName;
+                session.StudentCount = status.ReturnObj.StudentCount;
+                session.StaffCount = status.ReturnObj.StaffCount;
+                session.PaidStudentCount = status.ReturnObj.PaidStudentCount;
+                session.PendingPaymentCount = status.ReturnObj.PendingPaymentCount;
+
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;
 

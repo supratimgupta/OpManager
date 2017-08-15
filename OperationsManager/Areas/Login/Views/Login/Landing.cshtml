@@ -1,16 +1,91 @@
-﻿
+﻿@using OpMgr.Resources.Common
+@using Ninject
+@using OpMgr.Common.Contracts
+@using OperationsManager.Helpers;
+@using OpMgr.Common.DTOs;
 @{
-    
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    NinjectControllerFactory ncf = new NinjectControllerFactory();
+    IKernel kernel = ncf.GetNinjectKernel();
+    List<OperationsManager.Models.MenuModel> menu = new List<OperationsManager.Models.MenuModel>();
+
+    OperationsManager.Helpers.MenuHelper menuHelper = new OperationsManager.Helpers.MenuHelper();
+    menu = menuHelper.GetMenuItems(kernel.Get<ISessionSvc>());
+    SessionDTO session = kernel.Get<ISessionSvc>().GetUserSession();
+
+    System.Web.HttpContext.Current.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+
+    System.Web.HttpContext.Current.Response.Cache.SetNoStore();
+}
+
+@{
+
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 <html>
-<head >    
-    <image src="~/Images/schoollogo.png"></image>
-    
+<head>
+    @*<image src="~/Images/schoollogo.png"></image>*@
+
 </head>
 <body style="background-image:url(schoolbuilding.jpg); background-repeat:no-repeat">
-    <image src="~/Images/schoolbuilding.jpg" style="width:100%"></image>  
+    @*<image src="~/Images/schoolbuilding.jpg" style="width:100%"></image>*@
+    <div class="wraper container-fluid">
+        <div class="page-title">
+            <h3 class="title">Dashboard </h3>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="tile-stats white-bg">
+                            <div class="status">
+                                <h3 class="m-t-0">@session.StudentCount</h3>
+                                <a href="/Student/Student/Search"><p>Student</p></a>
+                            </div>
+                            <div class="chart-inline">
+                                <span class="inlinesparkline"><canvas width="383" height="32"></canvas></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="tile-stats white-bg">
+                            <div class="status">
+                                <h3 class="m-t-0">@session.StaffCount</h3>
+                                <a href="/User/User/Search"><p>Employee</p></a>
+                            </div>
+                            <span class="dynamicbar-big"><canvas width="205" height="32"></canvas></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="tile-stats white-bg">
+                            <div class="status">
+                                <h3 class="m-t-0">@session.PaidStudentCount</h3>
+                                <a href="/Transaction/Transaction/Search"><p>No Of Student Paid</p></a>
+                            </div>
+                            <span id="compositeline"><canvas width="383" height="32"></canvas></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="tile-stats white-bg">
+                            <div class="col-sm-8">
+                                <div class="status">
+                                    <h3 class="m-t-15">@session.PendingPaymentCount</h3>
+                                    <a href="/Transaction/Payment/GetPayment"><p>Payment Remaing Student</p></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 m-t-20">
+                                <span class="sparkpie-big"><canvas width="98" height="50"></canvas></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div>
+    </div>
 </body>
 </html>
 

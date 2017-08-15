@@ -26,7 +26,7 @@
 
     <link rel="shortcut icon" href="~/admin/img/favicon_1.ico">
 
-    <title>Velonic - Responsive Admin Dashboard Template</title>
+    <title>St. Augustine's Day School</title>
 
     <!-- Google-Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
@@ -72,8 +72,9 @@
         <!-- brand -->
         <div class="logo">
             <a href="index.html" class="logo-expanded">
-                <img src="img/single-logo.png" alt="logo">
-                <span class="nav-label">Velonic</span>
+                @*<img src="img/single-logo.png" alt="logo">*@
+                <img src="~/Images/schoollogo.png" height="60" width="340" alt="logo">
+                <span class="nav-label"></span>
             </a>
         </div>
         <!-- / brand -->
@@ -199,14 +200,14 @@
             </button>
 
             <!-- Search -->
-            <form role="search" class="navbar-left app-search pull-left hidden-xs">
+            @*<form role="search" class="navbar-left app-search pull-left hidden-xs">
                 <input type="text" placeholder="Search..." class="form-control">
-            </form>
+            </form>*@
 
             <!-- Left navbar -->
-            <nav class=" navbar-default hidden-xs" role="navigation">
+            @*<nav class=" navbar-default hidden-xs" role="navigation">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown">
+                    @*<li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">English <span class="caret"></span></a>
                         <ul role="menu" class="dropdown-menu">
                             <li><a href="#">German</a></li>
@@ -218,12 +219,12 @@
                     <li><a href="#">Files</a></li>
                     <li><a href="../frontend/" target="_blank">Frontend</a></li>
                 </ul>
-            </nav>
+            </nav>*@
 
             <!-- Right navbar -->
             <ul class="list-inline navbar-right top-menu top-right-menu">
                 <!-- mesages -->
-                <li class="dropdown">
+                @*<li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="fa fa-envelope-o "></i>
                         <span class="badge badge-sm up bg-purple count">4</span>
@@ -257,10 +258,10 @@
                             <p><a href="inbox.html" class="text-right">See all Messages</a></p>
                         </li>
                     </ul>
-                </li>
+                </li>*@
                 <!-- /messages -->
                 <!-- Notification -->
-                <li class="dropdown">
+                @*<li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="fa fa-bell-o"></i>
                         <span class="badge badge-sm up bg-pink count">3</span>
@@ -292,19 +293,20 @@
                             <p><a href="#" class="text-right">See all notifications</a></p>
                         </li>
                     </ul>
-                </li>
+                </li>*@
                 <!-- /Notification -->
                 <!-- user login dropdown start-->
                 <li class="dropdown text-center">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <img alt="" src="img/avatar-2.jpg" class="img-circle profile-img thumb-sm">
-                        <span class="username">John Deo </span> <span class="caret"></span>
+                        <span class="username">@OpMgr.Resources.Common.CommonResource.WelcomeText ! @session.FName </span> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu extended pro-menu fadeInUp animated" tabindex="5003" style="overflow: hidden; outline: none;">
-                        <li><a href="profile.html"><i class="fa fa-briefcase"></i>Profile</a></li>
-                        <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                        <li><a href="#"><i class="fa fa-bell"></i> Friends <span class="label label-info pull-right mail-info">5</span></a></li>
-                        <li><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                        @*<li><a href="profile.html"><i class="fa fa-briefcase"></i>Profile</a></li>*@
+                        <li><a href="/Login/Login/Landing"><i class="ion-home"></i> Home</a></li>
+                        <li><a href="/Login/Login/ResetPassword"><i class="fa fa-cog"></i> Reset Password</a></li>
+                        @*<li><a href="#"><i class="fa fa-bell"></i> Friends <span class="label label-info pull-right mail-info">5</span></a></li>*@
+                        <li><a href="/Login/Login/Logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>
                 </li>
                 <!-- user login dropdown end -->

@@ -162,7 +162,7 @@
                             <strong>@Model.ErrorMsg</strong>
                         </div>
                         }
-                        <div class="panel panel-default">
+                        @*<div class="panel panel-default">*@
                             <div class="panel-body">
                                 <input type="hidden" value="@Model.IsPostBack" name="IsPostBack" id="hfIsPostBack" />
                                 @Html.HiddenFor(m => m.IsdifferentTo, new { id = "hfIsDiffTo" })
@@ -195,7 +195,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @*</div>*@
 
                     </fieldset>
                 }

@@ -4,7 +4,7 @@
 
 @{
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 <h2></h2>
@@ -190,15 +190,15 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
             <div class="panel-body">
-                <div class="row">
-                    @Html.ActionLink("Back", "Search")
+                <div class="row" style="padding-bottom:5px">
+                    <i class="ion-ios7-arrow-back" style="padding-right:5px"></i>@Html.ActionLink("Back", "Search")
                 </div>
 
                 <fieldset>
-                    <div id="tabStudent" class="container">
+                    <div id="tabStudent" class="container" style="padding-bottom:5px">
                         <ul class="nav nav-tabs">
                             <li class="active">
                                 <a href="#basicinfo" data-toggle="tab">Personal Information</a>

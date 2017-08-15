@@ -5,7 +5,7 @@
 
 @{
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 @section PageScripts{
     <script>
@@ -253,15 +253,15 @@
 }
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading"><b>@UserResource.PageHeader</b></div>
             <div class="panel-body">
 
-                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform" , enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("Register", "Login", FormMethod.Post, new { id = "registerform", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
-                    <div class="row">
-                        @Html.ActionLink("Back", "Search", "User", new { Area = "User" }, null)
+                    <div class="row" style="padding-bottom:5px">
+                        <i class="ion-ios7-arrow-back" style="padding-right:5px"></i>@Html.ActionLink("Back", "Search", "User", new { Area = "User" }, null)
                     </div>
                     <div>
                         <fieldset class="@Model.DisabledClass">
@@ -462,7 +462,7 @@
                             }
                             @if (string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                             {
-                                
+
                             }
                             else if (string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
                             {
