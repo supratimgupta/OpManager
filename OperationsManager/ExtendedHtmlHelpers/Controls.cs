@@ -59,6 +59,86 @@ namespace OperationsManager.ExtendedHtmlHelpers
             return MvcHtmlString.Create(controlText);
         }
 
+        //Creates submit button with icon
+        public static MvcHtmlString OpMgrSubmitButtonWithIcon(this HtmlHelper helper, string name, string label, object htmlAttributes,string iconClass, bool isImageAfterText=false)
+        {
+            string controlText = helper.TextBox(name, null, htmlAttributes).ToString();
+            controlText = controlText.Replace("type=\"text\"", "type=\"submit\"");
+            if(isImageAfterText)
+            {
+                controlText = controlText.Replace("<input", "<button").Replace("</input>", "").Replace("/>", "").Replace("value=\"\"", "") + "><span>" + label + "</span>&nbsp;&nbsp;&nbsp;<i class=\"" + iconClass + "\"></i>" + "</button>";
+            }
+            else
+            {
+                controlText = controlText.Replace("<input", "<button").Replace("</input>", "").Replace("/>", "").Replace("value=\"\"", "") + "><i class=\"" + iconClass + "\">&nbsp;&nbsp;&nbsp;</i><span>" + label + "</span>" + "</button>";
+            }
+            
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Path));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Path));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        var editorField = new TagBuilder("span");
+                        editorField.AddCssClass("disabledDiv");
+                        editorField.InnerHtml += controlText;
+
+                        return MvcHtmlString.Create(editorField.ToString());
+                    }
+                }
+            }
+            return MvcHtmlString.Create(controlText);
+        }
+
+        //Creates normal button with icon
+        public static MvcHtmlString OpMgrButtonWithIcon(this HtmlHelper helper, string name, string label, object htmlAttributes, string iconClass, bool isImageAfterText=false)
+        {
+            string controlText = helper.TextBox(name, null, htmlAttributes).ToString();
+            controlText = controlText.Replace("type=\"text\"", "type=\"button\"");
+            if (isImageAfterText)
+            {
+                controlText = controlText.Replace("<input", "<button").Replace("</input>", "").Replace("/>", "").Replace("value=\"\"", "") + "><span>" + label + "</span>&nbsp;&nbsp;&nbsp;<i class=\"" + iconClass + "\"></i>" + "</button>";
+            }
+            else
+            {
+                controlText = controlText.Replace("<input", "<button").Replace("</input>", "").Replace("/>", "").Replace("value=\"\"", "") + "><i class=\"" + iconClass + "\">&nbsp;&nbsp;&nbsp;</i><span>" + label + "</span>" + "</button>";
+            }
+
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Path));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Path));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    if (disabledControl != null)
+                    {
+                        var editorField = new TagBuilder("span");
+                        editorField.AddCssClass("disabledDiv");
+                        editorField.InnerHtml += controlText;
+
+                        return MvcHtmlString.Create(editorField.ToString());
+                    }
+                }
+            }
+            return MvcHtmlString.Create(controlText);
+        }
+
         //Use the below code to add the normal button in cshtml view
         //@Html.OpMgrButton("submitButton", "my button label", new {onclick="alert('abc');", @class="btn btn-primary", id="myId1" })
         public static MvcHtmlString OpMgrButton(this HtmlHelper helper, string name, string label, object htmlAttributes)

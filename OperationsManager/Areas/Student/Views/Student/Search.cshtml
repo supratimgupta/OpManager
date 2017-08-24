@@ -83,11 +83,13 @@
                                 @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-2">
-                                <button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>
+                                @*<button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>*@
+                                @Html.OpMgrSubmitButtonWithIcon("Command", @StudentResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
                             </div>
 
-                            <div class="col-lg-2" style="padding-top:8px">
-                                @Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block ion-person-add", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })
+                            <div class="col-lg-2">
+                                @*@Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block ion-person-add", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })*@
+                                @Html.OpMgrButtonWithIcon("btnAdd", StudentResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", onclick = "redirectToAdd();" }, "ion-person-add", true)
                                 @*<button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>*@
                             </div>
                         </fieldset>
