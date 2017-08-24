@@ -58,7 +58,9 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-5">
-                                <button type="submit" class="btn btn-primary btn-block" disabled="disabled" id="btnSubmit">Save</button>
+                                @*<button type="submit" class="btn btn-primary btn-block" disabled="disabled" id="btnSubmit">Save</button>*@
+                                
+                                @Html.OpMgrSubmitButtonWithIcon("Command", TransactionLogAdd.Save, new { @class = "btn btn-primary btn-block" }, "fa fa-save")
                             </div>
                         </div>
 

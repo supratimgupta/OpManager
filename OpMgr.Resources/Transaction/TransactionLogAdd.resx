@@ -135,6 +135,9 @@
   <data name="RegistrationNo" xml:space="preserve">
     <value>Registration No</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="StandardSectionLabel" xml:space="preserve">
     <value>Select Standard Section</value>
   </data>
