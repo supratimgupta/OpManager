@@ -14,48 +14,15 @@ using System.Threading.Tasks;
 
 namespace OpMgr.FileWatcher
 {
-    public partial class StudentUpload : ServiceBase
+    public partial class StudentUpload
     {
-        private IConfigSvc _configSvc;
-        private DataTable _dtData;
-        private DataSet _dsData;
-        private ILogSvc _logger;
-
-        string diResolverPath = System.Configuration.ConfigurationManager.AppSettings["DIResolverPath"];
-        //        StandardKernel kernel = new StandardKernel();
-        //        kernel.Load(diResolverPath);
-        //ITransactionSvc trnsSvc = kernel.Get<ITransactionSvc>();
-        //        trnsSvc.AddRegularTransactions();
-
-        public StudentUpload(IConfigSvc configSvc, ILogSvc logger)
-        {
-            _configSvc = configSvc;
-            _logger = logger;
-        }
-
-        string savePath = System.Configuration.ConfigurationManager.AppSettings["StudentBulkUploadExcelFilePath"];
-        public StudentUpload()
-        {
-            InitializeComponent();
-        }
-
-        protected override void OnStart(string[] args)
-        {
-            ImportFileToSQL();
-        }
-
-        public void DownloadFile(string uri, string savePath)
-        {
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile(new Uri(uri), savePath);
-        }
 
         /// <summary>
         ///  Import File to the Database.
         /// </summary>
-        public void ImportFileToSQL()
+        public void ImportFileToSQL(string savePath)
         {
-            string path = @"C:\StudentBulkUpload\StudentInfo.xlsx";
+            string path = savePath;
             string sexcelconnectionstring = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1;MAXSCANROWS=0\"";
             using (OleDbConnection conn = new OleDbConnection(sexcelconnectionstring))
             {
@@ -395,11 +362,5 @@ namespace OpMgr.FileWatcher
         //    sbc.WriteToServer(reader);
         //    return true;
         //}
-
-
-
-        protected override void OnStop()
-        {
-        }
     }
 }

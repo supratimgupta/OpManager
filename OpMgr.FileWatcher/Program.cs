@@ -14,20 +14,19 @@ namespace OpMgr.FileWatcher
         /// </summary>
         static void Main()
         {
-#if (!DEBUG)
+#if (DEBUG)
+            FileWatcherSvc_Debug debugSvc = new FileWatcherSvc_Debug();
+#else
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new UploadData()
+                new FileWatcherSvc()
             };
             ServiceBase.Run(ServicesToRun);
-#else
-            StudentUpload myServ = new StudentUpload();
-            myServ.ImportFileToSQL();
+#endif
             // here Process is my Service function
             // that will run when my service onstart is call
             // you need to call your own method or function name here instead of Process();
-#endif
         }
     }
 }

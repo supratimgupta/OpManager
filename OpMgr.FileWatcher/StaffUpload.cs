@@ -13,36 +13,13 @@ using System.Threading.Tasks;
 
 namespace OpMgr.FileWatcher
 {
-    partial class StaffUpload : ServiceBase
+    partial class StaffUpload
     {
-        private IConfigSvc _configSvc;
-        private DataTable _dtData;
-        private DataSet _dsData;
-        private ILogSvc _logger;
-
-        string diResolverPath = System.Configuration.ConfigurationManager.AppSettings["DIResolverPath"];
+        //string savePath = System.Configuration.ConfigurationManager.AppSettings["StaffBulkUploadExcelFilePath"];
         
-        public StaffUpload(IConfigSvc configSvc, ILogSvc logger)
+        public void StaffImportFileToSQL(string savePath)
         {
-            _configSvc = configSvc;
-            _logger = logger;
-        }
-
-        string savePath = System.Configuration.ConfigurationManager.AppSettings["StaffBulkUploadExcelFilePath"];
-        public StaffUpload()
-        {
-            InitializeComponent();
-        }
-
-        protected override void OnStart(string[] args)
-        {
-            // TODO: Add code here to start your service.
-            StaffImportFileToSQL();
-        }
-
-        public void StaffImportFileToSQL()
-        {
-            string path = @"C:\StudentBulkUpload\StudentInfo.xlsx";
+            string path = savePath;
             string sexcelconnectionstring = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1;MAXSCANROWS=0\"";
             using (OleDbConnection conn = new OleDbConnection(sexcelconnectionstring))
             {
@@ -145,11 +122,6 @@ namespace OpMgr.FileWatcher
                 //*******************************************************
             }
             
-        }
-
-        protected override void OnStop()
-        {
-            // TODO: Add code here to perform any tear-down necessary to stop your service.
         }
     }
 }
