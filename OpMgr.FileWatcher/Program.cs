@@ -22,7 +22,7 @@ namespace OpMgr.FileWatcher
             };
             ServiceBase.Run(ServicesToRun);
 #else
-            UploadData myServ = new UploadData();
+            StudentUpload myServ = new StudentUpload();
             myServ.ImportFileToSQL();
             // here Process is my Service function
             // that will run when my service onstart is call

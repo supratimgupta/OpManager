@@ -67,11 +67,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UploadData.cs">
+    <Compile Include="StaffUpload.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UploadData.Designer.cs">
-      <DependentUpon>UploadData.cs</DependentUpon>
+    <Compile Include="StaffUpload.Designer.cs">
+      <DependentUpon>StaffUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StudentUpload.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StudentUpload.Designer.cs">
+      <DependentUpon>StudentUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

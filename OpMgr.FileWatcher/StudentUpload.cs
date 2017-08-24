@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace OpMgr.FileWatcher
 {
-    public partial class UploadData : ServiceBase
+    public partial class StudentUpload : ServiceBase
     {
         private IConfigSvc _configSvc;
         private DataTable _dtData;
@@ -27,14 +27,14 @@ namespace OpMgr.FileWatcher
         //ITransactionSvc trnsSvc = kernel.Get<ITransactionSvc>();
         //        trnsSvc.AddRegularTransactions();
 
-        public UploadData(IConfigSvc configSvc, ILogSvc logger)
+        public StudentUpload(IConfigSvc configSvc, ILogSvc logger)
         {
             _configSvc = configSvc;
             _logger = logger;
         }
 
         string savePath = System.Configuration.ConfigurationManager.AppSettings["StudentBulkUploadExcelFilePath"];
-        public UploadData()
+        public StudentUpload()
         {
             InitializeComponent();
         }
