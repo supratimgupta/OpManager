@@ -1,6 +1,6 @@
 ﻿namespace OpMgr.FileWatcher
 {
-    partial class StaffUpload
+    partial class FileWatcherSvc
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.ServiceName = "StaffUpload";
+            this.ServiceName = "FileWatcherSvc";
         }
 
         #endregion
