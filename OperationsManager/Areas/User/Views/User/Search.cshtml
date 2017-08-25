@@ -11,7 +11,12 @@
 
 @section PageScripts
 {
-    <script>
+    <script language="javascript" type="text/javascript">
+        function redirectToAdd()
+        {
+            window.location.href = "Register";
+        }
+        
         $(function () {
             $('#hover, #striped, #condensed').click(function () {
                 var classes = 'table';
@@ -126,11 +131,12 @@
                             </div>
 
                             <div class="col-lg-2">
-                                <button type="submit" class="btn btn-primary btn-block">@UserResource.SearchButton</button>
+                                @Html.OpMgrSubmitButtonWithIcon("Command", @UserResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                @*<button type="submit" class="btn btn-primary btn-block">@UserResource.SearchButton</button>*@
                             </div>
 
                             <div class="col-lg-2">
-                                @Html.OpMgrButton("btnAdd", UserResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", style = "", onclick = "redirectToAdd();" })
+                                @Html.OpMgrButtonWithIcon("btnAdd", UserResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", style = "", onclick = "redirectToAdd();" }, "ion-person-add", true)
                                 @*<button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>*@
                             </div>
                         </fieldset>

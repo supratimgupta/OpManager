@@ -115,6 +115,15 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Standard Section.
         /// </summary>
         public static string StandardSectionLabel {
