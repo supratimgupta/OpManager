@@ -58,5 +58,15 @@ namespace OpMgr.Configurations.Implementations
         {
             return System.Configuration.ConfigurationManager.AppSettings["EmployeeImageRelPath"];
         }
+
+        public string StudentDataUploadPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["StudentBulkUploadExcelFilePath"];
+        }
+
+        public string StaffDataUploadPath()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["StaffBulkUploadExcelFilePath"];
+        }
     }
 }

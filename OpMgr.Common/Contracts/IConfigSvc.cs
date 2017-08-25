@@ -27,5 +27,9 @@ namespace OpMgr.Common.Contracts
         string GetEmployeeImagesFolder();
 
         string GetEmployeeImagesRelPath();
+
+        string StudentDataUploadPath();
+
+        string StaffDataUploadPath();
     }
 }
