@@ -295,6 +295,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UPLOAD DATA FROM EXCEL.
+        /// </summary>
+        public static string UploadData {
+            get {
+                return ResourceManager.GetString("UploadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
         public static string User {

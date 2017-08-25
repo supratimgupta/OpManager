@@ -66,10 +66,6 @@
     <Reference Include="Ninject.Web.Common">
       <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
     </Reference>
-    <Reference Include="OpMgr.Resources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpMgr.Resources\bin\Debug\OpMgr.Resources.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -1234,6 +1230,10 @@
     <ProjectReference Include="..\OpMgr.Mailer\OpMgr.Mailer.csproj">
       <Project>{620f30ed-ee12-4707-a0d6-f386e33314a4}</Project>
       <Name>OpMgr.Mailer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Resources\OpMgr.Resources.csproj">
+      <Project>{1597930e-b3b4-42d3-b17d-cd4ebb0cd396}</Project>
+      <Name>OpMgr.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpMgr.TransactionHandler\OpMgr.TransactionHandler.csproj">
       <Project>{4d95fa50-5330-46a9-9cbb-a803e0ea1667}</Project>

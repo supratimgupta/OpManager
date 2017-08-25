@@ -23,10 +23,16 @@ namespace OperationsManager.Areas.DataImport.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult Upload()
         {
-            Models.DataImportViewModel diVM = new Models.DataImportViewModel();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(Models.DataImportViewModel diVM)
+        {
+            diVM = new Models.DataImportViewModel();
             try
             {
                 if (Request.Files.Count > 0)

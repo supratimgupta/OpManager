@@ -195,6 +195,9 @@
   <data name="TransactionRuleSearch" xml:space="preserve">
     <value>RULES FOR FEES STRUCTURE</value>
   </data>
+  <data name="UploadData" xml:space="preserve">
+    <value>UPLOAD DATA FROM EXCEL</value>
+  </data>
   <data name="User" xml:space="preserve">
     <value>User</value>
   </data>
