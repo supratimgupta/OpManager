@@ -16,6 +16,7 @@ namespace OpMgr.FileWatcher
         {
 #if (DEBUG)
             FileWatcherSvc_Debug debugSvc = new FileWatcherSvc_Debug();
+            Console.ReadLine();
 #else
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
