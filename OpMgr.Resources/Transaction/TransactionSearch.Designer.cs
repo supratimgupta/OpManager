@@ -241,6 +241,15 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard Section.
         /// </summary>
         public static string StandardSection {
@@ -255,6 +264,15 @@ namespace OpMgr.Resources.Transaction {
         public static string ToDate {
             get {
                 return ResourceManager.GetString("ToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction History.
+        /// </summary>
+        public static string TranSearchResultHeading {
+            get {
+                return ResourceManager.GetString("TranSearchResultHeading", resourceCulture);
             }
         }
         

@@ -177,11 +177,17 @@
   <data name="RegNumber" xml:space="preserve">
     <value>Registration No</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="StandardSection" xml:space="preserve">
     <value>Standard Section</value>
   </data>
   <data name="ToDate" xml:space="preserve">
     <value>Transaction To</value>
+  </data>
+  <data name="TranSearchResultHeading" xml:space="preserve">
+    <value>Transaction History</value>
   </data>
   <data name="TransSearchPageHeader" xml:space="preserve">
     <value>Search Transaction</value>

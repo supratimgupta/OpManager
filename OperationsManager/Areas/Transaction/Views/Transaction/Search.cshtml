@@ -46,7 +46,8 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-2">
-                                <button type="submit" class="btn btn-primary btn-block">Search</button>
+                                @*<button type="submit" class="btn btn-primary btn-block">Search</button>*@
+                                @Html.OpMgrSubmitButtonWithIcon("Command", @TransactionSearch.Search, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
                             </div>
                         </div>
                     </fieldset>
@@ -54,13 +55,14 @@
             </div>
         </div>
         <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>@TransactionSearch.TranSearchResultHeading</b></div>
             <div class="panel-body">
                 <div class="row">
                     <div style="overflow:scroll;">
                         @if (Model.SearchResult != null && Model.SearchResult.Count > 0)
                         {
                             <table style="margin-top:20px;" class="table table-bordered table-striped table-hover table-responsive">
-                                <thead>
+                                <thead >
                                     <tr>
                                         <th>
                                             @TransactionSearch.Col2
