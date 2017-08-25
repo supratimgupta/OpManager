@@ -197,6 +197,9 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Models\AdminViewModel.cs" />
+    <Compile Include="Areas\DataImport\Controllers\DataImportController.cs" />
+    <Compile Include="Areas\DataImport\DataImportAreaRegistration.cs" />
+    <Compile Include="Areas\DataImport\Models\DataImportViewModel.cs" />
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
     <Compile Include="Areas\Exam\Controllers\ExamMarksController.cs" />
     <Compile Include="Areas\Exam\ExamAreaRegistration.cs" />
@@ -1075,6 +1078,10 @@
     <Content Include="admin\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="admin\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="admin\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Areas\DataImport\Views\web.config" />
+    <Content Include="Areas\DataImport\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\DataImport\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\DataImport\Views\DataImport\Upload.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

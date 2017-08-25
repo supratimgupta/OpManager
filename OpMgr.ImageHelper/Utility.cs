@@ -46,18 +46,21 @@ namespace OpMgr.ImageHelper
                                 try
                                 {
                                     folderPath = lstImgColName[j].FolderPath;
-                                    imageName = dtData.Rows[i][lstImgColName[j].ColumnName].ToString();
-                                    if (!string.IsNullOrEmpty(imageName) && !string.IsNullOrWhiteSpace(imageName))
+                                    if(!string.IsNullOrEmpty(folderPath))
                                     {
-                                        imageNamePattern = imageName + ".*";
-                                        files = Directory.GetFiles(folderPath, imageNamePattern);
-                                        templateValue = dtData.Rows[i][templateColName].ToString().Replace('/', '_').Replace('\\', '_');
-                                        foreach (string file in files)
+                                        imageName = dtData.Rows[i][lstImgColName[j].ColumnName].ToString();
+                                        if (!string.IsNullOrEmpty(imageName) && !string.IsNullOrWhiteSpace(imageName))
                                         {
-                                            arrFileNames = file.Split('.');
-                                            extn = arrFileNames[arrFileNames.Length - 1];
-                                            targetPath = Path.Combine(folderPath, templateValue + "." + extn);
-                                            File.Move(file, targetPath);
+                                            imageNamePattern = imageName + ".*";
+                                            files = Directory.GetFiles(folderPath, imageNamePattern);
+                                            templateValue = dtData.Rows[i][templateColName].ToString().Replace('/', '_').Replace('\\', '_');
+                                            foreach (string file in files)
+                                            {
+                                                arrFileNames = file.Split('.');
+                                                extn = arrFileNames[arrFileNames.Length - 1];
+                                                targetPath = Path.Combine(folderPath, templateValue + "." + extn);
+                                                File.Move(file, targetPath);
+                                            }
                                         }
                                     }
                                 }
