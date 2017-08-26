@@ -71,10 +71,9 @@
 
         <!-- brand -->
         <div class="logo">
-            <a href="index.html" class="logo-expanded">
-                @*<img src="img/single-logo.png" alt="logo">*@
-                <img src="~/Images/schoollogo.png" height="60" width="340" alt="logo">
-                <span class="nav-label"></span>
+            <a href="/Login/Login/Landing" class="logo-expanded">
+                <img src="~/Images/logo.gif" style="border-radius:20%; border:1px solid wheat;" width="30" height="20" alt="logo">
+                <span class="nav-label" style="font-size:12px;">St. Augustine's <span style="font-size:8px;">Day School</span></span>
             </a>
         </div>
         <!-- / brand -->
@@ -200,9 +199,9 @@
             </button>
 
             <!-- Search -->
-            @*<form role="search" class="navbar-left app-search pull-left hidden-xs">
+            <form role="search" class="navbar-left app-search pull-left hidden-xs">
                 <input type="text" placeholder="Search..." class="form-control">
-            </form>*@
+            </form>
 
             <!-- Left navbar -->
             @*<nav class=" navbar-default hidden-xs" role="navigation">
@@ -261,7 +260,7 @@
                 </li>*@
                 <!-- /messages -->
                 <!-- Notification -->
-                @*<li class="dropdown">
+                <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="fa fa-bell-o"></i>
                         <span class="badge badge-sm up bg-pink count">3</span>
@@ -293,12 +292,12 @@
                             <p><a href="#" class="text-right">See all notifications</a></p>
                         </li>
                     </ul>
-                </li>*@
+                </li>
                 <!-- /Notification -->
                 <!-- user login dropdown start-->
                 <li class="dropdown text-center">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <img alt="" src="img/avatar-2.jpg" class="img-circle profile-img thumb-sm">
+                        <img alt="" src="~/admin/img/avatar-2.jpg" class="img-circle profile-img thumb-sm">
                         <span class="username">@OpMgr.Resources.Common.CommonResource.WelcomeText ! @session.FName </span> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu extended pro-menu fadeInUp animated" tabindex="5003" style="overflow: hidden; outline: none;">
@@ -392,7 +391,7 @@
                 });
             });
     </script>
-
+    <script src="~/Content/js/OpMgrStyleJs.js"></script>
     @RenderSection("PageScripts", false)
 </body>
 </html>

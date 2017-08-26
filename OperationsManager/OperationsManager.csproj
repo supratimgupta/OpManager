@@ -941,6 +941,7 @@
     <Content Include="Images\calendar.gif" />
     <Content Include="Images\Employee\875462.png" />
     <Content Include="Images\FieldSetBG.jpg" />
+    <Content Include="Images\logo.gif" />
     <Content Include="Images\schoolbuilding.jpg" />
     <Content Include="Images\schoollogo.png" />
     <Content Include="Images\tab-left.gif" />
