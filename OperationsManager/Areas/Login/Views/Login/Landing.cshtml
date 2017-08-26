@@ -37,55 +37,98 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="tile-stats white-bg">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="widget-panel widget-style-1 bg-success">
                             <div class="status">
                                 <h3 class="m-t-0">@session.StudentCount</h3>
                                 <a href="/Student/Student/Search"><p>Student</p></a>
-                            </div>
-                            <div class="chart-inline">
-                                <span class="inlinesparkline"><canvas width="383" height="32"></canvas></span>
+                                <i class="fa fa-user"></i>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="tile-stats white-bg">
-                            <div class="status">
-                                <h3 class="m-t-0">@session.StaffCount</h3>
-                                <a href="/User/User/Search"><p>Employee</p></a>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="panel">
+                            <h3 class="h2 text-primary">@session.StaffCount</h3>
+                            <a href="/User/User/Search"><p>Employee</p></a>
+                            <div class="text-right">
+                                <i class="fa fa-user fa-2x text-primary"></i>
                             </div>
-                            <span class="dynamicbar-big"><canvas width="205" height="32"></canvas></span>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="tile-stats white-bg">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="widget-panel widget-style-1 bg-warning">
                             <div class="status">
                                 <h3 class="m-t-0">@session.PaidStudentCount</h3>
                                 <a href="/Transaction/Transaction/Search"><p>No Of Student Paid</p></a>
+                                <i class="fa fa-usd"></i>
                             </div>
-                            <span id="compositeline"><canvas width="383" height="32"></canvas></span>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="tile-stats white-bg">
-                            <div class="col-sm-8">
-                                <div class="status">
-                                    <h3 class="m-t-15">@session.PendingPaymentCount</h3>
-                                    <a href="/Transaction/Payment/GetPayment"><p>Payment Remaing Student</p></a>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 m-t-20">
-                                <span class="sparkpie-big"><canvas width="98" height="50"></canvas></span>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="panel">
+                            <div class="h2 text-purple">@session.PendingPaymentCount</div>
+                            <a href="/Transaction/Payment/GetPayment"><p>Payment Remaing Student</p></a>
+                            <div class="text-right">
+                                <i class="fa fa-usd fa-2x text-purple"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> <!-- end col -->
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="widget-panel widget-style-1 bg-pink">
+                            <div class="status">
+                                <a href="/Student/Student/PromoteToNewClass" class="m-t-0"><p>Promote</p></a>
+                                <h3 class="m-t-0">Student</h3>
+                                <i class="fa fa-book" style="padding-top:30px"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="widget-panel widget-style-1 bg-success">
+                            <div class="status">
+                                <a href="/Admin/Admin/ActionUserRoleMapping" class="m-t-0"><p>Role</p></a>
+                                <h3 class="m-t-0">Mapping</h3>
+                                <div class="text-right">
+                                    <i class="fa fa-cog"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="widget-panel widget-style-1 bg-info">                            
+                                <h3 class="m-t-0">8</h3>
+                                <p>Student Paid in Last Week</p>                            
+                            <div class="chart-inline">
+                                <i class="fa fa-inr"></i>
+                                @*<span class="inlinesparkline"></span>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="widget-panel widget-style-1 bg-pink">
+                            <div class="status">
+                                <a href="/DataImport/DataImport/Upload"><p>Upload</p></a>
+                                <h3 class="m-t-0">Data</h3>
+                                <div class="text-right">
+                                    <i class="ion-upload"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 </body>
 </html>
 
