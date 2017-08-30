@@ -37,9 +37,13 @@ namespace OpMgr.FileWatcher
 
         private void InitiateStudentFileSystemWatcher()
         {
-            _stuFileSystemWatcher = new FileSystemWatcher();
-            _stuFileSystemWatcher.Path = ConfigurationManager.AppSettings["StudentBulkUploadExcelFilePath"];
-            _stuFileSystemWatcher.Created += _stuFileSystemWatcher_Created;
+            _stuFileSystemWatcher = new FileSystemWatcher(ConfigurationManager.AppSettings["StudentBulkUploadExcelFilePath"]);
+
+            _stuFileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _stuFileSystemWatcher.Filter = "*.*";
+            _stuFileSystemWatcher.EnableRaisingEvents = true;
+
+            stuFileSystemWatcher.Created += stuFileSystemWatcher_Created;
         }
 
         void _stuFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
