@@ -6,10 +6,11 @@ using System.Web.Mvc;
 using System.Configuration;
 using OpMgr.Common.Contracts;
 using System.IO;
+using OperationsManager.Controllers;
 
 namespace OperationsManager.Areas.DataImport.Controllers
 {
-    public class DataImportController : Controller
+    public class DataImportController : BaseController
     {
         IConfigSvc _configSvc;
         public DataImportController(IConfigSvc configSvc)
