@@ -75,7 +75,7 @@ namespace OpMgr.FileWatcher
                                 string ClassType = dtdata.Rows[i][18].ToString();
                                 
 
-                                using (MySqlCommand cmd = new MySqlCommand("insert into operationsmanager.staffuploadnew values(@ImageNo,@StaffName,@ModeOfAppoinrment,@DateOfBirth,@DateOfJoining,@Qualification,@LastOrganisation,@Address,@ContactNo,@EmailId,@FathersName,@ClassX,@ClassXII,@Graduation,@PostGraduation,@ProfessionalTraining,@SpouseName,@NameOf1stChild,@ClassType)", con))
+                                using (MySqlCommand cmd = new MySqlCommand("insert into operationsmanager.staffuploadnew values(@ImageNo,@StaffName,@ModeOfAppoinrment,@DateOfBirth,@DateOfJoining,@Qualification,@LastOrganisation,@Address,@ContactNo,@EmailId,@FathersName,@ClassX,@ClassXII,@Graduation,@PostGraduation,@ProfessionalTraining,@SpouseName,@NameOf1stChild,@ClassType,NULL,NULL)", con))
                                 {
                                     cmd.Parameters.Add("@ImageNo", MySqlDbType.VarChar, 50);
                                     cmd.Parameters.Add("@StaffName", MySqlDbType.VarChar, 100);
@@ -106,6 +106,7 @@ namespace OpMgr.FileWatcher
                                     cmd.Parameters["@LastOrganisation"].Value = LastOrganisation;
                                     cmd.Parameters["@Address"].Value = Address;
                                     cmd.Parameters["@ContactNo"].Value = ContactNo;
+                                    cmd.Parameters["@EmailId"].Value = EmailId;
                                     cmd.Parameters["@FathersName"].Value = FathersName;
                                     cmd.Parameters["@ClassX"].Value = ClassX;
                                     cmd.Parameters["@ClassXII"].Value = ClassXII;
