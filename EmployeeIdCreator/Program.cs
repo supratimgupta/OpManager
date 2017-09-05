@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpMgr.ImageHelper
+namespace EmployeeIdCreator
 {
-    public abstract class AbsUtility
+    class Program
     {
-        public abstract void DoAction();
+        static void Main(string[] args)
+        {
+        }
     }
 }

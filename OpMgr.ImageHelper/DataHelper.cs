@@ -36,5 +36,19 @@ namespace OpMgr.ImageHelper
                 return dsStudent.Tables.Count>0?dsStudent.Tables[0]:null;
             }            
         }
+
+        public override bool UpdateAction(string query)
+        {
+            using (System.Data.IDbConnection conn = new MySql.Data.MySqlClient.MySqlConnection(_connString))
+            {
+                using (System.Data.IDbCommand command = new MySql.Data.MySqlClient.MySqlCommand(query))
+                {
+                    conn.Open();
+                    command.Connection = conn;
+
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+        }
     }
 }

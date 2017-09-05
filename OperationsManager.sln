@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.ImageHelper", "OpMgr.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.FileWatcher", "OpMgr.FileWatcher\OpMgr.FileWatcher.csproj", "{5F8DB229-2139-45CF-B17E-82725536D2EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.Utilities", "OpMgr.Utilities\OpMgr.Utilities.csproj", "{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,12 @@ Global
 		{5F8DB229-2139-45CF-B17E-82725536D2EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F8DB229-2139-45CF-B17E-82725536D2EE}.Release|x86.ActiveCfg = Release|x86
 		{5F8DB229-2139-45CF-B17E-82725536D2EE}.Release|x86.Build.0 = Release|x86
+		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

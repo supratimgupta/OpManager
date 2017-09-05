@@ -54,5 +54,37 @@ namespace OpMgr.ImageHelper
                 }
             }
         }
+
+        public static string ACTION
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ACTION"];
+            }
+        }
+
+        public static List<string> TARGET_COLUMNS
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["TARGET_COLUMNS"].Split(',').ToList();
+            }
+        }
+
+        public static List<string> TARGET_INDEX_COLUMNS
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["TARGET_INDEX_COLUMNS"].Split(',').ToList();
+            }
+        }
+
+        public static string TARGET_QUERY
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["TARGET_QUERY"];
+            }
+        }
     }
 }
