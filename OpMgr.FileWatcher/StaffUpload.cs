@@ -44,11 +44,21 @@ namespace OpMgr.FileWatcher
                             con.Open();
                             for (int i = 0; i < dtdata.Rows.Count; i++)
                             {
+                                DateTime validDate = new DateTime();
                                 string ImageNo = dtdata.Rows[i][0].ToString();
                                 string StaffName = dtdata.Rows[i][1].ToString();
                                 string ModeOfAppoinrment = dtdata.Rows[i][2].ToString();
-                                string DateOfBirth = dtdata.Rows[i][3].ToString();
-                                string DateOfJoining = dtdata.Rows[i][4].ToString();
+                                string DateOfBirth = null;
+                                if (DateTime.TryParse(dtdata.Rows[i][3].ToString(), out validDate))
+                                {
+                                    DateOfBirth = validDate.ToString("yyyy-MM-dd");
+                                }
+                                string DateOfJoining = null;
+                                if(DateTime.TryParse(dtdata.Rows[i][4].ToString(), out validDate))
+                                {
+                                    DateOfJoining = validDate.ToString("yyyy-MM-dd");
+                                }
+                                
                                 string Qualification = dtdata.Rows[i][5].ToString();
                                 string LastOrganisation = dtdata.Rows[i][6].ToString();
                                 string Address = dtdata.Rows[i][7].ToString();
