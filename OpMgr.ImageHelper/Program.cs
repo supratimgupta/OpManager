@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,9 @@ namespace OpMgr.ImageHelper
     {
         static void Main(string[] args)
         {
-            AbsUtility utility = new Utility(new DataHelper());
-            utility.ChangeImage();
+            AbsDataHelper dataHelper = UtilityFactory.GetDataHelper(ConfigurationManager.AppSettings["ACTION"]);
+            AbsUtility utility = UtilityFactory.GetUtilityClass(ConfigurationManager.AppSettings["ACTION"], dataHelper);
+            utility.DoAction();
         }
     }
 }

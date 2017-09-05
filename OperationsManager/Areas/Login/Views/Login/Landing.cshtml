@@ -22,6 +22,16 @@
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
+@section PageScripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            responsiveVoice.speak("Welcome to the application!!! Please allow microphone to experience the coolest thing on web!!!");
+            responsiveVoice.speak("To goto any page, first tell goto then page name.");
+        });
+    </script>
+}
+
 <html>
 <head>
     @*<image src="~/Images/schoollogo.png"></image>*@

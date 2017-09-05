@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace OpMgr.ImageHelper
 {
-    public class Utility : AbsUtility
+    public class ImageUtility : AbsUtility
     {
         private AbsDataHelper _dataHelper;
 
-        public Utility(AbsDataHelper dataHelper)
+        public ImageUtility(AbsDataHelper dataHelper)
         {
             _dataHelper = dataHelper;
         }
 
-        public override void ChangeImage()
+        public override void DoAction()
         {
             using(DataTable dtData = _dataHelper.GetDataFromTemp())
             {
