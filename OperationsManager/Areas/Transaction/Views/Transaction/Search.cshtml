@@ -29,14 +29,15 @@
                             <div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.User.LName, TransactionSearch.UserLName, new { @class = "form-control" })
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-2">
                                 @Html.OpMgrDropDownListFor(m => m.TransactionType, Model.TransactionTypeList, TransactionSearch.TransType, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-2">
                                 @Html.OpMgrDropDownListFor(m => m.SearchStdSectionId, Model.StandardSectionList, TransactionSearch.StandardSection, new { @class = "form-control" })
                             </div>
+                        </div>
+                        <div class="row">
+                            
                             <div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.SearchStudRegId, TransactionSearch.RegNumber, new { @class = "form-control" })
                             </div>
