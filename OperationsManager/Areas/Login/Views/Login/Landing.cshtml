@@ -25,10 +25,16 @@
 @section PageScripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
-            responsiveVoice.speak("Welcome to the application!!! Please allow microphone to experience the coolest thing on web!!!");
-            responsiveVoice.speak("To goto any page, first tell goto then page name.");
+        artyom.say("Hey, @(session.LName.Replace(".",string.Empty)), welcome to the application. This application is powered by voice control. Listen carefully to the commands. ", {
+            onStart: function () {
+                console.log("Welcome message!");
+            },
+            onEnd: function () {
+                console.log("Message ends!");
+            }
         });
+
+        artyom.say("To go to any page please say 'go to' then page name.");
     </script>
 }
 

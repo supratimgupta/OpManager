@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="artyom.window.js"></script>
+    <script type="text/javascript">
+        debugger;
+        const artyom = new Artyom();
+
+        //artyom.say("Good morning, i'm hungry. Do you want to eat something?", {
+        //    onStart: function () {
+        //        console.log("The text is being readed");
+        //    },
+        //    onEnd: function () {
+        //        console.log("Well, that was all. Try with a longer text !");
+        //    }
+        //});
+
+        //artyom.say("Now i'll say this");
+
+        //artyom.say("And this after the previous spoken text.");
+
+        var UserDictation = artyom.newDictation({
+            continuous: true, // Enable continuous if HTTPS connection
+            onResult: function (text) {
+                // Do something with the text
+                console.log(text);
+            },
+            onStart: function () {
+                console.log("Dictation started by the user");
+            },
+            onEnd: function () {
+                alert("Dictation stopped by the user");
+            }
+        });
+
+        UserDictation.start();
+
+        artyom.redirectRecognizedTextOutput(function (recognized, isFinal) {
+            if (isFinal) {
+                alert("Final recognized text: " + recognized);
+            } else {
+                alert(recognized);
+            }
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

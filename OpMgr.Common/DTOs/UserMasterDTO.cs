@@ -80,5 +80,9 @@ namespace OpMgr.Common.DTOs
         public int PaidStudentCount { get; set; }
 
         public int PendingPaymentCount { get; set; }
+
+        public string UniqueId { get; set; }
+
+        public string UserType { get; set; }
     }
 }

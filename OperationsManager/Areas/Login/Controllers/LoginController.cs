@@ -121,6 +121,14 @@ namespace OperationsManager.Areas.Login.Controllers
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;
 
+                if(string.Equals(status.ReturnObj.UserType, "STUDENT", StringComparison.OrdinalIgnoreCase))
+                {
+                    session.IconImagePath = _configSvc.GetStudentImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
+                }
+                if(string.Equals(status.ReturnObj.UserType, "STAFF", StringComparison.OrdinalIgnoreCase))
+                {
+                    session.IconImagePath = _configSvc.GetEmployeeImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
+                }
 
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();

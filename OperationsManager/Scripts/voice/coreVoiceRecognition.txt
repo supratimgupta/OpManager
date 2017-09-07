@@ -19,3 +19,50 @@ recognition.onresult = function(event) {
  'onsoundend',
  'onspeechend',
  'onstart'
+ 
+
+    <!--<label id="lblText"></label>
+
+    <script type="text/javascript">
+    debugger;
+    var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+    recognition.continuous = true;
+    recognition.maxAlternatives = 5;
+    recognition.start();
+
+    recognition.onresult = function (event) {
+        debugger;
+        alert('You said: ', event.results[0][0].transcript);
+    };
+    recognition.onaudiostart = function (event) {
+        alert('audio started');
+    };
+    recognition.onaudioend = function (event) {
+        alert('audio ended');
+    };
+    recognition.onerror = function (event) {
+        debugger;
+        alert('Error: ' + event);
+    };
+    recognition.onnomatch = function (event) {
+        alert('Voice no match');
+    };
+    recognition.onsoundstart = function (event) {
+        alert('Sound started');
+    };
+    recognition.onsoundend = function (event) {
+        alert('Sound ended');
+    };
+    recognition.onspeechend = function (event) {
+        alert('Speech ended');
+    };
+    recognition.onstart = function (event) {
+        alert('started');
+    };
+    recognition.onend = function (event) {
+        alert('ended');
+        recognition.start();
+    };
+    </script>-->

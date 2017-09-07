@@ -1105,9 +1105,12 @@
     <Content Include="Scripts\Style.css" />
     <Content Include="Scripts\voice\annyang.min.js" />
     <Content Include="Scripts\voice\annyang.txt" />
+    <Content Include="Scripts\voice\artyom.js" />
+    <Content Include="Scripts\voice\artyom.window.js" />
     <Content Include="Scripts\voice\coreVoiceRecognition.txt" />
     <Content Include="Scripts\voice\responsivevoice.js" />
     <Content Include="Scripts\voice\voiceApi.js" />
+    <Content Include="Scripts\voice\voiceTest.html" />
     <Content Include="Scripts\_references.js" />
     <Content Include="template\charts.html" />
     <Content Include="template\css\bootstrap-table.css" />
