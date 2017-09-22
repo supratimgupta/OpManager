@@ -415,15 +415,17 @@ namespace OperationsManager.Areas.Student.Controllers
                     {
                         case "fuFatherImage":
                             folderName = _configSvc.GetFatherImagesFolder();
+                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
                             break;
                         case "fuMotherImage":
                             folderName = _configSvc.GetMotherImagesFolder();
+                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
                             break;
                         case "fuStudentImage":
                             folderName = _configSvc.GetStudentImagesFolder();
+                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
                             break;
                     }
-                    SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
                 }
             }
             

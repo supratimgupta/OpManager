@@ -73,6 +73,8 @@
   <ItemGroup>
     <Compile Include="AbsFileUpload.cs" />
     <Compile Include="AppraisalUpload.cs" />
+    <Compile Include="DataAccess\AbsDataAccess.cs" />
+    <Compile Include="DataAccess\MySqlDataAccess.cs" />
     <Compile Include="FileWatcherSvc.cs">
       <SubType>Component</SubType>
     </Compile>
