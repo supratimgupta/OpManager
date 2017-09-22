@@ -277,12 +277,15 @@ namespace OperationsManager.Areas.Login.Controllers
             //{
             //    if (file.ContentLength > 0)
             //    {
-            for (int i = 0; i < Request.Files.Count; i++)
+            if(Request.Files!=null && Request.Files.Count>0)
             {
-                string keyName = Request.Files.Keys[i];
-                folderName = _configSvc.GetEmployeeImagesFolder();
-                SaveImageFiles(folderName, Request.Files[i].FileName, uvModel.Employee.StaffEmployeeId);
-            }
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    string keyName = Request.Files.Keys[i];
+                    folderName = _configSvc.GetEmployeeImagesFolder();
+                    SaveImageFiles(folderName, Request.Files[i].FileName, uvModel.Employee.StaffEmployeeId);
+                }
+            }            
             //    }
             //}
 

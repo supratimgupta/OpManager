@@ -402,29 +402,33 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult Register(Models.StudentVM studentView, HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-            if (file != null)
+            //if (file != null)
+            //{
+                //if (file.ContentLength > 0)
+                //{
+            if(Request.Files!=null && Request.Files.Count>0)
             {
-                if (file.ContentLength > 0)
+                for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    string keyName = Request.Files.Keys[i];
+                    switch (keyName)
                     {
-                        string keyName = Request.Files.Keys[i];
-                        switch (keyName)
-                        {
-                            case "fuFatherImage":
-                                folderName = _configSvc.GetFatherImagesFolder();
-                                break;
-                            case "fuMotherImage":
-                                folderName = _configSvc.GetMotherImagesFolder();
-                                break;
-                            case "fuStudentImage":
-                                folderName = _configSvc.GetStudentImagesFolder();
-                                break;
-                        }
-                        SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
+                        case "fuFatherImage":
+                            folderName = _configSvc.GetFatherImagesFolder();
+                            break;
+                        case "fuMotherImage":
+                            folderName = _configSvc.GetMotherImagesFolder();
+                            break;
+                        case "fuStudentImage":
+                            folderName = _configSvc.GetStudentImagesFolder();
+                            break;
                     }
+                    SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
                 }
             }
+            
+                //}
+            //}
 
             DateTime dtValidator = new DateTime();
             if(DateTime.TryParse(studentView.DOBString, out dtValidator))

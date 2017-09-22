@@ -43,7 +43,7 @@ namespace OpMgr.FileWatcher
         void _staFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             StaffUpload staUpload = new StaffUpload();
-            staUpload.StaffImportFileToSQL(e.FullPath);
+            staUpload.ImportFileToSQL(e.FullPath);
             File.Move(e.FullPath, ConfigurationManager.AppSettings["StaffFileArchive"] + "\\" + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss") + ".arc");
         }
     }

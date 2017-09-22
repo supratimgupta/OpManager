@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace OpMgr.FileWatcher
 {
-    public partial class StudentUpload
+    public partial class StudentUpload : AbsFileUpload
     {
 
         /// <summary>
         ///  Import File to the Database.
         /// </summary>
-        public void ImportFileToSQL(string savePath)
+        public override void ImportFileToSQL(string savePath)
         {
             string path = savePath;
             string sexcelconnectionstring = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1;MAXSCANROWS=0\"";

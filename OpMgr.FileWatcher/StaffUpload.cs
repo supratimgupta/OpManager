@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace OpMgr.FileWatcher
 {
-    partial class StaffUpload
+    partial class StaffUpload : AbsFileUpload
     {
         //string savePath = System.Configuration.ConfigurationManager.AppSettings["StaffBulkUploadExcelFilePath"];
-        
-        public void StaffImportFileToSQL(string savePath)
+
+        public override void ImportFileToSQL(string savePath)
         {
             string path = savePath;
             string sexcelconnectionstring = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=YES;IMEX=1;MAXSCANROWS=0\"";

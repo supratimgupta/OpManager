@@ -16,6 +16,7 @@ namespace OpMgr.FileWatcher
     {
         FileSystemWatcher _stuFileSystemWatcher;
         FileSystemWatcher _staFileSystemWatcher;
+        FileSystemWatcher _apprFileSystemWatcher;
         public FileWatcherSvc()
         {
             InitializeComponent();
@@ -48,7 +49,7 @@ namespace OpMgr.FileWatcher
 
         void _stuFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            StudentUpload stuUpload = new StudentUpload();
+            AbsFileUpload stuUpload = new StudentUpload();
             stuUpload.ImportFileToSQL(e.FullPath);
             File.Move(e.FullPath, ConfigurationManager.AppSettings["StudentFileArchive"] + "\\" + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss") + ".arc");
         }
@@ -66,9 +67,29 @@ namespace OpMgr.FileWatcher
 
         void _staFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            StaffUpload staUpload = new StaffUpload();
-            staUpload.StaffImportFileToSQL(e.FullPath);
+            AbsFileUpload staUpload = new StaffUpload();
+            staUpload.ImportFileToSQL(e.FullPath);
             File.Move(e.FullPath, ConfigurationManager.AppSettings["StaffFileArchive"] + "\\" + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss") + ".arc");
+        }
+
+        private void InitiateApprFileSystemWatcher()
+        {
+            _apprFileSystemWatcher = new FileSystemWatcher(ConfigurationManager.AppSettings["AppraisalDataUploadPath"]);
+
+            _apprFileSystemWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _apprFileSystemWatcher.Filter = "*.*";
+            _apprFileSystemWatcher.EnableRaisingEvents = true;
+
+            _apprFileSystemWatcher.Created += _apprFileSystemWatcher_Created;
+        }
+
+        void _apprFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            //Need to change the following from Staff upload to appraisal upload
+            AbsFileUpload staUpload = new AppraisalUpload(new DataAccess.MySqlDataAccess());
+            staUpload.ImportFileToSQL(e.FullPath);
+            //Move the same to archive
+            File.Move(e.FullPath, ConfigurationManager.AppSettings["AppraisalFileArchive"] + "\\" + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss") + ".arc");
         }
     }
 }

@@ -71,6 +71,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbsFileUpload.cs" />
+    <Compile Include="AppraisalUpload.cs" />
     <Compile Include="FileWatcherSvc.cs">
       <SubType>Component</SubType>
     </Compile>
