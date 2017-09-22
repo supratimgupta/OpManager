@@ -121,11 +121,11 @@ namespace OperationsManager.Areas.Login.Controllers
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;
 
-                if(string.Equals(status.ReturnObj.UserType, "STUDENT", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(status.ReturnObj.UserType, "STUDENT", StringComparison.OrdinalIgnoreCase))
                 {
                     session.IconImagePath = _configSvc.GetStudentImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
                 }
-                if(string.Equals(status.ReturnObj.UserType, "STAFF", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(status.ReturnObj.UserType, "STAFF", StringComparison.OrdinalIgnoreCase))
                 {
                     session.IconImagePath = _configSvc.GetEmployeeImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
                 }
@@ -216,7 +216,8 @@ namespace OperationsManager.Areas.Login.Controllers
                         uvModel.Employee.ClassType = dto.ReturnObj.Employee.ClassType;
                     }
 
-                    string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
+                     string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
+                    //string employeeImageFolder = _configSvc.GetEmployeeImagesRelPath();
 
                     uvModel.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(uvModel.Employee.StaffEmployeeId, employeeImageFolder);
                     //if(dto.ReturnObj.Employee.ClassType != null)
@@ -273,18 +274,18 @@ namespace OperationsManager.Areas.Login.Controllers
         public ActionResult Register(Models.UserViewModel uvModel, HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-            //if (file != null)
-            //{
-            //    if (file.ContentLength > 0)
-            //    {
-            for (int i = 0; i < Request.Files.Count; i++)
+            if (file != null)
             {
-                string keyName = Request.Files.Keys[i];
-                folderName = _configSvc.GetEmployeeImagesFolder();
-                SaveImageFiles(folderName, Request.Files[i].FileName, uvModel.Employee.StaffEmployeeId);
+                if (file.ContentLength > 0)
+                {
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        string keyName = Request.Files.Keys[i];
+                        folderName = _configSvc.GetEmployeeImagesFolder();
+                        SaveImageFiles(folderName, Request.Files[i].FileName, uvModel.Employee.StaffEmployeeId);
+                    }
+                }
             }
-            //    }
-            //}
 
             SessionDTO sessionRet = _sessionSvc.GetUserSession();
             uvModel.CreatedBy = sessionRet;

@@ -345,6 +345,7 @@ namespace OpMgr.DataAccess.Implementations
                     selectClause = "SELECT users.UserMasterId,users.FName,users.MName,users.LName,users.Gender,users.EmailId,users.ResidentialAddress,users.PermanentAddress," +
                                   "users.ContactNo,users.AltContactNo,users.BloodGroup,r.RoleDescription" +
                                    " FROM usermaster users" +
+                                   " INNER JOIN employeedetails emp ON emp.UserMasterId = users.UserMasterId" +
                                    " INNER JOIN roles r ON users.RoleId = r.RoleId AND users.RoleId>1";
 
                     whereClause = " WHERE users.Active = 1";
@@ -382,11 +383,19 @@ namespace OpMgr.DataAccess.Implementations
                         }
 
                         // Role Search
-                        if (!string.IsNullOrEmpty(data.Role.RoleDescription))
+                        //if (!string.IsNullOrEmpty(data.Role.RoleDescription))
+                        //{
+                        //    whereClause = whereClause + " AND r.RoleDescription=@RoleDescription";
+                        //    command.Parameters.Add("@RoleDescription", MySqlDbType.String).Value = data.Role.RoleDescription;
+                        //}
+
+                        //StaffEmpId Search
+                        if (!string.IsNullOrEmpty(data.Employee.StaffEmployeeId))
                         {
-                            whereClause = whereClause + " AND r.RoleDescription=@RoleDescription";
-                            command.Parameters.Add("@RoleDescription", MySqlDbType.String).Value = data.Role.RoleDescription;
+                            whereClause = whereClause + " AND emp.StaffEmployeeId=@StaffEmployeeId";
+                            command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
                         }
+
 
                         //BloodGroup Search
                         if (!string.IsNullOrEmpty(data.BloodGroup))
@@ -476,7 +485,14 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
                     if (data.Employee.Department.DepartmentId == 1)
                     {
-                        command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = data.Employee.ClassType.ClassTypeId;
+                        if (data.Employee.ClassType.ClassTypeId > 0)
+                        {
+                            command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = data.Employee.ClassType.ClassTypeId;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@ClassTypeId", MySqlDbType.Int32).Value = DBNull.Value;
+                        }
                         //if (data.Employee.ClassType.ClassTypeId > 2)
                         //{
                         //    command.Parameters.Add("@SubjectId", MySqlDbType.Int32).Value = data.Employee.Subject.SubjectId;

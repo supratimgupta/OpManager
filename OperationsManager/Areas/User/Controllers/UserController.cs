@@ -125,8 +125,12 @@ namespace OperationsManager.Areas.User.Controllers
                 user.Gender = userView.Gender;
 
                 // Search for Role
-                user.Role = new RoleDTO();
-                user.Role.RoleDescription = userView.Role.RoleDescription;
+                //user.Role = new RoleDTO();
+                //user.Role.RoleDescription = userView.Role.RoleDescription;
+
+                //search by userempid
+                user.Employee = new EmployeeDetailsDTO();
+                user.Employee.StaffEmployeeId = userView.Employee.StaffEmployeeId;
 
                 // Search for BloodGroup
                 user.BloodGroup = userView.BloodGroup;
