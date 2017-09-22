@@ -380,7 +380,7 @@ namespace OperationsManager.Areas.Student.Controllers
             return View(studView);
         }
 
-        private void SaveImageFiles(string directoryPath, string uploadedFileName, string regNo)
+        private void SaveImageFiles(string directoryPath, string uploadedFileName, string regNo, HttpPostedFileBase currentFile)
         {
             regNo = regNo.Replace('/', '_').Replace('\\', '_');
             if (!Directory.Exists(directoryPath))
@@ -395,7 +395,7 @@ namespace OperationsManager.Areas.Student.Controllers
             {
                 System.IO.File.Delete(filePath);
             }
-            Request.Files[0].SaveAs(filePath);
+            currentFile.SaveAs(filePath);
         }
 
         [HttpPost]
@@ -415,15 +415,15 @@ namespace OperationsManager.Areas.Student.Controllers
                     {
                         case "fuFatherImage":
                             folderName = _configSvc.GetFatherImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
+                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
                             break;
                         case "fuMotherImage":
                             folderName = _configSvc.GetMotherImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
+                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
                             break;
                         case "fuStudentImage":
                             folderName = _configSvc.GetStudentImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber);
+                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
                             break;
                     }
                 }
