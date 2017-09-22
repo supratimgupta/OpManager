@@ -81,6 +81,8 @@ namespace OpMgr.Common.DTOs
 
         public int PendingPaymentCount { get; set; }
 
+        public int PaidCountlast7day { get; set; }
+
         public string UniqueId { get; set; }
 
         public string UserType { get; set; }

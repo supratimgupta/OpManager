@@ -117,6 +117,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 session.StaffCount = status.ReturnObj.StaffCount;
                 session.PaidStudentCount = status.ReturnObj.PaidStudentCount;
                 session.PendingPaymentCount = status.ReturnObj.PendingPaymentCount;
+                session.PaidCountlast7day = status.ReturnObj.PaidCountlast7day;
 
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;

@@ -161,7 +161,8 @@ namespace OpMgr.DataAccess.Implementations
                             userMaster.StaffCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["staffcount"].ToString());
                             userMaster.PaidStudentCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["paidstudentcount"].ToString());
                             userMaster.PendingPaymentCount = Convert.ToInt32(_dsData.Tables[0].Rows[0]["pendingpaymentcount"].ToString());
-                            if(string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString()) && !string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString()))
+                            userMaster.PaidCountlast7day = Convert.ToInt32(_dsData.Tables[0].Rows[0]["paidinlast7day"].ToString());
+                            if (string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString()) && !string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString()))
                             {
                                 userMaster.UniqueId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
                                 userMaster.UserType = "STAFF";
