@@ -66,6 +66,9 @@
     <Compile Include="Contracts\Modules\IUserSvc.cs" />
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
     <Compile Include="Contracts\IResetPasswordSvc.cs" />
+    <Compile Include="DTOs\AppraisalStatusDTO.cs" />
+    <Compile Include="DTOs\AppraisalStatusLogDTO.cs" />
+    <Compile Include="DTOs\ApprovalMappingDTO.cs" />
     <Compile Include="DTOs\BookCategoryDTO.cs" />
     <Compile Include="DTOs\BookMasterDTO.cs" />
     <Compile Include="DTOs\BookTypeDTO.cs" />
@@ -75,8 +78,10 @@
     <Compile Include="DTOs\CourseMappingDTO.cs" />
     <Compile Include="DTOs\DepartmentDTO.cs" />
     <Compile Include="DTOs\DesignationDTO.cs" />
+    <Compile Include="DTOs\EmployeeAppraisalMasterDTO.cs" />
     <Compile Include="DTOs\EmployeeDetailsDTO.cs" />
     <Compile Include="DTOs\EmployeeGoalDTO.cs" />
+    <Compile Include="DTOs\EmployeeGoalLogDTO.cs" />
     <Compile Include="DTOs\EmployeeMappingDTO.cs" />
     <Compile Include="DTOs\ExamMarksDTO.cs" />
     <Compile Include="DTOs\ExamRuleDTO.cs" />

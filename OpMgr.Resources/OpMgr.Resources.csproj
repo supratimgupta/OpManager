@@ -72,6 +72,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Library.resx</DependentUpon>
     </Compile>
+    <Compile Include="PMS\GoalSheetResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GoalSheetResource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transaction\Payment.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -160,6 +165,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Library.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="PMS\GoalSheetResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GoalSheetResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transaction\Payment.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Payment.Designer.cs</LastGenOutput>
@@ -211,6 +220,7 @@
       <LastGenOutput>UserResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

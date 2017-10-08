@@ -208,6 +208,9 @@
     <Compile Include="Areas\Login\Models\MailVM.cs" />
     <Compile Include="Areas\Login\Models\PasswordVM.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
+    <Compile Include="Areas\PMS\Controllers\PMSController.cs" />
+    <Compile Include="Areas\PMS\Models\GoalViewModel.cs" />
+    <Compile Include="Areas\PMS\Models\PMSVM.cs" />
     <Compile Include="Areas\PMS\PMSAreaRegistration.cs" />
     <Compile Include="Areas\Student\Controllers\StudentController.cs" />
     <Compile Include="Areas\Student\Models\StudentVM.cs" />
@@ -1081,6 +1084,7 @@
     <Content Include="Areas\DataImport\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\DataImport\Views\DataImport\Upload.cshtml" />
     <Content Include="Areas\PMS\Views\web.config" />
+    <Content Include="Areas\PMS\Views\PMS\GoalSheetForAll.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1208,8 +1212,6 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Exam\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
-    <Folder Include="Areas\PMS\Controllers\" />
-    <Folder Include="Areas\PMS\Models\" />
     <Folder Include="Areas\PMS\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Images\Father\" />
