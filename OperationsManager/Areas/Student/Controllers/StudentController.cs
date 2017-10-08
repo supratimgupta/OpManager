@@ -410,21 +410,24 @@ namespace OperationsManager.Areas.Student.Controllers
             {
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    string keyName = Request.Files.Keys[i];
-                    switch (keyName)
+                    if(Request.Files[i].ContentLength>0 && Request.Files[i].FileName.Trim().Length>0)
                     {
-                        case "fuFatherImage":
-                            folderName = _configSvc.GetFatherImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
-                            break;
-                        case "fuMotherImage":
-                            folderName = _configSvc.GetMotherImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
-                            break;
-                        case "fuStudentImage":
-                            folderName = _configSvc.GetStudentImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
-                            break;
+                        string keyName = Request.Files.Keys[i];
+                        switch (keyName)
+                        {
+                            case "fuFatherImage":
+                                folderName = _configSvc.GetFatherImagesFolder();
+                                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
+                                break;
+                            case "fuMotherImage":
+                                folderName = _configSvc.GetMotherImagesFolder();
+                                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
+                                break;
+                            case "fuStudentImage":
+                                folderName = _configSvc.GetStudentImagesFolder();
+                                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
+                                break;
+                        }
                     }
                 }
             }
