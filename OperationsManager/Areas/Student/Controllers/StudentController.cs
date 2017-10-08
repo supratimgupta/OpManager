@@ -140,9 +140,9 @@ namespace OperationsManager.Areas.Student.Controllers
                 string fatherImageFolder = _configSvc.GetFatherImagesFolder();
                 string motherImageFolder = _configSvc.GetMotherImagesFolder();
 
-                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder);
-                studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder);
-                studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder);
+                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder) + "?ver="+DateTime.UtcNow.Ticks;
+                studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
+                studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
             }
 
             //studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
