@@ -23,5 +23,7 @@ namespace OpMgr.Common.DTOs
         public EmployeeDetailsDTO Employee { get; set; }
 
         public GoalAttributeDTO GoalAttribute { get; set; }
+
+        public DesignationDTO Role { get; set; }
     }
 }
