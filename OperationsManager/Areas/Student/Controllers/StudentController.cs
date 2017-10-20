@@ -140,9 +140,9 @@ namespace OperationsManager.Areas.Student.Controllers
                 string fatherImageFolder = _configSvc.GetFatherImagesFolder();
                 string motherImageFolder = _configSvc.GetMotherImagesFolder();
 
-                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder);
-                studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder);
-                studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder);
+                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder) + "?ver="+DateTime.UtcNow.Ticks;
+                studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
+                studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
             }
 
             //studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
@@ -410,21 +410,24 @@ namespace OperationsManager.Areas.Student.Controllers
             {
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    string keyName = Request.Files.Keys[i];
-                    switch (keyName)
+                    if(Request.Files[i].ContentLength>0 && Request.Files[i].FileName.Trim().Length>0)
                     {
-                        case "fuFatherImage":
-                            folderName = _configSvc.GetFatherImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
-                            break;
-                        case "fuMotherImage":
-                            folderName = _configSvc.GetMotherImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
-                            break;
-                        case "fuStudentImage":
-                            folderName = _configSvc.GetStudentImagesFolder();
-                            SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
-                            break;
+                        string keyName = Request.Files.Keys[i];
+                        switch (keyName)
+                        {
+                            case "fuFatherImage":
+                                folderName = _configSvc.GetFatherImagesFolder();
+                                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
+                                break;
+                            case "fuMotherImage":
+                                folderName = _configSvc.GetMotherImagesFolder();
+                                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
+                                break;
+                            case "fuStudentImage":
+                                folderName = _configSvc.GetStudentImagesFolder();
+                                SaveImageFiles(folderName, Request.Files[i].FileName, studentView.RegistrationNumber, Request.Files[i]);
+                                break;
+                        }
                     }
                 }
             }

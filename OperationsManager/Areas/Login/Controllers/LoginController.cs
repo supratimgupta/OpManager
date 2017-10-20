@@ -219,7 +219,7 @@ namespace OperationsManager.Areas.Login.Controllers
 
                     string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
 
-                    uvModel.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(uvModel.Employee.StaffEmployeeId, employeeImageFolder);
+                    uvModel.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(uvModel.Employee.StaffEmployeeId, employeeImageFolder)+"?ver="+DateTime.UtcNow.Ticks;
                     //if(dto.ReturnObj.Employee.ClassType != null)
                     //{
                     //    uvModel.Employee.Subject = dto.ReturnObj.Employee.Subject;
