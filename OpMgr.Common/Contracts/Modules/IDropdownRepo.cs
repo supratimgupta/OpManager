@@ -52,5 +52,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<TransactionMasterDTO> GetTransactionMasters(string frequency=null);
 
         List<TransactionRuleDTO> GetTransactionRules();
+
+        List<CompetencyDTO> Competency();
     }
 }

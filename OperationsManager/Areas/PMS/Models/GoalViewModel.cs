@@ -6,8 +6,10 @@ using System.Web;
 
 namespace OperationsManager.Areas.PMS.Models
 {
-    public class GoalViewModel
+    public class GoalViewModel : GoalDTO
     {
-        public List<GoalAttributeDTO> GoalAttributes { get; set; }
+        public List<EmployeeGoalLogDTO> GoalLog { get; set; }
+
+        
     }
 }

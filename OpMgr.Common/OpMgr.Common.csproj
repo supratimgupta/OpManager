@@ -79,6 +79,7 @@
     <Compile Include="DTOs\DepartmentDTO.cs" />
     <Compile Include="DTOs\DesignationDTO.cs" />
     <Compile Include="DTOs\EmployeeAppraisalMasterDTO.cs" />
+    <Compile Include="DTOs\EmployeeCompetencyDTO.cs" />
     <Compile Include="DTOs\EmployeeDetailsDTO.cs" />
     <Compile Include="DTOs\EmployeeGoalDTO.cs" />
     <Compile Include="DTOs\EmployeeGoalLogDTO.cs" />

@@ -223,6 +223,24 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Individual Initiative.
+        /// </summary>
+        public static string IndividualInitiative {
+            get {
+                return ResourceManager.GetString("IndividualInitiative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Institutional Support.
+        /// </summary>
+        public static string InstitutionalSupport {
+            get {
+                return ResourceManager.GetString("InstitutionalSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to KPI.
         /// </summary>
         public static string KPI {
