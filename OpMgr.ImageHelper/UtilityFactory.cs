@@ -16,7 +16,7 @@ namespace OpMgr.ImageHelper
             }
             if(string.Equals(action, "CREATE_EMPLOYEE_ID", StringComparison.OrdinalIgnoreCase))
             {
-                return new EmployeeIdUtility(dataHelper);
+                return new EmployeeIdUtility(dataHelper, new OpMgr.DataAccess.Implementations.UserSvc(new OpMgr.Configurations.Implementations.ConfigSvc(), new OpMgr.Logger.Implementations.TextLogSvc(new OpMgr.Configurations.Implementations.ConfigSvc())));
             }
             return null;
         }
