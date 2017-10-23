@@ -11,8 +11,39 @@
     <script>
         $(document).ready(function () {
 
+            $.validator.addMethod("aFunction",
+                function (value, element) {
+                    debugger;
+                    if (value == "-1" || value=="" || !value)
+                        return false;
+                    else
+                        return true;
+                },
+                "Please select a value");
+
             var loginForm = $("#registerform");
-            $("#registerform").validate();
+            $("#registerform").validate({
+                rules: {
+                    "Location.LocationId" : {
+                        aFunction: true
+                    },
+                    Gender: {
+                        aFunction: true
+                    },
+                    "Employee.Designation.DesignationId": {
+                        aFunction: true
+                    },
+                    "Employee.Department.DepartmentId": {
+                        aFunction: true
+                    }
+                },
+                messages: {
+                    "Location.LocationId": 'Please select a location',
+                    Gender: 'Please select gender',
+                    "Employee.Designation.DesignationId": 'Please select designation',
+                    "Employee.Department.DepartmentId": 'Please select department'
+                }
+            });            
 
             //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
@@ -324,10 +355,10 @@
                                 @Html.OpMgrTextAreaFor(m => m.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Location is required" })
+                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", id="ddlLocation" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Gender is required" })
+                                @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control", id = "ddlGender" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.DOJString, UserResource.DateOfJoining, new { @class = "dateofjoining form-control", data_rule_required = "true", data_msg_required = "Date of joining is required" })
@@ -349,10 +380,10 @@
                                 @Html.OpMgrTextBoxFor(m => m.Employee.EducationalQualification, UserResource.EducationQualification, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Education Qualificattion is required" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control", id="ddlDesignation" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control", id="ddlDepartment" })
                             </div>
                             <div class="col-lg-5" id="divClasstype">
                                 @Html.OpMgrDropDownListFor(m => m.Employee.ClassType.ClassTypeId, Model.ClassTypeList, UserResource.ClassType, new { @class = "form-control" })
