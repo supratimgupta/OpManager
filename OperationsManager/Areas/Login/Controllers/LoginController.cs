@@ -208,6 +208,7 @@ namespace OperationsManager.Areas.Login.Controllers
                     uvModel.DOJString = uvModel.Employee.DateOfJoining.HasValue ? uvModel.Employee.DateOfJoining.Value.ToString("dd-MMM-yyyy") : string.Empty;
 
                     uvModel.Employee.StaffEmployeeId = dto.ReturnObj.Employee.StaffEmployeeId;
+                    uvModel.DummyStaffEmployeeId = uvModel.Employee.StaffEmployeeId;
                     uvModel.Employee.Department = dto.ReturnObj.Employee.Department;
                     uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
 
@@ -237,6 +238,16 @@ namespace OperationsManager.Areas.Login.Controllers
             //uvModel.SubjectList = _uiddlRepo.getSubjectDropDown();
 
             return View(uvModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GenerateEmployeeId(string fName, string lName)
+        {
+            string name = fName.Trim() + " " + lName.Trim();
+            int currentEmployeeCounter = _userSvc.GetCurrentEmployeeCounter();
+            string employeeId = OpMgr.Utilities.Utility.MakeEmployeeId(currentEmployeeCounter, name, 5, 2);
+            return Json(new { data = employeeId, status = true });
         }
 
         public string GetImageFileName(string staffempid, string folder)

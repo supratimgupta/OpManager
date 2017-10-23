@@ -1255,6 +1255,10 @@
       <Project>{4d95fa50-5330-46a9-9cbb-a803e0ea1667}</Project>
       <Name>OpMgr.TransactionHandler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Utilities\OpMgr.Utilities.csproj">
+      <Project>{a3b12d54-7b11-4ae8-9b7d-f8b45ff4ebe8}</Project>
+      <Name>OpMgr.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -248,6 +248,22 @@
                 error: function (error) { }
             });
         }
+
+        function generateEmplId()
+        {
+            if (document.getElementById("txtFName").value.length == 0 || document.getElementById("txtLName").value.length == 0)
+            {
+                alert('Please enter first name and last name to generate employee id');
+            }
+            $.ajax({
+                type: 'POST',
+                url: 'GenerateEmployeeId',
+                data: {fName: document.getElementById("txtFName").value, lName: document.getElementById("txtLName").value},
+                dataType: "json",
+                success: function (resultData) { document.getElementById("txtEmployeeId").value = resultData.data; document.getElementById("hfStaffEmployeeId").value = resultData.data; },
+                error: function (error) { }
+            });
+        }
         //End -- Assign Multiple Specilization/ Subject to a faculty
     </script>
 }
@@ -276,7 +292,7 @@
                             }
 
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
+                                @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required", id="txtFName" })
                                 @Html.HiddenFor(m => m.MODE)
                                 @Html.HiddenFor(m => m.UserMasterId)
                             </div>
@@ -284,7 +300,7 @@
                                 @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
+                                @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required", id="txtLName" })
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact Number is required" })
@@ -318,7 +334,16 @@
                             </div>
                             <div class="col-lg-5">
                                 @Html.HiddenFor(m => m.hdnEmployeeId)
-                                @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Staff EmployeeId is required" })
+                                @Html.HiddenFor(m => m.Employee.StaffEmployeeId, new { id = "hfStaffEmployeeId" })
+                                @*@Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Staff EmployeeId is required" })*@
+                                @if(Model.MODE=="EDIT" || Model.MODE=="ADD")
+                                {
+                                    @Html.OpMgrTextBoxFor(m => m.DummyStaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control", disabled="disabled" })
+                                }
+                                else
+                                {
+                                    @Html.OpMgrTextBoxForWithButton(m => m.DummyStaffEmployeeId, UserResource.StaffEmployeeId, "fa fa-search", "srchEmployeeId", "generateEmplId();", new { @class = "form-control", data_rule_required = "true", data_msg_required = "Staff EmployeeId is required", disabled = "disabled", id = "txtEmployeeId" })
+                                }                                
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrTextBoxFor(m => m.Employee.EducationalQualification, UserResource.EducationQualification, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Education Qualificattion is required" })

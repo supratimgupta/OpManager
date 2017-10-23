@@ -221,6 +221,34 @@ namespace OperationsManager.ExtendedHtmlHelpers
             return FormLine(helper.LabelFor(expression, labelText).ToString(), helper.TextBoxFor(expression, htmlAttributes).ToString(), false, false);
         }
 
+        public static MvcHtmlString OpMgrTextBoxForWithButton<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, string btnClass, string btnId, string btnClickHandlerJS, object htmlAttributes = null)
+        {
+            string textBoxString = helper.TextBoxFor(expression, htmlAttributes).ToString();
+            textBoxString = "<div class=\"input-group\"><span class=\"input-group-btn\"><button type=\"button\" class=\"btn btn-effect-ripple btn-primary\" id=\"" + btnId + "\" onclick=\"" + btnClickHandlerJS + "\"><i class=\"" + btnClass + "\"></i></button></span>" + textBoxString + "</div>";
+            if (htmlAttributes != null)
+            {
+                object objId = GetPropValue(htmlAttributes, "id");                
+                if (objId != null)
+                {
+                    string id = objId.ToString();
+                    OpMgr.Common.DTOs.SessionDTO session = _sessionSvc.GetUserSession();
+                    var disabledControl = session.ActionList.FirstOrDefault(a => string.Equals(a.DisabledControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Path));
+                    var hiddenControl = session.ActionList.FirstOrDefault(a => string.Equals(a.HiddenControlId, id) && string.Equals(a.ParentAction.ActionLink, System.Web.HttpContext.Current.Request.Path));
+                    if (hiddenControl != null)
+                    {
+                        return new MvcHtmlString("");
+                    }
+                    
+                    if (disabledControl != null)
+                    {
+                        return FormLine(helper.LabelFor(expression, labelText).ToString(), textBoxString, true, false);
+                    }
+                }
+
+            }
+            return FormLine(helper.LabelFor(expression, labelText).ToString(), textBoxString, false, false);
+        }
+
         public static MvcHtmlString OpMgrFileUpload<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, string labelText, object htmlAttributes = null)
         {
             if (htmlAttributes != null)

@@ -821,5 +821,38 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public int GetCurrentEmployeeCounter()
+        {
+            int returnValue = 1;
+            using(IDbSvc dbSvc=new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand("SELECT StaffEmployeeId FROM employeedetails WHERE StaffEmployeeId IS NOT NULL ORDER BY EmployeeId DESC LIMIT 1");
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    using(MySqlDataAdapter mDA = new MySqlDataAdapter(command))
+                    {
+                        using(DataTable dt = new DataTable())
+                        {
+                            mDA.Fill(dt);
+                            if(dt!=null && dt.Rows.Count>0)
+                            {
+                                string lastEmployeeId = dt.Rows[0]["StaffEmployeeId"].ToString();
+                                string strCounter = lastEmployeeId.Substring(2, 5);
+                                returnValue = Int32.Parse(strCounter) + 1;
+                            }
+                        }
+                    }
+                }
+                catch(Exception exp)
+                {
+                    throw exp;
+                }
+            }
+            return returnValue;
+        }
     }
 }

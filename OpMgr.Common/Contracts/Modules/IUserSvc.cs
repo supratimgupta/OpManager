@@ -26,5 +26,7 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<FacultyCourseMapDTO> InsertFacultyCourse(FacultyCourseMapDTO data);
 
         StatusDTO<FacultyCourseMapDTO> UpdateFacultyCourseMap(FacultyCourseMapDTO data);
+
+        int GetCurrentEmployeeCounter();
     }
 }
