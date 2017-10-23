@@ -799,5 +799,47 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        /// To get the competencies 
+        /// 
+
+        public List<CompetencyDTO> GetCompetency()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select CompetencyId,CompetencyDescription from competency where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<CompetencyDTO> lstCompetency = new List<CompetencyDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        CompetencyDTO competencyDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            competencyDTO = new CompetencyDTO();
+                            competencyDTO.CompetencyId = (int)dr["LocationId"];
+                            competencyDTO.CompetencyDescription = dr["LocationDescription"].ToString();
+                            lstCompetency.Add(competencyDTO);
+                        }
+                    }
+                    return lstCompetency;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public List<CompetencyDTO> Competency()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

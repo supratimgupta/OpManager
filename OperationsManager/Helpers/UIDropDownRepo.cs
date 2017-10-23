@@ -329,5 +329,15 @@ namespace OperationsManager.Helpers
 
             return new SelectList(lstentitleDto, "TranMasterId", "TransactionName");
         }
+
+        public SelectList getCompetencyDropDown()
+        {
+            List<CompetencyDTO> rDto = _ddlRepo.Competency();
+            CompetencyDTO blank = new CompetencyDTO();
+            blank.CompetencyId = -1;
+            blank.CompetencyDescription = "";
+            rDto.Insert(0, blank);
+            return new SelectList(rDto, "CompetencyId", "CompetencyDescription");
+        }
     }
 }

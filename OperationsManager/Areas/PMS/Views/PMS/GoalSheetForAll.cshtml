@@ -14,7 +14,179 @@
             <div class="panel-heading"><b>@GoalSheetResource.Header</b></div>
             <div class="panel-body">
 
+                <fieldset>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Name)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.FullName)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Designation)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.EmployeeDetails.Designation.DesignationDescription)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Location)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.EmployeeDetails.UserDetails.Location.LocationDescription)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Qualification)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.EmployeeDetails.EducationalQualification)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.ReportingTo)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.ApproverName)
+                    </div>
+                </fieldset>
             </div>
         </div>
-    </div><!-- /.col-->
+
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading">@GoalSheetResource.HeadingForAppraisee</div>
+            <div class="panel-body">
+                @if (Model != null)
+
+                {
+                <div style="overflow:scroll;">
+                    <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                        <thead>
+                            <tr>
+                                <th th data-field="name" data-sortable="true">
+                                    @GoalSheetResource.Goals
+                                </th>
+                                <th h data-field="transactionname" data-sortable="true">
+                                    @GoalSheetResource.Target
+                                </th>
+                                <th th data-field="transactiondate" data-sortable="true">
+                                    @GoalSheetResource.KRA
+                                </th>
+                                <th th data-field="duedate" data-sortable="true">
+                                    @GoalSheetResource.KPI
+                                </th>
+                                <th th data-field="total" data-sortable="true">
+                                    @GoalSheetResource.Weightage
+                                </th>
+                                <th th data-field="total" data-sortable="true">
+                                    @GoalSheetResource.Achievement
+                                </th>
+                                <th th data-field="due" data-sortable="true">
+                                    @GoalSheetResource.SelfRating
+                                </th>
+                                <th th data-field="principalapprval" data-sortable="true">
+                                    @GoalSheetResource.AppraiserRating
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @for (int i = 0; i < Model.Goals.Count; i++)
+                                {
+                                <tr>
+                                    <td>
+                                        @Model.Goals[i].GoalDescription                                        
+                                    </td>
+                                    <td>
+                                        <table>
+                                            @for (int j = 0; j < Model.Goals[i].GoalLog.Count; j++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.Target
+                                                    </td>
+                                                    <td>
+                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.KRA
+                                                    </td>
+                                                    <td>
+                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.KPI
+                                                    </td>
+                                                    <td>
+                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.WeightAge
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.OpMgrTextBoxFor(m => m.Goals[i].GoalLog[j].Achievement, "", new { @class = "form-control requiredField" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.OpMgrTextBoxFor(m => m.Goals[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.OpMgrTextBoxFor(m => m.Goals[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </td>                                   
+                                </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+
+                }
+            </div>
+            <fieldset>
+                <div class="col-lg-5">
+                    @Html.Display(@GoalSheetResource.SelfRating)
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(m => m.SelfAvgRating)
+                </div>
+                <div class="col-lg-5">
+                    @Html.Display(@GoalSheetResource.AppraiserRating)
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(m => m.AppraiserFinalRating)
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>@GoalSheetResource.HeadingForAppraiser</b></div>
+            <div class="panel-body">
+
+                <fieldset>
+                    <div class="col-lg-5">
+                       @*@Html.TextArea(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })*@
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.FullName)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Designation)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.EmployeeDetails.Designation.DesignationDescription)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Location)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.EmployeeDetails.UserDetails.Location.LocationDescription)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.Qualification)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.EmployeeDetails.EducationalQualification)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.Display(@GoalSheetResource.ReportingTo)
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.LabelFor(m => m.ApproverName)
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </div>

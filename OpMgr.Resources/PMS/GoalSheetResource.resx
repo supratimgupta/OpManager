@@ -171,6 +171,12 @@
   <data name="HeadingForReviewer" xml:space="preserve">
     <value>To Be Filled By Reviewer</value>
   </data>
+  <data name="IndividualInitiative" xml:space="preserve">
+    <value>Individual Initiative</value>
+  </data>
+  <data name="InstitutionalSupport" xml:space="preserve">
+    <value>Institutional Support</value>
+  </data>
   <data name="KPI" xml:space="preserve">
     <value>KPI</value>
   </data>
