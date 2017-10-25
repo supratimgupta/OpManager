@@ -61,6 +61,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpMgr.Common\OpMgr.Common.csproj">
+      <Project>{31813560-3d31-4b02-b7fa-40d5c61050bb}</Project>
+      <Name>OpMgr.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Configurations\OpMgr.Configurations.csproj">
+      <Project>{f7259df2-da9d-4a4f-8454-4416cf55a744}</Project>
+      <Name>OpMgr.Configurations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.DataAccess\OpMgr.DataAccess.csproj">
+      <Project>{48bfc7fb-8015-4a52-b404-5cfc383402bf}</Project>
+      <Name>OpMgr.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Logger\OpMgr.Logger.csproj">
+      <Project>{c977afea-b959-4806-9fd3-6935813362b4}</Project>
+      <Name>OpMgr.Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpMgr.Utilities\OpMgr.Utilities.csproj">
       <Project>{a3b12d54-7b11-4ae8-9b7d-f8b45ff4ebe8}</Project>
       <Name>OpMgr.Utilities</Name>
