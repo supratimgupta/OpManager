@@ -88,45 +88,43 @@
                         </thead>
                         <tbody>
 
-                            @for (int i = 0; i < Model.Goals.Count; i++)
+                            @for (int i = 0; i < Model.GoalsAsList.Count; i++)
                                 {
-                                <tr>
-                                    <td>
-                                        @Model.Goals[i].GoalDescription                                        
-                                    </td>
-                                    <td>
-                                        <table>
-                                            @for (int j = 0; j < Model.Goals[i].GoalLog.Count; j++)
+                                    for (int j = 0; j < Model.GoalsAsList[i].GoalLog.Count; j++)
+                                    {
+                                        <tr>
+                                            @if (j == 0)
                                             {
-                                                <tr>
-                                                    <td>
-                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.Target
-                                                    </td>
-                                                    <td>
-                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.KRA
-                                                    </td>
-                                                    <td>
-                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.KPI
-                                                    </td>
-                                                    <td>
-                                                        @Model.Goals[i].GoalLog[j].GoalAttribute.WeightAge
-                                                    </td>
-
-                                                    <td>
-                                                        @Html.OpMgrTextBoxFor(m => m.Goals[i].GoalLog[j].Achievement, "", new { @class = "form-control requiredField" })
-                                                    </td>
-                                                    <td>
-                                                        @Html.OpMgrTextBoxFor(m => m.Goals[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })
-                                                    </td>
-                                                    <td>
-                                                        @Html.OpMgrTextBoxFor(m => m.Goals[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
-
-                                                    </td>
-                                                </tr>
+                                                <td rowspan="@Model.GoalsAsList[i].GoalLog.Count" valign="middle" style="vertical-align:middle;">
+                                                    @Model.GoalsAsList[i].GoalDescription
+                                                </td>
                                             }
-                                        </table>
-                                    </td>                                   
-                                </tr>
+                                            
+                                            <td>
+                                                @Model.GoalsAsList[i].GoalLog[j].GoalAttribute.Target
+                                            </td>
+                                            <td>
+                                                @Model.GoalsAsList[i].GoalLog[j].GoalAttribute.KRA
+                                            </td>
+                                            <td>
+                                                @Model.GoalsAsList[i].GoalLog[j].GoalAttribute.KPI
+                                            </td>
+                                            <td>
+                                                @Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge
+                                            </td>
+
+                                            <td>
+                                                @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].Achievement, "", new { @class = "form-control requiredField" })
+                                            </td>
+                                            <td>
+                                                @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })
+                                            </td>
+                                            <td>
+                                                @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
+
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                         </tbody>
                     </table>

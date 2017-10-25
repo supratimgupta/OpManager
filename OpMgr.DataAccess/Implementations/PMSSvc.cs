@@ -11,14 +11,14 @@ using MySql.Data.MySqlClient;
 
 namespace OpMgr.DataAccess.Implementations
 {
-    public class PMSvc : IPMSSvc
+    public class PMSSvc : IPMSSvc
     {
         private IConfigSvc _configSvc;
         private DataTable _dtData;
         private DataSet _dsData;
         private ILogSvc _logger;
 
-        public PMSvc(IConfigSvc configSvc, ILogSvc logger)
+        public PMSSvc(IConfigSvc configSvc, ILogSvc logger)
         {
             _configSvc = configSvc;
             _logger = logger;
@@ -53,11 +53,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandText = "get_AppraisalData";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-
-                    data.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                    data.EmployeeAppraisalMaster.Employee = new EmployeeDetailsDTO();
-                    data.EmployeeAppraisalMaster.Employee.Designation = new DesignationDTO();
-
+                    
                     command.Parameters.Add("@DesignationId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.Designation.DesignationId;
                     command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.EmployeeId;
 
@@ -122,7 +118,7 @@ namespace OpMgr.DataAccess.Implementations
                                 empdetails.UserDetails.LName = dsGoalLst.Tables[2].Rows[0]["LName"].ToString();
                                 empdetails.Designation.DesignationDescription = dsGoalLst.Tables[2].Rows[0]["DesignationDescription"].ToString();
                                 empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[2].Rows[0]["LocationDescription"].ToString();
-                                empdetails.EducationalQualification = dsGoalLst.Tables[2].Rows[0]["EducationalQualification"].ToString();
+                                empdetails.EducationalQualification = dsGoalLst.Tables[2].Rows[0]["EducationQualification"].ToString();
 
                             goalList.ReturnObj[0].EmployeeAppraisalMaster.Employee = empdetails;
                             

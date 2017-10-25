@@ -9,7 +9,5 @@ namespace OperationsManager.Areas.PMS.Models
     public class GoalViewModel : GoalDTO
     {
         public List<EmployeeGoalLogDTO> GoalLog { get; set; }
-
-        
     }
 }

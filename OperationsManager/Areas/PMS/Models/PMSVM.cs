@@ -10,7 +10,13 @@ namespace OperationsManager.Areas.PMS.Models
 {
     public class PMSVM : EmployeeAppraisalMasterDTO
     {
-        public List<GoalViewModel> Goals { get; set; }
+        public Dictionary<int, GoalViewModel> Goals
+        {
+            get;
+            set;
+        }
+
+        public List<GoalViewModel> GoalsAsList { get; set; }
 
         public UserMasterDTO UserDetails { get; set; }
 
@@ -27,5 +33,23 @@ namespace OperationsManager.Areas.PMS.Models
         public EmployeeCompetencyDTO EmpCompetency { get; set; }
 
         public SelectList CompetencyList { get; set; }
+
+        public PMSVM GetGoals(List<EmployeeGoalLogDTO> lstEmpGoals)
+        {
+            this.Goals = new Dictionary<int, GoalViewModel>();
+            foreach (EmployeeGoalLogDTO empGoal in lstEmpGoals)
+            {
+                if (!this.Goals.Keys.Contains(empGoal.GoalAttribute.Goal.GoalId))
+                {
+                    GoalViewModel goal = new GoalViewModel();
+                    goal.GoalDescription = empGoal.GoalAttribute.Goal.GoalDescription;
+                    goal.GoalId = empGoal.GoalAttribute.Goal.GoalId;
+                    goal.GoalLog = lstEmpGoals.Where(g => g.GoalAttribute.Goal.GoalId == empGoal.GoalAttribute.Goal.GoalId).ToList();
+                    this.Goals.Add(empGoal.GoalAttribute.Goal.GoalId, goal);
+                }
+            }
+            this.GoalsAsList = this.Goals.Values.ToList();
+            return this;
+        }
     }
 }
