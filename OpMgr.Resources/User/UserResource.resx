@@ -330,4 +330,82 @@
   <data name="UpdateRegisterButton" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="AnyBrotherSisterinSchool" xml:space="preserve">
+    <value>Any Brother Or Siter In School</value>
+  </data>
+  <data name="AnySeriousAilment" xml:space="preserve">
+    <value>Any Serious Ailments</value>
+  </data>
+  <data name="Caste" xml:space="preserve">
+    <value>Caste</value>
+  </data>
+  <data name="DropPoint" xml:space="preserve">
+    <value>Drop Point</value>
+  </data>
+  <data name="FatherDepartment" xml:space="preserve">
+    <value>Father's Department</value>
+  </data>
+  <data name="FatherOfficeAddress" xml:space="preserve">
+    <value>Father's Office Address</value>
+  </data>
+  <data name="FatherOfficePhNo" xml:space="preserve">
+    <value>Father's Office Phone No</value>
+  </data>
+  <data name="FatherTypeOfBusiness" xml:space="preserve">
+    <value>Father's Type Of Business</value>
+  </data>
+  <data name="LikeToPartinCCA" xml:space="preserve">
+    <value>Like To Participate in CCA</value>
+  </data>
+  <data name="LikeToPartInGames" xml:space="preserve">
+    <value>Like To Participate in Games</value>
+  </data>
+  <data name="ModeOfTransport" xml:space="preserve">
+    <value>Mode Of Transport</value>
+  </data>
+  <data name="MotherDepartment" xml:space="preserve">
+    <value>Mother's Department</value>
+  </data>
+  <data name="MotherDesignation" xml:space="preserve">
+    <value>Mother's Designation</value>
+  </data>
+  <data name="MotherOfficeAddress" xml:space="preserve">
+    <value>Mother's Office Address</value>
+  </data>
+  <data name="MotherOfficePhNo" xml:space="preserve">
+    <value>Mother's Office Phone No</value>
+  </data>
+  <data name="MotherTypeOfBusiness" xml:space="preserve">
+    <value>Mother's Type Of Business</value>
+  </data>
+  <data name="NoOfSiblings" xml:space="preserve">
+    <value>No Of Siblings</value>
+  </data>
+  <data name="ParentSchoolClgName" xml:space="preserve">
+    <value>Parent's School/Clg Name</value>
+  </data>
+  <data name="RelationWithChild2ndPerson" xml:space="preserve">
+    <value>Relation With Child of Second Person</value>
+  </data>
+  <data name="RelationWithChild1stPerson" xml:space="preserve">
+    <value>Relation With Child of First Person</value>
+  </data>
+  <data name="TransportContatNo" xml:space="preserve">
+    <value>Transport Contact No</value>
+  </data>
+  <data name="TransportDetails" xml:space="preserve">
+    <value>Transport Details</value>
+  </data>
+  <data name="NameOf1stPerson" xml:space="preserve">
+    <value>Name Of First Person</value>
+  </data>
+  <data name="NameOf2ndPerson" xml:space="preserve">
+    <value>Name Of Second Person</value>
+  </data>
+  <data name="TransportDropPoint" xml:space="preserve">
+    <value>Drop Point</value>
+  </data>
+  <data name="BrotherSisterInSchool" xml:space="preserve">
+    <value>Brother Sister In School</value>
+  </data>
 </root>

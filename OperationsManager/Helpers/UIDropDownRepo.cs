@@ -23,11 +23,10 @@ namespace OperationsManager.Helpers
             List<LocationDTO> lDto = _ddlRepo.Location();
 
             LocationDTO locDto = new LocationDTO();
-            //locDto.LocationId = -1;
+            locDto.LocationId = -1;
             locDto.LocationDescription = string.Empty;
 
-           // lDto.Insert(0, locDto);
-
+            lDto.Insert(0, locDto);
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }
 
@@ -80,6 +79,7 @@ namespace OperationsManager.Helpers
         public SelectList getDepartmentDropDown()
         {
             List<DepartmentDTO> rDto = _ddlRepo.Department();
+
             return new SelectList(rDto, "DepartmentId", "DepartmentName");
         }
 
@@ -162,7 +162,7 @@ namespace OperationsManager.Helpers
         public SelectList getSelectValueDropDown()
         {
             Dictionary<string, string> selectValue = new Dictionary<string, string>();
-            //dicGender.Add("-1", "");
+            selectValue.Add("-1", "");
             selectValue.Add("1", "Yes");
             selectValue.Add("2", "No");
             
@@ -172,7 +172,7 @@ namespace OperationsManager.Helpers
         public SelectList getSelectJointNuclearDropDown()
         {
             Dictionary<string, string> selectJointValue = new Dictionary<string, string>();
-            //dicGender.Add("-1", "");
+            selectJointValue.Add("-1", "");
             selectJointValue.Add("1", "Joint");
             selectJointValue.Add("2", "Nuclear");
 

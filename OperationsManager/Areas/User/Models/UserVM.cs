@@ -16,5 +16,9 @@ namespace OperationsManager.Areas.User.Models
         public SelectList GenderList { get; set; }
 
         public Boolean IsSearchSuccessful { get; set; }
+
+        public SelectList DepartmentList { get; set; }
+
+        public SelectList LocationList { get; set; }
     }
 }

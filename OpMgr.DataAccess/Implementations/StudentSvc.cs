@@ -114,6 +114,10 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@FathersEmailId", MySqlDbType.String).Value = data.FatherEmailId;
                     command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
                     command.Parameters.Add("@FathersDesignation", MySqlDbType.String).Value = data.FatherDesignation;
+                    command.Parameters.Add("@FatherDepartment", MySqlDbType.String).Value = data.FatherDepartment;
+                    command.Parameters.Add("@FatherOfficeAddress", MySqlDbType.String).Value = data.FatherOfficeAddress;
+                    command.Parameters.Add("@FatherOfficePhNo", MySqlDbType.String).Value = data.FatherOfficePhNo;
+                    command.Parameters.Add("@FatherTypeOfBusiness", MySqlDbType.String).Value = data.FatherTypeOfBusiness;
                     command.Parameters.Add("@FathersOccupation", MySqlDbType.String).Value = data.FatherOccupation;
                     command.Parameters.Add("@FathersOrganisationName", MySqlDbType.String).Value = data.FatherOrganisationName;
                     command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;
@@ -130,6 +134,13 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@MothersQualification", MySqlDbType.String).Value = data.MotherQualification;
                     command.Parameters.Add("@MothersOccupation", MySqlDbType.String).Value = data.MotherOccupation;
                     command.Parameters.Add("@MothersOrganisationName", MySqlDbType.String).Value = data.MotherOrganisationName;
+
+                    command.Parameters.Add("@MotherDesignation", MySqlDbType.String).Value = data.MotherDesignation;
+                    command.Parameters.Add("@MotherDepartment", MySqlDbType.String).Value = data.MotherDepartment;
+                    command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+                    command.Parameters.Add("@MotherOfficePhNo", MySqlDbType.String).Value = data.MotherOfficePhNo;
+                    command.Parameters.Add("@MotherTypeOfBusiness", MySqlDbType.String).Value = data.MotherTypeOfBusiness;
+
                     command.Parameters.Add("@MothersAnnualIncome", MySqlDbType.String).Value = data.MotherAnnualIncome;
                     command.Parameters.Add("@SponsorOrGuardianName", MySqlDbType.String).Value = data.GuardianName;
                     command.Parameters.Add("@IsChristian", MySqlDbType.String).Value = data.IsChristian;
@@ -143,6 +154,20 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@NoOfTution", MySqlDbType.String).Value = data.NoOfTution;
                     command.Parameters.Add("@FeesPaidForTution", MySqlDbType.String).Value = data.FeesPaidForTution;
 
+                    command.Parameters.Add("@Religion", MySqlDbType.String).Value = data.Religion;
+                    command.Parameters.Add("@Caste", MySqlDbType.String).Value = data.Caste;
+                    command.Parameters.Add("@NoOfSiblings", MySqlDbType.String).Value = data.NoOfSiblings;
+                    command.Parameters.Add("@BrotherSisterInSchool", MySqlDbType.String).Value = data.BrotherSisterInSchool;
+                    command.Parameters.Add("@LikeToPartinCCA", MySqlDbType.String).Value = data.LikeToPartinCCA;
+                    command.Parameters.Add("@LikeToPartInGames", MySqlDbType.String).Value = data.LikeToPartInGames;
+                    command.Parameters.Add("@ModeOfTransport", MySqlDbType.String).Value = data.ModeOfTransport;
+                    command.Parameters.Add("@DropPoint", MySqlDbType.String).Value = data.DropPoint;
+                    command.Parameters.Add("@TransportDetails", MySqlDbType.String).Value = data.TransportDetails;
+                    command.Parameters.Add("@TransportContactNo", MySqlDbType.String).Value = data.TransportContactNo;
+                    command.Parameters.Add("@NameOf1stPerson", MySqlDbType.String).Value = data.NameOf1stPerson;
+                    command.Parameters.Add("@RelationWithChild1stPerson", MySqlDbType.String).Value = data.RelationWithChild1stPerson;
+                    command.Parameters.Add("@NameOf2ndPerson", MySqlDbType.String).Value = data.NameOf2ndPerson;
+                    command.Parameters.Add("@RelationWithChild2ndPerson", MySqlDbType.String).Value = data.RelationWithChild2ndPerson;
 
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
@@ -259,26 +284,52 @@ namespace OpMgr.DataAccess.Implementations
                                 studentDTO.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
                             }
                             studentDTO.FatherName = _dsData.Tables[0].Rows[0]["FathersName"].ToString();
+                            studentDTO.FatherContact = _dsData.Tables[0].Rows[0]["FathersContactNo"].ToString();
                             studentDTO.FatherQualification = _dsData.Tables[0].Rows[0]["FathersQualification"].ToString();
                             studentDTO.FatherOccupation = _dsData.Tables[0].Rows[0]["FathersOccupation"].ToString();
                             studentDTO.FatherDesignation = _dsData.Tables[0].Rows[0]["FathersDesignation"].ToString();
-                            studentDTO.FatherOrganisationName = _dsData.Tables[0].Rows[0]["FathersOrgAddress"].ToString();
+                            studentDTO.FatherOrganisationName = _dsData.Tables[0].Rows[0]["OrganisationName"].ToString();
+                            studentDTO.FatherDepartment = _dsData.Tables[0].Rows[0]["FathersDepartment"].ToString();
+                            studentDTO.FatherOfficeAddress = _dsData.Tables[0].Rows[0]["FathersOrgAddress"].ToString();
+                            studentDTO.FatherOfficePhNo = _dsData.Tables[0].Rows[0]["OFFICEPHONENO"].ToString();
+                            studentDTO.FatherTypeOfBusiness = _dsData.Tables[0].Rows[0]["TypeOfBusiness"].ToString();
                             studentDTO.FatherAnnualIncome = _dsData.Tables[0].Rows[0]["FathersAnnualIncome"].ToString();
                             studentDTO.MotherName = _dsData.Tables[0].Rows[0]["MothersName"].ToString();
                             studentDTO.MotherQualification = _dsData.Tables[0].Rows[0]["MothersQualification"].ToString();
                             studentDTO.MotherOccupation = _dsData.Tables[0].Rows[0]["MothersOccupation"].ToString();
                             studentDTO.MotherOrganisationName = _dsData.Tables[0].Rows[0]["MothersOrgName"].ToString();
+                            studentDTO.MotherDepartment = _dsData.Tables[0].Rows[0]["MotherDEPT"].ToString();
+                            studentDTO.MotherDesignation = _dsData.Tables[0].Rows[0]["MotherDesignation"].ToString();
+                            studentDTO.MotherOfficeAddress = _dsData.Tables[0].Rows[0]["MotherOfcAdress"].ToString();
+                            studentDTO.MotherOfficePhNo = _dsData.Tables[0].Rows[0]["MotherOfcPhNo"].ToString();
+                            studentDTO.MotherTypeOfBusiness = _dsData.Tables[0].Rows[0]["MTYPEBUSINESS"].ToString();
                             studentDTO.MotherAnnualIncome = _dsData.Tables[0].Rows[0]["MothersAnnualIncome"].ToString();
+                            studentDTO.Religion = _dsData.Tables[0].Rows[0]["Religion"].ToString();
+                            studentDTO.Caste = _dsData.Tables[0].Rows[0]["Caste"].ToString();
                             studentDTO.IsChristian = _dsData.Tables[0].Rows[0]["IsChristian"].ToString();
                             studentDTO.IsParentTeacher = _dsData.Tables[0].Rows[0]["IsParentTeacher"].ToString();
                             studentDTO.SubjectNameTheyTeach = _dsData.Tables[0].Rows[0]["SubjectNameTheyTeach"].ToString();
                             studentDTO.IsParentFromEngMedium = _dsData.Tables[0].Rows[0]["ParentFromEngMed"].ToString();
                             studentDTO.IsJointOrNuclearFamily = _dsData.Tables[0].Rows[0]["JointOrNuclearFamily"].ToString();
                             studentDTO.SiblingsInStadOrNot = _dsData.Tables[0].Rows[0]["SiblingsInStadsOrNot"].ToString();
+                            studentDTO.NoOfSiblings = _dsData.Tables[0].Rows[0]["NoOfSiblings"].ToString();
+                            studentDTO.BrotherSisterInSchool = _dsData.Tables[0].Rows[0]["BROTHERSISTERINSCHOOL"].ToString();
                             studentDTO.AnyAlumuniMember = _dsData.Tables[0].Rows[0]["AnyAlumuniMember"].ToString();
                             studentDTO.StuInPrivateTution = _dsData.Tables[0].Rows[0]["StudentInPvtTution"].ToString();
                             studentDTO.NoOfTution = _dsData.Tables[0].Rows[0]["NoOfTution"].ToString();
                             studentDTO.FeesPaidForTution = _dsData.Tables[0].Rows[0]["FeesPaidForTution"].ToString();
+
+                            studentDTO.ModeOfTransport = _dsData.Tables[0].Rows[0]["MODEOFTRANSPORT"].ToString();
+                            studentDTO.DropPoint = _dsData.Tables[0].Rows[0]["DROPPOINT"].ToString();
+                            studentDTO.TransportDetails = _dsData.Tables[0].Rows[0]["Transportdetails"].ToString();
+                            studentDTO.TransportContactNo = _dsData.Tables[0].Rows[0]["TransportContactNo"].ToString();
+                            studentDTO.NameOf1stPerson = _dsData.Tables[0].Rows[0]["NAMEOF1STPerson"].ToString();
+                            studentDTO.NameOf2ndPerson = _dsData.Tables[0].Rows[0]["NAMEOF2NDPERSON"].ToString();
+                            studentDTO.RelationWithChild1stPerson = _dsData.Tables[0].Rows[0]["RELATIONWITHCHILD1stPerson"].ToString();
+                            studentDTO.RelationWithChild2ndPerson = _dsData.Tables[0].Rows[0]["RELATIONWITHCHILD2ndPerson"].ToString();
+                            studentDTO.LikeToPartInGames = _dsData.Tables[0].Rows[0]["LIKETOTAKEINGAMES"].ToString();
+                            studentDTO.LikeToPartinCCA = _dsData.Tables[0].Rows[0]["LIKETOTAKEPARTINCCA"].ToString();
+
                         }
                     }
                     status.ReturnObj = studentDTO;
@@ -301,7 +352,6 @@ namespace OpMgr.DataAccess.Implementations
 
             if (data != null)
             {
-
                 using (IDbSvc dbSvc = new DbSvc(_configSvc))
                 {
                     try
@@ -312,11 +362,12 @@ namespace OpMgr.DataAccess.Implementations
 
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                        selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName," +
+                        selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName,Lo.LocationDescription," +
                                        "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
                                        "student.FathersContactNo " +
                                        "FROM studentinfo student " +
                                        " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
+                                       " INNER JOIN Location Lo ON Lo.LocationId = users.LocationId" +
                                        " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
                                        " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
                                        " INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId ";
@@ -336,18 +387,25 @@ namespace OpMgr.DataAccess.Implementations
                                 whereClause = whereClause + " AND users.FName LIKE @FName";
                                 command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
                             }
-                            if (!string.IsNullOrEmpty(data.UserDetails.MName))
-                            {
-                                data.UserDetails.MName = data.UserDetails.MName + "%";
-                                whereClause = whereClause + " AND users.MName LIKE @MName ";
-                                command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
-                            }
+                            //if (!string.IsNullOrEmpty(data.UserDetails.MName))
+                            //{
+                            //    data.UserDetails.MName = data.UserDetails.MName + "%";
+                            //    whereClause = whereClause + " AND users.MName LIKE @MName ";
+                            //    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+                            //}
 
                             if (!string.IsNullOrEmpty(data.UserDetails.LName))
                             {
                                 data.UserDetails.LName = data.UserDetails.LName + "%";
                                 whereClause = whereClause + " AND users.LName LIKE @LName ";
                                 command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                            }
+
+                            //Location Search
+                            if (data.UserDetails.Location.LocationId != -1)
+                            {
+                                whereClause = whereClause + " AND users.LocationId=@LocationId ";
+                                command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
                             }
 
                             //Class Search
@@ -391,20 +449,20 @@ namespace OpMgr.DataAccess.Implementations
                                 student.FatherContact = dsStudentLst.Tables[0].Rows[i]["FathersContactNo"].ToString();
 
                                 student.StandardSectionMap = new StandardSectionMapDTO();
-
                                 student.StandardSectionMap.Standard = new StandardDTO();
-
                                 student.StandardSectionMap.Section = new SectionDTO();
-
+                                
                                 student.StandardSectionMap.Section.SectionName = dsStudentLst.Tables[0].Rows[i]["SectionName"].ToString();
                                 student.StandardSectionMap.Standard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
                                 student.RegistrationNumber = dsStudentLst.Tables[0].Rows[i]["RegistrationNumber"].ToString();
                                 student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
                                 student.UserDetails = new UserMasterDTO();
+                                student.UserDetails.Location = new LocationDTO();
                                 student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
                                 student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
                                 student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
                                 student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
+                                student.UserDetails.Location.LocationDescription = dsStudentLst.Tables[0].Rows[i]["LocationDescription"].ToString();
                                 studLst.ReturnObj.Add(student);
 
                                 studLst.IsSuccess = true;
@@ -469,10 +527,21 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@FathersDesignation", MySqlDbType.String).Value = data.FatherDesignation;
                     command.Parameters.Add("@FathersOrganisationName", MySqlDbType.String).Value = data.FatherOrganisationName;
                     command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;
+                    command.Parameters.Add("@FatherDepartment", MySqlDbType.String).Value = data.FatherDepartment;
+                    command.Parameters.Add("@FatherOfficeAddress", MySqlDbType.String).Value = data.FatherOfficeAddress;
+                    command.Parameters.Add("@FatherOfficePhNo", MySqlDbType.String).Value = data.FatherOfficePhNo;
+                    command.Parameters.Add("@FatherTypeOfBusiness", MySqlDbType.String).Value = data.FatherTypeOfBusiness;
+
                     command.Parameters.Add("@MothersName", MySqlDbType.String).Value = data.MotherName;
                     command.Parameters.Add("@MothersQualification", MySqlDbType.String).Value = data.MotherQualification;
                     command.Parameters.Add("@MothersOccupation", MySqlDbType.String).Value = data.MotherOccupation;
                     command.Parameters.Add("@MothersOrganisationName", MySqlDbType.String).Value = data.MotherOrganisationName;
+                    command.Parameters.Add("@MotherDesignation", MySqlDbType.String).Value = data.MotherDesignation;
+                    command.Parameters.Add("@MotherDepartment", MySqlDbType.String).Value = data.MotherDepartment;
+                    command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+                    command.Parameters.Add("@MotherOfficePhNo", MySqlDbType.String).Value = data.MotherOfficePhNo;
+                    command.Parameters.Add("@MotherTypeOfBusiness", MySqlDbType.String).Value = data.MotherTypeOfBusiness;
+
                     command.Parameters.Add("@MothersAnnualIncome", MySqlDbType.String).Value = data.MotherAnnualIncome;
                     command.Parameters.Add("@IsChristian", MySqlDbType.String).Value = data.IsChristian;
                     command.Parameters.Add("@IsParentTeacher", MySqlDbType.String).Value = data.IsParentTeacher;
@@ -484,6 +553,20 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@StuInPrivateTution", MySqlDbType.String).Value = data.StuInPrivateTution;
                     command.Parameters.Add("@NoOfTution", MySqlDbType.String).Value = data.NoOfTution;
                     command.Parameters.Add("@FeesPaidForTution", MySqlDbType.String).Value = data.FeesPaidForTution;
+                    command.Parameters.Add("@Religion", MySqlDbType.String).Value = data.Religion;
+                    command.Parameters.Add("@Caste", MySqlDbType.String).Value = data.Caste;
+                    command.Parameters.Add("@NoOfSiblings", MySqlDbType.String).Value = data.NoOfSiblings;
+                    command.Parameters.Add("@BrotherSisterInSchool", MySqlDbType.String).Value = data.BrotherSisterInSchool;
+                    command.Parameters.Add("@LikeToPartinCCA", MySqlDbType.String).Value = data.LikeToPartinCCA;
+                    command.Parameters.Add("@LikeToPartInGames", MySqlDbType.String).Value = data.LikeToPartInGames;
+                    command.Parameters.Add("@ModeOfTransport", MySqlDbType.String).Value = data.ModeOfTransport;
+                    command.Parameters.Add("@DropPoint", MySqlDbType.String).Value = data.DropPoint;
+                    command.Parameters.Add("@TransportDetails", MySqlDbType.String).Value = data.TransportDetails;
+                    command.Parameters.Add("@TransportContactNo", MySqlDbType.String).Value = data.TransportContactNo;
+                    command.Parameters.Add("@NameOf1stPerson", MySqlDbType.String).Value = data.NameOf1stPerson;
+                    command.Parameters.Add("@RelationWithChild1stPerson", MySqlDbType.String).Value = data.RelationWithChild1stPerson;
+                    command.Parameters.Add("@NameOf2ndPerson", MySqlDbType.String).Value = data.NameOf2ndPerson;
+                    command.Parameters.Add("@RelationWithChild2ndPerson", MySqlDbType.String).Value = data.RelationWithChild2ndPerson;
 
 
                     command.ExecuteNonQuery();

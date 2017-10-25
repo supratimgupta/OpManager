@@ -34,13 +34,17 @@ namespace OperationsManager.Areas.User.Controllers
 
             UserVM userView = userView = new UserVM(); 
             userView.GenderList = _uiddlRepo.getGenderDropDown();
+            
             if (status != null && status.ReturnObj != null && status.ReturnObj.Count > 0)
             {
                 userView.IsSearchSuccessful = true;// Grid is displayed with records
                 userView.UserList = new List<UserVM>(); // instantiating list of Students
 
+                //userView.DepartmentList = _uiddlRepo.getDepartmentDropDown();
+                userView.LocationList = _uiddlRepo.getLocationDropDown();
+
                 //Fetch the Gender List
-                
+
                 if (status.IsSuccess && !status.IsException)
                 {
                     UserVM searchItem = null;
@@ -53,7 +57,7 @@ namespace OperationsManager.Areas.User.Controllers
 
                             searchItem.UserMasterId = user.UserMasterId;
                             searchItem.FName = user.FName;
-                            searchItem.MName = user.MName;
+                            //searchItem.MName = user.MName;
                             searchItem.LName = user.LName;
 
                             //forming the Name
@@ -70,7 +74,11 @@ namespace OperationsManager.Areas.User.Controllers
                             searchItem.PermanentAddress = user.PermanentAddress;
                             searchItem.ContactNo = user.ContactNo;
                             searchItem.AltContactNo = user.AltContactNo;
-                            searchItem.BloodGroup = user.BloodGroup;
+                            //searchItem.BloodGroup = user.BloodGroup;
+                            searchItem.Location = new LocationDTO();
+                            searchItem.Employee = new EmployeeDetailsDTO();
+                            searchItem.Location.LocationDescription = user.Location.LocationDescription;
+                            searchItem.Employee.StaffEmployeeId = user.Employee.StaffEmployeeId;
 
                             searchItem.Role = new RoleDTO();
                             searchItem.Role.RoleDescription = user.Role.RoleDescription;
@@ -100,50 +108,38 @@ namespace OperationsManager.Areas.User.Controllers
             {
                 return RedirectToAction("Register", "Login", new { area = "Login" });
             }
-
-
-
+            
             if (userView != null)
             {
-
                 //Fetch the StandardSection List
                 userView.GenderList = _uiddlRepo.getGenderDropDown();
-
                 user = new UserMasterDTO();
-                
-
                 // Search for FName LName and MName
-
                 user.FName = userView.FName;
-                user.MName = userView.MName;
-                user.LName = userView.LName;
-
-
-                
+                //user.MName = userView.MName;
+                user.LName = userView.LName;                
 
                 // Search for Gender
                 user.Gender = userView.Gender;
 
-                // Search for Role
-                //user.Role = new RoleDTO();
-                //user.Role.RoleDescription = userView.Role.RoleDescription;
+                // Search for Location
+                user.Location = new LocationDTO();
+                user.Location.LocationId = userView.Location.LocationId;
 
-                //search by userempid
-                user.Employee = new EmployeeDetailsDTO();
+                // Search for Department
+                //user.Employee = new EmployeeDetailsDTO();
+                //user.Employee.Department = new DepartmentDTO();
+                //user.Employee.Department = userView.Employee.Department;
+
+                //search by userempid                
                 user.Employee.StaffEmployeeId = userView.Employee.StaffEmployeeId;
 
                 // Search for BloodGroup
                 user.BloodGroup = userView.BloodGroup;
-
-                
-
                 StatusDTO<List<UserMasterDTO>> status = _userSvc.Select(user);
-
-
                 if (status != null && status.ReturnObj != null && status.ReturnObj.Count > 0)
                 {
                    // userView = new UserVM();
-
                     //userView.IsSearchSuccessful = true;// Grid is displayed with records
 
                     uView = new UserVM(); // Instantiating Student View model
@@ -151,11 +147,12 @@ namespace OperationsManager.Areas.User.Controllers
 
                     //Fetch the Gender List
                     uView.GenderList = _uiddlRepo.getGenderDropDown();
+                    uView.LocationList = _uiddlRepo.getLocationDropDown();
+                    //uView.DepartmentList = _uiddlRepo.getDepartmentDropDown();
 
                     if (status.IsSuccess && !status.IsException)
                     {
                         UserVM searchItem = null;
-
                         foreach (UserMasterDTO u in status.ReturnObj)
                         {
                             if (u != null)
@@ -186,6 +183,10 @@ namespace OperationsManager.Areas.User.Controllers
                                 searchItem.Role = new RoleDTO();
                                 searchItem.Role.RoleDescription = u.Role.RoleDescription;
 
+                                searchItem.Location = new LocationDTO();
+                                searchItem.Location.LocationDescription = u.Location.LocationDescription;
+                                
+                                searchItem.Employee.StaffEmployeeId = u.Employee.StaffEmployeeId;
 
                                 uView.UserList.Add(searchItem);
                                 uView.IsSearchSuccessful = true;
@@ -194,10 +195,12 @@ namespace OperationsManager.Areas.User.Controllers
                     }
                 }
                else
-                {
-                    
+                {                    
                     userView.IsSearchSuccessful = false;
                     uView = userView;
+                    uView.GenderList = _uiddlRepo.getGenderDropDown();
+                    uView.LocationList = _uiddlRepo.getLocationDropDown();
+                    uView.DepartmentList = _uiddlRepo.getDepartmentDropDown();
                 }
             }
 

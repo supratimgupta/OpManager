@@ -115,6 +115,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caste.
+        /// </summary>
+        public static string Caste {
+            get {
+                return ResourceManager.GetString("Caste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string Class {
@@ -165,6 +174,15 @@ namespace OpMgr.Resources.User {
         public static string LName {
             get {
                 return ResourceManager.GetString("LName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
             }
         }
         
@@ -264,6 +282,15 @@ namespace OpMgr.Resources.User {
         public static string RegistrationNo {
             get {
                 return ResourceManager.GetString("RegistrationNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Religion.
+        /// </summary>
+        public static string Religion {
+            get {
+                return ResourceManager.GetString("Religion", resourceCulture);
             }
         }
         

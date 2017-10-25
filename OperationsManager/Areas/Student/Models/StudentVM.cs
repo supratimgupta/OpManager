@@ -36,9 +36,15 @@ namespace OperationsManager.Areas.Student.Models
 
         public SelectList SiblingsInStdOrNotList { get; set; }
 
+        public SelectList BrotherSisterInSchoolList { get; set; }
+
         public SelectList AnyAlumunimemberList { get; set; }
 
         public SelectList StudentinPvtTutionList { get; set; }
+
+        public SelectList LikeToPartCCAList { get; set; }
+
+        public SelectList LiketoPartGameList { get; set; }
 
         public SelectList RoleList { get; set; }
 

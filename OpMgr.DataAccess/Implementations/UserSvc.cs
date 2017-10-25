@@ -344,9 +344,11 @@ namespace OpMgr.DataAccess.Implementations
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     selectClause = "SELECT users.UserMasterId,users.FName,users.MName,users.LName,users.Gender,users.EmailId,users.ResidentialAddress,users.PermanentAddress," +
-                                  "users.ContactNo,users.AltContactNo,users.BloodGroup,r.RoleDescription" +
+                                  "users.ContactNo,users.AltContactNo,users.BloodGroup,r.RoleDescription,loc.LocationDescription,dep.DepartmentName,emp.StaffEmployeeId" +
                                    " FROM usermaster users" +
                                    " INNER JOIN employeedetails emp ON emp.UserMasterId = users.UserMasterId" +
+                                   " INNER JOIN Department dep ON dep.DepartmentId = emp.DepartmentId" +
+                                   " INNER JOIN Location loc ON loc.LocationId = users.LocationId" +
                                    " INNER JOIN roles r ON users.RoleId = r.RoleId AND users.RoleId>1";
 
                     whereClause = " WHERE users.Active = 1";
@@ -361,12 +363,12 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@FName", MySqlDbType.String).Value = data.FName;
                         }
 
-                        if (!string.IsNullOrEmpty(data.MName))
-                        {
-                            data.MName = data.MName + "%";
-                            whereClause = whereClause + " AND users.MName LIKE @MName ";
-                            command.Parameters.Add("@MName", MySqlDbType.String).Value = data.MName;
-                        }
+                        //if (!string.IsNullOrEmpty(data.MName))
+                        //{
+                        //    data.MName = data.MName + "%";
+                        //    whereClause = whereClause + " AND users.MName LIKE @MName ";
+                        //    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.MName;
+                        //}
 
                         if (!string.IsNullOrEmpty(data.LName))
                         {
@@ -376,11 +378,23 @@ namespace OpMgr.DataAccess.Implementations
                         }
 
                         //Gender Search
-
                         if (!string.IsNullOrEmpty(data.Gender) && !string.Equals(data.Gender, "-1"))
                         {
                             whereClause = whereClause + " AND users.Gender=@Gender ";
                             command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.Gender;
+                        }
+
+                        //Department Search
+                        //if (data.Employee.Department.DepartmentId != -1)
+                        //{
+                        //    whereClause = whereClause + " AND emp.DepartmentId=@DepartmentId ";
+                        //    command.Parameters.Add("@DepartmentId", MySqlDbType.Int32).Value = data.Employee.Department.DepartmentId;
+                        //}
+
+                        if (data.Location.LocationId != -1)
+                        {
+                            whereClause = whereClause + " AND users.LocationId=@LocationId ";
+                            command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Location.LocationId;
                         }
 
                         // Role Search
@@ -430,8 +444,15 @@ namespace OpMgr.DataAccess.Implementations
                             user.AltContactNo = dsUserLst.Tables[0].Rows[i]["AltContactNo"].ToString();
                             user.BloodGroup = dsUserLst.Tables[0].Rows[i]["BloodGroup"].ToString();
 
+
                             user.Role = new RoleDTO();
+                            user.Location = new LocationDTO();
+                            user.Employee = new EmployeeDetailsDTO();
+                            user.Employee.Department = new DepartmentDTO();
                             user.Role.RoleDescription = dsUserLst.Tables[0].Rows[i]["RoleDescription"].ToString();
+                            user.Location.LocationDescription = dsUserLst.Tables[0].Rows[i]["LocationDescription"].ToString();
+                            user.Employee.Department.DepartmentName = dsUserLst.Tables[0].Rows[i]["DepartmentName"].ToString();
+                            user.Employee.StaffEmployeeId = dsUserLst.Tables[0].Rows[i]["StaffEmployeeId"].ToString();
                             userList.ReturnObj.Add(user);
                             userList.IsSuccess = true;
                         }

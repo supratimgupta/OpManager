@@ -269,7 +269,7 @@
                                             @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
                                         </div>
                                         <div class="col-lg-5">
-                                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
@@ -312,7 +312,19 @@
                                             @Html.OpMgrTextBoxFor(m => m.FatherDesignation, UserResource.FatherDesignation, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherDepartment, UserResource.FatherDepartment, new { @class = "form-control" })
+                                        </div>                                        
+                                        <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherOrganisationName, UserResource.FatherOrganisationName, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherOfficeAddress, UserResource.FatherOfficeAddress, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherOfficePhNo, UserResource.FatherOfficePhNo, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherTypeOfBusiness, UserResource.FatherTypeOfBusiness, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherAnnualIncome, UserResource.FatherAnnualIncome, new { @class = "form-control" })
@@ -337,6 +349,21 @@
                                                 @Html.OpMgrTextBoxFor(m => m.MotherOrganisationName, UserResource.MotherOrganisationName, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherDesignation, UserResource.MotherDesignation, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherDepartment, UserResource.MotherDepartment, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherOfficeAddress, UserResource.MotherOfficeAddress, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherOfficePhNo, UserResource.MotherOfficePhNo, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherTypeOfBusiness, UserResource.MotherTypeOfBusiness, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.MotherAnnualIncome, UserResource.MotherAnnualInccome, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
@@ -344,6 +371,12 @@
                                                     <label for="fatherImage">Upload Image of Mother (Old will be replaced)</label>
                                                     <input type="file" name="fuMotherImage" class="form-control" id="motherImage" />
                                                 </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Religion, UserResource.Religion, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Caste, UserResource.Caste, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrDropDownListFor(m => m.IsChristian, Model.IsChristianList, UserResource.IsChristian, new { @class = "form-control" })
@@ -364,7 +397,19 @@
                                                 @Html.OpMgrDropDownListFor(m => m.SiblingsInStadOrNot, Model.SiblingsInStdOrNotList, UserResource.SiblingInStdOrNot, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.NoOfSiblings, UserResource.NoOfSiblings, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.BrotherSisterInSchool, Model.BrotherSisterInSchoolList, UserResource.BrotherSisterInSchool, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
                                                 @Html.OpMgrDropDownListFor(m => m.AnyAlumuniMember, Model.AnyAlumunimemberList, UserResource.AnyAlumuniMember, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.LikeToPartinCCA, Model.LikeToPartCCAList, UserResource.LikeToPartinCCA, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.LikeToPartInGames, Model.LiketoPartGameList, UserResource.LikeToPartInGames, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrDropDownListFor(m => m.StuInPrivateTution, Model.StudentinPvtTutionList, UserResource.StuPrivateTution, new { @class = "form-control" })
@@ -375,6 +420,31 @@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.FeesPaidForTution, UserResource.FeesPaidForPvtTution, new { @class = "form-control" })
                                             </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.ModeOfTransport, UserResource.ModeOfTransport, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.DropPoint, UserResource.TransportDropPoint, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.TransportContactNo, UserResource.TransportContatNo, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.TransportDetails, UserResource.TransportDetails, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.NameOf1stPerson, UserResource.NameOf1stPerson, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.NameOf2ndPerson, UserResource.NameOf2ndPerson, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.RelationWithChild1stPerson, UserResource.RelationWithChild1stPerson, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.RelationWithChild2ndPerson, UserResource.RelationWithChild2ndPerson, new { @class = "form-control" })
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="schoolinfo">

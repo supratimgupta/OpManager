@@ -109,33 +109,29 @@
                             <div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control" })
                             </div>
-
-                            <div class="col-lg-2">
+                            @*<div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
-                            </div>
-
+                            </div>*@
                             <div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control" })
                             </div>
-
                             <div class="col-lg-2">
                                 @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control" })
                             </div>
-
                             <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.BloodGroup, UserResource.BloodGrp, new { @class = "form-control" })
+                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
                             </div>
-
+                            @*<div class="col-lg-2">
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                            </div>*@
                             <div class="col-lg-2">
                                 @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
                             </div>
-
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
                                 @Html.OpMgrSubmitButtonWithIcon("Command", @UserResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
                                 @*<button type="submit" class="btn btn-primary btn-block">@UserResource.SearchButton</button>*@
                             </div>
-
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
                                 @Html.OpMgrButtonWithIcon("btnAdd", UserResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", style = "", onclick = "redirectToAdd();" }, "ion-person-add", true)
                                 @*<button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>*@
                             </div>
@@ -158,24 +154,22 @@
                                     <th th data-field="name" data-sortable="true">
                                         @UserResource.Name
                                     </th>
-                                    <th h data-field="standard" data-sortable="true">
+                                    <th h data-field="Gender" data-sortable="true">
                                         @UserResource.Gender
                                     </th>
-                                    <th th data-field="section" data-sortable="true">
+                                    <th th data-field="EmailId" data-sortable="true">
                                         @UserResource.EmailId
                                     </th>
-                                    <th th data-field="roll number" data-sortable="true">
-                                        @UserResource.ResidentialAddress
+                                    <th th data-field="address" data-sortable="true">
+                                        @UserResource.StaffEmployeeId
                                     </th>
-                                    <th th data-field="registration" data-sortable="true">
+                                    <th th data-field="contact" data-sortable="true">
                                         @UserResource.ContactNo
                                     </th>
-
-                                    <th th data-field="contact" data-sortable="true">
-                                        @UserResource.BloodGrp
+                                    <th th data-field="location" data-sortable="true">
+                                        @UserResource.Location
                                     </th>
-
-                                    <th th data-field="contact" data-sortable="true">
+                                    <th th data-field="role" data-sortable="true">
                                         @UserResource.Role
                                     </th>
                                     <th>
@@ -219,13 +213,13 @@
                                                     @user.EmailId
                                                 </td>
                                                 <td>
-                                                    @user.ResidentialAddress
+                                                    @user.Employee.StaffEmployeeId
                                                 </td>
                                                 <td>
                                                     @user.ContactNo
                                                 </td>
                                                 <td>
-                                                    @user.BloodGroup
+                                                    @user.Location.LocationDescription
 
                                                 </td>
                                                 <td>
@@ -236,8 +230,6 @@
                                                     @Html.OpMgrActionLinkMultiple("VIEW", "../../Login/Login/Register?mode=VIEW&id="+user.UserMasterId, new { name = "viewStaff" })                                                    
                                                     @Html.OpMgrActionLinkMultiple("EDIT", "../../Login/Login/Register?mode=EDIT&id=" + user.UserMasterId, new { name = "editStaff" })
                                                     @Html.OpMgrActionLinkMultiple("DELETE","", new { name = "delStaff",onclick= "return confirmDelete('"+@user.UserMasterId+"')" })
-                                                   
-                                                    
                                                 </td>
                                             </tr>
                                         }

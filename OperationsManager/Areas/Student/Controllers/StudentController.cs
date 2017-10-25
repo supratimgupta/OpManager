@@ -116,25 +116,131 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.FatherOccupation = dto.ReturnObj.FatherOccupation;
                 studView.FatherDesignation = dto.ReturnObj.FatherDesignation;
                 studView.FatherOrganisationName = dto.ReturnObj.FatherOrganisationName;
+                studView.FatherDepartment = dto.ReturnObj.FatherDepartment;
+                studView.FatherOfficeAddress = dto.ReturnObj.FatherOfficeAddress;
+                studView.FatherOfficePhNo = dto.ReturnObj.FatherOfficePhNo;
+                studView.FatherTypeOfBusiness = dto.ReturnObj.FatherTypeOfBusiness;
+                studView.FatherAnnualIncome = dto.ReturnObj.FatherAnnualIncome;
                 studView.MotherName = dto.ReturnObj.MotherName;
                 studView.MotherQualification = dto.ReturnObj.MotherQualification;
                 studView.MotherOccupation = dto.ReturnObj.MotherOccupation;
                 studView.MotherAnnualIncome = dto.ReturnObj.MotherAnnualIncome;
                 studView.MotherOrganisationName = dto.ReturnObj.MotherOrganisationName;
-                studView.IsChristian = dto.ReturnObj.IsChristian;
-                studView.IsParentTeacher = dto.ReturnObj.IsParentTeacher;
+                studView.MotherDepartment = dto.ReturnObj.MotherDepartment;
+                studView.MotherDesignation = dto.ReturnObj.MotherDesignation;
+                studView.MotherOfficeAddress = dto.ReturnObj.MotherOfficeAddress;
+                studView.MotherOfficePhNo = dto.ReturnObj.MotherOfficePhNo;
+                studView.MotherTypeOfBusiness = dto.ReturnObj.MotherTypeOfBusiness;
+
+                if (string.Equals(dto.ReturnObj.IsChristian,"YES") || string.Equals(dto.ReturnObj.IsChristian, "Yes") || string.Equals(dto.ReturnObj.IsChristian, "1"))
+                {
+                    studView.IsChristian = "1";
+                }
+                else if(string.Equals(dto.ReturnObj.IsChristian, "NO") || string.Equals(dto.ReturnObj.IsChristian, "No") || string.Equals(dto.ReturnObj.IsChristian, "2"))
+                {
+                    studView.IsChristian = "2";
+                }
+
+                if (string.Equals(dto.ReturnObj.IsParentTeacher, "YES") || string.Equals(dto.ReturnObj.IsParentTeacher, "Yes") || string.Equals(dto.ReturnObj.IsParentTeacher, "1"))
+                {
+                    studView.IsParentTeacher = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.IsParentTeacher, "NO") || string.Equals(dto.ReturnObj.IsParentTeacher, "No") || string.Equals(dto.ReturnObj.IsParentTeacher, "2"))
+                {
+                    studView.IsParentTeacher = "2";
+                }                
+                
+                if (string.Equals(dto.ReturnObj.IsParentFromEngMedium, "YES") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "Yes") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "1"))
+                {
+                    studView.IsParentFromEngMedium = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.IsParentFromEngMedium, "NO") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "No") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "2"))
+                {
+                    studView.IsParentFromEngMedium = "2";
+                }
+                                
+                if(string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "JOINT") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "Joint") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "1"))
+                {
+                    studView.IsJointOrNuclearFamily = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "NUCLEAR") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "Nuclear") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "2"))
+                {
+                    studView.IsJointOrNuclearFamily = "2";
+                }
+
+                if (string.Equals(dto.ReturnObj.SiblingsInStadOrNot, "YES") || string.Equals(dto.ReturnObj.SiblingsInStadOrNot, "Yes") || string.Equals(dto.ReturnObj.SiblingsInStadOrNot, "1"))
+                {
+                    studView.SiblingsInStadOrNot = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.SiblingsInStadOrNot, "NO") || string.Equals(dto.ReturnObj.SiblingsInStadOrNot, "No") || string.Equals(dto.ReturnObj.SiblingsInStadOrNot, "2"))
+                {
+                    studView.SiblingsInStadOrNot = "2";
+                }
+
+                if (string.Equals(dto.ReturnObj.AnyAlumuniMember, "YES") || string.Equals(dto.ReturnObj.AnyAlumuniMember, "Yes") || string.Equals(dto.ReturnObj.AnyAlumuniMember, "1"))
+                {
+                    studView.AnyAlumuniMember = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.AnyAlumuniMember, "NO") || string.Equals(dto.ReturnObj.AnyAlumuniMember, "No") || string.Equals(dto.ReturnObj.AnyAlumuniMember, "2"))
+                {
+                    studView.AnyAlumuniMember = "2";
+                }
+
+                if (string.Equals(dto.ReturnObj.StuInPrivateTution, "YES") || string.Equals(dto.ReturnObj.StuInPrivateTution, "Yes") || string.Equals(dto.ReturnObj.StuInPrivateTution, "1"))
+                {
+                    studView.StuInPrivateTution = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.StuInPrivateTution, "NO") || string.Equals(dto.ReturnObj.StuInPrivateTution, "No") || string.Equals(dto.ReturnObj.StuInPrivateTution, "2"))
+                {
+                    studView.StuInPrivateTution = "2";
+                }
+
                 studView.SubjectNameTheyTeach = dto.ReturnObj.SubjectNameTheyTeach;
-                studView.IsParentFromEngMedium = dto.ReturnObj.IsParentFromEngMedium;
-                studView.IsJointOrNuclearFamily = dto.ReturnObj.IsJointOrNuclearFamily;
-                studView.SiblingsInStadOrNot = dto.ReturnObj.SiblingsInStadOrNot;
-                studView.AnyAlumuniMember = dto.ReturnObj.AnyAlumuniMember;
-                studView.StuInPrivateTution = dto.ReturnObj.StuInPrivateTution;
+                //studView.SiblingsInStadOrNot = dto.ReturnObj.SiblingsInStadOrNot;
+                //studView.AnyAlumuniMember = dto.ReturnObj.AnyAlumuniMember;
+                //studView.StuInPrivateTution = dto.ReturnObj.StuInPrivateTution;
                 studView.NoOfTution = dto.ReturnObj.NoOfTution;
                 studView.FeesPaidForTution = dto.ReturnObj.FeesPaidForTution;
+                studView.Religion = dto.ReturnObj.Religion;
+                studView.Caste = dto.ReturnObj.Caste;
+                studView.ModeOfTransport = dto.ReturnObj.ModeOfTransport;
+                studView.DropPoint = dto.ReturnObj.DropPoint;
+                studView.TransportDetails = dto.ReturnObj.TransportDetails;
+                studView.TransportContactNo = dto.ReturnObj.TransportContactNo;
+                studView.NameOf1stPerson = dto.ReturnObj.NameOf1stPerson;
+                studView.NameOf2ndPerson = dto.ReturnObj.NameOf2ndPerson;
+                studView.RelationWithChild1stPerson = dto.ReturnObj.RelationWithChild1stPerson;
+                studView.RelationWithChild2ndPerson = dto.ReturnObj.RelationWithChild2ndPerson;
+                studView.NoOfSiblings = dto.ReturnObj.NoOfSiblings;
 
+                if (string.Equals(dto.ReturnObj.BrotherSisterInSchool, "YES") || string.Equals(dto.ReturnObj.BrotherSisterInSchool, "Yes") || string.Equals(dto.ReturnObj.BrotherSisterInSchool, "1"))
+                {
+                    studView.BrotherSisterInSchool = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.BrotherSisterInSchool, "NO") || string.Equals(dto.ReturnObj.BrotherSisterInSchool, "No") || string.Equals(dto.ReturnObj.BrotherSisterInSchool, "2"))
+                {
+                    studView.BrotherSisterInSchool = "2";
+                }
+
+                if (string.Equals(dto.ReturnObj.LikeToPartinCCA, "YES") || string.Equals(dto.ReturnObj.LikeToPartinCCA, "Yes") || string.Equals(dto.ReturnObj.LikeToPartinCCA, "1"))
+                {
+                    studView.LikeToPartinCCA = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.LikeToPartinCCA, "NO") || string.Equals(dto.ReturnObj.LikeToPartinCCA, "No") || string.Equals(dto.ReturnObj.LikeToPartinCCA, "2"))
+                {
+                    studView.LikeToPartinCCA = "2";
+                }
+
+                if (string.Equals(dto.ReturnObj.LikeToPartInGames, "YES") || string.Equals(dto.ReturnObj.LikeToPartInGames, "Yes") || string.Equals(dto.ReturnObj.LikeToPartInGames, "1"))
+                {
+                    studView.LikeToPartInGames = "1";
+                }
+                else if (string.Equals(dto.ReturnObj.LikeToPartInGames, "NO") || string.Equals(dto.ReturnObj.LikeToPartInGames, "No") || string.Equals(dto.ReturnObj.LikeToPartInGames, "2"))
+                {
+                    studView.LikeToPartInGames = "2";
+                }
                 studView.Transactions = _userTrans.GetUserTransactions(dto.ReturnObj.UserDetails.UserMasterId);
                 studView.TransactionMasters = _uiddlRepo.getTransactionMasters();
-
 
                 string studentImageFolder = _configSvc.GetStudentImagesFolder();
                 string fatherImageFolder = _configSvc.GetFatherImagesFolder();
@@ -164,14 +270,15 @@ namespace OperationsManager.Areas.Student.Controllers
             studView.SiblingsInStdOrNotList = _uiddlRepo.getSelectValueDropDown();
             studView.AnyAlumunimemberList = _uiddlRepo.getSelectValueDropDown();
             studView.StudentinPvtTutionList = _uiddlRepo.getSelectValueDropDown();
+            studView.BrotherSisterInSchoolList = _uiddlRepo.getSelectValueDropDown();
+            studView.LikeToPartCCAList = _uiddlRepo.getSelectValueDropDown();
+            studView.LiketoPartGameList = _uiddlRepo.getSelectValueDropDown();
 
             //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-            studView.GraceAmountOnList = _uiddlRepo.getCalcType();
-
-            
+            studView.GraceAmountOnList = _uiddlRepo.getCalcType();            
 
             return View(studView);
         }
@@ -205,11 +312,11 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 //Fetch the StandardSection List
                 studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                studView.LocationList = _uiddlRepo.getLocationDropDown();
 
                 if (status.IsSuccess && !status.IsException)
                 {
                     //studView = new List<StudentVM>();
-
                     StudentVM searchItem = null;
                     foreach (StudentDTO student in status.ReturnObj)
                     {
@@ -221,7 +328,6 @@ namespace OperationsManager.Areas.Student.Controllers
                             searchItem.FatherContact = student.FatherContact;
                             searchItem.RegistrationNumber = student.RegistrationNumber;
                             searchItem.RollNumber = student.RollNumber;
-
 
                             searchItem.UserDetails = new UserMasterDTO();
                             searchItem.UserDetails.UserMasterId = student.UserDetails.UserMasterId;
@@ -241,9 +347,12 @@ namespace OperationsManager.Areas.Student.Controllers
                             searchItem.StandardSectionMap = new StandardSectionMapDTO();
                             searchItem.StandardSectionMap.Standard = new StandardDTO();
                             searchItem.StandardSectionMap.Section = new SectionDTO();
+                            searchItem.UserDetails = new UserMasterDTO();
+                            searchItem.UserDetails.Location = new LocationDTO();
 
                             searchItem.StandardSectionMap.Standard.StandardName = student.StandardSectionMap.Standard.StandardName;
                             searchItem.StandardSectionMap.Section.SectionName = student.StandardSectionMap.Section.SectionName;
+                            searchItem.UserDetails.Location.LocationDescription = student.UserDetails.Location.LocationDescription;
 
                             //Add into Student vIew Model List
                             studView.studentList.Add(searchItem);
@@ -262,6 +371,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView = new StudentVM();
                 //Fetch the StandardSection List
                 studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                studView.LocationList = _uiddlRepo.getLocationDropDown();
                 studView.IsSearchSuccessful = true;
                 studView.MsgColor = "green";
                 studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
@@ -297,20 +407,22 @@ namespace OperationsManager.Areas.Student.Controllers
                 // Search for FName LName and MName
 
                 student.UserDetails.FName = studentView.UserDetails.FName;
-                student.UserDetails.MName = studentView.UserDetails.MName;
+                //student.UserDetails.MName = studentView.UserDetails.MName;
                 student.UserDetails.LName = studentView.UserDetails.LName;
 
                 student.StandardSectionMap = new StandardSectionMapDTO();
                 student.StandardSectionMap.Standard = new StandardDTO();
                 student.StandardSectionMap.Section = new SectionDTO();
+                student.UserDetails.Location = new LocationDTO();
 
                 // Search for Class
-
                 student.StandardSectionMap.StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
 
-                // Search for Roll and Registration
+                //Search by Location
+                student.UserDetails.Location.LocationId = studentView.UserDetails.Location.LocationId;
 
-                student.RollNumber = studentView.RollNumber;
+                // Search for Roll and Registration
+                //student.RollNumber = studentView.RollNumber;
                 student.RegistrationNumber = studentView.RegistrationNumber;
 
                 StatusDTO<List<StudentDTO>> status = _studSvc.Select(student);
@@ -322,6 +434,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                     //Fetch the StandardSection List
                     studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                    studView.LocationList = _uiddlRepo.getLocationDropDown();
 
                     if (status.IsSuccess && !status.IsException)
                     {
@@ -355,10 +468,13 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 searchItem.StandardSectionMap = new StandardSectionMapDTO();
                                 searchItem.StandardSectionMap.Standard = new StandardDTO();
-                                searchItem.StandardSectionMap.Section = new SectionDTO();
+                                searchItem.StandardSectionMap.Section = new SectionDTO();                                
+                                searchItem.UserDetails.Location = new LocationDTO();
 
                                 searchItem.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
                                 searchItem.StandardSectionMap.Section.SectionName = stud.StandardSectionMap.Section.SectionName;
+
+                                searchItem.UserDetails.Location.LocationDescription = stud.UserDetails.Location.LocationDescription;
 
                                 //Add into Student vIew Model List
                                 studView.studentList.Add(searchItem);
