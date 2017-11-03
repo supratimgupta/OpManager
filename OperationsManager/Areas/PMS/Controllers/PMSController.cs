@@ -1,8 +1,11 @@
-﻿using OperationsManager.Controllers;
+﻿using OperationsManager.Areas.PMS.Models;
+using OperationsManager.Controllers;
 using OpMgr.Common.Contracts.Modules;
+using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -35,6 +38,38 @@ namespace OperationsManager.Areas.PMS.Controllers
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
             List<OpMgr.Common.DTOs.EmployeeGoalLogDTO> empGoalLogs = _pmsSvc.Select(empGoalLog).ReturnObj;
             pmsVM = pmsVM.GetGoals(empGoalLogs);
+            return View(pmsVM);
+        }
+
+        [HttpPost]
+        public ActionResult GoalSheetForAll(Models.PMSVM pmsVM)
+        {
+            List<GoalViewModel> lstGoalVM = pmsVM.GoalsAsList;
+            foreach(GoalViewModel gVM in lstGoalVM)
+            {
+                using(TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
+                {
+                    try
+                    {
+                        foreach(EmployeeGoalLogDTO empGoal in gVM.GoalLog)
+                        {
+                            try
+                            {
+                                //Insert goal in goal log
+                            }
+                            catch(Exception exp)
+                            {
+                                throw exp;
+                            }                            
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        throw ex;
+                    }
+                    ts.Complete();
+                }
+            }
             return View(pmsVM);
         }
     }
