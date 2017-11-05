@@ -1,4 +1,5 @@
-﻿using OpMgr.Common.Contracts.Modules;
+﻿using OpMgr.Common.Contracts;
+using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace OperationsManager.Helpers
     public class UIDropDownRepo
     { 
         private IDropdownRepo _ddlRepo;
+        private ISessionSvc _sessionSvc;
+        SessionDTO sessionRet;
         public UIDropDownRepo(IDropdownRepo ddlRepo)
         {
             _ddlRepo = ddlRepo;

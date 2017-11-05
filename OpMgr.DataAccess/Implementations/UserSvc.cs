@@ -121,11 +121,13 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public StatusDTO<UserMasterDTO> Login(UserMasterDTO data, out List<EntitlementDTO> roleList, out List<ActionDTO> actionList)
+        public StatusDTO<UserMasterDTO> Login(UserMasterDTO data, out List<EntitlementDTO> roleList, out List<ActionDTO> actionList, out List<LocationDTO> locationList)
         {
             StatusDTO<UserMasterDTO> status = new StatusDTO<UserMasterDTO>();
             roleList = null;
             actionList = null;
+            locationList = null;
+
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
@@ -147,8 +149,10 @@ namespace OpMgr.DataAccess.Implementations
                     rdr.Fill(_dsData);
                     List<EntitlementDTO> entitlementList = new List<EntitlementDTO>();
                     List<ActionDTO> useractionList = new List<ActionDTO>();
+                    List<LocationDTO> mappedLocationList = new List<LocationDTO>();
+
                     UserMasterDTO userMaster = new UserMasterDTO();
-                    if (_dsData != null && _dsData.Tables.Count == 3)
+                    if (_dsData != null && _dsData.Tables.Count == 4)
                     {
                         if (_dsData.Tables[0].Rows.Count > 0)
                         {
@@ -205,13 +209,29 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     useractionDTO.ParentAction = new ActionDTO();
                                     useractionDTO.ParentAction.RowId = Convert.ToInt32(_dsData.Tables[2].Rows[i]["ParentActionId"]);
-                                    useractionDTO.ParentAction.ActionLink = _dsData.Tables[2].Select("ActionId=" + useractionDTO.ParentAction.RowId)[0]["ActionLink"].ToString();
+                                    if (!String.IsNullOrEmpty(_dsData.Tables[2].Rows[i]["ActionLink"].ToString()))
+                                    {
+                                        useractionDTO.ParentAction.ActionLink = _dsData.Tables[2].Select("ActionId=" + useractionDTO.ParentAction.RowId)[0]["ActionLink"].ToString();
+                                    }
                                 }
 
                                 useractionList.Add(useractionDTO);
                             }
                             actionList = useractionList;
                         }
+
+                        if (_dsData.Tables[3].Rows.Count > 0)
+                        {
+                            LocationDTO location = new LocationDTO();
+                            for (int i = 0; i < _dsData.Tables[3].Rows.Count; i++)
+                            {
+                                location.LocationId = Convert.ToInt32(_dsData.Tables[3].Rows[i]["LocationId"]);
+                                location.LocationDescription = _dsData.Tables[3].Rows[i]["LocationDescription"].ToString();
+                                mappedLocationList.Add(location);
+                            }
+                            locationList = mappedLocationList;
+                        }
+
                         status.IsException = false;
                         status.IsSuccess = true;
                         status.ReturnObj = userMaster;

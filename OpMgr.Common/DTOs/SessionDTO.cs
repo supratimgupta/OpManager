@@ -10,6 +10,8 @@ namespace OpMgr.Common.DTOs
     {
         public List<ActionDTO> ActionList { get; set; }
         public List<EntitlementDTO> EntitleMentList { get; set; }
+        public List<LocationDTO> LocationList { get; set; }
+
         public string IconImagePath { get; set; }
 
         //public string CurrentRequestedPage { get; set; }

@@ -79,11 +79,13 @@ namespace OperationsManager.Areas.Login.Controllers
         {
             List<EntitlementDTO> lstEntitleMent = new List<EntitlementDTO>();
             List<ActionDTO> lstAction = new List<ActionDTO>();
+            List<LocationDTO> lstLocation = new List<LocationDTO>();
+
             string unencryptedPass = data.Password;
             string pass = encrypt.encryption(data.Password);
             data.Password = pass;
 
-            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent, out lstAction);
+            StatusDTO<UserMasterDTO> status = _userSvc.Login(data, out lstEntitleMent, out lstAction, out lstLocation);
             if (status.IsSuccess)
             {
                 if (data.RememberMe)
@@ -121,6 +123,7 @@ namespace OperationsManager.Areas.Login.Controllers
 
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;
+                session.LocationList = lstLocation;
 
                 if(string.Equals(status.ReturnObj.UserType, "STUDENT", StringComparison.OrdinalIgnoreCase))
                 {

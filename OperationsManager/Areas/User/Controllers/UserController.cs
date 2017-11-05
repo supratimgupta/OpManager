@@ -18,11 +18,13 @@ namespace OperationsManager.Areas.User.Controllers
         //private ILogSvc _logSvc;
         private IDropdownRepo _dropDownRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
+        private ISessionSvc _sessionSvc;
 
-        public UserController(IUserSvc userSvc,IDropdownRepo dropDownRepo)
+        public UserController(IUserSvc userSvc, ISessionSvc sessionSvc, IDropdownRepo dropDownRepo)
         {
             _userSvc = userSvc;
             _dropDownRepo = dropDownRepo;
+            _sessionSvc = sessionSvc;
             _uiddlRepo = new Helpers.UIDropDownRepo(_dropDownRepo);
 
         }
@@ -35,13 +37,16 @@ namespace OperationsManager.Areas.User.Controllers
             UserVM userView = userView = new UserVM(); 
             userView.GenderList = _uiddlRepo.getGenderDropDown();
             
+
             if (status != null && status.ReturnObj != null && status.ReturnObj.Count > 0)
             {
                 userView.IsSearchSuccessful = true;// Grid is displayed with records
                 userView.UserList = new List<UserVM>(); // instantiating list of Students
+                SessionDTO sessionRet = _sessionSvc.GetUserSession();
 
                 //userView.DepartmentList = _uiddlRepo.getDepartmentDropDown();
                 userView.LocationList = _uiddlRepo.getLocationDropDown();
+                //userView.LocationList = sessionRet.LocationList;
 
                 //Fetch the Gender List
 
