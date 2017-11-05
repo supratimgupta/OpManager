@@ -32,7 +32,43 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<EmployeeGoalLogDTO> Insert(EmployeeGoalLogDTO data)
         {
-            throw new NotImplementedException();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "insert_AppraisalData";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@EmployeeAppraisalMasterId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
+                    command.Parameters.Add("@GoalAttributeId1", MySqlDbType.Int32).Value = data.GoalAttribute.GoalAttributeId;
+                    command.Parameters.Add("@Achievement1", MySqlDbType.Int32).Value = data.Achievement;
+                    // add createdby from session
+
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
+
+                    if (_dtData.Rows.Count > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "User Insertion Failed";
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<EmployeeGoalLogDTO> Select(int rowId)
@@ -53,7 +89,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandText = "get_AppraisalData";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    
+
                     command.Parameters.Add("@DesignationId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.Designation.DesignationId;
                     command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.EmployeeId;
 
@@ -108,20 +144,20 @@ namespace OpMgr.DataAccess.Implementations
                         if (dsGoalLst.Tables[2].Rows.Count > 0)
                         {
                             goalList.ReturnObj[0].EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                            
-                                EmployeeDetailsDTO empdetails = new EmployeeDetailsDTO();
-                                empdetails.UserDetails = new UserMasterDTO();
-                                empdetails.UserDetails.Location = new LocationDTO();
-                                empdetails.Designation = new DesignationDTO();
-                                empdetails.UserDetails.FName = dsGoalLst.Tables[2].Rows[0]["FName"].ToString();
-                                empdetails.UserDetails.MName = dsGoalLst.Tables[2].Rows[0]["MName"].ToString();
-                                empdetails.UserDetails.LName = dsGoalLst.Tables[2].Rows[0]["LName"].ToString();
-                                empdetails.Designation.DesignationDescription = dsGoalLst.Tables[2].Rows[0]["DesignationDescription"].ToString();
-                                empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[2].Rows[0]["LocationDescription"].ToString();
-                                empdetails.EducationalQualification = dsGoalLst.Tables[2].Rows[0]["EducationQualification"].ToString();
+
+                            EmployeeDetailsDTO empdetails = new EmployeeDetailsDTO();
+                            empdetails.UserDetails = new UserMasterDTO();
+                            empdetails.UserDetails.Location = new LocationDTO();
+                            empdetails.Designation = new DesignationDTO();
+                            empdetails.UserDetails.FName = dsGoalLst.Tables[2].Rows[0]["FName"].ToString();
+                            empdetails.UserDetails.MName = dsGoalLst.Tables[2].Rows[0]["MName"].ToString();
+                            empdetails.UserDetails.LName = dsGoalLst.Tables[2].Rows[0]["LName"].ToString();
+                            empdetails.Designation.DesignationDescription = dsGoalLst.Tables[2].Rows[0]["DesignationDescription"].ToString();
+                            empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[2].Rows[0]["LocationDescription"].ToString();
+                            empdetails.EducationalQualification = dsGoalLst.Tables[2].Rows[0]["EducationQualification"].ToString();
 
                             goalList.ReturnObj[0].EmployeeAppraisalMaster.Employee = empdetails;
-                            
+
                         }
 
                     }

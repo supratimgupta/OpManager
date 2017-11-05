@@ -14,11 +14,11 @@ namespace OpMgr.Common.DTOs
 
         public GoalAttributeDTO GoalAttribute { get; set; }
 
-        public Decimal Achievement { get; set; }
+        public int Achievement { get; set; }
 
-        public int SelfRating { get; set; }
+        public string SelfRating { get; set; }
 
-        public Decimal AppraiserRating { get; set; }
+        public int AppraiserRating { get; set; }
 
         public DateTime EmployeeRatingDate { get; set; }
 

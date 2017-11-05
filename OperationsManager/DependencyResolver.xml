@@ -47,7 +47,7 @@
     to="OpMgr.DataAccess.Implementations.UserSvc, OpMgr.DataAccess" />
 
   <bind service="OpMgr.Common.Contracts.Modules.IPMSSvc, OpMgr.Common"
-    to="OpMgr.DataAccess.Implementations.PMSSvc, OpMgr.DataAccess" /> --
+    to="OpMgr.DataAccess.Implementations.PMSSvc, OpMgr.DataAccess" /> 
   
   <bind service="OpMgr.Common.Contracts.Modules.IStudentSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.StudentSvc, OpMgr.DataAccess" />

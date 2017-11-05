@@ -21,7 +21,13 @@ namespace OperationsManager.Areas.PMS.Models
         public UserMasterDTO UserDetails { get; set; }
 
         public string FullName { get; set; }
-                
+
+        public string Designation { get; set; }
+
+        public string Location { get; set; }
+
+        public string Qualification { get; set; }
+
         public EmployeeDetailsDTO EmployeeDetails { get; set; }
 
         public ApprovalMappingDTO ApprovalMapping { get; set; }

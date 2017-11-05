@@ -61,11 +61,20 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Achievement.
+        ///   Looks up a localized string similar to Achievement in %.
         /// </summary>
-        public static string Achievement {
+        public static string Achievementinpercent {
             get {
-                return ResourceManager.GetString("Achievement", resourceCulture);
+                return ResourceManager.GetString("Achievementinpercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Achievement In Rating.
+        /// </summary>
+        public static string AchievementinRating {
+            get {
+                return ResourceManager.GetString("AchievementinRating", resourceCulture);
             }
         }
         
@@ -93,6 +102,15 @@ namespace OpMgr.Resources.PMS {
         public static string AppraiserRating {
             get {
                 return ResourceManager.GetString("AppraiserRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appraiser Rating %.
+        /// </summary>
+        public static string AppraiserRatinginpercent {
+            get {
+                return ResourceManager.GetString("AppraiserRatinginpercent", resourceCulture);
             }
         }
         
@@ -367,7 +385,7 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wightage.
+        ///   Looks up a localized string similar to Weightage.
         /// </summary>
         public static string Weightage {
             get {

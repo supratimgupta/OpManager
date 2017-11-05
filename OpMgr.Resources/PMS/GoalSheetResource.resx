@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Achievement" xml:space="preserve">
-    <value>Achievement</value>
+  <data name="Achievementinpercent" xml:space="preserve">
+    <value>Achievement in %</value>
+  </data>
+  <data name="AchievementinRating" xml:space="preserve">
+    <value>Achievement In Rating</value>
   </data>
   <data name="AppraiseeSignature" xml:space="preserve">
     <value>Signature</value>
@@ -128,6 +131,9 @@
   </data>
   <data name="AppraiserRating" xml:space="preserve">
     <value>Appraiser Rating</value>
+  </data>
+  <data name="AppraiserRatinginpercent" xml:space="preserve">
+    <value>Appraiser Rating %</value>
   </data>
   <data name="AppraiserSignature" xml:space="preserve">
     <value>Signature</value>
@@ -220,6 +226,6 @@
     <value>Performance Appraisal Form</value>
   </data>
   <data name="Weightage" xml:space="preserve">
-    <value>Wightage</value>
+    <value>Weightage</value>
   </data>
 </root>

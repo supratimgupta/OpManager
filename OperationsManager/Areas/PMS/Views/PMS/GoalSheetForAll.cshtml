@@ -75,10 +75,16 @@
                                     @GoalSheetResource.Weightage
                                 </th>
                                 <th th data-field="total" data-sortable="true">
-                                    @GoalSheetResource.Achievement
+                                    @GoalSheetResource.Achievementinpercent
+                                </th>
+                                <th th data-field="total" data-sortable="true">
+                                    @GoalSheetResource.AchievementinRating
                                 </th>
                                 <th th data-field="due" data-sortable="true">
                                     @GoalSheetResource.SelfRating
+                                </th>
+                                <th th data-field="principalapprval" data-sortable="true">
+                                    @GoalSheetResource.AppraiserRatinginpercent
                                 </th>
                                 <th th data-field="principalapprval" data-sortable="true">
                                     @GoalSheetResource.AppraiserRating
@@ -117,11 +123,16 @@
                                                 @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].Achievement, "", new { @class = "form-control requiredField" })
                                             </td>
                                             <td>
+                                                @Html.TextBoxFor()
+                                            </td>
+                                            <td>
                                                 @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })
                                             </td>
                                             <td>
                                                 @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
-
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor()
                                             </td>
                                         </tr>
                                     }

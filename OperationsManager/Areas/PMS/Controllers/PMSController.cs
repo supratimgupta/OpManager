@@ -38,6 +38,17 @@ namespace OperationsManager.Areas.PMS.Controllers
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
             List<OpMgr.Common.DTOs.EmployeeGoalLogDTO> empGoalLogs = _pmsSvc.Select(empGoalLog).ReturnObj;
             pmsVM = pmsVM.GetGoals(empGoalLogs);
+
+            // to get data in first grid
+            pmsVM.FullName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.FName + " " + empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.LName;
+            pmsVM.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
+            pmsVM.Employee.EducationalQualification = empGoalLogs[0].EmployeeAppraisalMaster.Employee.EducationalQualification;
+            pmsVM.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
+            pmsVM.Employee.Designation.DesignationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.Designation.DesignationDescription;
+            pmsVM.Employee.UserDetails = new OpMgr.Common.DTOs.UserMasterDTO();
+            pmsVM.Employee.UserDetails.Location = new OpMgr.Common.DTOs.LocationDTO();
+            pmsVM.Employee.UserDetails.Location.LocationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.Location.LocationDescription;
+
             return View(pmsVM);
         }
 
