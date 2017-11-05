@@ -14,7 +14,7 @@ namespace OpMgr.Common.DTOs
 
         public GoalAttributeDTO GoalAttribute { get; set; }
 
-        public int Achievement { get; set; }
+        public decimal Achievement { get; set; }
 
         public string SelfRating { get; set; }
 

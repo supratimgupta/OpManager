@@ -9,6 +9,6 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface IPMSSvc : ICRUDSvc<EmployeeGoalLogDTO, EmployeeGoalLogDTO>
     {
-
+        StatusDTO<EmployeeGoalLogDTO> getSelfRating(int Achievement);
     }
 }

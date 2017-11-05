@@ -44,7 +44,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@EmployeeAppraisalMasterId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
                     command.Parameters.Add("@GoalAttributeId1", MySqlDbType.Int32).Value = data.GoalAttribute.GoalAttributeId;
-                    command.Parameters.Add("@Achievement1", MySqlDbType.Int32).Value = data.Achievement;
+                    command.Parameters.Add("@Achievement1", MySqlDbType.Decimal).Value = data.Achievement;
                     // add createdby from session
 
 
@@ -70,10 +70,41 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
-
-        public StatusDTO<EmployeeGoalLogDTO> Select(int rowId)
+        // to get Level of Rating by passing Percentage of rating input
+        public StatusDTO<EmployeeGoalLogDTO> getSelfRating(int rowId)
         {
-            throw new NotImplementedException();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "get_RatingLevels";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@Rating", MySqlDbType.Int32).Value = rowId;
+
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+                    StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
+                    EmployeeGoalLogDTO empGoalDTO = new EmployeeGoalLogDTO();
+                    if (_dsData != null && _dsData.Tables.Count > 0)
+                    {
+                        if (_dsData.Tables[0].Rows.Count > 0)
+                        {
+                            empGoalDTO.SelfRating = _dsData.Tables[0].Rows[0]["LevelName"].ToString();
+
+                        }
+                    }
+                    status.ReturnObj = empGoalDTO;
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<List<EmployeeGoalLogDTO>> Select(EmployeeGoalLogDTO data)
@@ -177,6 +208,11 @@ namespace OpMgr.DataAccess.Implementations
         }
 
         public StatusDTO<EmployeeGoalLogDTO> Update(EmployeeGoalLogDTO data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public StatusDTO<EmployeeGoalLogDTO> Select(int rowId)
         {
             throw new NotImplementedException();
         }
