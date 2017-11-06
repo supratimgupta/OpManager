@@ -156,6 +156,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Landing()
         {
             return View();
