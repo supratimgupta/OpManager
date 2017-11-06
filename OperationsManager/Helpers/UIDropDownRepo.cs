@@ -14,7 +14,6 @@ namespace OperationsManager.Helpers
     public class UIDropDownRepo
     { 
         private IDropdownRepo _ddlRepo;
-        private ISessionSvc _sessionSvc;
         SessionDTO sessionRet;
         public UIDropDownRepo(IDropdownRepo ddlRepo)
         {
@@ -23,13 +22,16 @@ namespace OperationsManager.Helpers
 
         public  SelectList getLocationDropDown()
         {
-            List<LocationDTO> lDto = _ddlRepo.Location();
+            List<LocationDTO> lDto = new SessionSvc().GetUserSession().LocationList;
+            //if(lDto==null)
+            //{
+            //    lDto = _ddlRepo.Location();
+            //}
+            //LocationDTO locDto = new LocationDTO();
+            //locDto.LocationId = -1;
+            //locDto.LocationDescription = string.Empty;
 
-            LocationDTO locDto = new LocationDTO();
-            locDto.LocationId = -1;
-            locDto.LocationDescription = string.Empty;
-
-            lDto.Insert(0, locDto);
+            //lDto.Insert(0, locDto);
 
             return new SelectList(lDto, "LocationId", "LocationDescription");
         }

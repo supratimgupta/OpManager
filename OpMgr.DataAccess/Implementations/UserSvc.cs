@@ -209,12 +209,17 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     useractionDTO.ParentAction = new ActionDTO();
                                     useractionDTO.ParentAction.RowId = Convert.ToInt32(_dsData.Tables[2].Rows[i]["ParentActionId"]);
-                                    if (!String.IsNullOrEmpty(_dsData.Tables[2].Rows[i]["ActionLink"].ToString()))
+                                    string checkActionLink = _dsData.Tables[2].Rows[i]["ActionLink"].ToString();
+                                    if (String.IsNullOrEmpty(checkActionLink))
                                     {
-                                        useractionDTO.ParentAction.ActionLink = _dsData.Tables[2].Select("ActionId=" + useractionDTO.ParentAction.RowId)[0]["ActionLink"].ToString();
+                                        DataRow[] arrLinks = _dsData.Tables[2].Select("ActionId=" + useractionDTO.ParentAction.RowId);
+                                        if(arrLinks!=null && arrLinks.Length>0)
+                                        {
+                                            checkActionLink = arrLinks[0]["ActionLink"].ToString();
+                                        }                                        
                                     }
+                                    useractionDTO.ParentAction.ActionLink = checkActionLink;
                                 }
-
                                 useractionList.Add(useractionDTO);
                             }
                             actionList = useractionList;
@@ -222,9 +227,10 @@ namespace OpMgr.DataAccess.Implementations
 
                         if (_dsData.Tables[3].Rows.Count > 0)
                         {
-                            LocationDTO location = new LocationDTO();
+                            LocationDTO location = null;
                             for (int i = 0; i < _dsData.Tables[3].Rows.Count; i++)
                             {
+                                location = new LocationDTO();
                                 location.LocationId = Convert.ToInt32(_dsData.Tables[3].Rows[i]["LocationId"]);
                                 location.LocationDescription = _dsData.Tables[3].Rows[i]["LocationDescription"].ToString();
                                 mappedLocationList.Add(location);

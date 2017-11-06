@@ -106,35 +106,39 @@
                     {
                         @Html.AntiForgeryToken()
                         <fieldset>
-                            <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control" })
+                            <div class="row col-lg-12">
+                                <div class="col-lg-2">
+                                    @Html.OpMgrTextBoxFor(m => m.FName, UserResource.FName, new { @class = "form-control" })
+                                </div>
+                                @*<div class="col-lg-2">
+                                    @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
+                                </div>*@
+                                <div class="col-lg-2">
+                                    @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
+                                </div>
+                                @*<div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
+                                </div>*@
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                                </div>
                             </div>
-                            @*<div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.MName, UserResource.MName, new { @class = "form-control" })
-                            </div>*@
-                            <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.LName, UserResource.LName, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-2">
-                                @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, UserResource.StaffEmployeeId, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-2">
-                                @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control" })
-                            </div>
-                            @*<div class="col-lg-2">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
-                            </div>*@
-                            <div class="col-lg-2">
-                                @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
-                            </div>
-                            <div class="col-lg-3">
-                                @Html.OpMgrSubmitButtonWithIcon("Command", @UserResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
-                                @*<button type="submit" class="btn btn-primary btn-block">@UserResource.SearchButton</button>*@
-                            </div>
-                            <div class="col-lg-3">
-                                @Html.OpMgrButtonWithIcon("btnAdd", UserResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", style = "", onclick = "redirectToAdd();" }, "ion-person-add", true)
-                                @*<button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>*@
-                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-2">
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", @UserResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                    @*<button type="submit" class="btn btn-primary btn-block">@UserResource.SearchButton</button>*@
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrButtonWithIcon("btnAdd", UserResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", style = "", onclick = "redirectToAdd();" }, "ion-person-add", true)
+                                    @*<button type="submit" name="Command" value="@UserResource.AddCommand" class="btn btn-primary btn-block">@UserResource.AddButton</button>*@
+                                </div>
+                            </div>                            
                         </fieldset>
                     }
                 </div>
