@@ -115,6 +115,15 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appraiser Rating Level.
+        /// </summary>
+        public static string AppraiserRatingLevel {
+            get {
+                return ResourceManager.GetString("AppraiserRatingLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signature.
         /// </summary>
         public static string AppraiserSignature {

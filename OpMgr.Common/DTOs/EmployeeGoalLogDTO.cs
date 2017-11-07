@@ -22,6 +22,10 @@ namespace OpMgr.Common.DTOs
 
         public decimal AppraiserRating { get; set; }
 
+        public int AppraiserRatingPercent { get; set; }
+
+        public string AppraiserRatingLevel { get; set; }
+
         public DateTime EmployeeRatingDate { get; set; }
 
         public DateTime AppraiserRatingDate { get; set; }

@@ -51,6 +51,7 @@
         </div>
         <div style="display:none;" id="divContainerHddnFlds">
             @Html.HiddenFor(m=>m.EmployeeAppraisalMasterId)
+            @Html.HiddenFor(m=>m.MODE)
             @Html.HiddenFor(m => m.SAVE_MODE, new {id="hfSaveMode" })
         </div>
         <div class="panel panel-color panel-primary">
@@ -92,7 +93,9 @@
                                 <th th data-field="principalapprval" data-sortable="true">
                                     @GoalSheetResource.AppraiserRating
                                 </th>
-
+                                <th th data-field="principalapprval" data-sortable="true">
+                                    @GoalSheetResource.AppraiserRatingLevel
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,7 +128,7 @@
                                             </td>
 
                                             <td>
-                                                @if(string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
+                                                @if (string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
                                                 {
                                                     @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'staffRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ");" })
                                                 }
@@ -145,17 +148,24 @@
                                                 <span id="staffRating_@(i+"_"+j+"_SR")">@Model.GoalsAsList[i].GoalLog[j].SelfRating</span>
                                             </td>
                                             <td>
-                                                @if(string.Equals(Model.MODE, "APPRAISER_REVIEW"))
+                                                @if (string.Equals(Model.MODE, "APPRAISER_REVIEW"))
                                                 {
-                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
+                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRatingPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'apprRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ");" })
                                                 }
                                                 else
                                                 {
-                                                    @Html.DisplayFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating)
+                                                    @Html.DisplayFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRatingPercent)
                                                 }
                                             </td>
                                             <td>
                                                 @*@Html.TextBoxFor()*@
+                                                <span id="apprRating_@(i+"_"+j)">@Model.GoalsAsList[i].GoalLog[j].AppraiserRating</span>
+                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, new { id = "apprRating_" + i + "_" + j + "_Hddn" })
+                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].NeedsUpdate, new { id = "apprRating_" + i + "_" + j + "_NU" })
+                                            </td>
+                                            <td>
+                                                @*@Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })*@
+                                                <span id="apprRating_@(i+"_"+j+"_SR")">@Model.GoalsAsList[i].GoalLog[j].AppraiserRatingLevel</span>
                                             </td>
                                         </tr>
                                     }
@@ -164,9 +174,14 @@
                         <tfoot>
                             <tr>
                                 <td colspan="10">
-                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('STAFF_FORM_SAVE');">Save</button>
+                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('SAVE');">Save</button>
                                     &nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('STAFF_FORM_SUBMIT');">Submit</button>
+                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('SUBMIT');">Submit</button>
+                                    &nbsp;&nbsp;
+                                    @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW"))
+                                    {                                        
+                                        <button type="submit" class="btn btn-primary" onclick="setSaveMode('SEND_BACK');">Send Back</button>
+                                    }                                    
                                 </td>
                             </tr>
                         </tfoot>

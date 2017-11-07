@@ -1,5 +1,6 @@
 ﻿using OperationsManager.Areas.PMS.Models;
 using OperationsManager.Controllers;
+using OpMgr.Common.Contracts;
 using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
 using System;
@@ -13,16 +14,18 @@ namespace OperationsManager.Areas.PMS.Controllers
 {
     public class PMSController : BaseController
     {
-        private IUserSvc _userSvc;
+        // IUserSvc _userSvc;
         //private ILogSvc _logSvc;
-        private IDropdownRepo _dropDownRepo;
-        private Helpers.UIDropDownRepo _uiddlRepo;
+        //private IDropdownRepo _dropDownRepo;
+        //private Helpers.UIDropDownRepo _uiddlRepo;
 
         private OpMgr.Common.Contracts.Modules.IPMSSvc _pmsSvc;
+        private ISessionSvc _sessionSvc;
 
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc)
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc)
         {
             _pmsSvc = pmsSvc;
+            _sessionSvc = sessionSvc;
         }
 
         [HttpGet]
@@ -32,8 +35,13 @@ namespace OperationsManager.Areas.PMS.Controllers
             Models.PMSVM pmsVM = new Models.PMSVM();
             OpMgr.Common.DTOs.EmployeeGoalLogDTO empGoalLog = new OpMgr.Common.DTOs.EmployeeGoalLogDTO();
             empGoalLog.EmployeeAppraisalMaster = new OpMgr.Common.DTOs.EmployeeAppraisalMasterDTO();
+            empGoalLog.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = -1;
+            if(apprMasterId.HasValue)
+            {
+                empGoalLog.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = apprMasterId.Value;
+            }
             empGoalLog.EmployeeAppraisalMaster.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
-            empGoalLog.EmployeeAppraisalMaster.Employee.EmployeeId = 120;
+            empGoalLog.EmployeeAppraisalMaster.Employee.EmployeeId = _sessionSvc.GetUserSession().Employee.EmployeeId;
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
             List<OpMgr.Common.DTOs.EmployeeGoalLogDTO> empGoalLogs = _pmsSvc.Select(empGoalLog).ReturnObj;
@@ -52,14 +60,19 @@ namespace OperationsManager.Areas.PMS.Controllers
 
             bool isSelf = apprMasterId == null;
 
-            pmsVM.MODE = this.SetupMode(pmsVM.EmployeeAppraisalMasterId, isSelf);
+            pmsVM.MODE = this.SetupMode(pmsVM.EmployeeAppraisalMasterId);
 
+            if (string.Equals(pmsVM.MODE, "NO_ACCESS"))
+            {
+                return RedirectToAction("AccessDenied", "Login", new { area = "Login" });
+            }
             return View(pmsVM);
         }
 
-        private string SetupMode(int apprMasterId, bool isSelf=false)
+        private string SetupMode(int apprMasterId)
         {
-            return "STAFF_FORM_FILLUP";
+            string accessStatus = _pmsSvc.AccessStatus(apprMasterId);
+            return accessStatus;
         }
 
         [HttpGet]
@@ -89,17 +102,28 @@ namespace OperationsManager.Areas.PMS.Controllers
                                 empGoal.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
                                 empGoal.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = pmsVM.EmployeeAppraisalMasterId;
                                 //Insert goal in goal log
-                                if (string.Equals(pmsVM.SAVE_MODE, "STAFF_FORM_SAVE") || string.Equals(pmsVM.SAVE_MODE, "STAFF_FORM_SUBMIT"))
+                                if (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT"))
                                 {
-                                    if (empGoal.EmployeeGoalLogId == -1)
+                                    if (empGoal.EmployeeGoalLogId == -1 && string.Equals(pmsVM.MODE, "STAFF_FORM_FILLUP"))
                                     {
                                         _pmsSvc.Insert(empGoal);
                                     }
-                                    else
+                                    else if (empGoal.EmployeeGoalLogId>0)
                                     {
                                         if (string.Equals(empGoal.NeedsUpdate, "Y"))
                                         {
-                                            _pmsSvc.Update(empGoal);
+                                            if (string.Equals(pmsVM.MODE, "STAFF_FORM_FILLUP"))
+                                            {
+                                                _pmsSvc.Update(empGoal);
+                                            }
+                                            else if (string.Equals(pmsVM.MODE, "APPRAISER_REVIEW"))
+                                            {
+                                                //Appraiser update
+                                            }
+                                            else if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW"))
+                                            {
+                                                //Appraiser update
+                                            }                                            
                                         }
                                     }
                                 }                                
@@ -115,10 +139,18 @@ namespace OperationsManager.Areas.PMS.Controllers
                         throw ex;
                     }
                 }
-                if (string.Equals(pmsVM.SAVE_MODE, "STAFF_FORM_SUBMIT"))
+                if (string.Equals(pmsVM.SAVE_MODE, "SUBMIT"))
                 {
                     int currentStatus = _pmsSvc.GetCurrentStatus(pmsVM.EmployeeAppraisalMasterId);
                     if (_pmsSvc.MoveFwdBckwd(pmsVM.EmployeeAppraisalMasterId, currentStatus))
+                    {
+                        ts.Complete();
+                    }
+                }
+                else if (string.Equals(pmsVM.SAVE_MODE, "SEND_BACK"))
+                {
+                    int currentStatus = _pmsSvc.GetCurrentStatus(pmsVM.EmployeeAppraisalMasterId);
+                    if (_pmsSvc.MoveFwdBckwd(pmsVM.EmployeeAppraisalMasterId, currentStatus, true))
                     {
                         ts.Complete();
                     }

@@ -228,4 +228,7 @@
   <data name="Weightage" xml:space="preserve">
     <value>Weightage</value>
   </data>
+  <data name="AppraiserRatingLevel" xml:space="preserve">
+    <value>Appraiser Rating Level</value>
+  </data>
 </root>

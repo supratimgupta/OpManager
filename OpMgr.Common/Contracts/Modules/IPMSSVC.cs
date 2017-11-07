@@ -12,5 +12,6 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<EmployeeGoalLogDTO> getSelfRating(int Achievement);
         int GetCurrentStatus(int empApprMasterId);
         bool MoveFwdBckwd(int appraisalMasterId, int currentStatus, bool isBackwd = false);
+        string AccessStatus(int appraisalMasterId);
     }
 }

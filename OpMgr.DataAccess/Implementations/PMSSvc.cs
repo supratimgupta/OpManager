@@ -18,6 +18,7 @@ namespace OpMgr.DataAccess.Implementations
         private DataSet _dsData;
         private ILogSvc _logger;
         private ISessionSvc _sessionSvc;
+        private DataTable _dtLevels;
 
         public PMSSvc(IConfigSvc configSvc, ILogSvc logger, ISessionSvc sessionSvc)
         {
@@ -30,6 +31,29 @@ namespace OpMgr.DataAccess.Implementations
         public StatusDTO<EmployeeGoalLogDTO> Delete(EmployeeGoalLogDTO data)
         {
             throw new NotImplementedException();
+        }
+
+        private void FillLevelTable()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select StartingRange,EndRange,LevelName,LevelDescription from weightage_levels";
+                    command.CommandType = CommandType.Text;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDa = new MySqlDataAdapter();
+                    _dtLevels = new DataTable();
+                    mDa.Fill(_dtLevels);
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<EmployeeGoalLogDTO> Insert(EmployeeGoalLogDTO data)
@@ -110,6 +134,56 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public string getRatingLevel(int percent)
+        {
+            string ratingLevel = string.Empty;
+            if(_dtLevels==null)
+            {
+                this.FillLevelTable();
+            }
+            DataRow[] levels = _dtLevels.Select("StartingRange<=" + percent + " AND EndRange>=" + percent);
+            if(levels!=null && levels.Length>0)
+            {
+                ratingLevel = levels[0]["LevelName"].ToString();
+            }
+            return ratingLevel;
+        }
+
+        public string AccessStatus(int appraisalMasterId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                string accessStatus = string.Empty;
+                try
+                {                    
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "check_AppraisalStatus";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@AppraisalMasterId", MySqlDbType.Int32).Value = appraisalMasterId;
+                    command.Parameters.Add("@CurrentEmpId", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().Employee.EmployeeId;
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+                    if (_dsData != null && _dsData.Tables.Count > 0)
+                    {
+                        if (_dsData.Tables[0].Rows.Count > 0)
+                        {
+                            accessStatus = _dsData.Tables[0].Rows[0]["AccessStatus"].ToString();
+
+                        }
+                    }
+                    
+                    return accessStatus;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
         public StatusDTO<List<EmployeeGoalLogDTO>> Select(EmployeeGoalLogDTO data)
         {
             StatusDTO<List<EmployeeGoalLogDTO>> goalList = new StatusDTO<List<EmployeeGoalLogDTO>>();
@@ -127,7 +201,14 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@DesignationId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.Designation.DesignationId;
                     command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.EmployeeId;
-
+                    if(data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId==-1)
+                    {
+                        command.Parameters.Add("@ApprMasterIdParam", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@ApprMasterIdParam", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
+                    }
 
                     MySqlDataAdapter da = new MySqlDataAdapter(command);
                     dsGoalLst = new DataSet();
@@ -155,17 +236,7 @@ namespace OpMgr.DataAccess.Implementations
                                 empgoallog.GoalAttribute.KPI = dsGoalLst.Tables[0].Rows[i]["KPI"].ToString();
                                 empgoallog.GoalAttribute.WeightAge = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["WeightAge"]);
                                 empgoallog.NeedsUpdate = "Y";
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["Achievement"].ToString()))
-                                {
-                                    empgoallog.Achievement = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["Achievement"]);
-                                    empgoallog.AchivementPercent = Convert.ToInt32((empgoallog.Achievement / empgoallog.GoalAttribute.WeightAge) * 100);
-                                    empgoallog.SelfRating = this.getSelfRating(empgoallog.AchivementPercent).ReturnObj.SelfRating;
-                                }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"].ToString()))
-                                {
-                                    empgoallog.AppraiserRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"]);
-                                }
-                                if(!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["EmployeeGoalLogId"].ToString()))
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["EmployeeGoalLogId"].ToString()))
                                 {
                                     empgoallog.EmployeeGoalLogId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["EmployeeGoalLogId"]);
                                     empgoallog.NeedsUpdate = "N";
@@ -173,6 +244,23 @@ namespace OpMgr.DataAccess.Implementations
                                 else
                                 {
                                     empgoallog.EmployeeGoalLogId = -1;
+                                }
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["Achievement"].ToString()))
+                                {
+                                    empgoallog.Achievement = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["Achievement"]);
+                                    empgoallog.AchivementPercent = Convert.ToInt32((empgoallog.Achievement / empgoallog.GoalAttribute.WeightAge) * 100);
+                                    empgoallog.SelfRating = this.getRatingLevel(empgoallog.AchivementPercent);
+                                    
+                                }
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"].ToString()))
+                                {
+                                    empgoallog.AppraiserRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"]);
+                                    empgoallog.AppraiserRatingPercent = Convert.ToInt32((empgoallog.AppraiserRating / empgoallog.GoalAttribute.WeightAge) * 100);
+                                    empgoallog.AppraiserRatingLevel = this.getRatingLevel(empgoallog.AppraiserRatingPercent);
+                                }
+                                else
+                                {
+                                    empgoallog.NeedsUpdate = "Y";
                                 }
                                 goalList.ReturnObj.Add(empgoallog);
                             }
