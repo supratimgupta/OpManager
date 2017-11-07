@@ -40,9 +40,14 @@ namespace OperationsManager.Areas.PMS.Models
 
         public SelectList CompetencyList { get; set; }
 
+        public string MODE { get; set; }
+
+        public string SAVE_MODE { get; set; }
+
         public PMSVM GetGoals(List<EmployeeGoalLogDTO> lstEmpGoals)
         {
             this.Goals = new Dictionary<int, GoalViewModel>();
+            this.EmployeeAppraisalMasterId = lstEmpGoals[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
             foreach (EmployeeGoalLogDTO empGoal in lstEmpGoals)
             {
                 if (!this.Goals.Keys.Contains(empGoal.GoalAttribute.Goal.GoalId))

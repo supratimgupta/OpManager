@@ -16,9 +16,11 @@ namespace OpMgr.Common.DTOs
 
         public decimal Achievement { get; set; }
 
+        public int AchivementPercent { get; set; }
+
         public string SelfRating { get; set; }
 
-        public int AppraiserRating { get; set; }
+        public decimal AppraiserRating { get; set; }
 
         public DateTime EmployeeRatingDate { get; set; }
 
@@ -32,6 +34,6 @@ namespace OpMgr.Common.DTOs
 
         public string ReviewerGoalComment { get; set; }
 
-
+        public string NeedsUpdate { get; set; }
     }
 }

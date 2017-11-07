@@ -7,7 +7,8 @@
 }
 
 <!DOCTYPE html>
-
+@using(Html.BeginForm())
+{
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-color panel-primary">
@@ -48,12 +49,14 @@
                 </fieldset>
             </div>
         </div>
-
+        <div style="display:none;" id="divContainerHddnFlds">
+            @Html.HiddenFor(m=>m.EmployeeAppraisalMasterId)
+            @Html.HiddenFor(m => m.SAVE_MODE, new {id="hfSaveMode" })
+        </div>
         <div class="panel panel-color panel-primary">
             <div class="panel-heading">@GoalSheetResource.HeadingForAppraisee</div>
             <div class="panel-body">
                 @if (Model != null)
-
                 {
                 <div style="overflow:scroll;">
                     <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
@@ -108,6 +111,8 @@
                                             
                                             <td>
                                                 @Model.GoalsAsList[i].GoalLog[j].GoalAttribute.Target
+                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].GoalAttribute.GoalAttributeId)
+                                                @Html.HiddenFor(m=>m.GoalsAsList[i].GoalLog[j].EmployeeGoalLogId)
                                             </td>
                                             <td>
                                                 @Model.GoalsAsList[i].GoalLog[j].GoalAttribute.KRA
@@ -120,24 +125,51 @@
                                             </td>
 
                                             <td>
-                                                @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].Achievement, "", new { @class = "form-control requiredField" })
+                                                @if(string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
+                                                {
+                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'staffRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ");" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.LabelFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent)
+                                                }
                                             </td>
                                             <td>
-                                                @Html.TextBoxFor()
+                                                @*@Html.TextBoxFor()*@
+                                                <span id="staffRating_@(i+"_"+j)">@Model.GoalsAsList[i].GoalLog[j].Achievement</span>
+                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].Achievement, new { id="staffRating_"+i+"_"+j+"_Hddn" })
+                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].NeedsUpdate, new { id = "staffRating_" + i + "_" + j + "_NU" })
                                             </td>
                                             <td>
-                                                @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })
+                                                @*@Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })*@
+                                                <span id="staffRating_@(i+"_"+j+"_SR")">@Model.GoalsAsList[i].GoalLog[j].SelfRating</span>
                                             </td>
                                             <td>
-                                                @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
+                                                @if(string.Equals(Model.MODE, "APPRAISER_REVIEW"))
+                                                {
+                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, "", new { @class = "form-control requiredField" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating)
+                                                }
                                             </td>
                                             <td>
-                                                @Html.TextBoxFor()
+                                                @*@Html.TextBoxFor()*@
                                             </td>
                                         </tr>
                                     }
                                 }
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10">
+                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('STAFF_FORM_SAVE');">Save</button>
+                                    &nbsp;&nbsp;
+                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('STAFF_FORM_SUBMIT');">Submit</button>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 
@@ -199,3 +231,45 @@
         </div>
     </div>
 </div>
+}
+<script language="javascript" type="text/javascript">
+
+    function setSaveMode(mode)
+    {
+        document.getElementById("hfSaveMode").value = mode;
+        return true;
+    }
+
+    function calcStaffRating(percentTxtBox, spanId, weightage)
+    {
+        if (!/^\+?(0|[1-9]\d*)$/.test(percentTxtBox.value))
+        {
+            document.getElementById(spanId).innerHTML = "<ERROR>";
+            alert('Value must be a positive integer');
+            return;
+        }
+        var percentValue = 0;
+        try
+        {
+            percentValue = parseInt(percentTxtBox.value);
+        }
+        catch(ex)
+        {
+            document.getElementById(spanId).innerHTML = "<ERROR>";
+            alert('Invalid value: ' + ex.description);
+            return;
+        }
+        if (percentValue > 100)
+        {
+            document.getElementById(spanId).innerHTML = "<ERROR>";
+            alert('Value range 0 - 100');
+            return;
+        }
+        var multiplier = Math.pow(10, 2 || 0);
+        var valueAsWeightage = Math.round (((percentValue / 100) * weightage)*multiplier)/multiplier;
+        document.getElementById(spanId).innerHTML = valueAsWeightage;
+        document.getElementById(spanId + "_Hddn").value = valueAsWeightage;
+        document.getElementById(spanId + "_NU").value = "Y";
+        $.get('GetRatingLevel', { ratingPercent: percentValue }, function (data) { debugger; document.getElementById(spanId + "_SR").innerHTML = data.data; });
+    }
+</script>
