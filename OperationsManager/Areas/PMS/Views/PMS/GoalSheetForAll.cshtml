@@ -16,36 +16,36 @@
             <div class="panel-body">
 
                 <fieldset>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Name)
+                    <div class="col-lg-5" style="font-weight:bold;">
+                        @GoalSheetResource.Name
                     </div>
                     <div class="col-lg-5">
-                        @Html.LabelFor(m => m.FullName)
+                        @Html.DisplayFor(m => m.FullName)
+                    </div>
+                    <div class="col-lg-5" style="font-weight:bold;">
+                        @GoalSheetResource.Designation
                     </div>
                     <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Designation)
+                        @Html.DisplayFor(m => m.Employee.Designation.DesignationDescription)
+                    </div>
+                    <div class="col-lg-5" style="font-weight:bold;">
+                        @GoalSheetResource.Location
                     </div>
                     <div class="col-lg-5">
-                        @Html.LabelFor(m => m.EmployeeDetails.Designation.DesignationDescription)
+                        @Html.DisplayFor(m => m.Employee.UserDetails.Location.LocationDescription)
+                    </div>
+                    <div class="col-lg-5" style="font-weight:bold;">
+                        @GoalSheetResource.Qualification
                     </div>
                     <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Location)
+                        @Html.DisplayFor(m => m.Employee.EducationalQualification)
+                    </div>
+                    @*<div class="col-lg-5">
+                        @GoalSheetResource.ReportingTo
                     </div>
                     <div class="col-lg-5">
-                        @Html.LabelFor(m => m.EmployeeDetails.UserDetails.Location.LocationDescription)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Qualification)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.EmployeeDetails.EducationalQualification)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.ReportingTo)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.ApproverName)
-                    </div>
+                        @Html.DisplayFor(m => m.ApproverName)
+                    </div>*@
                 </fieldset>
             </div>
         </div>
@@ -228,53 +228,77 @@
                 </div>
             </fieldset>
         </div>
-
-        <div class="panel panel-color panel-primary">
-            <div class="panel-heading"><b>@GoalSheetResource.HeadingForAppraiser</b></div>
-            <div class="panel-body">
-
-                <fieldset>
-                    <div class="col-lg-5">
-                       @*@Html.TextArea(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })*@
+        @if (string.Equals(Model.MODE, "COMPETENCY_CHECK") || string.Equals(Model.MODE, "PROCESS_ENDED"))
+        {
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading"><b>@GoalSheetResource.HeadingForAppraiser</b></div>
+                <div class="panel-body">
+                    <div class="row">
+                        @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
+                        {
+                            <div class="col-lg-3">
+                                @Html.OpMgrDropDownListFor(m => m.SelectedCompetency, Model.CompetencyDDLSource, GoalSheetResource.SelectImprovement, new { @class = "form-control", id = "ddlImprovementArea", onchange = "addStrengths(this, 'improvement_txt');" })
+                            </div>
+                            <div class="col-lg-9" style="padding-top:30px;">
+                                <input type="text" id="improvement_txt" />
+                                @Html.HiddenFor(m => m.ImprovementArea, new { id = "improvement_hf" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-3">Selected Improvements</div>
+                            <div class="col-lg-9">@Model.ImprovementsShow</div>
+                        }
                     </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.FullName)
+                    <div class="row">
+                        @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
+                        {
+                            <div class="col-lg-3">
+                                @Html.OpMgrDropDownListFor(m => m.SelectedCompetency, Model.CompetencyDDLSource, GoalSheetResource.SelectStrengths, new { @class = "form-control", id = "ddlStrengths", onchange = "addStrengths(this,'strength_txt');" })
+                            </div>
+                            <div class="col-lg-9" style="padding-top:30px;">
+                                <input type="text" id="strength_txt" />
+                                @Html.HiddenFor(m => m.Strengths, new { id = "strength_hf" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-3">Selected Strengths</div>
+                            <div class="col-lg-9">@Model.StrengthsShow</div>
+                        }
                     </div>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Designation)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.EmployeeDetails.Designation.DesignationDescription)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Location)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.EmployeeDetails.UserDetails.Location.LocationDescription)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.Qualification)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.EmployeeDetails.EducationalQualification)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.Display(@GoalSheetResource.ReportingTo)
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.LabelFor(m => m.ApproverName)
-                    </div>
-                </fieldset>
+                    @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
+                    {
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-primary" onclick="setSaveModeCompetency('SAVE');">Save</button>
+                                &nbsp;&nbsp;
+                                <button type="submit" class="btn btn-primary" onclick="setSaveModeCompetency('SUBMIT');">Submit</button>
+                                &nbsp;&nbsp;
+                            </div>                            
+                        </div>
+                    }                    
+                </div>
             </div>
-        </div>
+        }        
     </div>
 </div>
 }
+@section PageScripts
+{
 <script language="javascript" type="text/javascript">
 
     function setSaveMode(mode)
     {
         document.getElementById("hfSaveMode").value = mode;
+        return true;
+    }
+
+    function setSaveModeCompetency(mode)
+    {
+        document.getElementById("hfSaveMode").value = mode;
+        document.getElementById("strength_hf").value = $("#strength_txt").val();
+        document.getElementById("improvement_hf").value = $("#improvement_txt").val();
         return true;
     }
 
@@ -331,4 +355,29 @@
         }
         document.getElementById(className + "_Disp").innerHTML = sum;
     }
+
+    $(document).ready(function () {
+        $('#strength_txt').tagsinput({
+            allowDuplicates: false,
+            itemValue: 'id',  // this will be used to set id of tag
+            itemText: 'label' // this will be used to set text of tag
+        });
+        $('#improvement_txt').tagsinput({
+            allowDuplicates: false,
+            itemValue: 'id',  // this will be used to set id of tag
+            itemText: 'label' // this will be used to set text of tag
+        });
+        //$('#strength_txt').tagsinput('add', { id: 'tag id', label: 'tag lable' });
+        @Model.ImprovementsLoader
+        @Model.StrengthsLoader
+    });
+
+    function addStrengths(ddlStrengths, tagInputId)
+    {
+        var id = ddlStrengths.options[ddlStrengths.selectedIndex].value;
+        var text = ddlStrengths.options[ddlStrengths.selectedIndex].text;
+
+        $('#' + tagInputId).tagsinput('add', { id: id, label: text });
+    }
 </script>
+}

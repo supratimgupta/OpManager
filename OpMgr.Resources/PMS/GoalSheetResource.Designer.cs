@@ -358,6 +358,24 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Improvement.
+        /// </summary>
+        public static string SelectImprovement {
+            get {
+                return ResourceManager.GetString("SelectImprovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Strengths.
+        /// </summary>
+        public static string SelectStrengths {
+            get {
+                return ResourceManager.GetString("SelectStrengths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Self Rating.
         /// </summary>
         public static string SelfRating {

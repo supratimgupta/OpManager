@@ -231,4 +231,10 @@
   <data name="AppraiserRatingLevel" xml:space="preserve">
     <value>Appraiser Rating Level</value>
   </data>
+  <data name="SelectImprovement" xml:space="preserve">
+    <value>Select Improvement</value>
+  </data>
+  <data name="SelectStrengths" xml:space="preserve">
+    <value>Select Strengths</value>
+  </data>
 </root>

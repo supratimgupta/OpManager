@@ -21,11 +21,14 @@ namespace OperationsManager.Areas.PMS.Controllers
 
         private OpMgr.Common.Contracts.Modules.IPMSSvc _pmsSvc;
         private ISessionSvc _sessionSvc;
-
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc)
+        private IDropdownRepo _ddlRepo;
+        private Helpers.UIDropDownRepo _uiddlRepo;
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo)
         {
             _pmsSvc = pmsSvc;
             _sessionSvc = sessionSvc;
+            _ddlRepo = ddlRepo;
+            _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
         }
 
         [HttpGet]
@@ -33,6 +36,12 @@ namespace OperationsManager.Areas.PMS.Controllers
         public ActionResult GoalSheetForAll(int? apprMasterId)
         {
             Models.PMSVM pmsVM = new Models.PMSVM();
+
+            pmsVM.ImprovementsLoader = new MvcHtmlString("");
+            pmsVM.StrengthsLoader = new MvcHtmlString("");
+            pmsVM.ImprovementsShow = string.Empty;
+            pmsVM.StrengthsShow = string.Empty;
+
             OpMgr.Common.DTOs.EmployeeGoalLogDTO empGoalLog = new OpMgr.Common.DTOs.EmployeeGoalLogDTO();
             empGoalLog.EmployeeAppraisalMaster = new OpMgr.Common.DTOs.EmployeeAppraisalMasterDTO();
             empGoalLog.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = -1;
@@ -76,7 +85,48 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 return RedirectToAction("AccessDenied", "Login", new { area = "Login" });
             }
+            if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK"))
+            {
+                pmsVM.CompetencyDDLSource = _uiddlRepo.getCompetencyDropDown();
+            }
+            if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED"))
+            {
+                this.CreateCompetencyLoaders(ref pmsVM);
+            }
             return View(pmsVM);
+        }
+
+
+        private void CreateCompetencyLoaders(ref PMSVM pmsVM)
+        {
+            List<KeyValuePair<string, string>> improvements = new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, string>> strengths = new List<KeyValuePair<string, string>>();
+            _pmsSvc.GetCompetencies(pmsVM.EmployeeAppraisalMasterId, out strengths, out improvements);
+            if(improvements!=null && improvements.Count>0)
+            {
+                string loaderContext = string.Empty;
+                string showContent = string.Empty;
+                foreach(KeyValuePair<string, string> kvPair in improvements)
+                {
+                    loaderContext = loaderContext + "$('#improvement_txt').tagsinput('add', { id: '" + kvPair.Key + "', label: '" + kvPair.Value + "' });";
+                    showContent = showContent + kvPair.Value + ", ";
+                }
+                pmsVM.ImprovementsShow = showContent;
+                pmsVM.ImprovementsLoader = new MvcHtmlString(loaderContext);
+            }
+
+            if (strengths != null && strengths.Count > 0)
+            {
+                string loaderContext = string.Empty;
+                string showContent = string.Empty;
+                foreach (KeyValuePair<string, string> kvPair in strengths)
+                {
+                    loaderContext = loaderContext + "$('#strength_txt').tagsinput('add', { id: '" + kvPair.Key + "', label: '" + kvPair.Value + "' });";
+                    showContent = showContent + kvPair.Value + ", ";
+                }
+                pmsVM.StrengthsShow = showContent;
+                pmsVM.StrengthsLoader = new MvcHtmlString(loaderContext);
+            }
         }
 
         private string SetupMode(int apprMasterId)
@@ -103,6 +153,10 @@ namespace OperationsManager.Areas.PMS.Controllers
                 if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
                     _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
+                }
+                else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
+                {
+                    _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
                 }
                 else
                 {
@@ -177,7 +231,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     ts.Complete();
                 }
             }
-            return View(pmsVM);
+            return RedirectToAction("GoalSheetForAll", new { apprMasterId = pmsVM.EmployeeAppraisalMasterId  });
         }
     }
 }
