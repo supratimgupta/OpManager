@@ -170,6 +170,10 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 userMaster.UniqueId = _dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString();
                                 userMaster.UserType = "STAFF";
+                                if(!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["EmployeeId"].ToString()))
+                                {
+                                    userMaster.UniqueEmployeeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["EmployeeId"]);
+                                }
                             }
                             if(!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["RegistrationNumber"].ToString()) && string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["StaffEmployeeId"].ToString()))
                             {

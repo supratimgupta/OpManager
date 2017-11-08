@@ -121,6 +121,8 @@ namespace OperationsManager.Areas.Login.Controllers
                 session.PendingPaymentCount = status.ReturnObj.PendingPaymentCount;
                 session.PaidCountlast7day = status.ReturnObj.PaidCountlast7day;
 
+                session.UniqueEmployeeId = status.ReturnObj.UniqueEmployeeId;
+
                 session.ActionList = lstAction;
                 session.EntitleMentList = lstEntitleMent;
                 session.LocationList = lstLocation;

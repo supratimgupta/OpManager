@@ -130,16 +130,16 @@
                                             <td>
                                                 @if (string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
                                                 {
-                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'staffRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ");" })
+                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'staffRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ",'staffRating');" })
                                                 }
                                                 else
                                                 {
-                                                    @Html.LabelFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent)
+                                                    @Html.DisplayFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent)
                                                 }
                                             </td>
                                             <td>
                                                 @*@Html.TextBoxFor()*@
-                                                <span id="staffRating_@(i+"_"+j)">@Model.GoalsAsList[i].GoalLog[j].Achievement</span>
+                                                <span id="staffRating_@(i+"_"+j)" class="staffRating">@Model.GoalsAsList[i].GoalLog[j].Achievement</span>
                                                 @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].Achievement, new { id="staffRating_"+i+"_"+j+"_Hddn" })
                                                 @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].NeedsUpdate, new { id = "staffRating_" + i + "_" + j + "_NU" })
                                             </td>
@@ -150,7 +150,7 @@
                                             <td>
                                                 @if (string.Equals(Model.MODE, "APPRAISER_REVIEW"))
                                                 {
-                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRatingPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'apprRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ");" })
+                                                    @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRatingPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'apprRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ",'apprRating');" })
                                                 }
                                                 else
                                                 {
@@ -159,9 +159,9 @@
                                             </td>
                                             <td>
                                                 @*@Html.TextBoxFor()*@
-                                                <span id="apprRating_@(i+"_"+j)">@Model.GoalsAsList[i].GoalLog[j].AppraiserRating</span>
+                                                <span id="apprRating_@(i+"_"+j)" class="apprRating">@Model.GoalsAsList[i].GoalLog[j].AppraiserRating</span>
                                                 @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].AppraiserRating, new { id = "apprRating_" + i + "_" + j + "_Hddn" })
-                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].NeedsUpdate, new { id = "apprRating_" + i + "_" + j + "_NU" })
+                                                @Html.HiddenFor(m => m.GoalsAsList[i].GoalLog[j].NeedsAppraiserUpdate, new { id = "apprRating_" + i + "_" + j + "_NU" })
                                             </td>
                                             <td>
                                                 @*@Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].SelfRating, "", new { @class = "form-control requiredField" })*@
@@ -173,17 +173,40 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="10">
-                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('SAVE');">Save</button>
-                                    &nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-primary" onclick="setSaveMode('SUBMIT');">Submit</button>
-                                    &nbsp;&nbsp;
-                                    @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW"))
-                                    {                                        
-                                        <button type="submit" class="btn btn-primary" onclick="setSaveMode('SEND_BACK');">Send Back</button>
-                                    }                                    
+                                <td colspan="5"><td>
+                                <td>
+                                    <span id="staffRating_Disp">@Model.SumOfAcheivement</span>
+                                </td>
+                                <td colspan="2"></td>
+                                <td>
+                                    <span id="apprRating_Disp">@Model.SumOfAppraiserRating</span>
+                                </td>
+                                <td>
+                                    @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
+                                    {
+                                        @Html.OpMgrTextBoxFor(m => m.ReviewerRating, "", new { @class = "form-control requiredField" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(m=>m.ReviewerRating)
+                                    }
                                 </td>
                             </tr>
+                            @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW") || string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
+                            {
+                                <tr>
+                                    <td colspan="11">
+                                        <button type="submit" class="btn btn-primary" onclick="setSaveMode('SAVE');">Save</button>
+                                        &nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-primary" onclick="setSaveMode('SUBMIT');">Submit</button>
+                                        &nbsp;&nbsp;
+                                        @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW"))
+                                        {
+                                            <button type="submit" class="btn btn-primary" onclick="setSaveMode('SEND_BACK');">Send Back</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         </tfoot>
                     </table>
                 </div>
@@ -255,7 +278,7 @@
         return true;
     }
 
-    function calcStaffRating(percentTxtBox, spanId, weightage)
+    function calcStaffRating(percentTxtBox, spanId, weightage, className)
     {
         if (!/^\+?(0|[1-9]\d*)$/.test(percentTxtBox.value))
         {
@@ -286,5 +309,26 @@
         document.getElementById(spanId + "_Hddn").value = valueAsWeightage;
         document.getElementById(spanId + "_NU").value = "Y";
         $.get('GetRatingLevel', { ratingPercent: percentValue }, function (data) { debugger; document.getElementById(spanId + "_SR").innerHTML = data.data; });
+        this.calculateSum(className);
+    }
+
+    function calculateSum(className)
+    {
+        var arrSpans = document.getElementsByClassName(className);
+        var sum = 0.0;
+        for(i=0;i<arrSpans.length;i++)
+        {
+            try
+            {
+                if (!isNaN(arrSpans[i].innerHTML))
+                {
+                    sum = sum + parseFloat(arrSpans[i].innerHTML);
+                }
+            }
+            catch(e)
+            {
+            }
+        }
+        document.getElementById(className + "_Disp").innerHTML = sum;
     }
 </script>

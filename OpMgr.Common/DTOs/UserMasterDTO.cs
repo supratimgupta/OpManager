@@ -86,5 +86,7 @@ namespace OpMgr.Common.DTOs
         public string UniqueId { get; set; }
 
         public string UserType { get; set; }
+
+        public int UniqueEmployeeId { get; set; }
     }
 }

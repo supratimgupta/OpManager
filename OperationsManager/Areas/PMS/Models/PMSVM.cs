@@ -44,6 +44,12 @@ namespace OperationsManager.Areas.PMS.Models
 
         public string SAVE_MODE { get; set; }
 
+        public decimal SumOfAcheivement { get; set; }
+
+        public decimal SumOfAppraiserRating { get; set; }
+
+        public decimal ReviewerRating { get; set; }
+
         public PMSVM GetGoals(List<EmployeeGoalLogDTO> lstEmpGoals)
         {
             this.Goals = new Dictionary<int, GoalViewModel>();

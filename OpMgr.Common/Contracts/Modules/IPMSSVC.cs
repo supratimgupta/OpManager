@@ -13,5 +13,7 @@ namespace OpMgr.Common.Contracts.Modules
         int GetCurrentStatus(int empApprMasterId);
         bool MoveFwdBckwd(int appraisalMasterId, int currentStatus, bool isBackwd = false);
         string AccessStatus(int appraisalMasterId);
+        StatusDTO<EmployeeGoalLogDTO> UpdateAppraiserRating(EmployeeGoalLogDTO data);
+        bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating);
     }
 }

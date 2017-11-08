@@ -39,5 +39,7 @@ namespace OpMgr.Common.DTOs
         public string ReviewerGoalComment { get; set; }
 
         public string NeedsUpdate { get; set; }
+
+        public string NeedsAppraiserUpdate { get; set; }
     }
 }

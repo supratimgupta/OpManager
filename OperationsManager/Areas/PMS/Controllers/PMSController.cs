@@ -41,10 +41,20 @@ namespace OperationsManager.Areas.PMS.Controllers
                 empGoalLog.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = apprMasterId.Value;
             }
             empGoalLog.EmployeeAppraisalMaster.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
-            empGoalLog.EmployeeAppraisalMaster.Employee.EmployeeId = _sessionSvc.GetUserSession().Employee.EmployeeId;
+            empGoalLog.EmployeeAppraisalMaster.Employee.EmployeeId = _sessionSvc.GetUserSession().UniqueEmployeeId;
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
             List<OpMgr.Common.DTOs.EmployeeGoalLogDTO> empGoalLogs = _pmsSvc.Select(empGoalLog).ReturnObj;
+
+            if(empGoalLog==null || empGoalLogs.Count==0)
+            {
+                return RedirectToAction("AccessDenied", "Login", new { area = "Login" });
+            }
+
+            pmsVM.SumOfAcheivement = empGoalLogs.Sum(m => m.Achievement);
+            pmsVM.SumOfAppraiserRating = empGoalLogs.Sum(m => m.AppraiserRating);
+            pmsVM.ReviewerRating = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerFinalRating;
+
             pmsVM.EmployeeAppraisalMasterId = empGoalLogs[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
             pmsVM = pmsVM.GetGoals(empGoalLogs);
 
@@ -90,55 +100,62 @@ namespace OperationsManager.Areas.PMS.Controllers
             List<GoalViewModel> lstGoalVM = pmsVM.GoalsAsList;
             using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
             {
-                foreach(GoalViewModel gVM in lstGoalVM)
+                if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
-                
-                    try
+                    _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
+                }
+                else
+                {
+                    foreach (GoalViewModel gVM in lstGoalVM)
                     {
-                        foreach(EmployeeGoalLogDTO empGoal in gVM.GoalLog)
+
+                        try
                         {
-                            try
+                            foreach (EmployeeGoalLogDTO empGoal in gVM.GoalLog)
                             {
-                                empGoal.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                                empGoal.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = pmsVM.EmployeeAppraisalMasterId;
-                                //Insert goal in goal log
-                                if (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT"))
+                                try
                                 {
-                                    if (empGoal.EmployeeGoalLogId == -1 && string.Equals(pmsVM.MODE, "STAFF_FORM_FILLUP"))
+                                    empGoal.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
+                                    empGoal.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = pmsVM.EmployeeAppraisalMasterId;
+                                    //Insert goal in goal log
+                                    if (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT"))
                                     {
-                                        _pmsSvc.Insert(empGoal);
-                                    }
-                                    else if (empGoal.EmployeeGoalLogId>0)
-                                    {
-                                        if (string.Equals(empGoal.NeedsUpdate, "Y"))
+                                        if (empGoal.EmployeeGoalLogId == -1 && string.Equals(pmsVM.MODE, "STAFF_FORM_FILLUP"))
+                                        {
+                                            _pmsSvc.Insert(empGoal);
+                                        }
+                                        else if (empGoal.EmployeeGoalLogId > 0)
                                         {
                                             if (string.Equals(pmsVM.MODE, "STAFF_FORM_FILLUP"))
                                             {
-                                                _pmsSvc.Update(empGoal);
+                                                if(string.Equals(empGoal.NeedsUpdate, "Y"))
+                                                {
+                                                    _pmsSvc.Update(empGoal);
+                                                }                                                    
                                             }
                                             else if (string.Equals(pmsVM.MODE, "APPRAISER_REVIEW"))
                                             {
-                                                //Appraiser update
+                                                if (string.Equals(empGoal.NeedsAppraiserUpdate, "Y"))
+                                                {
+                                                    _pmsSvc.UpdateAppraiserRating(empGoal);
+                                                }
                                             }
-                                            else if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW"))
-                                            {
-                                                //Appraiser update
-                                            }                                            
                                         }
                                     }
-                                }                                
+                                }
+                                catch (Exception exp)
+                                {
+                                    throw exp;
+                                }
                             }
-                            catch(Exception exp)
-                            {
-                                throw exp;
-                            }                            
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
                         }
                     }
-                    catch(Exception ex)
-                    {
-                        throw ex;
-                    }
                 }
+                
                 if (string.Equals(pmsVM.SAVE_MODE, "SUBMIT"))
                 {
                     int currentStatus = _pmsSvc.GetCurrentStatus(pmsVM.EmployeeAppraisalMasterId);
