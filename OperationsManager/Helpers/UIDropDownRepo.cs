@@ -22,18 +22,23 @@ namespace OperationsManager.Helpers
 
         public  SelectList getLocationDropDown()
         {
+            List<LocationDTO> locationLst = new List<LocationDTO>();
             List<LocationDTO> lDto = new SessionSvc().GetUserSession().LocationList;
             //if(lDto==null)
             //{
             //    lDto = _ddlRepo.Location();
             //}
-            //LocationDTO locDto = new LocationDTO();
-            //locDto.LocationId = -1;
-            //locDto.LocationDescription = string.Empty;
+            foreach(var loc in lDto)
+            {
+                locationLst.Add(loc);
+            }
+            LocationDTO locDto = new LocationDTO();
+            locDto.LocationId = -1;
+            locDto.LocationDescription = string.Empty;
 
-            //lDto.Insert(0, locDto);
+            locationLst.Insert(0, locDto);
 
-            return new SelectList(lDto, "LocationId", "LocationDescription");
+            return new SelectList(locationLst, "LocationId", "LocationDescription");
         }
 
         public SelectList getRoleDropDown()
@@ -174,14 +179,14 @@ namespace OperationsManager.Helpers
             dicGender.Add("-1", "");
             dicGender.Add("1", "Male");
             dicGender.Add("2", "Female");
-            dicGender.Add("3", "Other");
+            //dicGender.Add("3", "Other");
             return new SelectList(dicGender, "key", "value");
         }
 
         public SelectList getSelectValueDropDown()
         {
             Dictionary<string, string> selectValue = new Dictionary<string, string>();
-            //dicGender.Add("-1", "");
+            selectValue.Add("-1", "");
             selectValue.Add("1", "Yes");
             selectValue.Add("2", "No");
             
@@ -191,7 +196,7 @@ namespace OperationsManager.Helpers
         public SelectList getSelectJointNuclearDropDown()
         {
             Dictionary<string, string> selectJointValue = new Dictionary<string, string>();
-            //dicGender.Add("-1", "");
+            selectJointValue.Add("-1", "");
             selectJointValue.Add("1", "Joint");
             selectJointValue.Add("2", "Nuclear");
 

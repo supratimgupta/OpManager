@@ -20,5 +20,10 @@ namespace OperationsManager.Areas.User.Models
         public SelectList DepartmentList { get; set; }
 
         public SelectList LocationList { get; set; }
+
+        public string SuccessOrFailureMessage { get; set; }
+
+        public string MsgColor { get; set; }
+
     }
 }

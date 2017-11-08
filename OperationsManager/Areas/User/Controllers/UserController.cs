@@ -42,7 +42,7 @@ namespace OperationsManager.Areas.User.Controllers
             {
                 userView.IsSearchSuccessful = true;// Grid is displayed with records
                 userView.UserList = new List<UserVM>(); // instantiating list of Students
-                SessionDTO sessionRet = _sessionSvc.GetUserSession();
+                //SessionDTO sessionRet = _sessionSvc.GetUserSession();
 
                 //userView.DepartmentList = _uiddlRepo.getDepartmentDropDown();
                 userView.LocationList = _uiddlRepo.getLocationDropDown();
@@ -99,8 +99,16 @@ namespace OperationsManager.Areas.User.Controllers
                     throw new Exception(status.ExceptionMessage);
                 }
             }
+            else
+            {
 
-             return View(userView);
+                userView.LocationList = _uiddlRepo.getLocationDropDown();
+                
+                userView.MsgColor = "green";
+                userView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
+            }
+
+            return View(userView);
         }
 
         [HttpPost]
@@ -132,7 +140,7 @@ namespace OperationsManager.Areas.User.Controllers
                 user.Location.LocationId = userView.Location.LocationId;
 
                 // Search for Department
-                //user.Employee = new EmployeeDetailsDTO();
+                user.Employee = new EmployeeDetailsDTO();
                 //user.Employee.Department = new DepartmentDTO();
                 //user.Employee.Department = userView.Employee.Department;
 
@@ -190,7 +198,8 @@ namespace OperationsManager.Areas.User.Controllers
 
                                 searchItem.Location = new LocationDTO();
                                 searchItem.Location.LocationDescription = u.Location.LocationDescription;
-                                
+
+                                searchItem.Employee = new EmployeeDetailsDTO();
                                 searchItem.Employee.StaffEmployeeId = u.Employee.StaffEmployeeId;
 
                                 uView.UserList.Add(searchItem);
