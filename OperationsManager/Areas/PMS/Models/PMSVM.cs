@@ -50,6 +50,22 @@ namespace OperationsManager.Areas.PMS.Models
 
         public decimal ReviewerRating { get; set; }
 
+        public string ImprovementArea { get; set; }
+
+        public string ImprovementsShow { get; set; }
+
+        public string Strengths { get; set; }
+
+        public string StrengthsShow { get; set; }
+
+        public SelectList CompetencyDDLSource { get; set; }
+
+        public int SelectedCompetency { get; set; }
+
+        public MvcHtmlString ImprovementsLoader { get; set; }
+
+        public MvcHtmlString StrengthsLoader { get; set; }
+
         public PMSVM GetGoals(List<EmployeeGoalLogDTO> lstEmpGoals)
         {
             this.Goals = new Dictionary<int, GoalViewModel>();

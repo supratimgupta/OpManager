@@ -16,18 +16,19 @@ namespace OperationsManager.Areas.PMS.Controllers
     {
         // IUserSvc _userSvc;
         //private ILogSvc _logSvc;
-        private IDropdownRepo _dropDownRepo;
-        private Helpers.UIDropDownRepo _uiddlRepo;
+        //private IDropdownRepo _dropDownRepo;
+        //private Helpers.UIDropDownRepo _uiddlRepo;
 
         private OpMgr.Common.Contracts.Modules.IPMSSvc _pmsSvc;
         private ISessionSvc _sessionSvc;
-
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, IDropdownRepo dropDownRepo, ISessionSvc sessionSvc)
+        private IDropdownRepo _ddlRepo;
+        private Helpers.UIDropDownRepo _uiddlRepo;
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo)
         {
             _pmsSvc = pmsSvc;
             _sessionSvc = sessionSvc;
-            _dropDownRepo = dropDownRepo;
-            _uiddlRepo = new Helpers.UIDropDownRepo(_dropDownRepo);
+            _ddlRepo = ddlRepo;
+            _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
         }
 
         [HttpGet]
@@ -35,6 +36,12 @@ namespace OperationsManager.Areas.PMS.Controllers
         public ActionResult GoalSheetForAll(int? apprMasterId)
         {
             Models.PMSVM pmsVM = new Models.PMSVM();
+
+            pmsVM.ImprovementsLoader = new MvcHtmlString("");
+            pmsVM.StrengthsLoader = new MvcHtmlString("");
+            pmsVM.ImprovementsShow = string.Empty;
+            pmsVM.StrengthsShow = string.Empty;
+
             OpMgr.Common.DTOs.EmployeeGoalLogDTO empGoalLog = new OpMgr.Common.DTOs.EmployeeGoalLogDTO();
             empGoalLog.EmployeeAppraisalMaster = new OpMgr.Common.DTOs.EmployeeAppraisalMasterDTO();
             empGoalLog.EmployeeAppraisalMaster.EmployeeAppraisalMasterId = -1;
@@ -78,7 +85,48 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 return RedirectToAction("AccessDenied", "Login", new { area = "Login" });
             }
+            if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK"))
+            {
+                pmsVM.CompetencyDDLSource = _uiddlRepo.getCompetencyDropDown();
+            }
+            if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED"))
+            {
+                this.CreateCompetencyLoaders(ref pmsVM);
+            }
             return View(pmsVM);
+        }
+
+
+        private void CreateCompetencyLoaders(ref PMSVM pmsVM)
+        {
+            List<KeyValuePair<string, string>> improvements = new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, string>> strengths = new List<KeyValuePair<string, string>>();
+            _pmsSvc.GetCompetencies(pmsVM.EmployeeAppraisalMasterId, out strengths, out improvements);
+            if(improvements!=null && improvements.Count>0)
+            {
+                string loaderContext = string.Empty;
+                string showContent = string.Empty;
+                foreach(KeyValuePair<string, string> kvPair in improvements)
+                {
+                    loaderContext = loaderContext + "$('#improvement_txt').tagsinput('add', { id: '" + kvPair.Key + "', label: '" + kvPair.Value + "' });";
+                    showContent = showContent + kvPair.Value + ", ";
+                }
+                pmsVM.ImprovementsShow = showContent;
+                pmsVM.ImprovementsLoader = new MvcHtmlString(loaderContext);
+            }
+
+            if (strengths != null && strengths.Count > 0)
+            {
+                string loaderContext = string.Empty;
+                string showContent = string.Empty;
+                foreach (KeyValuePair<string, string> kvPair in strengths)
+                {
+                    loaderContext = loaderContext + "$('#strength_txt').tagsinput('add', { id: '" + kvPair.Key + "', label: '" + kvPair.Value + "' });";
+                    showContent = showContent + kvPair.Value + ", ";
+                }
+                pmsVM.StrengthsShow = showContent;
+                pmsVM.StrengthsLoader = new MvcHtmlString(loaderContext);
+            }
         }
 
         private string SetupMode(int apprMasterId)
@@ -105,6 +153,10 @@ namespace OperationsManager.Areas.PMS.Controllers
                 if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
                     _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
+                }
+                else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
+                {
+                    _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
                 }
                 else
                 {
@@ -179,83 +231,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     ts.Complete();
                 }
             }
-            return View(pmsVM);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult SearchAppraisee()
-        {
-            StatusDTO<List<EmployeeAppraisalMasterDTO>> status = _pmsSvc.SearchAppraisee(null);
-            PMSVM pmsview = null;
-
-            if (status.ReturnObj != null && status.ReturnObj.Count > 0)
-            {
-                pmsview = new PMSVM(); // Instantiating PMS View model
-                pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
-
-                //Fetch the StandardSection List
-                pmsview.GenderList = _uiddlRepo.getGenderDropDown();
-                pmsview.LocationList = _uiddlRepo.getLocationDropDown();
-                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
-                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
-
-                if (status.IsSuccess && !status.IsException)
-                {
-                    //studView = new List<StudentVM>();
-                    PMSVM searchItem = null;
-                    foreach (EmployeeAppraisalMasterDTO appraisalmaster in status.ReturnObj)
-                    {
-                        if (appraisalmaster != null)
-                        {
-                            searchItem = new PMSVM(); // instantiating each PMVM                            
-                            searchItem.UserDetails = new UserMasterDTO();                            
-                            searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
-                            searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
-                            searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
-
-                            searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
-                            if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
-                            {
-                                searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.MName;
-                            }
-
-                            searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
-                            searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
-                            searchItem.AppraisalType = appraisalmaster.AppraisalType;
-                            searchItem.AppraisalStatus = new AppraisalStatusDTO();
-                            searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
-
-                            searchItem.UserDetails.Location = new LocationDTO();
-                            searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
-                            searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
-                            //Add into PMSView vIew Model List
-                            pmsview.PMSVMList.Add(searchItem);
-                            pmsview.IsSearchSuccessful = true;
-
-                        }
-                    }
-                }
-                if (status.IsException)
-                {
-                    throw new Exception(status.ExceptionMessage);
-                }
-            }
-            else
-            {
-                pmsview = new PMSVM();
-
-                pmsview.GenderList = _uiddlRepo.getGenderDropDown();
-                pmsview.LocationList = _uiddlRepo.getLocationDropDown();
-                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
-                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
-
-                pmsview.IsSearchSuccessful = true;
-                //pmsview.MsgColor = "green";
-                //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
-            }
-
-            return View(pmsview);
+            return RedirectToAction("GoalSheetForAll", new { apprMasterId = pmsVM.EmployeeAppraisalMasterId  });
         }
     }
 }

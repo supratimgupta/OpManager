@@ -596,6 +596,11 @@
     <Content Include="admin\vector-map.html" />
     <Content Include="admin\widgets.html" />
     <Content Include="Areas\Login\Views\Login\schoolbuilding.jpg" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput-angular.js" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput-angular.min.js" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.css" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.js" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jquery-validation-1.16.0\demo\ajaxSubmit-integration-demo.html" />
@@ -1085,7 +1090,10 @@
     <Content Include="Areas\DataImport\Views\DataImport\Upload.cshtml" />
     <Content Include="Areas\PMS\Views\web.config" />
     <Content Include="Areas\PMS\Views\PMS\GoalSheetForAll.cshtml" />
-    <Content Include="Areas\PMS\Views\PMS\SearchAppraisee.cshtml" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput-angular.min.js.map" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.less" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.min.js.map" />
+    <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.zip" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

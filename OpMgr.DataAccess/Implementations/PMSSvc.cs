@@ -8,6 +8,7 @@ using OpMgr.Common.DTOs;
 using OpMgr.Common.Contracts;
 using System.Data;
 using MySql.Data.MySqlClient;
+using System.Transactions;
 
 namespace OpMgr.DataAccess.Implementations
 {
@@ -465,6 +466,114 @@ namespace OpMgr.DataAccess.Implementations
                         return true;
                     }
                     return false;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public void SaveCompetency(int appraisalMasterId, string delimitedImprovements, string delimitedStrengths)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    using(TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
+                    {
+                        try
+                        {
+                            command.CommandText = "delete from employeecompetency where EmployeeAppraisalMasterId=@apprMasterId";
+                            command.CommandType = CommandType.Text;
+                            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                            command.Parameters.Add("@apprMasterId", MySqlDbType.Int32).Value = appraisalMasterId;
+
+                            command.ExecuteNonQuery();
+
+                            string[] arrImprovements = delimitedImprovements.Split(',');
+                            if(arrImprovements!=null && arrImprovements.Length>0)
+                            {
+                                foreach(string improvements in arrImprovements)
+                                {
+                                    command = new MySqlCommand();
+                                    command.CommandText = "insert into employeecompetency(EmployeeAppraisalMasterId,CompetencyId,Type) values (@apprMasterId,@compId,'IMPROVEMENTS')";
+                                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                                    command.Parameters.Add("@apprMasterId", MySqlDbType.Int32).Value = appraisalMasterId;
+                                    command.Parameters.Add("@compId", MySqlDbType.Int32).Value = Convert.ToInt32(improvements);
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+
+                            string[] arrStrengths = delimitedStrengths.Split(',');
+                            if (arrStrengths != null && arrStrengths.Length > 0)
+                            {
+                                foreach (string strengths in arrStrengths)
+                                {
+                                    command = new MySqlCommand();
+                                    command.CommandText = "insert into employeecompetency(EmployeeAppraisalMasterId,CompetencyId,Type) values (@apprMasterId,@compId,'STRENGTHS')";
+                                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                                    command.Parameters.Add("@apprMasterId", MySqlDbType.Int32).Value = appraisalMasterId;
+                                    command.Parameters.Add("@compId", MySqlDbType.Int32).Value = Convert.ToInt32(strengths);
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                            ts.Complete();
+                        }
+                        catch(Exception exp)
+                        {
+                            throw exp;
+                        }
+                    }
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public void GetCompetencies(int appraisalMasterId, out List<KeyValuePair<string, string>> strengths, out List<KeyValuePair<string, string>> improvements)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select ec.CompetencyId, c.CompetencyDescription, ec.Type from employeecompetency ec left join competency c on ec.CompetencyId=c.CompetencyId where EmployeeAppraisalMasterId=@apprMaster";
+                    command.CommandType = CommandType.Text;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@apprMaster", MySqlDbType.Double).Value = appraisalMasterId;
+
+                    DataTable dt = new DataTable();
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    mDa.Fill(dt);
+                    strengths = new List<KeyValuePair<string,string>>();
+                    improvements = new List<KeyValuePair<string,string>>();
+                    if(dt!=null && dt.Rows.Count>0)
+                    {
+                        KeyValuePair<string, string> item = new KeyValuePair<string,string>();
+                        for(int i=0;i<dt.Rows.Count;i++)
+                        {
+                            item = new KeyValuePair<string, string>(dt.Rows[i]["CompetencyId"].ToString(), dt.Rows[i]["CompetencyDescription"].ToString());
+
+                            if(string.Equals(dt.Rows[i]["Type"].ToString(),"IMPROVEMENTS"))
+                            {
+                                improvements.Add(item);
+                            }
+                            if (string.Equals(dt.Rows[i]["Type"].ToString(), "STRENGTHS"))
+                            {
+                                strengths.Add(item);
+                            }
+                        }
+                    }
                 }
                 catch (Exception exp)
                 {
