@@ -12,6 +12,8 @@ namespace OperationsManager.Areas.Student.Models
     {
         public string Name { get; set; }
 
+        public string Location { get; set; }
+
         public List<StudentVM> studentList { get; set;}
 
         public SelectList StandardSectionList { get; set; }

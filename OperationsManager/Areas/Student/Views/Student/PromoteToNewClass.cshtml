@@ -37,6 +37,9 @@
                         @Html.AntiForgeryToken()
                         <fieldset>
                             <div class="col-lg-2">
+                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, StudentResource.Location, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
                                 @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control", @id = "ddlStandardSection" })
                                 @Html.HiddenFor(m => m.StandardSectionMap.Serial)
                             </div>
@@ -73,9 +76,11 @@
                         <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                             <thead>
                                 <tr>
-
                                     <th th data-field="name" data-sortable="true">
                                         @StudentResource.Name
+                                    </th>
+                                    <th th data-field="name" data-sortable="true">
+                                        @StudentResource.Location
                                     </th>
                                     <th th data-field="roll number" data-sortable="true">
                                         @StudentResource.PromotionStatus
@@ -97,6 +102,9 @@
                                     <tr>
                                         <td>
                                             @Model.studentList[i].Name
+                                        </td>
+                                        <td>
+                                            @Model.studentList[i].Location
                                         </td>
                                         <td>
                                             @if (string.IsNullOrEmpty(Model.studentList[i].Status))

@@ -14,6 +14,8 @@ namespace OpMgr.Common.DTOs
 
         public string AppraisalType { get; set; }
 
+        public AppraisalStatusDTO AppraisalStatus { get; set; }
+
         public DateTime ValidFrom { get; set; }
 
         public DateTime ValidTo { get; set; }

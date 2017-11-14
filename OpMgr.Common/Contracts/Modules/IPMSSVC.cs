@@ -15,5 +15,6 @@ namespace OpMgr.Common.Contracts.Modules
         string AccessStatus(int appraisalMasterId);
         StatusDTO<EmployeeGoalLogDTO> UpdateAppraiserRating(EmployeeGoalLogDTO data);
         bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating);
+        StatusDTO<List<EmployeeAppraisalMasterDTO>> SearchAppraisee(EmployeeAppraisalMasterDTO data);
     }
 }

@@ -54,5 +54,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<TransactionRuleDTO> GetTransactionRules();
 
         List<CompetencyDTO> Competency();
+
+        List<AppraisalStatusDTO> AppraisalStatus();
     }
 }

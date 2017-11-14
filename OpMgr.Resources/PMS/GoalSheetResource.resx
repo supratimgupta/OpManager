@@ -231,4 +231,34 @@
   <data name="AppraiserRatingLevel" xml:space="preserve">
     <value>Appraiser Rating Level</value>
   </data>
+  <data name="AppraisalStatus" xml:space="preserve">
+    <value>Appraisal Status</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="SearchAppraisalBtn" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchAppraiseeHeader" xml:space="preserve">
+    <value>Appraisee Deatils</value>
+  </data>
+  <data name="StaffEmployeeId" xml:space="preserve">
+    <value>Employee ID</value>
+  </data>
+  <data name="AppraisalType" xml:space="preserve">
+    <value>Appraisal Type</value>
+  </data>
+  <data name="AppraiseeResult" xml:space="preserve">
+    <value>Appraisee Details</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="test" xml:space="preserve">
+    <value>1</value>
+  </data>
 </root>

@@ -16,16 +16,18 @@ namespace OperationsManager.Areas.PMS.Controllers
     {
         // IUserSvc _userSvc;
         //private ILogSvc _logSvc;
-        //private IDropdownRepo _dropDownRepo;
-        //private Helpers.UIDropDownRepo _uiddlRepo;
+        private IDropdownRepo _dropDownRepo;
+        private Helpers.UIDropDownRepo _uiddlRepo;
 
         private OpMgr.Common.Contracts.Modules.IPMSSvc _pmsSvc;
         private ISessionSvc _sessionSvc;
 
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc)
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, IDropdownRepo dropDownRepo, ISessionSvc sessionSvc)
         {
             _pmsSvc = pmsSvc;
             _sessionSvc = sessionSvc;
+            _dropDownRepo = dropDownRepo;
+            _uiddlRepo = new Helpers.UIDropDownRepo(_dropDownRepo);
         }
 
         [HttpGet]
@@ -178,6 +180,82 @@ namespace OperationsManager.Areas.PMS.Controllers
                 }
             }
             return View(pmsVM);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult SearchAppraisee()
+        {
+            StatusDTO<List<EmployeeAppraisalMasterDTO>> status = _pmsSvc.SearchAppraisee(null);
+            PMSVM pmsview = null;
+
+            if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+            {
+                pmsview = new PMSVM(); // Instantiating PMS View model
+                pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
+
+                //Fetch the StandardSection List
+                pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+                pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+
+                if (status.IsSuccess && !status.IsException)
+                {
+                    //studView = new List<StudentVM>();
+                    PMSVM searchItem = null;
+                    foreach (EmployeeAppraisalMasterDTO appraisalmaster in status.ReturnObj)
+                    {
+                        if (appraisalmaster != null)
+                        {
+                            searchItem = new PMSVM(); // instantiating each PMVM                            
+                            searchItem.UserDetails = new UserMasterDTO();                            
+                            searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
+                            searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
+                            searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
+
+                            searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
+                            if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
+                            {
+                                searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.MName;
+                            }
+
+                            searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
+                            searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
+                            searchItem.AppraisalType = appraisalmaster.AppraisalType;
+                            searchItem.AppraisalStatus = new AppraisalStatusDTO();
+                            searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
+
+                            searchItem.UserDetails.Location = new LocationDTO();
+                            searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                            searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
+                            //Add into PMSView vIew Model List
+                            pmsview.PMSVMList.Add(searchItem);
+                            pmsview.IsSearchSuccessful = true;
+
+                        }
+                    }
+                }
+                if (status.IsException)
+                {
+                    throw new Exception(status.ExceptionMessage);
+                }
+            }
+            else
+            {
+                pmsview = new PMSVM();
+
+                pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+                pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+
+                pmsview.IsSearchSuccessful = true;
+                //pmsview.MsgColor = "green";
+                //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
+            }
+
+            return View(pmsview);
         }
     }
 }
