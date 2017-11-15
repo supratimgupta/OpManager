@@ -1094,6 +1094,7 @@
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.less" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.min.js.map" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.zip" />
+    <Content Include="Areas\PMS\Views\PMS\SearchAppraisee.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
