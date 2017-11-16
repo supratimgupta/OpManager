@@ -331,6 +331,12 @@ namespace OperationsManager.Areas.Login.Controllers
             if (string.Equals(uvModel.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 //Call update
+                if (!string.IsNullOrEmpty(uvModel.Password))
+                {
+                    string pass = encrypt.encryption(uvModel.Password);                
+                    uvModel.Password = pass;
+                }
+                uvModel.UpdatedBy = sessionRet;
 
                 StatusDTO<UserMasterDTO> status = _userSvc.Update(uvModel);
 
@@ -379,7 +385,6 @@ namespace OperationsManager.Areas.Login.Controllers
 
                 string pass = encrypt.encryption(uvModel.Password);
                 uvModel.Password = pass;
-
 
                 uvModel.CreatedBy = sessionRet;
                 StatusDTO<UserMasterDTO> status = _userSvc.Insert(uvModel);
@@ -519,6 +524,7 @@ namespace OperationsManager.Areas.Login.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult ResetPassword()
         {
             UserViewModel userView = null;
@@ -540,6 +546,7 @@ namespace OperationsManager.Areas.Login.Controllers
             return View(userView);
         }
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult ResetPassword(UserViewModel userView)
         {
             bool IsPasswordReset = false;
@@ -562,7 +569,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 }
                 else
                 {
-                    IsPasswordReset = _resetPassSvc.ResetPassword(encrypt.encryption(userView.Password), userView.UserMasterId);
+                    IsPasswordReset = _resetPassSvc.ResetPassword(encrypt.encryption(userView.NewPassword), userView.UserMasterId);
                     if (IsPasswordReset)
                     {
                         userView.SuccessorFailureMessage = "Your password has been successfully reset";// Sucess
