@@ -171,11 +171,17 @@
   <data name="RulesCreation" xml:space="preserve">
     <value>RULES CREATION</value>
   </data>
+  <data name="SearchAppraisee" xml:space="preserve">
+    <value>Search Appraisee</value>
+  </data>
   <data name="SearchTransaction" xml:space="preserve">
     <value>PAYMENT HISTORY</value>
   </data>
   <data name="SearchUser" xml:space="preserve">
     <value>STAFF</value>
+  </data>
+  <data name="SelfAppraisal" xml:space="preserve">
+    <value>Self Evaluation</value>
   </data>
   <data name="StudentSearch" xml:space="preserve">
     <value>STUDENT</value>

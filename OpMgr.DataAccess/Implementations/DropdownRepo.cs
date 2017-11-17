@@ -879,7 +879,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select AppraisalStatusId,AppraisalStatusDescription from AppraisalStatus where Active=1";
+                    command.CommandText = "select AppraisalStatusId,AppraisalStatusDescription from AppraisalStatus";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);

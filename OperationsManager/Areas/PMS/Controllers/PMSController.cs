@@ -249,7 +249,7 @@ namespace OperationsManager.Areas.PMS.Controllers
 
                 //Fetch the StandardSection List
                 pmsview.GenderList = _uiddlRepo.getGenderDropDown();
-                pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+               // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                 pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
 
@@ -275,13 +275,17 @@ namespace OperationsManager.Areas.PMS.Controllers
 
                             searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
                             searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
+                            searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
                             searchItem.AppraisalType = appraisalmaster.AppraisalType;
                             searchItem.AppraisalStatus = new AppraisalStatusDTO();
                             searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
 
                             searchItem.UserDetails.Location = new LocationDTO();
                             searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                            searchItem.Employee = new EmployeeDetailsDTO();
                             searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
+                            searchItem.Employee.Designation = new DesignationDTO();
+                            searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
                             //Add into PMSView vIew Model List
                             pmsview.PMSVMList.Add(searchItem);
                             pmsview.IsSearchSuccessful = true;
@@ -299,7 +303,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 pmsview = new PMSVM();
 
                 pmsview.GenderList = _uiddlRepo.getGenderDropDown();
-                pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+               // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                 pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
 

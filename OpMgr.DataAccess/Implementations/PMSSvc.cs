@@ -602,13 +602,13 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    command.Parameters.Add("@Fname", MySqlDbType.String).Value = data.Employee.UserDetails.FName;
-                    command.Parameters.Add("@Lname", MySqlDbType.String).Value = data.Employee.UserDetails.LName;
-                    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
-                    command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Employee.UserDetails.Location.LocationId;
-                    command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = data.AppraisalStatus.AppraisalStatusId;
-                    command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = data.Employee.UserDetails.Gender;
-                    command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = data.AppraisalType;
+                    //command.Parameters.Add("@Fname", MySqlDbType.String).Value = data.Employee.UserDetails.FName;
+                    //command.Parameters.Add("@Lname", MySqlDbType.String).Value = data.Employee.UserDetails.LName;
+                    //command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
+                    //command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Employee.UserDetails.Location.LocationId;
+                    //command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = data.AppraisalStatus.AppraisalStatusId;
+                    //command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = data.Employee.UserDetails.Gender;
+                    //command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = data.AppraisalType;
                     
                     MySqlDataAdapter da = new MySqlDataAdapter(command);
                     dsAppraiseeLst = new DataSet();
@@ -642,7 +642,10 @@ namespace OpMgr.DataAccess.Implementations
                                 empAppraisalMaster.AppraisalStatus.AppraisalStatusId= Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
                                 empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription= dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
 
+                                empAppraisalMaster.Employee.Designation.DesignationDescription = dsAppraiseeLst.Tables[0].Rows[i]["DesignationDescription"].ToString();
+
                                 appraiseeList.ReturnObj.Add(empAppraisalMaster);
+                                appraiseeList.IsSuccess = true;
                             }
                         }
                         

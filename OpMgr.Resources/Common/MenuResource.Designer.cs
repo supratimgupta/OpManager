@@ -223,6 +223,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search Appraisee.
+        /// </summary>
+        public static string SearchAppraisee {
+            get {
+                return ResourceManager.GetString("SearchAppraisee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PAYMENT HISTORY.
         /// </summary>
         public static string SearchTransaction {
@@ -237,6 +246,15 @@ namespace OpMgr.Resources.Common {
         public static string SearchUser {
             get {
                 return ResourceManager.GetString("SearchUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Self Evaluation.
+        /// </summary>
+        public static string SelfAppraisal {
+            get {
+                return ResourceManager.GetString("SelfAppraisal", resourceCulture);
             }
         }
         
