@@ -16,36 +16,47 @@
             <div class="panel-body">
 
                 <fieldset>
-                    <div class="col-lg-5" style="font-weight:bold;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <img src="@Model.employeeimagepath" alt="No image found" height="249" width="177" class="image-viewer" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3" style="font-weight:bold;">
                         @GoalSheetResource.Name
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-3">
                         @Html.DisplayFor(m => m.FullName)
                     </div>
-                    <div class="col-lg-5" style="font-weight:bold;">
+                    <div class="col-lg-3" style="font-weight:bold;">
                         @GoalSheetResource.Designation
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-3">
                         @Html.DisplayFor(m => m.Employee.Designation.DesignationDescription)
                     </div>
-                    <div class="col-lg-5" style="font-weight:bold;">
+                    <div class="col-lg-3" style="font-weight:bold;">
                         @GoalSheetResource.Location
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-3">
                         @Html.DisplayFor(m => m.Employee.UserDetails.Location.LocationDescription)
                     </div>
-                    <div class="col-lg-5" style="font-weight:bold;">
+                    <div class="col-lg-3" style="font-weight:bold;">
                         @GoalSheetResource.Qualification
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-3">
                         @Html.DisplayFor(m => m.Employee.EducationalQualification)
                     </div>
-                    @*<div class="col-lg-5">
+                    <div class="col-lg-3" style="font-weight:bold;">
+                        @GoalSheetResource.DOJ
+                    </div>
+                    <div class="col-lg-3">
+                        @Html.DisplayFor(m => m.Employee.DateOfJoining)
+                    </div>                   
+                    <div class="col-lg-3" style="font-weight:bold;">
                         @GoalSheetResource.ReportingTo
                     </div>
-                    <div class="col-lg-5">
-                        @Html.DisplayFor(m => m.ApproverName)
-                    </div>*@
+                    <div class="col-lg-3">
+                        @Html.DisplayFor(m => m.Employee.ApproverName)
+                    </div>
                 </fieldset>
             </div>
         </div>
@@ -214,17 +225,18 @@
                 }
             </div>
             <fieldset>
-                <div class="col-lg-5">
+                @*<div class="col-lg-5">
                     @Html.Display(@GoalSheetResource.SelfRating)
                 </div>
                 <div class="col-lg-5">
                     @Html.LabelFor(m => m.SelfAvgRating)
+                </div>*@
+                <div></div>
+                <div class="col-lg-3" style="font-weight:bold;">
+                    @GoalSheetResource.FinalRating
                 </div>
-                <div class="col-lg-5">
-                    @Html.Display(@GoalSheetResource.AppraiserRating)
-                </div>
-                <div class="col-lg-5">
-                    @Html.LabelFor(m => m.AppraiserFinalRating)
+                <div class="col-lg-3" style="font-weight:bold;">
+                    @Html.DisplayFor(m => m.ReviewerRating)
                 </div>
             </fieldset>
         </div>

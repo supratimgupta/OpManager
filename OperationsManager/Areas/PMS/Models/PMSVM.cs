@@ -96,5 +96,7 @@ namespace OperationsManager.Areas.PMS.Models
         public Boolean IsSearchSuccessful { get; set; }
 
         public List<PMSVM> PMSVMList { get; set; }
+
+        public string employeeimagepath { get; set; }
     }
 }

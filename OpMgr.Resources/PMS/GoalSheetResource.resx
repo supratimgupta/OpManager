@@ -267,4 +267,10 @@
   <data name="StaffEmployeeId" xml:space="preserve">
     <value>Staff EmployeeId</value>
   </data>
+  <data name="DOJ" xml:space="preserve">
+    <value>Date Of Joining</value>
+  </data>
+  <data name="FinalRating" xml:space="preserve">
+    <value>Final Rating</value>
+  </data>
 </root>

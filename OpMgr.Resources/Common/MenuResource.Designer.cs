@@ -124,6 +124,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appraisal.
+        /// </summary>
+        public static string Appraisal {
+            get {
+                return ResourceManager.GetString("Appraisal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to APPROVE.
         /// </summary>
         public static string ApproveDues {

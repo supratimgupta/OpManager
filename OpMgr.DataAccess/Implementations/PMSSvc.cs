@@ -288,6 +288,9 @@ namespace OpMgr.DataAccess.Implementations
                                 empdetails.Designation.DesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
                                 empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[1].Rows[0]["LocationDescription"].ToString();
                                 empdetails.EducationalQualification = dsGoalLst.Tables[1].Rows[0]["EducationQualification"].ToString();
+                                empdetails.DateOfJoining = Convert.ToDateTime(dsGoalLst.Tables[1].Rows[0]["DateOfJoining"]);
+                                empdetails.StaffEmployeeId = dsGoalLst.Tables[1].Rows[0]["staffemployeeid"].ToString();
+                                empdetails.ApproverName = dsGoalLst.Tables[1].Rows[0]["ApproverName"].ToString();
 
                                 goalList.ReturnObj[0].EmployeeAppraisalMaster.Employee = empdetails;
                             }

@@ -214,6 +214,15 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Of Joining.
+        /// </summary>
+        public static string DOJ {
+            get {
+                return ResourceManager.GetString("DOJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -228,6 +237,15 @@ namespace OpMgr.Resources.PMS {
         public static string ExpYr {
             get {
                 return ResourceManager.GetString("ExpYr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final Rating.
+        /// </summary>
+        public static string FinalRating {
+            get {
+                return ResourceManager.GetString("FinalRating", resourceCulture);
             }
         }
         

@@ -39,6 +39,9 @@ namespace OpMgr.Common.DTOs
 
         [Required(ErrorMessage = "Staff Employee Id is required")]
         public string StaffEmployeeId { get; set; }
+        
+        //below propertiess added to get Direct Supervisor while PMS
+        public string ApproverName { get; set; }
 
     }
 }

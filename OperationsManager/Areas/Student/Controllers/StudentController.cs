@@ -372,7 +372,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 //Fetch the StandardSection List
                 studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
-                studView.IsSearchSuccessful = true;
+                studView.IsSearchSuccessful = false;
                 studView.MsgColor = "green";
                 studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
             }
@@ -479,20 +479,19 @@ namespace OperationsManager.Areas.Student.Controllers
                                 //Add into Student vIew Model List
                                 studView.studentList.Add(searchItem);
                                 studView.IsSearchSuccessful = true;
-
                             }
                         }
-
-
                     }
                 }
                 else
                 {
                     studView = studentView;
                     studentView.IsSearchSuccessful = false;
+                    //Fetch the StandardSection List
+                    studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                    studView.LocationList = _uiddlRepo.getLocationDropDown();
                 }
             }
-
             return View(studView);
         }
 

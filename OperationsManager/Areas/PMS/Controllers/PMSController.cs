@@ -5,6 +5,7 @@ using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -23,11 +24,14 @@ namespace OperationsManager.Areas.PMS.Controllers
         private ISessionSvc _sessionSvc;
         private IDropdownRepo _ddlRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo)
+        private IConfigSvc _configSvc;
+
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo, IConfigSvc configSvc)
         {
             _pmsSvc = pmsSvc;
             _sessionSvc = sessionSvc;
             _ddlRepo = ddlRepo;
+            _configSvc = configSvc;
             _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
         }
 
@@ -71,11 +75,17 @@ namespace OperationsManager.Areas.PMS.Controllers
             pmsVM.FullName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.FName + " " + empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.LName;
             pmsVM.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
             pmsVM.Employee.EducationalQualification = empGoalLogs[0].EmployeeAppraisalMaster.Employee.EducationalQualification;
+            pmsVM.Employee.DateOfJoining =  empGoalLogs[0].EmployeeAppraisalMaster.Employee.DateOfJoining;
+            pmsVM.Employee.StaffEmployeeId = empGoalLogs[0].EmployeeAppraisalMaster.Employee.StaffEmployeeId;
+            pmsVM.Employee.ApproverName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.ApproverName;
             pmsVM.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
             pmsVM.Employee.Designation.DesignationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.Designation.DesignationDescription;
             pmsVM.Employee.UserDetails = new OpMgr.Common.DTOs.UserMasterDTO();
             pmsVM.Employee.UserDetails.Location = new OpMgr.Common.DTOs.LocationDTO();
             pmsVM.Employee.UserDetails.Location.LocationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.Location.LocationDescription;
+            string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
+
+            pmsVM.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(pmsVM.Employee.StaffEmployeeId, employeeImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
 
             bool isSelf = apprMasterId == null;
 
@@ -94,6 +104,19 @@ namespace OperationsManager.Areas.PMS.Controllers
                 this.CreateCompetencyLoaders(ref pmsVM);
             }
             return View(pmsVM);
+        }
+
+        public string GetImageFileName(string staffempid, string folder)
+        {
+            string fileName = string.Empty;
+            string[] similarFiles = Directory.GetFiles(folder, staffempid + ".*");
+            if (similarFiles != null && similarFiles.Length > 0)
+            {
+                fileName = similarFiles[0];
+                string[] fileParts = fileName.Split('\\');
+                fileName = fileParts[fileParts.Length - 1];
+            }
+            return fileName;
         }
 
 

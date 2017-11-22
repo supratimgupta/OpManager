@@ -138,6 +138,9 @@
   <data name="AdminPanel" xml:space="preserve">
     <value>Admin Panel</value>
   </data>
+  <data name="Appraisal" xml:space="preserve">
+    <value>Appraisal</value>
+  </data>
   <data name="ApproveDues" xml:space="preserve">
     <value>APPROVE</value>
   </data>
