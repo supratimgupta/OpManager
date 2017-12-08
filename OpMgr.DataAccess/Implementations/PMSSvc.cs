@@ -138,12 +138,12 @@ namespace OpMgr.DataAccess.Implementations
         public string getRatingLevel(int percent)
         {
             string ratingLevel = string.Empty;
-            if(_dtLevels==null)
+            if (_dtLevels == null)
             {
                 this.FillLevelTable();
             }
             DataRow[] levels = _dtLevels.Select("StartingRange<=" + percent + " AND EndRange>=" + percent);
-            if(levels!=null && levels.Length>0)
+            if (levels != null && levels.Length > 0)
             {
                 ratingLevel = levels[0]["LevelName"].ToString();
             }
@@ -156,7 +156,7 @@ namespace OpMgr.DataAccess.Implementations
             {
                 string accessStatus = string.Empty;
                 try
-                {                    
+                {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "check_AppraisalStatus";
@@ -175,7 +175,7 @@ namespace OpMgr.DataAccess.Implementations
 
                         }
                     }
-                    
+
                     return accessStatus;
                 }
                 catch (Exception exp)
@@ -202,7 +202,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@DesignationId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.Designation.DesignationId;
                     command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.EmployeeId;
-                    if(data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId==-1)
+                    if (data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId == -1)
                     {
                         command.Parameters.Add("@ApprMasterIdParam", MySqlDbType.Int32).Value = DBNull.Value;
                     }
@@ -217,7 +217,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
                     EmployeeGoalLogDTO empGoalLogDTO = new EmployeeGoalLogDTO();
-                    if (dsGoalLst != null && dsGoalLst.Tables.Count == 2)
+                    if (dsGoalLst != null && dsGoalLst.Tables.Count == 3)
                     {
                         goalList.ReturnObj = new List<EmployeeGoalLogDTO>();
                         if (dsGoalLst.Tables[0].Rows.Count > 0)
@@ -251,7 +251,7 @@ namespace OpMgr.DataAccess.Implementations
                                     empgoallog.Achievement = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["Achievement"]);
                                     empgoallog.AchivementPercent = Convert.ToInt32((empgoallog.Achievement / empgoallog.GoalAttribute.WeightAge) * 100);
                                     empgoallog.SelfRating = this.getRatingLevel(empgoallog.AchivementPercent);
-                                    
+
                                 }
                                 if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"].ToString()))
                                 {
@@ -264,6 +264,7 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     empgoallog.NeedsAppraiserUpdate = "Y";
                                 }
+                                
                                 if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["FinalRating"].ToString()))
                                 {
                                     empgoallog.EmployeeAppraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
@@ -274,9 +275,10 @@ namespace OpMgr.DataAccess.Implementations
 
                         if (dsGoalLst.Tables[1].Rows.Count > 0)
                         {
-                            if(goalList.ReturnObj!=null && goalList.ReturnObj.Count>0)
+                            if (goalList.ReturnObj != null && goalList.ReturnObj.Count > 0)
                             {
                                 //goalList.ReturnObj[0].EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
+                                
                                 goalList.ReturnObj[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId = empAppraisalMasterId;
                                 EmployeeDetailsDTO empdetails = new EmployeeDetailsDTO();
                                 empdetails.UserDetails = new UserMasterDTO();
@@ -291,8 +293,21 @@ namespace OpMgr.DataAccess.Implementations
                                 empdetails.DateOfJoining = Convert.ToDateTime(dsGoalLst.Tables[1].Rows[0]["DateOfJoining"]);
                                 empdetails.StaffEmployeeId = dsGoalLst.Tables[1].Rows[0]["staffemployeeid"].ToString();
                                 empdetails.ApproverName = dsGoalLst.Tables[1].Rows[0]["ApproverName"].ToString();
+                                //if (dsGoalLst.Tables[2].Rows.Count > 0)
+                                //{
+                                //    empappraisalMaster = new EmployeeAppraisalMasterDTO();
+                                //    empappraisalMaster.IndividualInitiative = dsGoalLst.Tables[2].Rows[0]["IndividualInitiative"].ToString();
+                                //    empappraisalMaster.InstitutionalSupport = dsGoalLst.Tables[2].Rows[0]["InstitutionalSupport"].ToString();
+                                //    empappraisalMaster.EmployeeAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[2].Rows[0]["EmployeeAppraisalMasterId"]);
+                                //    if (!string.IsNullOrEmpty(dsGoalLst.Tables[2].Rows[0]["FinalRating"].ToString()))
+                                //    {
+                                //        empappraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[2].Rows[0]["FinalRating"]);
+                                //    }
+                                //    goalList.ReturnObj[0].EmployeeAppraisalMaster = empappraisalMaster;
+                                //}
 
                                 goalList.ReturnObj[0].EmployeeAppraisalMaster.Employee = empdetails;
+                                
                             }
                         }
                     }
@@ -307,7 +322,7 @@ namespace OpMgr.DataAccess.Implementations
         }
 
 
-        public bool MoveFwdBckwd(int appraisalMasterId, int currentStatus, bool isBackwd=false)
+        public bool MoveFwdBckwd(int appraisalMasterId, int currentStatus, bool isBackwd = false)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -319,7 +334,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    command.Parameters.Add("@status", MySqlDbType.Double).Value = isBackwd?currentStatus-1:currentStatus+1;
+                    command.Parameters.Add("@status", MySqlDbType.Double).Value = isBackwd ? currentStatus - 1 : currentStatus + 1;
                     command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
                     command.Parameters.Add("@empApprMaster", MySqlDbType.Int32).Value = appraisalMasterId;
                     // add createdby from session
@@ -477,6 +492,39 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public bool UpdateInitiativeandSupport(int apprMasterId, string IndividualInitiative, string InstitutionalSupport)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "update employeeappraisalmaster set IndividualInitiative=@IndividualInitiative, InstitutionalSupport=@InstitutionalSupport,UpdatedBy=@updatedBy, UpdatedDate=CURDATE(), Active=1 where EmployeeAppraisalMasterId=@apprMaster";
+                    command.CommandType = CommandType.Text;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@apprMaster", MySqlDbType.Int32).Value = apprMasterId;
+                    command.Parameters.Add("@IndividualInitiative", MySqlDbType.String).Value = IndividualInitiative;
+                    command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                    command.Parameters.Add("@InstitutionalSupport", MySqlDbType.String).Value = InstitutionalSupport;
+                    // add createdby from session
+
+                    StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
         public void SaveCompetency(int appraisalMasterId, string delimitedImprovements, string delimitedStrengths)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
@@ -485,7 +533,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    using(TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
+                    using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
                     {
                         try
                         {
@@ -498,9 +546,9 @@ namespace OpMgr.DataAccess.Implementations
                             command.ExecuteNonQuery();
 
                             string[] arrImprovements = delimitedImprovements.Split(',');
-                            if(arrImprovements!=null && arrImprovements.Length>0)
+                            if (arrImprovements != null && arrImprovements.Length > 0)
                             {
-                                foreach(string improvements in arrImprovements)
+                                foreach (string improvements in arrImprovements)
                                 {
                                     command = new MySqlCommand();
                                     command.CommandText = "insert into employeecompetency(EmployeeAppraisalMasterId,CompetencyId,Type) values (@apprMasterId,@compId,'IMPROVEMENTS')";
@@ -528,7 +576,7 @@ namespace OpMgr.DataAccess.Implementations
                             }
                             ts.Complete();
                         }
-                        catch(Exception exp)
+                        catch (Exception exp)
                         {
                             throw exp;
                         }
@@ -558,16 +606,16 @@ namespace OpMgr.DataAccess.Implementations
                     DataTable dt = new DataTable();
                     MySqlDataAdapter mDa = new MySqlDataAdapter(command);
                     mDa.Fill(dt);
-                    strengths = new List<KeyValuePair<string,string>>();
-                    improvements = new List<KeyValuePair<string,string>>();
-                    if(dt!=null && dt.Rows.Count>0)
+                    strengths = new List<KeyValuePair<string, string>>();
+                    improvements = new List<KeyValuePair<string, string>>();
+                    if (dt != null && dt.Rows.Count > 0)
                     {
-                        KeyValuePair<string, string> item = new KeyValuePair<string,string>();
-                        for(int i=0;i<dt.Rows.Count;i++)
+                        KeyValuePair<string, string> item = new KeyValuePair<string, string>();
+                        for (int i = 0; i < dt.Rows.Count; i++)
                         {
                             item = new KeyValuePair<string, string>(dt.Rows[i]["CompetencyId"].ToString(), dt.Rows[i]["CompetencyDescription"].ToString());
 
-                            if(string.Equals(dt.Rows[i]["Type"].ToString(),"IMPROVEMENTS"))
+                            if (string.Equals(dt.Rows[i]["Type"].ToString(), "IMPROVEMENTS"))
                             {
                                 improvements.Add(item);
                             }
@@ -612,7 +660,7 @@ namespace OpMgr.DataAccess.Implementations
                     //command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = data.AppraisalStatus.AppraisalStatusId;
                     //command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = data.Employee.UserDetails.Gender;
                     //command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = data.AppraisalType;
-                    
+
                     MySqlDataAdapter da = new MySqlDataAdapter(command);
                     dsAppraiseeLst = new DataSet();
                     da.Fill(dsAppraiseeLst);
@@ -642,8 +690,8 @@ namespace OpMgr.DataAccess.Implementations
                                 empAppraisalMaster.AppraisalType = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalType"].ToString();
                                 empAppraisalMaster.Employee.StaffEmployeeId = dsAppraiseeLst.Tables[0].Rows[i]["StaffEmployeeId"].ToString();
 
-                                empAppraisalMaster.AppraisalStatus.AppraisalStatusId= Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
-                                empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription= dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
+                                empAppraisalMaster.AppraisalStatus.AppraisalStatusId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
+                                empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
 
                                 empAppraisalMaster.Employee.Designation.DesignationDescription = dsAppraiseeLst.Tables[0].Rows[i]["DesignationDescription"].ToString();
 
@@ -651,7 +699,7 @@ namespace OpMgr.DataAccess.Implementations
                                 appraiseeList.IsSuccess = true;
                             }
                         }
-                        
+
                     }
 
                     return appraiseeList;
@@ -662,6 +710,6 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
-               
+
     }
 }

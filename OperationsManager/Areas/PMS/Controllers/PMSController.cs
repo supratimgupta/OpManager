@@ -67,11 +67,18 @@ namespace OperationsManager.Areas.PMS.Controllers
             pmsVM.SumOfAcheivement = empGoalLogs.Sum(m => m.Achievement);
             pmsVM.SumOfAppraiserRating = empGoalLogs.Sum(m => m.AppraiserRating);
             pmsVM.ReviewerRating = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerFinalRating;
+            if (pmsVM.ReviewerRating > 0)
+            {
+                pmsVM.ReviewerRatingLevel = _pmsSvc.getSelfRating(Convert.ToInt32(pmsVM.ReviewerRating)).ReturnObj.SelfRating;
+            }
 
             pmsVM.EmployeeAppraisalMasterId = empGoalLogs[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
             pmsVM = pmsVM.GetGoals(empGoalLogs);
 
             // to get data in first grid
+            pmsVM.IndividualInitiative = empGoalLogs[0].EmployeeAppraisalMaster.IndividualInitiative;
+            pmsVM.InstitutionalSupport = empGoalLogs[0].EmployeeAppraisalMaster.InstitutionalSupport;
+
             pmsVM.FullName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.FName + " " + empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.LName;
             pmsVM.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
             pmsVM.Employee.EducationalQualification = empGoalLogs[0].EmployeeAppraisalMaster.Employee.EducationalQualification;
@@ -102,6 +109,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED"))
             {
                 this.CreateCompetencyLoaders(ref pmsVM);
+                
             }
             return View(pmsVM);
         }
@@ -176,10 +184,12 @@ namespace OperationsManager.Areas.PMS.Controllers
                 if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
                     _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
+
                 }
                 else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
                     _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
+                    _pmsSvc.UpdateInitiativeandSupport(pmsVM.EmployeeAppraisalMasterId,pmsVM.IndividualInitiative,pmsVM.InstitutionalSupport);
                 }
                 else
                 {

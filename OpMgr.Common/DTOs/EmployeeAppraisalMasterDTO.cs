@@ -34,5 +34,8 @@ namespace OpMgr.Common.DTOs
 
         public decimal ReviewerFinalRating { get; set; }
 
+        public string IndividualInitiative { get; set; }
+
+        public string InstitutionalSupport { get; set; }
     }
 }

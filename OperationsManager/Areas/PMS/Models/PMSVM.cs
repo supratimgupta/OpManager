@@ -98,5 +98,11 @@ namespace OperationsManager.Areas.PMS.Models
         public List<PMSVM> PMSVMList { get; set; }
 
         public string employeeimagepath { get; set; }
+
+        public string IndividualInitiative { get; set; }
+
+        public string InstitutionalSupport { get; set; }
+
+        public string ReviewerRatingLevel { get; set; }
     }
 }
