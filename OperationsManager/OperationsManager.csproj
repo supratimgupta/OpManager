@@ -1118,6 +1118,7 @@
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.less" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.min.js.map" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.zip" />
+    <Content Include="Areas\PMS\Views\PMS\SearchAppraisee.cshtml" />
     <Content Include="Areas\Notification\Views\web.config" />
     <Content Include="Areas\Notification\Views\Notification\ViewAll.cshtml" />
     <Content Include="Areas\Notification\Views\Notification\Chat.cshtml" />

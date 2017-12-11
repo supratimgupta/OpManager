@@ -363,5 +363,25 @@ namespace OperationsManager.Helpers
             rDto.Insert(0, blank);
             return new SelectList(rDto, "CompetencyId", "CompetencyDescription");
         }
+
+        public SelectList getAppraisalType()
+        {
+            Dictionary<string, string> appraisalTypes = new Dictionary<string, string>();
+
+            appraisalTypes.Add("-1", "");
+            appraisalTypes.Add("MidYear", "MidYear");
+            appraisalTypes.Add("Annual", "Annual");
+            return new SelectList(appraisalTypes, "key", "value");
+        }
+
+        public SelectList getAppraisalStatus()
+        {
+            List<AppraisalStatusDTO> statusDto = _ddlRepo.AppraisalStatus();
+            AppraisalStatusDTO blank = new AppraisalStatusDTO();
+            blank.AppraisalStatusId = -1;
+            blank.AppraisalStatusDescription = "";
+            statusDto.Insert(0, blank);
+            return new SelectList(statusDto, "AppraisalStatusId", "AppraisalStatusDescription");
+        }
     }
 }

@@ -79,6 +79,33 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appraisal Status.
+        /// </summary>
+        public static string AppraisalStatus {
+            get {
+                return ResourceManager.GetString("AppraisalStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appraisal Type.
+        /// </summary>
+        public static string AppraisalType {
+            get {
+                return ResourceManager.GetString("AppraisalType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of Appraisee.
+        /// </summary>
+        public static string AppraiseeResult {
+            get {
+                return ResourceManager.GetString("AppraiseeResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signature.
         /// </summary>
         public static string AppraiseeSignature {
@@ -187,6 +214,24 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Of Joining.
+        /// </summary>
+        public static string DOJ {
+            get {
+                return ResourceManager.GetString("DOJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Years Of Experience.
         /// </summary>
         public static string ExpYr {
@@ -198,9 +243,36 @@ namespace OpMgr.Resources.PMS {
         /// <summary>
         ///   Looks up a localized string similar to Final Rating.
         /// </summary>
+        public static string FinalRating {
+            get {
+                return ResourceManager.GetString("FinalRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final Rating.
+        /// </summary>
         public static string FinalRatingByReviewer {
             get {
                 return ResourceManager.GetString("FinalRatingByReviewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender.
+        /// </summary>
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
             }
         }
         
@@ -286,6 +358,15 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string Location {
@@ -358,6 +439,24 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchAppraisalBtn {
+            get {
+                return ResourceManager.GetString("SearchAppraisalBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Appraisee.
+        /// </summary>
+        public static string SearchAppraiseeHeader {
+            get {
+                return ResourceManager.GetString("SearchAppraiseeHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Improvement.
         /// </summary>
         public static string SelectImprovement {
@@ -381,6 +480,15 @@ namespace OpMgr.Resources.PMS {
         public static string SelfRating {
             get {
                 return ResourceManager.GetString("SelfRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Staff EmployeeId.
+        /// </summary>
+        public static string StaffEmployeeId {
+            get {
+                return ResourceManager.GetString("StaffEmployeeId", resourceCulture);
             }
         }
         

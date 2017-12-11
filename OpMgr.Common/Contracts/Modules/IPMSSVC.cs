@@ -17,5 +17,7 @@ namespace OpMgr.Common.Contracts.Modules
         bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating);
         void SaveCompetency(int appraisalMasterId, string delimitedImprovements, string delimitedStrengths);
         void GetCompetencies(int appraisalMasterId, out List<KeyValuePair<string, string>> strengths, out List<KeyValuePair<string, string>> improvements);
+        StatusDTO<List<EmployeeAppraisalMasterDTO>> SearchAppraisee(EmployeeAppraisalMasterDTO data);
+        bool UpdateInitiativeandSupport(int apprMasterId, string IndividualInitiative, string InstitutionalSupport);
     }
 }

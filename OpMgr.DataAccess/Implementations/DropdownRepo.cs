@@ -870,5 +870,39 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<AppraisalStatusDTO> AppraisalStatus()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select AppraisalStatusId,AppraisalStatusDescription from AppraisalStatus";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<AppraisalStatusDTO> lstAppraisalStatusDTO = new List<AppraisalStatusDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        AppraisalStatusDTO appraisalStatusDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            appraisalStatusDTO = new AppraisalStatusDTO();
+                            appraisalStatusDTO.AppraisalStatusId = (int)dr["AppraisalStatusId"];
+                            appraisalStatusDTO.AppraisalStatusDescription = dr["AppraisalStatusDescription"].ToString();
+                            lstAppraisalStatusDTO.Add(appraisalStatusDTO);
+                        }
+                    }
+                    return lstAppraisalStatusDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

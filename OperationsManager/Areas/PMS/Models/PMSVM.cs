@@ -86,5 +86,25 @@ namespace OperationsManager.Areas.PMS.Models
             this.GoalsAsList = this.Goals.Values.ToList();
             return this;
         }
+
+        public SelectList AppraisalTypeList { get; set; }
+
+        public SelectList AppraisalStatusList { get; set; }
+
+        public SelectList GenderList { get; set; }
+
+        public SelectList LocationList { get; set; }
+
+        public Boolean IsSearchSuccessful { get; set; }
+
+        public List<PMSVM> PMSVMList { get; set; }
+
+        public string employeeimagepath { get; set; }
+
+        public string IndividualInitiative { get; set; }
+
+        public string InstitutionalSupport { get; set; }
+
+        public string ReviewerRatingLevel { get; set; }
     }
 }

@@ -581,7 +581,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public StatusDTO<List<StudentDTO>> PromoteToNewClass(List<StudentDTO> studentList, string Command, int StandardSectionId)
+        public StatusDTO<List<StudentDTO>> PromoteToNewClass(List<StudentDTO> studentList, string Command, int StandardSectionId, int LocationId)
         {
             StatusDTO<List<StudentDTO>> studLst = new StatusDTO<List<StudentDTO>>();
             string whereClause = null;
@@ -645,9 +645,10 @@ namespace OpMgr.DataAccess.Implementations
                             }
                         }
                         selectClause = "SELECT student.StudentInfoId,users.UserMasterId,users.FName, users.MName,users.LName,student.StandardSectionId,stdSecMap.StandardId,stdSecMap.Serial," +
-                                   "student.RollNumber,student.NewStandardSectionId,student.Status,stnd.StandardName,sec.SectionName,stnd1.StandardName AS NewStandardName,sec1.SectionName AS NewSectionName " +
+                                   "student.RollNumber,student.NewStandardSectionId,users.LocationId,loc.LocationDescription,student.Status,stnd.StandardName,sec.SectionName,stnd1.StandardName AS NewStandardName,sec1.SectionName AS NewSectionName " +
                                    "FROM studentinfo student " +
                                    "LEFT JOIN UserMaster users ON student.UserMasterId = users.UserMasterId " +
+                                   "LEFT JOIN Location loc ON loc.LocationId = users.LocationId " +
                                    "LEFT JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId " +
                                    "LEFT JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId " +
                                    "LEFT JOIN Section sec ON stdSecMap.SectionId = sec.SectionId " +
@@ -665,13 +666,19 @@ namespace OpMgr.DataAccess.Implementations
                             command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = StandardSectionId;
                         }
 
+                        //Select students of that particular location
+                        if (LocationId != -1)
+                        {
+                            whereClause = whereClause + " AND users.LocationId=@LocationId";
+                            command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = LocationId;
+                        }
+
                         command.CommandText = selectClause + whereClause;
 
                         MySqlDataAdapter da = new MySqlDataAdapter(command);
                         dsStudentLst = new DataSet();
                         da.Fill(dsStudentLst);
-
-
+                        
                         if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
                         {
                             studLst.ReturnObj = new List<StudentDTO>();
@@ -685,15 +692,17 @@ namespace OpMgr.DataAccess.Implementations
                                 if (!string.IsNullOrEmpty(dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"].ToString()))
                                     student.NewStandardSectionId = (int)dsStudentLst.Tables[0].Rows[i]["NewStandardSectionId"];
 
-
                                 student.RollNumber = dsStudentLst.Tables[0].Rows[i]["RollNumber"].ToString();
-
 
                                 student.UserDetails = new UserMasterDTO();
                                 student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
                                 student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
                                 student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
                                 student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
+
+                                student.UserDetails.Location = new LocationDTO();
+                                student.UserDetails.Location.LocationId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["LocationId"]);
+                                student.UserDetails.Location.LocationDescription = dsStudentLst.Tables[0].Rows[i]["LocationDescription"].ToString();
 
                                 student.StandardSectionMap = new StandardSectionMapDTO();
                                 student.StandardSectionMap.Standard = new StandardDTO();

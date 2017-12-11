@@ -5,6 +5,7 @@ using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -23,11 +24,14 @@ namespace OperationsManager.Areas.PMS.Controllers
         private ISessionSvc _sessionSvc;
         private IDropdownRepo _ddlRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo)
+        private IConfigSvc _configSvc;
+
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo, IConfigSvc configSvc)
         {
             _pmsSvc = pmsSvc;
             _sessionSvc = sessionSvc;
             _ddlRepo = ddlRepo;
+            _configSvc = configSvc;
             _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
         }
 
@@ -63,19 +67,32 @@ namespace OperationsManager.Areas.PMS.Controllers
             pmsVM.SumOfAcheivement = empGoalLogs.Sum(m => m.Achievement);
             pmsVM.SumOfAppraiserRating = empGoalLogs.Sum(m => m.AppraiserRating);
             pmsVM.ReviewerRating = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerFinalRating;
+            if (pmsVM.ReviewerRating > 0)
+            {
+                pmsVM.ReviewerRatingLevel = _pmsSvc.getSelfRating(Convert.ToInt32(pmsVM.ReviewerRating)).ReturnObj.SelfRating;
+            }
 
             pmsVM.EmployeeAppraisalMasterId = empGoalLogs[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
             pmsVM = pmsVM.GetGoals(empGoalLogs);
 
             // to get data in first grid
+            pmsVM.IndividualInitiative = empGoalLogs[0].EmployeeAppraisalMaster.IndividualInitiative;
+            pmsVM.InstitutionalSupport = empGoalLogs[0].EmployeeAppraisalMaster.InstitutionalSupport;
+
             pmsVM.FullName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.FName + " " + empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.LName;
             pmsVM.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
             pmsVM.Employee.EducationalQualification = empGoalLogs[0].EmployeeAppraisalMaster.Employee.EducationalQualification;
+            pmsVM.Employee.DateOfJoining =  empGoalLogs[0].EmployeeAppraisalMaster.Employee.DateOfJoining;
+            pmsVM.Employee.StaffEmployeeId = empGoalLogs[0].EmployeeAppraisalMaster.Employee.StaffEmployeeId;
+            pmsVM.Employee.ApproverName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.ApproverName;
             pmsVM.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
             pmsVM.Employee.Designation.DesignationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.Designation.DesignationDescription;
             pmsVM.Employee.UserDetails = new OpMgr.Common.DTOs.UserMasterDTO();
             pmsVM.Employee.UserDetails.Location = new OpMgr.Common.DTOs.LocationDTO();
             pmsVM.Employee.UserDetails.Location.LocationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.Location.LocationDescription;
+            string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
+
+            pmsVM.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(pmsVM.Employee.StaffEmployeeId, employeeImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
 
             bool isSelf = apprMasterId == null;
 
@@ -92,9 +109,24 @@ namespace OperationsManager.Areas.PMS.Controllers
             if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED"))
             {
                 this.CreateCompetencyLoaders(ref pmsVM);
+                
             }
             return View(pmsVM);
         }
+
+        public string GetImageFileName(string staffempid, string folder)
+        {
+            string fileName = string.Empty;
+            string[] similarFiles = Directory.GetFiles(folder, staffempid + ".*");
+            if (similarFiles != null && similarFiles.Length > 0)
+            {
+                fileName = similarFiles[0];
+                string[] fileParts = fileName.Split('\\');
+                fileName = fileParts[fileParts.Length - 1];
+            }
+            return fileName;
+        }
+
 
         private void CreateCompetencyLoaders(ref PMSVM pmsVM)
         {
@@ -152,6 +184,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
                     _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
+
                 }
                 else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT") || string.Equals(pmsVM.SAVE_MODE, "NOTIFY")))
                 {
@@ -168,9 +201,10 @@ namespace OperationsManager.Areas.PMS.Controllers
                         notifyHub.SendNotification(_sessionSvc.GetUserSession().UserMasterId, pmsVM.Employee.UserDetails.UserMasterId, pmsVM.NotificationText);
                     }
                     else
-                    {
-                        _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
-                    }                    
+                {
+                    _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
+                    _pmsSvc.UpdateInitiativeandSupport(pmsVM.EmployeeAppraisalMasterId,pmsVM.IndividualInitiative,pmsVM.InstitutionalSupport);
+                }
                 }
                 else
                 {
@@ -246,6 +280,87 @@ namespace OperationsManager.Areas.PMS.Controllers
                 }
             }
             return RedirectToAction("GoalSheetForAll", new { apprMasterId = pmsVM.EmployeeAppraisalMasterId  });
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult SearchAppraisee()
+        {
+            StatusDTO<List<EmployeeAppraisalMasterDTO>> status = _pmsSvc.SearchAppraisee(null);
+            PMSVM pmsview = null;
+
+            if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+            {
+                pmsview = new PMSVM(); // Instantiating PMS View model
+                pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
+
+                //Fetch the StandardSection List
+                pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+               // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+
+                if (status.IsSuccess && !status.IsException)
+                {
+                    //studView = new List<StudentVM>();
+                    PMSVM searchItem = null;
+                    foreach (EmployeeAppraisalMasterDTO appraisalmaster in status.ReturnObj)
+                    {
+                        if (appraisalmaster != null)
+                        {
+                            searchItem = new PMSVM(); // instantiating each PMVM                            
+                            searchItem.UserDetails = new UserMasterDTO();
+                            searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
+                            searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
+                            searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
+
+                            searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
+                            if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
+                            {
+                                searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.MName;
+                            }
+
+                            searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
+                            searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
+                            searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
+                            searchItem.AppraisalType = appraisalmaster.AppraisalType;
+                            searchItem.AppraisalStatus = new AppraisalStatusDTO();
+                            searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
+
+                            searchItem.UserDetails.Location = new LocationDTO();
+                            searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                            searchItem.Employee = new EmployeeDetailsDTO();
+                            searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
+                            searchItem.Employee.Designation = new DesignationDTO();
+                            searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
+                            //Add into PMSView vIew Model List
+                            pmsview.PMSVMList.Add(searchItem);
+                            pmsview.IsSearchSuccessful = true;
+
+                        }
+                    }
+                }
+                if (status.IsException)
+                {
+                    throw new Exception(status.ExceptionMessage);
+                }
+            }
+            else
+            {
+                pmsview = new PMSVM();
+
+                pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+               // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+
+                pmsview.IsSearchSuccessful = true;
+                //pmsview.MsgColor = "green";
+                //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
+            }
+
+            return View(pmsview);
         }
     }
 }
