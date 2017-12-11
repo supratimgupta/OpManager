@@ -66,6 +66,8 @@ namespace OperationsManager.Areas.PMS.Models
 
         public MvcHtmlString StrengthsLoader { get; set; }
 
+        public string NotificationText { get; set; }
+
         public PMSVM GetGoals(List<EmployeeGoalLogDTO> lstEmpGoals)
         {
             this.Goals = new Dictionary<int, GoalViewModel>();

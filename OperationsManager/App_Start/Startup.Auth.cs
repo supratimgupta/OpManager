@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using OperationsManager.Models;
+using Microsoft.AspNet.SignalR;
 
 namespace OperationsManager
 {
@@ -63,6 +64,22 @@ namespace OperationsManager
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+
+
+            GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(110);
+
+            // Wait a maximum of 30 seconds after a transport connection is lost
+            // before raising the Disconnected event to terminate the SignalR connection.
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(90);
+
+            // For transports other than long polling, send a keepalive packet every
+            // 10 seconds. 
+            // This value must be no more than 1/3 of the DisconnectTimeout value.
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(10);
+
+            //GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => new Hubs.Connections.OpMgrUserIdProvider());
+
+            app.MapSignalR();
         }
     }
 }

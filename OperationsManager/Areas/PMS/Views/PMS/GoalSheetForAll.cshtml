@@ -40,6 +40,9 @@
                     <div class="col-lg-5">
                         @Html.DisplayFor(m => m.Employee.EducationalQualification)
                     </div>
+                    <div class="col-lg-5">
+                        @Html.HiddenFor(m => m.Employee.UserDetails.UserMasterId)
+                    </div>
                     @*<div class="col-lg-5">
                         @GoalSheetResource.ReportingTo
                     </div>
@@ -233,6 +236,15 @@
             <div class="panel panel-color panel-primary">
                 <div class="panel-heading"><b>@GoalSheetResource.HeadingForAppraiser</b></div>
                 <div class="panel-body">
+                    <div class="row">
+                        @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
+                        {
+                            @Html.TextAreaFor(m => m.NotificationText, new {@class="form-control" })
+                            <p>
+                                <button type="submit" class="btn btn-primary" onclick="setSaveModeCompetency('NOTIFY');">Notify</button>
+                            </p>
+                        }
+                    </div>
                     <div class="row">
                         @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
                         {

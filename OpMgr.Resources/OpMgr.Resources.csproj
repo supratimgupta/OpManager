@@ -72,6 +72,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Library.resx</DependentUpon>
     </Compile>
+    <Compile Include="Notification\NotificationViewAll.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotificationViewAll.resx</DependentUpon>
+    </Compile>
     <Compile Include="PMS\GoalSheetResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -164,6 +169,10 @@
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Library.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notification\NotificationViewAll.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>NotificationViewAll.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="PMS\GoalSheetResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

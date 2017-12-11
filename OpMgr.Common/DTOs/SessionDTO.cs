@@ -14,6 +14,10 @@ namespace OpMgr.Common.DTOs
 
         public string IconImagePath { get; set; }
 
+        public List<NotificationDTO> Notifications { get; set; }
+
+        public int NotificationCounts { get; set; }
+
         //public string CurrentRequestedPage { get; set; }
     }
 }
