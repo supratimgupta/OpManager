@@ -3,6 +3,7 @@
 @using OpMgr.Common.Contracts
 @using OperationsManager.Helpers;
 @using OpMgr.Common.DTOs;
+@using OperationsManager.Hubs.Connections
 @{
     NinjectControllerFactory ncf = new NinjectControllerFactory();
     IKernel kernel = ncf.GetNinjectKernel();
@@ -15,6 +16,9 @@
     System.Web.HttpContext.Current.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 
     System.Web.HttpContext.Current.Response.Cache.SetNoStore();
+
+    UserConnectionRepo uConnRepo = UserConnectionRepo.GetInstance();
+    Dictionary<int, UserConnection> activeUsers = uConnRepo.GetAllActiveUsers();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -56,6 +60,8 @@
     <link href="~/Scripts/jquery-ui.css" rel="stylesheet" />
     <link href="~/template/css/datepicker3.css" rel="stylesheet">
     <link href="~/Content/bootstrap-tags-input/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link href="~/Scripts/custom_chat/custom_chat.css" rel="stylesheet" />
+    
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -74,7 +80,7 @@
         <div class="logo">
             <a href="/Login/Login/Landing" class="logo-expanded">
                 <img src="~/Images/logo.gif" style="border-radius:20%; border:1px solid wheat;" width="30" height="20" alt="logo">
-                <span class="nav-label" style="font-size:12px;">St. Augustine's <span style="font-size:8px;">Day School</span></span>
+                <span class="nav-label" style="font-size:12px;">St. Augustine's <span style="font-size:8px;">Day</span></span>
             </a>
         </div>
         <!-- / brand -->
@@ -223,75 +229,48 @@
 
             <!-- Right navbar -->
             <ul class="list-inline navbar-right top-menu top-right-menu">
-                <!-- mesages -->
-                @*<li class="dropdown">
+                <!-- active users -->
+                <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="fa fa-envelope-o "></i>
-                        <span class="badge badge-sm up bg-purple count">4</span>
+                        <i class="fa fa-user"></i>                        
+                        <span class="badge badge-sm up bg-purple count" id="spanActiveUsersCnt"></span>
                     </a>
-                    <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5001">
-                        <li>
-                            <p>Messages</p>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="pull-left"><img src="img/avatar-2.jpg" class="img-circle thumb-sm m-r-15" alt="img"></span>
-                                <span class="block"><strong>John smith</strong></span>
-                                <span class="media-body block">New tasks needs to be done<br><small class="text-muted">10 seconds ago</small></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="pull-left"><img src="img/avatar-3.jpg" class="img-circle thumb-sm m-r-15" alt="img"></span>
-                                <span class="block"><strong>John smith</strong></span>
-                                <span class="media-body block">New tasks needs to be done<br><small class="text-muted">3 minutes ago</small></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="pull-left"><img src="img/avatar-4.jpg" class="img-circle thumb-sm m-r-15" alt="img"></span>
-                                <span class="block"><strong>John smith</strong></span>
-                                <span class="media-body block">New tasks needs to be done<br><small class="text-muted">10 minutes ago</small></span>
-                            </a>
-                        </li>
-                        <li>
-                            <p><a href="inbox.html" class="text-right">See all Messages</a></p>
-                        </li>
+                    <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5001" id="activeUserHolder">
+                        
                     </ul>
-                </li>*@
-                <!-- /messages -->
+                </li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="fa fa-envelope-o"></i>
+                        <span class="badge badge-sm up bg-purple count" id="spanUnreadMsgsCnt"></span>
+                    </a>
+                    <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5001" id="unreadMsgsHolder">
+
+                    </ul>
+                </li>
+                <!-- /active users -->
                 <!-- Notification -->
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="fa fa-bell-o"></i>
-                        <span class="badge badge-sm up bg-pink count">3</span>
+                        <span class="badge badge-sm up bg-pink count" id="spanNotCount">@session.NotificationCounts</span>
                     </a>
-                    <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5002">
+                    <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5002" id="notiHolder">
                         <li class="noti-header">
                             <p>Notifications</p>
                         </li>
-                        <li>
-                            <a href="#">
-                                <span class="pull-left"><i class="fa fa-user-plus fa-2x text-info"></i></span>
-                                <span>New user registered<br><small class="text-muted">5 minutes ago</small></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="pull-left"><i class="fa fa-diamond fa-2x text-primary"></i></span>
-                                <span>Use animate.css<br><small class="text-muted">5 minutes ago</small></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="pull-left"><i class="fa fa-bell-o fa-2x text-danger"></i></span>
-                                <span>Send project demo files to client<br><small class="text-muted">1 hour ago</small></span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <p><a href="#" class="text-right">See all notifications</a></p>
-                        </li>
+                        @if(session.Notifications!=null)
+                        {
+                            for(int i=0;i<session.Notifications.Count;i++)
+                            {
+                                <li>
+                                    <a href="~/Notification/Notification/ViewAll">
+                                        <span class="pull-left"><i class="fa fa-info-circle fa-2x text-info"></i></span>
+                                        <span>@session.Notifications[i].NotificationText</span>
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </li>
                 <!-- /Notification -->
@@ -326,6 +305,10 @@
             @RenderBody()
 
         </div>
+
+        <div class="container chat-container">
+        </div>
+
         <!-- Page Content Ends -->
         <!-- ================== -->
         <!-- Footer Start -->
@@ -340,6 +323,8 @@
     <!-- Main Content Ends -->
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="~/admin/js/jquery.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalR/hubs"></script>
     <script src="~/admin/js/bootstrap.min.js"></script>
     <script src="~/admin/js/modernizr.min.js"></script>
     <script src="~/admin/js/pace.min.js"></script>
@@ -385,17 +370,256 @@
     <script src="~/Content/jquery-validation-1.16.0/dist/jquery.validate.js"></script>
     <script src="~/Content/bootstrap-tags-input/bootstrap-tagsinput.min.js"></script>
     <script src="~/Content/bootstrap-tags-input/bootstrap-tagsinput-angular.min.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/custom_chat/custom_chat.js"></script>
+    <!--Chat js-->
     <script type="text/javascript">
-        /* ==============================================
-             Counter Up
-             =============================================== */
-            jQuery(document).ready(function($) {
-                $('.counter').counterUp({
-                    delay: 100,
-                    time: 1200
-                });
-            });
+    /* ==============================================
+         Counter Up
+         =============================================== */
+    jQuery(document).ready(function($) {
+        $('.counter').counterUp({
+            delay: 100,
+            time: 1200
+        });
+    });
+
+    function setNotifications(message) {
+        debugger;
+        var notiHolder = document.getElementById("notiHolder");
+        var liNew = document.createElement("li");
+        var aNew = document.createElement("a");
+        var spanIco = document.createElement("span");
+        var icon = document.createElement("i");
+        var spanMsg = document.createElement("span");
+
+        icon.className = "fa fa-info-circle fa-2x text-info";
+        spanIco.className = "pull-left";
+
+        spanIco.appendChild(icon);
+        spanMsg.innerHTML = message;
+
+        aNew.appendChild(spanIco);
+        aNew.appendChild(spanMsg);
+        aNew.href = "~/Notification/Notification/ViewAll";
+
+        liNew.appendChild(aNew);
+
+        notiHolder.appendChild(liNew);
+
+        var spanNotCount = document.getElementById("spanNotCount");
+
+        var notCountInt = parseInt(spanNotCount.innerHTML);
+
+        if (!isNaN(spanNotCount.innerHTML))
+        {
+            spanNotCount.innerHTML = (notCountInt + 1).toString();
+        }
+        else
+        {
+            spanNotCount.innerHTML = "1";
+        }
+    }
+
+    function setJoiners(joiners)
+    {
+        document.getElementById("spanActiveUsersCnt").innerHTML = joiners.length - 1;
+
+        var liHeader = document.createElement("li");
+        var pHeader = document.createElement("p");
+        pHeader.innerHTML = "Activer Users";
+
+        liHeader.appendChild(pHeader);
+
+        document.getElementById("activeUserHolder").appendChild(liHeader);
+
+        if(joiners)
+        {
+            for(i=0;i<joiners.length;i++)
+            {
+                if(joiners[i].UserRowId.toString()==='@session.UserMasterId')
+                        {
+                            //continue;
+                        }
+                        var liItem = document.createElement("li");
+                        var aItem = document.createElement("a");
+                        aItem.className = "new_chat";
+                        var spanItem = document.createElement("span");
+                        spanItem.className = "pull-left";
+
+                        var imgItem = document.createElement("img");
+                        imgItem.src = joiners[i].ICOImagePath;
+                        imgItem.className = "img-circle thumb-sm m-r-15";
+                        imgItem.alt = "";
+
+                        var spanItemName = document.createElement("span");
+                        spanItemName.className = "block";
+
+                        var strongItemName = document.createElement("strong");
+                        strongItemName.innerHTML = joiners[i].UserName;
+
+                        spanItemName.appendChild(strongItemName);
+
+                        spanItem.appendChild(imgItem);
+
+                        aItem.appendChild(spanItem);
+                        aItem.appendChild(spanItemName);
+
+                        //aItem.href = "../../Notification/Notification/Chat?user="+joiners[i].UserRowId;
+                        
+                        $(aItem).attr('onclick', 'openChatPupup('+joiners[i].UserRowId+',"'+joiners[i].UserName+'");');
+
+                        liItem.appendChild(aItem);
+
+                        document.getElementById("activeUserHolder").appendChild(aItem);
+                    }
+                }
+            }
+
+            function populateMessageSummary(resultData)
+            {
+                alert(resultData.totalCount);
+
+                document.getElementById("spanUnreadMsgsCnt").innerHTML = resultData.totalCount;
+
+                document.getElementById("unreadMsgsHolder").innerHTML = "";
+
+                var liHeader = document.createElement("li");
+                var pHeader = document.createElement("p");
+                pHeader.innerHTML = "Unread Messages";
+
+                liHeader.appendChild(pHeader);
+
+                document.getElementById("unreadMsgsHolder").appendChild(liHeader);
+
+
+
+                if(resultData && resultData.data && resultData.data.length>0)
+                {
+                    var data = resultData.data;
+                    alert(data.length);
+                    for(i=0;i<data.length;i++)
+                    {
+                        var liItem = document.createElement("li");
+                        var aItem = document.createElement("a");
+                        //aItem.className = "new_chat";
+                        var spanItem = document.createElement("span");
+                        spanItem.className = "pull-left";
+
+                        //var imgItem = document.createElement("img");
+                        //imgItem.src = joiners[i].ICOImagePath;
+                        //imgItem.className = "img-circle thumb-sm m-r-15";
+                        //imgItem.alt = "";
+                        //<span class="media-body block">New tasks needs to be done<br><small class="text-muted">3 minutes ago</small></span>
+
+                        var spanItemName = document.createElement("span");
+                        spanItemName.className = "media-body block";
+                        spanItemName.innerHTML = data[i].UserName + " sent "+data[i].UnreadChat+" unread message(s). <br /><small class=\"text-muted\"> Last at: "+data[i].LastSentAtString+"</small>";
+
+                        //var strongItemName = document.createElement("strong");
+                        //strongItemName.innerHTML = data[i].UserName + " sent "+data[i].UnreadChat+" unread message(s). Last at: "+data[i].LastSentAtString;
+
+                        //spanItemName.appendChild(strongItemName);
+
+                        //spanItem.appendChild(imgItem);
+
+                        aItem.appendChild(spanItem);
+                        aItem.appendChild(spanItemName);
+
+                        $(aItem).attr('onclick', 'openChatPupup('+data[i].UserMasterId+',"'+data[i].UserName+'");');
+
+                        //aItem.href = "../../Notification/Notification/Chat?user="+joiners[i].UserRowId;
+
+
+                        liItem.appendChild(aItem);
+
+                        document.getElementById("unreadMsgsHolder").appendChild(aItem);
+                    }
+                }
+            }
     </script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        var notificationHub = $.connection.notificationHub;
+        notificationHub.client.sendMessage = function (message) {
+            //alert(message);
+            setNotifications(message);
+        };
+        notificationHub.client.broadcastUsers = function(joiners){
+            setJoiners(joiners);
+        };
+        notificationHub.client.signalConnectionId = function (connectionId) {
+            console.log('Your connection id is: ' + connectionId);
+        };
+
+        notificationHub.client.populateMessageSummaryCL = function(resultData){ alert(resultData);
+            //this.populateMessageSummary(resultData);
+            populateMessageSummary(resultData);
+        };
+
+        $.connection.hub.qs = {"UName" : '@(session.FName + " "+session.MName+" "+session.LName)', "URowId" : @session.UserMasterId, "ICOImagePath" : '@session.IconImagePath'};
+
+        $.connection.hub.start().done(function () {
+            console.log("Hub is started.");
+            notificationHub.server.broadcastJoiners();
+        });
+
+        $.connection.hub.connectionSlow(function() {
+            notifyUserOfConnectionProblem(); // Your function to notify user.
+        });
+
+        var tryingToReconnect = false;
+
+        $.connection.hub.reconnecting(function() {
+            tryingToReconnect = true;
+            notifyUserOfTryingToReconnect(); // Your function to notify user.
+        });
+
+        $.connection.hub.reconnected(function() {
+            tryingToReconnect = false;
+        });
+
+        $.connection.hub.disconnected(function() {
+            if(tryingToReconnect) {
+                //notifyUserOfDisconnect(); // Your function to notify user.
+            }
+        });
+
+        $.connection.hub.disconnected(function() {
+            setTimeout(function() {
+                $.connection.hub.start();
+            }, 1000); // Restart connection after 5 seconds.
+        });
+
+        notificationHub.client.stopClient = function() {
+            $.connection.hub.stop();
+        };
+    });
+    
+        function makeMsgsReadOnServer(uRowId)
+        {
+            var notificationHub = $.connection.notificationHub;
+            var userRowId='@session.UserMasterId';
+            notificationHub.server.makeMsgsReadOnServer(uRowId,userRowId);
+        }
+
+    function notifyUserOfConnectionProblem()
+    {
+        console.log('Your connection is slow');
+    }
+
+    function notifyUserOfTryingToReconnect()
+    {
+        console.log('Trying to reconnect');
+    }
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        
+    });
+    </script>
+
     <script src="~/Content/js/OpMgrStyleJs.js"></script>
     @*<script src="~/Scripts/voice/artyom.window.js"></script>
     <script src="~/Scripts/voice/voiceApi.js"></script>*@

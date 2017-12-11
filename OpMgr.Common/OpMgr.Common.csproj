@@ -50,11 +50,13 @@
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
     <Compile Include="Contracts\Modules\IBookMasterSvc.cs" />
+    <Compile Include="Contracts\Modules\IChatSvc.cs" />
     <Compile Include="Contracts\Modules\IDropdownRepo.cs" />
     <Compile Include="Contracts\Modules\IEntitlementActionSvc.cs" />
     <Compile Include="Contracts\Modules\IEntitlementSvc.cs" />
     <Compile Include="Contracts\Modules\IExamMarksSvc.cs" />
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
+    <Compile Include="Contracts\Modules\INotificationSvc.cs" />
     <Compile Include="Contracts\Modules\IPMSSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
     <Compile Include="Contracts\Modules\IStudentSvc.cs" />
@@ -73,6 +75,8 @@
     <Compile Include="DTOs\BookCategoryDTO.cs" />
     <Compile Include="DTOs\BookMasterDTO.cs" />
     <Compile Include="DTOs\BookTypeDTO.cs" />
+    <Compile Include="DTOs\ChatGroupDTO.cs" />
+    <Compile Include="DTOs\ChatLogDTO.cs" />
     <Compile Include="DTOs\ClassTypeDTO.cs" />
     <Compile Include="DTOs\CompetencyDTO.cs" />
     <Compile Include="DTOs\ConfigDTO.cs" />
@@ -98,6 +102,7 @@
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
     <Compile Include="DTOs\LocationDTO.cs" />
     <Compile Include="DTOs\MailDTO.cs" />
+    <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\PasswordDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />

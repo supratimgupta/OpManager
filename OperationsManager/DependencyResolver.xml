@@ -27,6 +27,12 @@
   <bind service="OpMgr.Common.Contracts.Modules.ITransactionLogSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.TransactionLogSvc, OpMgr.DataAccess" />
 
+  <bind service="OpMgr.Common.Contracts.Modules.INotificationSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.NotificationSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.IChatSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.ChatSvc, OpMgr.DataAccess" />
+
   <bind service="OpMgr.Common.Contracts.Modules.ITransactionLogPaymentSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.TransactionLogPaymentSvc, OpMgr.DataAccess" />
 

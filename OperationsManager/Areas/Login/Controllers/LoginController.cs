@@ -29,12 +29,13 @@ namespace OperationsManager.Areas.Login.Controllers
         private PasswordGenerator.PasswordGenerator _passGen;// taken for dependency but not used DOUBT!!!
         private IMailSvc _mail;
         private IConfigSvc _configSvc;
+        private INotificationSvc _notiSvc;
 
         private Helpers.UIDropDownRepo _uiddlRepo;
 
         Encryption encrypt = new Encryption();
 
-        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc, IResetPasswordSvc resetPassSvc, IMailSvc mail, IConfigSvc configSvc)
+        public LoginController(IUserSvc userSvc, IDropdownRepo ddlRepo, ISessionSvc sessionSvc, IResetPasswordSvc resetPassSvc, IMailSvc mail, IConfigSvc configSvc, INotificationSvc notiSvc)
         {
             _userSvc = userSvc;
             _ddlRepo = ddlRepo;
@@ -45,6 +46,7 @@ namespace OperationsManager.Areas.Login.Controllers
             _sessionSvc = sessionSvc;
             _resetPassSvc = resetPassSvc;
             _mail = mail;//dependency injected for sending mails
+            _notiSvc = notiSvc;
         }
 
         // GET: Login/Login
@@ -135,7 +137,18 @@ namespace OperationsManager.Areas.Login.Controllers
                 {
                     session.IconImagePath = _configSvc.GetEmployeeImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
                 }
-
+                NotificationDTO nDTO = new NotificationDTO();
+                nDTO.User = new UserMasterDTO();
+                nDTO.User.UserMasterId = session.UserMasterId;
+                session.Notifications = _notiSvc.Select(nDTO).ReturnObj;
+                if(session.Notifications!=null)
+                {
+                    session.NotificationCounts = session.Notifications.Count;
+                }
+                else
+                {
+                    session.NotificationCounts = 0;
+                }
                 _sessionSvc.SetUserSession(session);
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();
             }
@@ -145,7 +158,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 return View(data);
             }
 
-            return RedirectToAction("Landing", "Login", new { area = "Login" }); ;
+            return RedirectToAction("Landing", "Login", new { area = "Login" });
         }
 
         [HttpGet]
@@ -609,7 +622,4 @@ namespace OperationsManager.Areas.Login.Controllers
             return Json(new { status = false, message = "Delete failed." }, JsonRequestBehavior.AllowGet);
         }
     }
-
-
-
 }

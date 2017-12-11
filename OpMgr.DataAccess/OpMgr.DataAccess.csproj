@@ -45,11 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\BookMasterSvc.cs" />
+    <Compile Include="Implementations\ChatSvc.cs" />
     <Compile Include="Implementations\CommonConfigDataSvc.cs" />
     <Compile Include="Implementations\DropdownRepo.cs" />
     <Compile Include="Implementations\DbSvc.cs" />
     <Compile Include="Implementations\ExamMarksSvc.cs" />
     <Compile Include="Implementations\LibraryTransactionSvc.cs" />
+    <Compile Include="Implementations\NotificationSvc.cs" />
     <Compile Include="Implementations\PMSSvc.cs" />
     <Compile Include="Implementations\ResetPasswordSvc.cs" />
     <Compile Include="Implementations\RoleSvc.cs" />
