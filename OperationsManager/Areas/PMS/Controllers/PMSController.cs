@@ -201,10 +201,10 @@ namespace OperationsManager.Areas.PMS.Controllers
                         notifyHub.SendNotification(_sessionSvc.GetUserSession().UserMasterId, pmsVM.Employee.UserDetails.UserMasterId, pmsVM.NotificationText);
                     }
                     else
-                {
-                    _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
-                    _pmsSvc.UpdateInitiativeandSupport(pmsVM.EmployeeAppraisalMasterId,pmsVM.IndividualInitiative,pmsVM.InstitutionalSupport);
-                }
+                    {
+                        _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
+                        _pmsSvc.UpdateInitiativeandSupport(pmsVM.EmployeeAppraisalMasterId,pmsVM.IndividualInitiative,pmsVM.InstitutionalSupport);
+                    }
                 }
                 else
                 {
