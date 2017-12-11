@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.SignalR;
-using OperationsManager.Helpers;
+﻿using OperationsManager.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

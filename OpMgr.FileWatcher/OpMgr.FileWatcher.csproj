@@ -82,7 +82,6 @@
       <DependentUpon>FileWatcherSvc.cs</DependentUpon>
     </Compile>
     <Compile Include="FileWatcherSvc_Debug.cs" />
-    <Compile Include="PaymentDataImport.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

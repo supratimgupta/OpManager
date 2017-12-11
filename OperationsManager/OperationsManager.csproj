@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OperationsManager</RootNamespace>
     <AssemblyName>OperationsManager</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -21,7 +21,6 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,14 +42,6 @@
   <ItemGroup>
     <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -77,20 +68,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -132,7 +121,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.0.1\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
@@ -220,10 +208,6 @@
     <Compile Include="Areas\Login\Models\MailVM.cs" />
     <Compile Include="Areas\Login\Models\PasswordVM.cs" />
     <Compile Include="Areas\Login\Models\UserViewModel.cs" />
-    <Compile Include="Areas\Notification\Controllers\ChatController.cs" />
-    <Compile Include="Areas\Notification\Controllers\NotificationController.cs" />
-    <Compile Include="Areas\Notification\Models\NotificationVM.cs" />
-    <Compile Include="Areas\Notification\NotificationAreaRegistration.cs" />
     <Compile Include="Areas\PMS\Controllers\PMSController.cs" />
     <Compile Include="Areas\PMS\Models\GoalViewModel.cs" />
     <Compile Include="Areas\PMS\Models\PMSVM.cs" />
@@ -249,7 +233,6 @@
     <Compile Include="Attributes\OpMgrHandleErrorAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -263,14 +246,7 @@
     <Compile Include="Helpers\NinjectControllerFactory.cs" />
     <Compile Include="Helpers\SessionSvc.cs" />
     <Compile Include="Helpers\UIDropDownRepo.cs" />
-    <Compile Include="Hubs\Connections\OpMgrUserIdProvider.cs" />
-    <Compile Include="Hubs\Connections\UserConnection.cs" />
-    <Compile Include="Hubs\Connections\UserConnectionRepo.cs" />
-    <Compile Include="Hubs\NotificationHub.chat.cs" />
-    <Compile Include="Hubs\NotificationHub.notification.cs" />
-    <Compile Include="Hubs\NotificationHub.main.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ChatViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MenuModel.cs" />
@@ -1118,23 +1094,10 @@
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.less" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.min.js.map" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.zip" />
-    <Content Include="Areas\Notification\Views\web.config" />
-    <Content Include="Areas\Notification\Views\Notification\ViewAll.cshtml" />
-    <Content Include="Areas\Notification\Views\Notification\Chat.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Scripts\chatjs\README" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\chatjs\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\chatjs\jquery-ui.css" />
-    <Content Include="Scripts\chatjs\jquery-ui.min.js" />
-    <Content Include="Scripts\chatjs\jquery.ui.chatbox.css" />
-    <Content Include="Scripts\chatjs\jquery.ui.chatbox.js" />
-    <Content Include="Scripts\chatjs\test.html" />
-    <Content Include="Scripts\custom_chat\custom_chat.css" />
-    <Content Include="Scripts\custom_chat\custom_chat.html" />
-    <Content Include="Scripts\custom_chat\custom_chat.js" />
     <Content Include="Scripts\jqModalDialog.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1142,8 +1105,6 @@
     <Content Include="Scripts\jquery-ui.css" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
-    <Content Include="Scripts\jquery.signalR-2.2.2.js" />
-    <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1260,15 +1221,12 @@
     <Folder Include="Areas\Employee\Views\Shared\" />
     <Folder Include="Areas\Exam\Views\Shared\" />
     <Folder Include="Areas\Library\Views\Shared\" />
-    <Folder Include="Areas\Notification\Views\Chat\" />
-    <Folder Include="Areas\Notification\Views\Shared\" />
     <Folder Include="Areas\PMS\Views\Shared\" />
     <Folder Include="Areas\Student\Views\Shared\" />
     <Folder Include="Images\Father\" />
     <Folder Include="Images\Mother\" />
     <Folder Include="Images\Student\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Chat\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

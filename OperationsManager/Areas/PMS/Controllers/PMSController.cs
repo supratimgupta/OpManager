@@ -96,6 +96,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             return View(pmsVM);
         }
 
+
         private void CreateCompetencyLoaders(ref PMSVM pmsVM)
         {
             List<KeyValuePair<string, string>> improvements = new List<KeyValuePair<string, string>>();
@@ -153,24 +154,9 @@ namespace OperationsManager.Areas.PMS.Controllers
                 {
                     _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
                 }
-                else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT") || string.Equals(pmsVM.SAVE_MODE, "NOTIFY")))
+                else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
-                    if (string.Equals(pmsVM.SAVE_MODE, "NOTIFY"))
-                    {
-                        Hubs.NotificationHub notifyHub = new Hubs.NotificationHub();
-                        //Save notification details - if status true send message to connected user
-                        NotificationDTO noti = new NotificationDTO();
-                        noti.User = new UserMasterDTO();
-                        noti.User.UserMasterId = pmsVM.Employee.UserDetails.UserMasterId;
-                        noti.NotificationText = pmsVM.NotificationText;
-                        noti.NotificationActiveFrom = DateTime.Today.Date;
-
-                        notifyHub.SendNotification(_sessionSvc.GetUserSession().UserMasterId, pmsVM.Employee.UserDetails.UserMasterId, pmsVM.NotificationText);
-                    }
-                    else
-                    {
-                        _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
-                    }                    
+                    _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
                 }
                 else
                 {

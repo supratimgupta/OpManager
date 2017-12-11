@@ -288,9 +288,6 @@ namespace OpMgr.DataAccess.Implementations
                                 empdetails.Designation.DesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
                                 empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[1].Rows[0]["LocationDescription"].ToString();
                                 empdetails.EducationalQualification = dsGoalLst.Tables[1].Rows[0]["EducationQualification"].ToString();
-                                
-                                // -- USE AFTER PROC CHANGE
-                                empdetails.UserDetails.UserMasterId = (int)dsGoalLst.Tables[1].Rows[0]["UserMasterId"];
 
                                 goalList.ReturnObj[0].EmployeeAppraisalMaster.Employee = empdetails;
                             }
