@@ -8,6 +8,6 @@ namespace OpMgr.FileWatcher
 {
     public abstract class AbsFileUpload
     {
-        public abstract void ImportFileToSQL(string savePath);
+        public abstract void ImportFileToSQL(string savePath); 
     }
 }
