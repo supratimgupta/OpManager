@@ -14,7 +14,8 @@
     ViewBag.Title = "Notifications";
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
-@section PageScript
+<!DOCTYPE html>
+@section PageScripts
 {
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
@@ -52,58 +53,60 @@
 @using (Html.BeginForm())
 {
     <div class="row">
-        <div class="panel panel-color panel-primary">
-            <div class="panel-heading"><b>@NotificationViewAll.PageHeader</b></div>
-            <div class="panel-body">
-                @if (Model.Notifications != null && Model.Notifications.Count > 0)
-                {
-                    <table class="table table table-striped table-bordered table-responsive table-hover" border="1" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                            <tr>
-                                <th style="width:50px;">
-                                    <input type="checkbox" id="chkSelectAll" />
-                                    @NotificationViewAll.MarkColHeader
-                                </th>
-                                <th>
-                                    @NotificationViewAll.TextColHeader
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (int i = 0; i < Model.Notifications.Count; i++)
-                            {
+        <div class="col-lg-12">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading"><b>@NotificationViewAll.PageHeader</b></div>
+                <div class="panel-body">
+                    @if (Model.Notifications != null && Model.Notifications.Count > 0)
+                    {
+                        <table class="table table table-striped table-bordered table-responsive table-hover" border="1" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        @Html.CheckBoxFor(m => m.Notifications[i].MarkAsRead, new { @class = "cbSelect" })
-                                        @Html.HiddenFor(m => m.Notifications[i].NotificationReminderId)
-                                    </td>
-                                    <td>
-                                        @Model.Notifications[i].NotificationText
+                                    <th style="width:50px;">
+                                        <input type="checkbox" id="chkSelectAll" />
+                                        @NotificationViewAll.MarkColHeader
+                                    </th>
+                                    <th>
+                                        @NotificationViewAll.TextColHeader
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Notifications.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.Notifications[i].MarkAsRead, new { @class = "cbSelect" })
+                                            @Html.HiddenFor(m => m.Notifications[i].NotificationReminderId)
+                                        </td>
+                                        <td>
+                                            @Model.Notifications[i].NotificationText
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="submit" class="btn btn-primary"> @NotificationViewAll.ReadButtonText </button>
                                     </td>
                                 </tr>
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2">
-                                    <button type="submit" class="btn btn-primary"> @NotificationViewAll.ReadButtonText </button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                }
-                else
-                {
-                    <table class="table table table-striped table-bordered table-responsive table-hover" border="1" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <span style="color:red; font-style:italic;">@NotificationViewAll.NoDataMessage</span>
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
-                }
+                            </tfoot>
+                        </table>
+                    }
+                    else
+                    {
+                        <table class="table table table-striped table-bordered table-responsive table-hover" border="1" data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span style="color:red; font-style:italic;">@NotificationViewAll.NoDataMessage</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    }
+                </div>
             </div>
         </div>
     </div>

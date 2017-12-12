@@ -52,6 +52,7 @@ namespace OperationsManager.Areas.Notification.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult ViewAll(Models.NotificationVM notiVM)
         {
             if (notiVM != null && notiVM.Notifications != null && notiVM.Notifications.Count>0)

@@ -68,7 +68,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE notificationreminder IsViewed=@isViewed WHERE notificationreminderId=@notId";
+                    command.CommandText = "UPDATE notificationreminder SET IsViewed=@isViewed WHERE notificationreminderId=@notId";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
