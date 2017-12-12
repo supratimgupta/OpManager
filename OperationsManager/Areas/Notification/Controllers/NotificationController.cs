@@ -72,6 +72,22 @@ namespace OperationsManager.Areas.Notification.Controllers
                 }
             }
 
+            SessionDTO session = _sessionSvc.GetUserSession();
+
+            NotificationDTO nDTO1 = new NotificationDTO();
+            nDTO1.User = new UserMasterDTO();
+            nDTO1.User.UserMasterId = session.UserMasterId;
+            session.Notifications = _notiSvc.Select(nDTO1).ReturnObj;
+            if (session.Notifications != null)
+            {
+                session.NotificationCounts = session.Notifications.Count;
+            }
+            else
+            {
+                session.NotificationCounts = 0;
+            }
+            _sessionSvc.SetUserSession(session);
+
             return RedirectToAction("ViewAll");
         }
 
