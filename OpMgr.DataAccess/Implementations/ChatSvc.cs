@@ -28,7 +28,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT * FROM (SELECT U.FName, U.LName, U.MName, CL.Message, CL.Id, CL.SentByUserMasterId, CL.DatetimeLog FROM chat_log CL LEFT JOIN UserMaster U ON CL.SentByUserMasterId=U.UserMasterId" + 
+                    command.CommandText = "SELECT * FROM (SELECT DISTINCT CL.Id, U.FName, U.LName, U.MName, CL.Message, CL.SentByUserMasterId, CL.DatetimeLog FROM chat_log CL LEFT JOIN UserMaster U ON CL.SentByUserMasterId=U.UserMasterId" + 
                                           " WHERE (CL.IsRead=0 OR CL.IsRead IS NULL) AND CL.ToUserMasterId=@toUser ORDER BY CL.DatetimeLog desc) A";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
@@ -138,7 +138,7 @@ namespace OpMgr.DataAccess.Implementations
                     _dtData.Load(rdr);
                     StatusDTO<ChatLogDTO> status = new StatusDTO<ChatLogDTO>();
                     status.ReturnObj = new ChatLogDTO();
-                    status.ReturnObj.Id = _dtData.Rows[0].Field<int>(0);
+                    status.ReturnObj.Id = Convert.ToInt32(_dtData.Rows[0]["LAST_INSERT_ID()"]);
                     status.IsSuccess = true;
                     return status;
                 }
@@ -183,7 +183,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT * FROM (SELECT * FROM (SELECT U.FName, U.LName, U.MName, CL.Message, CL.Id, CL.SentByUserMasterId, CL.DatetimeLog FROM chat_log CL LEFT JOIN UserMaster U ON CL.SentByUserMasterId=U.UserMasterId" +
+                    command.CommandText = "SELECT * FROM (SELECT * FROM (SELECT DISTINCT CL.Id, U.FName, U.LName, U.MName, CL.Message, CL.SentByUserMasterId, CL.DatetimeLog FROM chat_log CL LEFT JOIN UserMaster U ON CL.SentByUserMasterId=U.UserMasterId" +
                                           " WHERE (CL.ToUserMasterId=@me AND CL.SentByUserMasterId=@other) OR (CL.ToUserMasterId=@other1 AND CL.SentByUserMasterId=@me1) ORDER BY CL.DatetimeLog desc) A LIMIT " + skipRows + ", " + takeRow + ") B ORDER BY DatetimeLog";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;

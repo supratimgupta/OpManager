@@ -11,14 +11,15 @@ $(document).on('click', '.panel-heading span.icon_minim', function (e) {
         $this.removeClass('glyphicon-plus').addClass('glyphicon-minus');
     }
 });
-$(document).on('focus', '.panel-footer input.chat_input', function (e) {
-    var $this = $(this);
-    if ($('#minim_chat_window').hasClass('panel-collapsed')) {
-        $this.parents('.panel').find('.panel-body').slideDown();
-        $('#minim_chat_window').removeClass('panel-collapsed');
-        $('#minim_chat_window').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-    }
-});
+//$(document).on('focus', '.panel-footer input.chat_input', function (e) {
+//    var $this = $(this);
+//    //var mainDiv = 
+//    if ($('#minim_chat_window').hasClass('panel-collapsed')) {
+//        $this.parents('.panel').find('.panel-body').slideDown();
+//        $('#minim_chat_window').removeClass('panel-collapsed');
+//        $('#minim_chat_window').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+//    }
+//});
 //$(document).on('click', '.new_chat', function (e) {
 //    debugger;
 //    var lastChild = $(".chat-container div:last-child");
@@ -43,12 +44,12 @@ function openChatPupup(uRowId, uName)
     
     var lastChild = $(".chat-container div:last-child");
     var size = $(".chat-window:last-child").css("margin-left");
-    alert(size);
+    //alert(size);
     size_total = parseInt(size) + 400;
     if (isNaN(size_total)) {
         size_total = 10;
     }
-    alert(size_total);
+    //alert(size_total);
 
     $.ajax({
         type: 'GET',
@@ -89,7 +90,100 @@ $(document).on('click', '.icon_close', function (e) {
 
     //    $(arrAllChatWindows[i]).css("margin-left", leftMarginInt+"px");
     //}
+    openedChatWindows.splice(2, 1);
 });
+
+function recieveMessageHandler(sender, reciever, messageList, chatLogId)
+{
+    
+    var chatBoxId = "chat_window_" + sender.UserRowId;
+
+    if(document.getElementById(chatBoxId))
+    {
+        var divMsgContainer = document.getElementById(chatBoxId).getElementsByClassName("msg_container_base")[0];
+        divMsgContainer.innerHTML = "";
+
+        //Trial code - Not final
+        $(divMsgContainer).attr('onscroll', 'scrollHandler(' + sender.UserRowId + ', "' + sender.UserName + '",this);');
+
+        var inputScrollIndex = document.createElement("input");
+        inputScrollIndex.type = "hidden";
+        inputScrollIndex.value = "0";
+        inputScrollIndex.className = "scrollIndex";
+
+        divMsgContainer.appendChild(inputScrollIndex);
+        //Trial code - Not final
+
+        if (messageList) {
+            for (i = 0; i < messageList.length; i++) {
+                var messageHolder = document.createElement("div");
+                var divAvatar = document.createElement("div");
+                var imgAvatar = document.createElement("img");
+                imgAvatar.src = "http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg";
+                imgAvatar.className = "img-responsive chat-img";
+                var iAmSender = "true";
+                divAvatar.appendChild(imgAvatar);
+                divAvatar.className = "col-md-2 chat-col-md-2 col-xs-2 avatar";
+
+                var divMsgWidth = document.createElement("div");
+
+                var divActualMsg = document.createElement("div");
+
+                var pActualMsg = document.createElement("p");
+                pActualMsg.innerHTML = messageList[i].Message;
+
+                var timeMsgTime = document.createElement("time");
+                timeMsgTime.innerHTML = messageList[i].MessageSentTimesAgo;
+
+                divActualMsg.appendChild(pActualMsg);
+                divActualMsg.appendChild(timeMsgTime);
+                divMsgWidth.appendChild(divActualMsg);
+
+                messageHolder.appendChild(divAvatar);
+                messageHolder.appendChild(divMsgWidth);
+
+                if (sender.UserRowId === messageList[i].SentByUser.UserMasterId) {
+                    iAmSender = "false";
+                }
+
+                if (iAmSender === "false") {
+                    messageHolder.className = "row msg_container base_receive";
+                    divMsgWidth.className = "col-xs-10 col-md-10";
+                    divActualMsg.className = "messages msg_receive";
+
+                    messageHolder.appendChild(divAvatar);
+                    messageHolder.appendChild(divMsgWidth);
+                }
+                else {
+                    messageHolder.className = "row msg_container base_sent";
+                    divMsgWidth.className = "col-md-10 col-xs-10 chat-col-md-10";
+                    divActualMsg.className = "messages msg_sent";
+
+                    messageHolder.appendChild(divMsgWidth);
+                    messageHolder.appendChild(divAvatar);
+
+                }
+
+                divMsgContainer.appendChild(messageHolder);
+            }
+        }
+
+        sendAcknowledgement(sender.UserRowId, reciever.UserRowId);
+    }
+    //else
+    //{
+    //    createChatWindow(sender.UserRowId, sender.UserName, messageList);
+    //    sendAcknowledgement(sender.UserRowId, reciever.UserRowId);
+    //}
+}
+
+function sendAcknowledgement(senderId, recieverId)
+{
+    
+    var notificationHub = $.connection.notificationHub;
+    //var currentUser = @session.UserMasterId;
+    notificationHub.server.acknowledgeRead(senderId, recieverId);
+}
 
 function createChatWindow(uRowId, uName, messageList)
 {
@@ -142,10 +236,21 @@ function createChatWindow(uRowId, uName, messageList)
 
         var spanCloseWindow = document.createElement("span");
         spanCloseWindow.className = "glyphicon glyphicon-remove icon_close";
-        $(spanCloseWindow).attr('data-id', "chat_window_" + openedChatWindows.length);
+        $(spanCloseWindow).attr('data-id', "chat_window_" + uRowId);
 
         var divMsgContainer = document.createElement("div");
         divMsgContainer.className = "panel-body msg_container_base";
+
+        //Trial code - Not final
+        $(divMsgContainer).attr('onscroll', 'scrollHandler(' + uRowId + ', "'+uName+'", this);');
+
+        var inputScrollIndex = document.createElement("input");
+        inputScrollIndex.type = "hidden";
+        inputScrollIndex.value = "0";
+        inputScrollIndex.className = "scrollIndex";
+
+        divMsgContainer.appendChild(inputScrollIndex);
+        //Trial code - Not final
 
         if (messageList)
         {
@@ -217,10 +322,6 @@ function createChatWindow(uRowId, uName, messageList)
         txtMessage.className = "form-control input-sm chat_input";
         txtMessage.placeholder = "Write your message here...";
 
-        $(txtMessage).keypress(function () {
-
-        });
-
         var spanBtnGroup = document.createElement("span");
         spanBtnGroup.className = "input-group-btn";
 
@@ -264,47 +365,147 @@ function createChatWindow(uRowId, uName, messageList)
     }
 }
 
-function sendMessage(uRowId, btnSend)
+var ajax_pending = false;
+
+function scrollHandler(uRowId, uName, msgContainer)
 {
-    //var txtMsg = btnSend.parent.
-    alert(uRowId);
-}
-
-
-
-// Assign scroll function to chatBox DIV
-$('.msg_container_base').scroll(function () {
-    if ($('.msg_container_base').scrollTop() == 0) {
-        // Display AJAX loader animation
-        //$('#loader').show();
-
-        // Youd do Something like this here
-        // Query the server and paginate results
-        // Then prepend
-        /*  $.ajax({
-              url:'getmessages.php',
-              dataType:'html',
-              success:function(data){
-                  $('.inner').prepend(data);
-              };
-          });*/
-        //BUT FOR EXAMPLE PURPOSES......
-        // We'll just simulate generation on server
-
-
-        //Simulate server delay;
+    if ($(msgContainer).scrollTop() == 0) {
         setTimeout(function () {
             // Simulate retrieving 4 messages
-            for (var i = 0; i < 4; i++) {
-                $('.msg_container_base').prepend('<div class="messages">Newly Loaded messages<br/><span class="date">' + Date() + '</span> </div>');
+            
+            if (ajax_pending)
+            {
+                return;
             }
+
+            var scrollIndex = msgContainer.getElementsByClassName("scrollIndex")[0].value;
+            scrollIndex = parseInt(scrollIndex) + 10;
+
+            ajax_pending = true;
+
+            $.ajax({
+                type: 'GET',
+                url: '../../Notification/Chat/GetChatHistory?sender=' + uRowId + '&skipRows=' + scrollIndex,
+                dataType: "json",
+                success: function (resultData) {
+                    //debugger;
+
+                    prependHistory(uRowId, uName, msgContainer, resultData);
+
+                    msgContainer.getElementsByClassName("scrollIndex")[0].value = scrollIndex + 10;
+
+                    ajax_pending = false;
+
+                    $(msgContainer).scrollTop(30);
+                },
+                error: function (error) { alert(error); }
+            });
+
+            //for (var i = 0; i < 4; i++) {
+            //    $(msgContainer).prepend('<div class="messages">Newly Loaded messages<br/><span class="date">' + Date() + '</span> </div>');
+            //}
             // Hide loader on success
             //$('#loader').hide();
             // Reset scroll
-            $('.msg_container_base').scrollTop(30);
-        }, 780);
+            //$(msgContainer).scrollTop(30);
+        }, 738);
     }
-});
+}
+
+function prependHistory(uRowId, uName, msgContainer, messageList)
+{
+    if (messageList) {
+        //debugger;
+        var startingPoint = messageList.length - 1;
+        for (i = startingPoint; i >= 0; i--) {
+            var messageHolder = document.createElement("div");
+            var divAvatar = document.createElement("div");
+            var imgAvatar = document.createElement("img");
+            imgAvatar.src = "http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg";
+            imgAvatar.className = "img-responsive chat-img";
+            var iAmSender = "true";
+            divAvatar.appendChild(imgAvatar);
+            divAvatar.className = "col-md-2 chat-col-md-2 col-xs-2 avatar";
+
+            var divMsgWidth = document.createElement("div");
+
+            var divActualMsg = document.createElement("div");
+
+            var pActualMsg = document.createElement("p");
+            pActualMsg.innerHTML = messageList[i].Message;
+
+            var timeMsgTime = document.createElement("time");
+            timeMsgTime.innerHTML = messageList[i].MessageSentTimesAgo;
+
+            divActualMsg.appendChild(pActualMsg);
+            divActualMsg.appendChild(timeMsgTime);
+            divMsgWidth.appendChild(divActualMsg);
+
+            messageHolder.appendChild(divAvatar);
+            messageHolder.appendChild(divMsgWidth);
+
+            if (uRowId === messageList[i].SentByUser.UserMasterId) {
+                iAmSender = "false";
+            }
+
+            if (iAmSender === "false") {
+                messageHolder.className = "row msg_container base_receive";
+                divMsgWidth.className = "col-xs-10 col-md-10";
+                divActualMsg.className = "messages msg_receive";
+
+                messageHolder.appendChild(divAvatar);
+                messageHolder.appendChild(divMsgWidth);
+            }
+            else {
+                messageHolder.className = "row msg_container base_sent";
+                divMsgWidth.className = "col-md-10 col-xs-10 chat-col-md-10";
+                divActualMsg.className = "messages msg_sent";
+
+                messageHolder.appendChild(divMsgWidth);
+                messageHolder.appendChild(divAvatar);
+
+            }
+
+            $(msgContainer).prepend(messageHolder.innerHTML);
+
+            //divMsgContainer.appendChild(messageHolder);
+        }
+    }
+}
+
+// Assign scroll function to chatBox DIV
+//$('.msg_container_base').scroll(function () {
+//    if ($('.msg_container_base').scrollTop() == 0) {
+//        // Display AJAX loader animation
+//        //$('#loader').show();
+
+//        // Youd do Something like this here
+//        // Query the server and paginate results
+//        // Then prepend
+//        /*  $.ajax({
+//              url:'getmessages.php',
+//              dataType:'html',
+//              success:function(data){
+//                  $('.inner').prepend(data);
+//              };
+//          });*/
+//        //BUT FOR EXAMPLE PURPOSES......
+//        // We'll just simulate generation on server
+
+
+//        //Simulate server delay;
+//        setTimeout(function () {
+//            // Simulate retrieving 4 messages
+//            for (var i = 0; i < 4; i++) {
+//                $('.msg_container_base').prepend('<div class="messages">Newly Loaded messages<br/><span class="date">' + Date() + '</span> </div>');
+//            }
+//            // Hide loader on success
+//            //$('#loader').hide();
+//            // Reset scroll
+//            $('.msg_container_base').scrollTop(30);
+//        }, 780);
+//    }
+//});
 
 
 $(document).ready(function () {

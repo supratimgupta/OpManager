@@ -40,28 +40,45 @@ namespace OperationsManager.Hubs
             {
                 if (sender != null && reciever != null && !string.IsNullOrEmpty(message))
                 {
+                    List<ChatLogDTO> chats = kernel.Get<IChatSvc>().GetChatHistory(reciever.UserRowId, sender.UserRowId, 0, 10);
+
+                    if (chats == null)
+                    {
+                        chats = new List<ChatLogDTO>();
+                    }
+
                     var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
 
                     if (reciever.ConnectionID != null && reciever.ConnectionID.Count > 0)
                     {
                         foreach (string connectionId in reciever.ConnectionID)
                         {
-                            hubContext.Clients.Client(connectionId).sendMessage(sender, message, status.ReturnObj.Id);
+                            hubContext.Clients.Client(connectionId).recieveMessage(sender, reciever, chats, status.ReturnObj.Id);
+                        }
+                    }
+
+                    SendChatsNotRead(reciever.UserRowId);
+
+                    if (sender.ConnectionID != null && sender.ConnectionID.Count > 0)
+                    {
+                        foreach (string connectionId in sender.ConnectionID)
+                        {
+                            hubContext.Clients.Client(connectionId).recieveMessage(reciever, sender, chats, status.ReturnObj.Id);
                         }
                     }
                 }
             }
         }
 
-        public void MessageAck(int chatLogId)
+        public void AcknowledgeRead(int senderRowId, int recieverRowId)
         {
             NinjectControllerFactory ncf = new NinjectControllerFactory();
             IKernel kernel = ncf.GetNinjectKernel();
 
-            kernel.Get<IChatSvc>().MarkAsRead(chatLogId);
+            kernel.Get<IChatSvc>().MarkAllChatAsReadForUser(senderRowId, recieverRowId);
         }
 
-        public void ShowTyping(int toUser)
+        public void ShowTyping(int toUser, int fromUser, string fromUserName)
         {
             Connections.UserConnectionRepo uConnRepo = Connections.UserConnectionRepo.GetInstance();
             var reciever = uConnRepo[toUser];
@@ -73,7 +90,7 @@ namespace OperationsManager.Hubs
                     var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
                     foreach (string connectionId in reciever.ConnectionID)
                     {
-                        hubContext.Clients.Client(connectionId).showTyping();
+                        hubContext.Clients.Client(connectionId).showTyping(fromUser, fromUserName);
                     }
                 }
             }
