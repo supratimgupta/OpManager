@@ -140,7 +140,7 @@
             trnslog.TransferMode = transferMode;
             trnslog.PaymentChequeNo = chequeNo;
 
-            debugger;
+            
             if (!this.validate(trnslog))
             {
                 return false;
@@ -154,7 +154,7 @@
                 data: trnslog,
                 dataType: "json",
                 success: function (resultData) {
-                    debugger;
+                    
                     if (resultData.status) {
                         submitCallBack(resultData.data, tbody, row, i);
                     } else {
@@ -171,7 +171,7 @@
         }
 
         function resendRequest(transactionLogId, rowIndex)
-        {debugger;
+        {
             var tablePayment = document.getElementById("tablePayment");
             var tbody = tablePayment.getElementsByTagName("tbody")[0];
             var row = tbody.rows[rowIndex];
@@ -184,7 +184,7 @@
                 data: trnsLog,
                 dataType: "json",
                 success: function (resultData) {
-                    debugger;
+                    
                     if (resultData.status) {
                         var cell12 = row.cells[12];
                         var btn = cell12.getElementsByTagName("button")[0];
@@ -276,7 +276,7 @@
 
 
         function submitAll() {
-            debugger;
+            
             var tablePayment = document.getElementById("tablePayment");
             var tbody = tablePayment.getElementsByTagName("tbody")[0];
 
@@ -337,7 +337,7 @@
                 trnslog.TransferMode = transferMode;
                 trnslog.PaymentChequeNo = chequeNo;
 
-                debugger;
+                
                 //if (!this.validate(trnslog)) {
                 //    isValid = false;
                 //    break;
@@ -380,7 +380,7 @@
                 data: transLogs,
                 dataType: "json",
                 success: function (resultData) {
-                    debugger;
+                    
                     if (resultData.status) {
                         payAllCallback();
                     }
@@ -412,7 +412,7 @@
 
         function payAllCallback()
         {
-            debugger;
+            
             $("#btnTotalPay").removeAttr('disabled');
             $(".individualPay").removeAttr('disabled');
 
@@ -421,7 +421,7 @@
         }
 
         function checkPaymentMode(ddlPaymentMode)
-        {debugger;
+        {
             var selectedMode = ddlPaymentMode.options[ddlPaymentMode.selectedIndex].value;
             var currentTd = ddlPaymentMode.parentNode.parentNode.parentNode;
             var div = currentTd.children[1];

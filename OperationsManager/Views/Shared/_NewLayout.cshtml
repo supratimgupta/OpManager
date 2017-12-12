@@ -385,7 +385,7 @@
     });
 
     function setNotifications(message) {
-        debugger;
+        
         var notiHolder = document.getElementById("notiHolder");
 
         notiHolder.innerHTML = "";
@@ -489,7 +489,7 @@
 
             function populateMessageSummary(resultData)
             {
-                alert(resultData.totalCount);
+                
 
                 document.getElementById("spanUnreadMsgsCnt").innerHTML = resultData.totalCount;
 
@@ -508,7 +508,7 @@
                 if(resultData && resultData.data && resultData.data.length>0)
                 {
                     var data = resultData.data;
-                    alert(data.length);
+                    
                     for(i=0;i<data.length;i++)
                     {
                         var liItem = document.createElement("li");
@@ -551,7 +551,7 @@
     </script>
     <script type="text/javascript">
     $(document).ready(function () {
-        debugger;
+        
         var notificationHub = $.connection.notificationHub;
         notificationHub.client.sendMessage = function (message) {
             //alert(message);
@@ -564,7 +564,7 @@
             console.log('Your connection id is: ' + connectionId);
         };
 
-        notificationHub.client.populateMessageSummaryCL = function(resultData){ alert(resultData);
+        notificationHub.client.populateMessageSummaryCL = function(resultData){ 
             //this.populateMessageSummary(resultData);
             populateMessageSummary(resultData);
         };

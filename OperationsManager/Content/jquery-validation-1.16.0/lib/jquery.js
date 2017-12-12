@@ -1,5 +1,5 @@
 (function() {
-    debugger;
+    
 var parts = document.location.search.slice( 1 ).split( "&" ),
 	length = parts.length,
 	scripts = document.getElementsByTagName("script"),

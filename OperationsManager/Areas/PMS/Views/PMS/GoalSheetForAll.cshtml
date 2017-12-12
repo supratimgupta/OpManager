@@ -384,7 +384,7 @@
             document.getElementById(spanId).innerHTML = valueAsWeightage;
             document.getElementById(spanId + "_Hddn").value = valueAsWeightage;
             document.getElementById(spanId + "_NU").value = "Y";
-            $.get('GetRatingLevel', { ratingPercent: percentValue }, function (data) { debugger; document.getElementById(spanId + "_SR").innerHTML = data.data; });
+            $.get('GetRatingLevel', { ratingPercent: percentValue }, function (data) { document.getElementById(spanId + "_SR").innerHTML = data.data; });
             this.calculateSum(className);
         }
 

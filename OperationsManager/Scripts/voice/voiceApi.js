@@ -3,7 +3,7 @@
 var UserDictation = artyom.newDictation({
     continuous: true, // Enable continuous if HTTPS connection
     onResult: function (text) {
-        debugger;
+        
         // Do something with the text
         if(text.indexOf('go to')>0 || text.indexOf('goto')>0)
         {

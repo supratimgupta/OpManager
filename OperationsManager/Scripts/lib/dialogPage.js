@@ -36,13 +36,13 @@ function getWindowReturnValue() {
 
 if ($dlg) window.dialogArguments = $dlg.dialogArguments;
 if ($dlg) window.close = function () {
-    debugger;
+    
     $dlg = window.dialogArguments;
     setWindowReturnValue($dlg.dialogArguments);
     if ($dlg) $dlg.dialogWindow.dialog('close');
 };
 if ($dlg) $dlg.close = function () {
-    debugger;
+    
     $dlg = window.dialogArguments;
     setWindowReturnValue($dlg.dialogArguments);
     if ($dlg) $dlg.dialogWindow.dialog('close');

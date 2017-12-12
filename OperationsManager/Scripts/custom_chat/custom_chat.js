@@ -40,7 +40,7 @@ $(document).on('focus', '.panel-footer input.chat_input', function (e) {
 
 function openChatPupup(uRowId, uName)
 {
-    debugger;
+    
     var lastChild = $(".chat-container div:last-child");
     var size = $(".chat-window:last-child").css("margin-left");
     alert(size);
@@ -55,7 +55,7 @@ function openChatPupup(uRowId, uName)
         url: '../../Notification/Chat/GetChatHistory?sender=' + uRowId + '&skipRows=0',
         dataType: "json",
         success: function (resultData) {
-            debugger;
+            
             var newChatWindow = createChatWindow(uRowId, uName, resultData);
             if (newChatWindow != null)
             {
@@ -67,13 +67,12 @@ function openChatPupup(uRowId, uName)
 
             makeMsgsReadOnServer(uRowId);
         },
-        error: function (error) { debugger; alert(error); }
+        error: function (error) { alert(error); }
     });
 
 }
 
 $(document).on('click', '.icon_close', function (e) {
-    debugger;
     $(this).parent().parent().parent().parent().parent().remove();
     //$("#chat_window_1").remove();
     //var arrAllChatWindows = document.getElementsByClassName("chat-window");
@@ -94,7 +93,7 @@ $(document).on('click', '.icon_close', function (e) {
 
 function createChatWindow(uRowId, uName, messageList)
 {
-    debugger;
+    
     if(openedChatWindows.length<3)
     {
         if (document.getElementById("chat_window_" + uRowId))

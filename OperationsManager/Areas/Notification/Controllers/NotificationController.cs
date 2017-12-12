@@ -24,6 +24,7 @@ namespace OperationsManager.Areas.Notification.Controllers
         }
 
         // GET: Notification/Notification
+        [AllowAnonymous]
         public ActionResult ViewAll()
         {
             NotificationDTO nDTO = new NotificationDTO();
@@ -38,6 +39,7 @@ namespace OperationsManager.Areas.Notification.Controllers
                 Models.NotificationVM item = null;
                 foreach(NotificationDTO noDTO in lstNotifications)
                 {
+                    item = new Models.NotificationVM();
                     item.NotificationText = noDTO.NotificationText;
                     item.NotificationReminderId = noDTO.NotificationReminderId;
                     item.MarkAsRead = false;
