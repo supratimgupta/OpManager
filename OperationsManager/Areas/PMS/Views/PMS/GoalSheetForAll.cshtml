@@ -1,9 +1,17 @@
 ﻿@using OpMgr.Resources.PMS
 @using OperationsManager.ExtendedHtmlHelpers
+@using Ninject
+@using OperationsManager.Helpers;
+@using OpMgr.Common.Contracts
 @model OperationsManager.Areas.PMS.Models.PMSVM
 
 @{
     Layout = "~/Views/Shared/_NewLayout.cshtml";
+    
+    NinjectControllerFactory ncf = new NinjectControllerFactory();
+    IKernel kernel = ncf.GetNinjectKernel();
+    
+    bool empHasPMSAccess = kernel.Get<IConfigSvc>().EmpAccessToPMSData();
 }
 
 <!DOCTYPE html>
@@ -71,7 +79,7 @@
             <div class="panel panel-color panel-primary">
                 <div class="panel-heading">@GoalSheetResource.HeadingForAppraisee</div>
                 <div class="panel-body">
-                    @if (Model != null)
+                    @if (Model != null && ((!string.Equals(Model.MODE, "EMP_PROCESS_ENDED") && !string.Equals(Model.MODE, "EMP_VIEW_ONLY")) || empHasPMSAccess))
                     {
                         <div style="overflow:scroll;">
                             <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
@@ -236,19 +244,38 @@
                             @Html.LabelFor(m => m.SelfAvgRating)
                         </div>*@
                     <div></div>
-                    <div class="col-lg-3" style="font-weight:bold;">
-                        @GoalSheetResource.FinalRating
-                    </div>
-                    <div class="col-lg-3" style="font-weight:bold;">
-                        @Html.DisplayFor(m => m.ReviewerRatingLevel)
-                    </div>
+                    @if (string.Equals(Model.MODE, "COMPETENCY_CHECK") || string.Equals(Model.MODE, "PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_VIEW_ONLY"))
+                    {
+                        <div class="col-lg-3" style="font-weight:bold;">
+                            @GoalSheetResource.FinalRating
+                        </div>
+                        <div class="col-lg-3" style="font-weight:bold;">
+                            @if (string.Equals(Model.MODE, "PROCESS_ENDED"))
+                            {
+                                @Html.DisplayFor(m => m.ReviewerRatingLevel)
+                            }
+                            else
+                            {
+                                <span>Rating is not yet decided.</span>
+                            }
+                        </div>
+                    }
                 </fieldset>
             </div>
-            @if (string.Equals(Model.MODE, "COMPETENCY_CHECK") || string.Equals(Model.MODE, "PROCESS_ENDED"))
+            @if (string.Equals(Model.MODE, "COMPETENCY_CHECK") || string.Equals(Model.MODE, "PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_PROCESS_ENDED"))
             {
                 <div class="panel panel-color panel-primary">
                     <div class="panel-heading"><b>@GoalSheetResource.HeadingForAppraiser</b></div>
                     <div class="panel-body">
+                        <div class="row">
+                            @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
+                            {
+                                @Html.TextAreaFor(m => m.NotificationText, new { @class = "form-control" })
+                                <p>
+                                    <button type="submit" class="btn btn-primary" onclick="setSaveModeCompetency('NOTIFY');">Notify</button>
+                                </p>
+                            }
+                        </div>
                         <div class="row">
                             @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
                             {

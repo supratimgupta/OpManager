@@ -217,7 +217,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
                     EmployeeGoalLogDTO empGoalLogDTO = new EmployeeGoalLogDTO();
-                    if (dsGoalLst != null && dsGoalLst.Tables.Count == 3)
+                    if (dsGoalLst != null && dsGoalLst.Tables.Count == 2)
                     {
                         goalList.ReturnObj = new List<EmployeeGoalLogDTO>();
                         if (dsGoalLst.Tables[0].Rows.Count > 0)

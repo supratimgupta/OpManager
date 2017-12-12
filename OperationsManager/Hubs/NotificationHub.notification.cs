@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNet.SignalR;
+using Ninject;
 using OperationsManager.Helpers;
 using OpMgr.Common.Contracts;
+using OpMgr.Common.Contracts.Modules;
 using OpMgr.Common.DTOs;
 using System;
 using System.Collections.Generic;
@@ -20,18 +22,31 @@ namespace OperationsManager.Hubs
 
             if (sender != null && reciever != null && !string.IsNullOrEmpty(message))
             {
-                if (message.Length > 50)
-                {
-                    var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
 
-                    message = "<b>" + sender.UserName + " says: </b>" + message.Substring(0, 50) + "...";
-                    if (reciever.ConnectionID != null && reciever.ConnectionID.Count > 0)
+                NinjectControllerFactory ncf = new NinjectControllerFactory();
+                IKernel kernel = ncf.GetNinjectKernel();
+
+                NotificationDTO notiDTO = new NotificationDTO();
+                notiDTO.User = new UserMasterDTO();
+                notiDTO.User.UserMasterId = recieverRowId;
+
+                var test = kernel.Get<INotificationSvc>().Select(notiDTO);
+
+                if(test.ReturnObj!=null && test.ReturnObj.Count>0)
+                {
+                    string[] messages = test.ReturnObj.Select(m => m.NotificationText).ToArray();
+
+                    if(message.Length>0)
                     {
-                        foreach (string connectionId in reciever.ConnectionID)
+                        if (reciever.ConnectionID != null && reciever.ConnectionID.Count > 0)
                         {
-                            hubContext.Clients.Client(connectionId).sendMessage(message);
+                            foreach (string connectionId in reciever.ConnectionID)
+                            {
+                                hubContext.Clients.Client(connectionId).sendMessage(messages);
+                            }
                         }
-                    }
+                    }                    
                 }
             }
         }

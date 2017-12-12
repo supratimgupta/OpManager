@@ -30,14 +30,14 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "INSERT INTO notificationreminder(UserMasterId, Notificationtext, Active, IsViewed, notificationActivefrom)" + 
+                    command.CommandText = "INSERT INTO notificationreminder(UserMasterId, Notificationtext, Active, IsViewed, notificationActivefrom)" +
                                             "VALUES (@userMasterId, @notificationText, 1, 0, @activeFrom)";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = data.User.UserMasterId;
-                    command.Parameters.Add("@notificationText", MySqlDbType.Int32).Value = data.NotificationText;
-                    command.Parameters.Add("@activeFrom", MySqlDbType.Date).Value = data.NotificationActiveFrom;
+                    command.Parameters.Add("@notificationText", MySqlDbType.String).Value = data.NotificationText;
+                    command.Parameters.Add("@activeFrom", MySqlDbType.DateTime).Value = data.NotificationActiveFrom.Date;
                     // add createdby from session
 
                     StatusDTO<NotificationDTO> status = new StatusDTO<NotificationDTO>();

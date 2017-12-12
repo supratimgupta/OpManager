@@ -387,37 +387,47 @@
     function setNotifications(message) {
         debugger;
         var notiHolder = document.getElementById("notiHolder");
-        var liNew = document.createElement("li");
-        var aNew = document.createElement("a");
-        var spanIco = document.createElement("span");
-        var icon = document.createElement("i");
-        var spanMsg = document.createElement("span");
 
-        icon.className = "fa fa-info-circle fa-2x text-info";
-        spanIco.className = "pull-left";
-
-        spanIco.appendChild(icon);
-        spanMsg.innerHTML = message;
-
-        aNew.appendChild(spanIco);
-        aNew.appendChild(spanMsg);
-        aNew.href = "~/Notification/Notification/ViewAll";
-
-        liNew.appendChild(aNew);
-
-        notiHolder.appendChild(liNew);
+        notiHolder.innerHTML = "";
 
         var spanNotCount = document.getElementById("spanNotCount");
 
-        var notCountInt = parseInt(spanNotCount.innerHTML);
-
-        if (!isNaN(spanNotCount.innerHTML))
+        if(message)
         {
-            spanNotCount.innerHTML = (notCountInt + 1).toString();
+            for(i=0;i<message.length;i++)
+            {
+                var strMsg = message[i];
+                if(strMsg.length>20)
+                {
+                    strMsg = strMsg.substring(0,19) + "...";
+                }
+
+                var liNew = document.createElement("li");
+                var aNew = document.createElement("a");
+                var spanIco = document.createElement("span");
+                var icon = document.createElement("i");
+                var spanMsg = document.createElement("span");
+
+                icon.className = "fa fa-info-circle fa-2x text-info";
+                spanIco.className = "pull-left";
+
+                spanIco.appendChild(icon);
+                spanMsg.innerHTML = message;
+
+                aNew.appendChild(spanIco);
+                aNew.appendChild(spanMsg);
+                aNew.href = "~/Notification/Notification/ViewAll";
+
+                liNew.appendChild(aNew);
+
+                notiHolder.appendChild(liNew);
+            }
+
+            spanNotCount.innerHTML = message.length;
         }
         else
         {
-            spanNotCount.innerHTML = "1";
+            spanNotCount.innerHTML = "0";
         }
     }
 
@@ -432,6 +442,7 @@
         liHeader.appendChild(pHeader);
 
         document.getElementById("activeUserHolder").appendChild(liHeader);
+        document.getElementById("activeUserHolder").innerHTML = "";
 
         if(joiners)
         {
@@ -471,7 +482,7 @@
 
                         liItem.appendChild(aItem);
 
-                        document.getElementById("activeUserHolder").appendChild(aItem);
+                        document.getElementById("activeUserHolder").appendChild(liItem);
                     }
                 }
             }
@@ -533,7 +544,7 @@
 
                         liItem.appendChild(aItem);
 
-                        document.getElementById("unreadMsgsHolder").appendChild(aItem);
+                        document.getElementById("unreadMsgsHolder").appendChild(liItem);
                     }
                 }
             }

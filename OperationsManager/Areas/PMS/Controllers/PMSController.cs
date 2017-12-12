@@ -25,14 +25,16 @@ namespace OperationsManager.Areas.PMS.Controllers
         private IDropdownRepo _ddlRepo;
         private Helpers.UIDropDownRepo _uiddlRepo;
         private IConfigSvc _configSvc;
+        private INotificationSvc _notiSvc;
 
-        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo, IConfigSvc configSvc)
+        public PMSController(OpMgr.Common.Contracts.Modules.IPMSSvc pmsSvc, ISessionSvc sessionSvc, IDropdownRepo ddlRepo, IConfigSvc configSvc, INotificationSvc notiSvc)
         {
             _pmsSvc = pmsSvc;
             _sessionSvc = sessionSvc;
             _ddlRepo = ddlRepo;
             _configSvc = configSvc;
             _uiddlRepo = new Helpers.UIDropDownRepo(_ddlRepo);
+            _notiSvc = notiSvc;
         }
 
         [HttpGet]
@@ -59,7 +61,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
             List<OpMgr.Common.DTOs.EmployeeGoalLogDTO> empGoalLogs = _pmsSvc.Select(empGoalLog).ReturnObj;
 
-            if(empGoalLog==null || empGoalLogs.Count==0)
+            if(empGoalLogs==null || empGoalLogs.Count==0)
             {
                 return RedirectToAction("AccessDenied", "Login", new { area = "Login" });
             }
@@ -92,6 +94,8 @@ namespace OperationsManager.Areas.PMS.Controllers
             pmsVM.Employee.UserDetails.Location.LocationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.Location.LocationDescription;
             string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
 
+            pmsVM.Employee.UserDetails.UserMasterId = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.UserMasterId;
+
             pmsVM.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(pmsVM.Employee.StaffEmployeeId, employeeImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
 
             bool isSelf = apprMasterId == null;
@@ -106,7 +110,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 pmsVM.CompetencyDDLSource = _uiddlRepo.getCompetencyDropDown();
             }
-            if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED"))
+            if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED") || string.Equals(pmsVM.MODE, "EMP_PROCESS_ENDED"))
             {
                 this.CreateCompetencyLoaders(ref pmsVM);
                 
@@ -124,6 +128,11 @@ namespace OperationsManager.Areas.PMS.Controllers
                 string[] fileParts = fileName.Split('\\');
                 fileName = fileParts[fileParts.Length - 1];
             }
+            if(string.IsNullOrEmpty(fileName))
+            {
+                fileName = staffempid + ".jpg";
+            }
+
             return fileName;
         }
 
@@ -190,15 +199,17 @@ namespace OperationsManager.Areas.PMS.Controllers
                 {
                     if (string.Equals(pmsVM.SAVE_MODE, "NOTIFY"))
                     {
-                        Hubs.NotificationHub notifyHub = new Hubs.NotificationHub();
-                        //Save notification details - if status true send message to connected user
                         NotificationDTO noti = new NotificationDTO();
                         noti.User = new UserMasterDTO();
                         noti.User.UserMasterId = pmsVM.Employee.UserDetails.UserMasterId;
                         noti.NotificationText = pmsVM.NotificationText;
                         noti.NotificationActiveFrom = DateTime.Today.Date;
-
-                        notifyHub.SendNotification(_sessionSvc.GetUserSession().UserMasterId, pmsVM.Employee.UserDetails.UserMasterId, pmsVM.NotificationText);
+                        if(_notiSvc.Insert(noti).IsSuccess)
+                        {
+                            Hubs.NotificationHub notifyHub = new Hubs.NotificationHub();
+                            //Save notification details - if status true send message to connected user
+                            notifyHub.SendNotification(_sessionSvc.GetUserSession().UserMasterId, pmsVM.Employee.UserDetails.UserMasterId, pmsVM.NotificationText);
+                        }
                     }
                     else
                     {

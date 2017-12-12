@@ -68,5 +68,10 @@ namespace OpMgr.Configurations.Implementations
         {
             return System.Configuration.ConfigurationManager.AppSettings["StaffBulkUploadExcelFilePath"];
         }
+
+        public bool EmpAccessToPMSData()
+        {
+            return System.Configuration.ConfigurationManager.AppSettings["EmpAccessToPMSData"] == "Y" ? true : false;
+        }
     }
 }

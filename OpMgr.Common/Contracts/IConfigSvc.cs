@@ -31,5 +31,7 @@ namespace OpMgr.Common.Contracts
         string StudentDataUploadPath();
 
         string StaffDataUploadPath();
+
+        bool EmpAccessToPMSData();
     }
 }
