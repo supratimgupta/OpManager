@@ -68,6 +68,16 @@ namespace OperationsManager.Areas.PMS.Models
 
         public string NotificationText { get; set; }
 
+        public double SumOfWeitage { get; set; }
+
+        public string SummaryOfAcheivement { get; set; }
+
+        public string SummaryOfAppraisal { get; set; }
+
+        public string ReviewerRatingComment { get; set; }
+
+        public SelectList RatingDropDown { get; set; }
+
         public PMSVM GetGoals(List<EmployeeGoalLogDTO> lstEmpGoals)
         {
             this.Goals = new Dictionary<int, GoalViewModel>();

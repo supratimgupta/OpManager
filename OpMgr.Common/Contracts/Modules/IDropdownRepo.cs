@@ -56,5 +56,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<CompetencyDTO> Competency();
 
         List<AppraisalStatusDTO> AppraisalStatus();
+
+        List<RatingDTO> AppraisalRating();
     }
 }

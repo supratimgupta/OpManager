@@ -269,6 +269,10 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     empgoallog.EmployeeAppraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
                                 }
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment"].ToString()))
+                                {
+                                    empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment"].ToString();
+                                }
                                 goalList.ReturnObj.Add(empgoallog);
                             }
                         }
@@ -463,7 +467,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating)
+        public bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating, string reviewerComment)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -471,13 +475,14 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "update employeeappraisalmaster set ReviewerFinalRating=@rvwrRating, UpdatedBy=@updatedBy, UpdatedDate=CURDATE(), Active=1 where EmployeeAppraisalMasterId=@apprMaster";
+                    command.CommandText = "update employeeappraisalmaster set ReviewerFinalRating=@rvwrRating, UpdatedBy=@updatedBy, UpdatedDate=CURDATE(), Active=1, ReviewerComment=@reviewerComment where EmployeeAppraisalMasterId=@apprMaster";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     command.Parameters.Add("@rvwrRating", MySqlDbType.Double).Value = reviewerRating;
                     command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
                     command.Parameters.Add("@apprMaster", MySqlDbType.Int32).Value = apprMasterId;
+                    command.Parameters.Add("@reviewerComment", MySqlDbType.String).Value = reviewerComment;
                     // add createdby from session
 
                     StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();

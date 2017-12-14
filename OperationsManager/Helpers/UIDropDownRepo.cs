@@ -383,5 +383,15 @@ namespace OperationsManager.Helpers
             statusDto.Insert(0, blank);
             return new SelectList(statusDto, "AppraisalStatusId", "AppraisalStatusDescription");
         }
+
+        public SelectList getAppraisalRatings()
+        {
+            List<RatingDTO> ratingDto = _ddlRepo.AppraisalRating();
+            //AppraisalStatusDTO blank = new AppraisalStatusDTO();
+            //blank.AppraisalStatusId = -1;
+            //blank.AppraisalStatusDescription = "";
+            //statusDto.Insert(0, blank);
+            return new SelectList(ratingDto, "Minimum", "RatingLevel");
+        }
     }
 }

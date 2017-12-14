@@ -68,6 +68,17 @@ namespace OperationsManager.Areas.PMS.Controllers
 
             pmsVM.SumOfAcheivement = empGoalLogs.Sum(m => m.Achievement);
             pmsVM.SumOfAppraiserRating = empGoalLogs.Sum(m => m.AppraiserRating);
+            pmsVM.SumOfWeitage = empGoalLogs.Sum(m => m.GoalAttribute.WeightAge);
+
+            if(pmsVM.SumOfWeitage>0)
+            {
+                int percentAchievement = Convert.ToInt32(Math.Ceiling(((pmsVM.SumOfAcheivement / Convert.ToDecimal(pmsVM.SumOfWeitage)) * 100)));
+                int percentAppraiser = Convert.ToInt32(Math.Ceiling(((pmsVM.SumOfAppraiserRating / Convert.ToDecimal(pmsVM.SumOfWeitage)) * 100)));
+
+                pmsVM.SummaryOfAcheivement = _pmsSvc.getSelfRating(Convert.ToInt32(percentAchievement)).ReturnObj.SelfRating + "( " + pmsVM.SumOfAcheivement + " )";
+                pmsVM.SummaryOfAppraisal = _pmsSvc.getSelfRating(Convert.ToInt32(percentAppraiser)).ReturnObj.SelfRating + "( " + pmsVM.SumOfAppraiserRating + " )";
+            }
+
             pmsVM.ReviewerRating = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerFinalRating;
             if (pmsVM.ReviewerRating > 0)
             {
@@ -80,6 +91,8 @@ namespace OperationsManager.Areas.PMS.Controllers
             // to get data in first grid
             pmsVM.IndividualInitiative = empGoalLogs[0].EmployeeAppraisalMaster.IndividualInitiative;
             pmsVM.InstitutionalSupport = empGoalLogs[0].EmployeeAppraisalMaster.InstitutionalSupport;
+
+            pmsVM.ReviewerComment = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerComment;
 
             pmsVM.FullName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.FName + " " + empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.LName;
             pmsVM.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
@@ -105,6 +118,10 @@ namespace OperationsManager.Areas.PMS.Controllers
             if (string.Equals(pmsVM.MODE, "NO_ACCESS"))
             {
                 return RedirectToAction("AccessDenied", "Login", new { area = "Login" });
+            }
+            if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW"))
+            {
+                pmsVM.RatingDropDown = _uiddlRepo.getAppraisalRatings();
             }
             if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK"))
             {
@@ -192,7 +209,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 if (string.Equals(pmsVM.MODE, "REVIEWER_REVIEW") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT")))
                 {
-                    _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating);
+                    _pmsSvc.UpdateReviewerReview(pmsVM.EmployeeAppraisalMasterId, pmsVM.ReviewerRating, pmsVM.ReviewerComment);
 
                 }
                 else if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") && (string.Equals(pmsVM.SAVE_MODE, "SAVE") || string.Equals(pmsVM.SAVE_MODE, "SUBMIT") || string.Equals(pmsVM.SAVE_MODE, "NOTIFY")))

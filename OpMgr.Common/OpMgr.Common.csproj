@@ -104,6 +104,7 @@
     <Compile Include="DTOs\MailDTO.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\PasswordDTO.cs" />
+    <Compile Include="DTOs\RatingDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />

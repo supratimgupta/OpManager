@@ -14,7 +14,7 @@ namespace OpMgr.Common.Contracts.Modules
         bool MoveFwdBckwd(int appraisalMasterId, int currentStatus, bool isBackwd = false);
         string AccessStatus(int appraisalMasterId);
         StatusDTO<EmployeeGoalLogDTO> UpdateAppraiserRating(EmployeeGoalLogDTO data);
-        bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating);
+        bool UpdateReviewerReview(int apprMasterId, decimal reviewerRating, string reviewerComment);
         void SaveCompetency(int appraisalMasterId, string delimitedImprovements, string delimitedStrengths);
         void GetCompetencies(int appraisalMasterId, out List<KeyValuePair<string, string>> strengths, out List<KeyValuePair<string, string>> improvements);
         StatusDTO<List<EmployeeAppraisalMasterDTO>> SearchAppraisee(EmployeeAppraisalMasterDTO data);

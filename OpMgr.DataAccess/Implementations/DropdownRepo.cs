@@ -904,5 +904,39 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<RatingDTO> AppraisalRating()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select distinct StartingRange,LevelDescription from weightage_levels";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<RatingDTO> lstRatingDTO = new List<RatingDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        RatingDTO ratingDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            ratingDTO = new RatingDTO();
+                            ratingDTO.Minimum = (decimal)dr["StartingRange"] + 1;
+                            ratingDTO.RatingLevel = dr["LevelDescription"].ToString();
+                            lstRatingDTO.Add(ratingDTO);
+                        }
+                    }
+                    return lstRatingDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

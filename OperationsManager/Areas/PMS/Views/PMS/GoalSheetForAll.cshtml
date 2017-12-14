@@ -196,13 +196,14 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="5">
+                                            @Html.HiddenFor(m => m.SumOfWeitage, new { id = "hfSumOfWeightage" })
                                         <td>
                                         <td>
-                                            <span id="staffRating_Disp">@Model.SumOfAcheivement</span>
+                                            <span id="staffRating_Disp">@Model.SummaryOfAcheivement</span>
                                         </td>
                                         <td colspan="2"></td>
                                         <td>
-                                            <span id="apprRating_Disp">@Model.SumOfAppraiserRating</span>
+                                            <span id="apprRating_Disp">@Model.SummaryOfAppraisal</span>
                                         </td>
                                         <td>
                                             @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
@@ -215,6 +216,30 @@
                                             }
                                         </td>
                                     </tr>
+                                    @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
+                                    {
+                                        <tr>
+                                            <td colspan="6">
+                                                @Html.TextAreaFor(m => m.ReviewerRatingComment, new { @class = "form-control" })
+                                            </td>
+                                            <td>
+                                                @Html.OpMgrDropDownListFor(m => m.ReviewerRating, Model.RatingDropDown, "Rating Level", new {@class="form-control" })
+                                            </td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6">
+                                                @Html.DisplayFor(m => m.ReviewerRatingComment, new { @class = "form-control" })
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(m=>m.ReviewerRatingLevel)
+                                            </td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    }                                    
                                     @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW") || string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
                                     {
                                         <tr>
@@ -250,7 +275,7 @@
                             @GoalSheetResource.FinalRating
                         </div>
                         <div class="col-lg-3" style="font-weight:bold;">
-                            @if (string.Equals(Model.MODE, "PROCESS_ENDED"))
+                            @if (string.Equals(Model.MODE, "EMP_PROCESS_ENDED"))
                             {
                                 @Html.DisplayFor(m => m.ReviewerRatingLevel)
                             }
@@ -400,7 +425,11 @@
                 catch (e) {
                 }
             }
-            document.getElementById(className + "_Disp").innerHTML = sum;
+            var sumOfWeightage = document.getElementById("hfSumOfWeightage").value;
+            var sumPercent = Math.ceil((sum / parseFloat(sumOfWeightage) * 100));
+            $.get('GetRatingLevel', { ratingPercent: sumPercent }, function (data) {
+                document.getElementById(className + "_Disp").innerHTML = data.data + "( " + sum + " )";
+            });
         }
 
         $(document).ready(function () {
