@@ -77,7 +77,16 @@
                 @Html.HiddenFor(m => m.SAVE_MODE, new { id = "hfSaveMode" })
             </div>
             <div class="panel panel-color panel-primary">
-                <div class="panel-heading">@GoalSheetResource.HeadingForAppraisee</div>
+                <div class="panel-heading">
+                    @if (string.Equals(Model.MODE, "EMP_PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_VIEW_ONLY"))
+                    {
+                        <b>Final Rating Summary</b>
+                    }
+                    else
+                    {
+                        <b>@GoalSheetResource.HeadingForAppraisee</b>
+                    }
+                </div>
                 <div class="panel-body">
                     @if (Model != null && ((!string.Equals(Model.MODE, "EMP_PROCESS_ENDED") && !string.Equals(Model.MODE, "EMP_VIEW_ONLY")) || empHasPMSAccess))
                     {
@@ -199,21 +208,18 @@
                                             @Html.HiddenFor(m => m.SumOfWeitage, new { id = "hfSumOfWeightage" })
                                         <td>
                                         <td>
-                                            <span id="staffRating_Disp">@Model.SummaryOfAcheivement</span>
+                                            <span id="staffRating_Disp">@Model.SumOfAcheivement</span>
                                         </td>
-                                        <td colspan="2"></td>
+                                        <td></td>
                                         <td>
-                                            <span id="apprRating_Disp">@Model.SummaryOfAppraisal</span>
+                                            <span id="staffRating_FL">@Model.SummaryOfAcheivement</span>
                                         </td>
                                         <td>
-                                            @*@if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
-                                            {
-                                                @Html.OpMgrTextBoxFor(m => m.ReviewerRating, "", new { @class = "form-control requiredField" })
-                                            }
-                                            else
-                                            {
-                                                @Html.DisplayFor(m => m.ReviewerRating)
-                                            }*@
+                                            <span id="apprRating_Disp">@Model.SumOfAppraiserRating</span>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <span id="apprRating_FL">@Model.SummaryOfAppraisal</span>
                                         </td>
                                     </tr>
                                     @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
@@ -290,7 +296,16 @@
             @if (string.Equals(Model.MODE, "COMPETENCY_CHECK") || string.Equals(Model.MODE, "PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_PROCESS_ENDED"))
             {
                 <div class="panel panel-color panel-primary">
-                    <div class="panel-heading"><b>@GoalSheetResource.HeadingForAppraiser</b></div>
+                    <div class="panel-heading">
+                        @if (string.Equals(Model.MODE, "EMP_PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_VIEW_ONLY"))
+                        {
+                            <b>Final Competency Summary</b>
+                        }
+                        else
+                        {
+                            <b>@GoalSheetResource.HeadingForAppraiser</b>
+                        }
+                    </div>
                     <div class="panel-body">
                         <div class="row">
                             @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
@@ -428,7 +443,8 @@
             var sumOfWeightage = document.getElementById("hfSumOfWeightage").value;
             var sumPercent = Math.ceil((sum / parseFloat(sumOfWeightage) * 100));
             $.get('GetRatingLevel', { ratingPercent: sumPercent }, function (data) {
-                document.getElementById(className + "_Disp").innerHTML = data.data + "( " + sum + " )";
+                document.getElementById(className + "_Disp").innerHTML = sum;
+                document.getElementById(className + "_FL").innerHTML = data.data;
             });
         }
 
