@@ -206,21 +206,21 @@
                                             <span id="apprRating_Disp">@Model.SummaryOfAppraisal</span>
                                         </td>
                                         <td>
-                                            @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
+                                            @*@if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
                                             {
                                                 @Html.OpMgrTextBoxFor(m => m.ReviewerRating, "", new { @class = "form-control requiredField" })
                                             }
                                             else
                                             {
                                                 @Html.DisplayFor(m => m.ReviewerRating)
-                                            }
+                                            }*@
                                         </td>
                                     </tr>
                                     @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
                                     {
                                         <tr>
                                             <td colspan="6">
-                                                @Html.TextAreaFor(m => m.ReviewerRatingComment, new { @class = "form-control" })
+                                                @Html.TextAreaFor(m => m.ReviewerComment, new { @class = "form-control" })
                                             </td>
                                             <td>
                                                 @Html.OpMgrDropDownListFor(m => m.ReviewerRating, Model.RatingDropDown, "Rating Level", new {@class="form-control" })
@@ -232,10 +232,10 @@
                                     {
                                         <tr>
                                             <td colspan="6">
-                                                @Html.DisplayFor(m => m.ReviewerRatingComment, new { @class = "form-control" })
+                                                <b>Reviewer Comment: </b>@Html.DisplayFor(m => m.ReviewerComment, new { @class = "form-control" })
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(m=>m.ReviewerRatingLevel)
+                                                <b>Final Rating: </b>@Html.DisplayFor(m=>m.ReviewerRatingLevel)
                                             </td>
                                             <td colspan="4"></td>
                                         </tr>
@@ -269,7 +269,7 @@
                             @Html.LabelFor(m => m.SelfAvgRating)
                         </div>*@
                     <div></div>
-                    @if (string.Equals(Model.MODE, "COMPETENCY_CHECK") || string.Equals(Model.MODE, "PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_VIEW_ONLY"))
+                    @if (string.Equals(Model.MODE, "EMP_PROCESS_ENDED") || string.Equals(Model.MODE, "EMP_VIEW_ONLY"))
                     {
                         <div class="col-lg-3" style="font-weight:bold;">
                             @GoalSheetResource.FinalRating
@@ -314,7 +314,7 @@
                             }
                             else
                             {
-                                <div class="col-lg-3">Selected Improvements</div>
+                                <div class="col-lg-3"><b>Selected Improvements: </b></div>
                                 <div class="col-lg-9">@Model.ImprovementsShow</div>
                             }
                         </div>
@@ -331,7 +331,7 @@
                             }
                             else
                             {
-                                <div class="col-lg-3">Selected Strengths</div>
+                                <div class="col-lg-3"><b>Selected Strengths: </b></div>
                                 <div class="col-lg-9">@Model.StrengthsShow</div>
                             }
                         </div>

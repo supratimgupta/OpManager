@@ -269,9 +269,9 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     empgoallog.EmployeeAppraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
                                 }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment"].ToString()))
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString()))
                                 {
-                                    empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment"].ToString();
+                                    empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString();
                                 }
                                 goalList.ReturnObj.Add(empgoallog);
                             }

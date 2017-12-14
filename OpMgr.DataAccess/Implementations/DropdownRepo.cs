@@ -925,7 +925,7 @@ namespace OpMgr.DataAccess.Implementations
                         foreach (DataRow dr in _dtData.Rows)
                         {
                             ratingDTO = new RatingDTO();
-                            ratingDTO.Minimum = (decimal)dr["StartingRange"] + 1;
+                            ratingDTO.Minimum = (int)dr["StartingRange"] + 1;
                             ratingDTO.RatingLevel = dr["LevelDescription"].ToString();
                             lstRatingDTO.Add(ratingDTO);
                         }
