@@ -215,10 +215,16 @@
                                         </td>
                                         <td></td>
                                         <td>
-                                            <span id="apprRating_Disp">@Model.SumOfAppraiserRating</span>
+                                            @if (!(string.Equals(Model.MODE, "STAFF_FORM_FILLUP")))
+                                            {
+                                                <span id="apprRating_Disp">@Model.SumOfAppraiserRating</span>
+                                            }                                            
                                         </td>
                                         <td>
-                                            <span id="apprRating_FL">@Model.SummaryOfAppraisal</span>
+                                            @if (!(string.Equals(Model.MODE, "STAFF_FORM_FILLUP")))
+                                            {
+                                                <span id="apprRating_FL">@Model.SummaryOfAppraisal</span>
+                                            }                                            
                                         </td>
                                     </tr>
                                     @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))

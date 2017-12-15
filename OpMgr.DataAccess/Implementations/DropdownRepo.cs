@@ -913,7 +913,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select distinct StartingRange,LevelDescription from weightage_levels";
+                    command.CommandText = "select distinct StartingRange,LevelName from weightage_levels";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);
@@ -926,7 +926,7 @@ namespace OpMgr.DataAccess.Implementations
                         {
                             ratingDTO = new RatingDTO();
                             ratingDTO.Minimum = (int)dr["StartingRange"] + 1;
-                            ratingDTO.RatingLevel = dr["LevelDescription"].ToString();
+                            ratingDTO.RatingLevel = dr["LevelName"].ToString();
                             lstRatingDTO.Add(ratingDTO);
                         }
                     }
