@@ -230,13 +230,12 @@
                                     @if (string.Equals(Model.MODE, "REVIEWER_REVIEW"))
                                     {
                                         <tr>
-                                            <td colspan="6">
+                                            <td colspan="7">
                                                 @Html.TextAreaFor(m => m.ReviewerComment, new { @class = "form-control" })
                                             </td>
-                                            <td>
-                                                @Html.OpMgrDropDownListFor(m => m.ReviewerRating, Model.RatingDropDown, "Rating Level", new {@class="form-control" })
+                                            <td colspan="4">
+                                                @Html.OpMgrDropDownListFor(m => m.ReviewerRating, Model.RatingDropDown, "Final Rating", new {@class="form-control", @style="width:200px;" })
                                             </td>
-                                            <td colspan="4"></td>
                                         </tr>
                                     }
                                     else
@@ -246,9 +245,9 @@
                                                 <b>Reviewer Comment: </b>@Html.DisplayFor(m => m.ReviewerComment, new { @class = "form-control" })
                                             </td>
                                             <td>
-                                                <b>Final Rating: </b>@Html.DisplayFor(m=>m.ReviewerRatingLevel)
+                                                <b>Final Rating: </b>
                                             </td>
-                                            <td colspan="4"></td>
+                                            <td colspan="4">@Html.DisplayFor(m => m.ReviewerRatingLevel)</td>
                                         </tr>
                                     }                                    
                                     @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW") || string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
