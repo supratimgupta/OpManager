@@ -24,9 +24,21 @@ namespace OpMgr.TransactionHandler.Runner
                 Console.WriteLine("*** PLEASE DON'T CLOSE WINDOW ***");
 
                 ITransactionSvc trnsSvc = kernel.Get<ITransactionSvc>();
-                trnsSvc.AddRegularTransactions();
-                trnsSvc.CheckDuesAndAddFine();
-                trnsSvc.CheckLibraryDueAndAddFine();
+
+                string activeModules = System.Configuration.ConfigurationManager.AppSettings["ActiveModules"];
+
+                if(activeModules.Contains("REGULAR"))
+                {
+                    trnsSvc.AddRegularTransactions();
+                }
+                if (activeModules.Contains("FINE"))
+                {
+                    trnsSvc.CheckDuesAndAddFine();
+                }
+                if (activeModules.Contains("LIBRARY_FINE"))
+                {
+                    trnsSvc.CheckLibraryDueAndAddFine();
+                }                
             }
             catch(Exception exp)
             {
