@@ -86,5 +86,28 @@ namespace OpMgr.FileWatcher.DataAccess
             string query = "insert into dbo.EmployeeGoal(Active, RoleId, GoalAttributeId) values (1, '"+employeeGoal.Role.DesignationId+"', '"+employeeGoal.GoalAttribute.GoalAttributeId+"')";
             return this.InsertUpdateData(query);
         }
+
+        public override DataTable GetAllRules()
+        {
+            string query = "select * from transactionrule tr left join standard st on tr.StandardId=st.StandardId left join section sc on tr.SectionId=sc.SectionId";
+            return this.GetData(query);
+        }
+
+        public override string GetUserMasterId(string studentRegNo)
+        {
+            string userMasterId = string.Empty;
+            string query = "select UserMasterId from student info where RegistrationNumber='"+studentRegNo+"'";
+            DataTable dtData = this.GetData(query);
+            if(dtData!=null && dtData.Rows.Count>0)
+            {
+                userMasterId = dtData.Rows[0]["UserMasterId"].ToString();
+            }
+            return userMasterId;
+        }
+
+        public override string InsertTransactionLog(string query)
+        {
+            return this.InsertUpdateData(query);
+        }
     }
 }

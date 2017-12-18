@@ -23,5 +23,11 @@ namespace OpMgr.FileWatcher.DataAccess
         public abstract string InsertGoalAttribute(GoalAttributeDTO goalAttribute);
 
         public abstract string InsertEmployeeGoals(EmployeeGoalDTO employeeGoal);
+
+        public abstract DataTable GetAllRules();
+
+        public abstract string GetUserMasterId(string studentRegNo);
+
+        public abstract string InsertTransactionLog(string query);
     }
 }

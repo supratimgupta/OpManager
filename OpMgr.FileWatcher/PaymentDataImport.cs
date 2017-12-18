@@ -12,6 +12,8 @@ namespace OpMgr.FileWatcher
     {
         private DataAccess.AbsDataAccess _dataAccess;
 
+        private DataTable _dtRules;
+
         public PaymentDataImport(DataAccess.AbsDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
@@ -35,6 +37,34 @@ namespace OpMgr.FileWatcher
          * 14. UserMasterId
          * 15. TranRuleId - Hardcode for rule for monthly transaction rule
          */
+
+        private string GetTransactionMaster(string feesType)
+        {
+            string transactionMaster = string.Empty;
+            feesType = feesType.ToUpper();
+            if(feesType.Contains("MONTHLY"))
+            {
+                transactionMaster = "21";
+            }
+            else if(feesType.Contains("YEARLY"))
+            {
+                transactionMaster = "26";
+            }
+            else if(feesType.Contains("BUS"))
+            {
+                transactionMaster = "25";
+            }
+            return transactionMaster;
+        }
+
+        private void FillRuleData()
+        {
+            if(_dtRules==null)
+            {
+                _dtRules = _dataAccess.GetAllRules();
+            }
+        }
+
         public override void ImportFileToSQL(string savePath)
         {
             string path = savePath;
@@ -57,16 +87,74 @@ namespace OpMgr.FileWatcher
                             OleDbDataAdapter rdr = new OleDbDataAdapter(ocmd);
                             DataTable dtdata = new DataTable();
                             rdr.Fill(dtdata);
+
+                            foreach(DataRow dr in dtdata.Rows)
+                            {
+                                try
+                                {
+                                    string transactionMaster = this.GetTransactionMaster(dr["TYPE"].ToString());
+                                    if (!string.IsNullOrEmpty(transactionMaster))
+                                    {
+                                        string standard = dr["CLASS"].ToString();
+                                        string section = string.Empty;
+                                        if (_dtRules.Columns.Contains("SECTION"))
+                                        {
+                                            section = dr["SECTION"].ToString();
+                                        }
+                                        if (_dtRules == null)
+                                        {
+                                            this.FillRuleData();
+                                        }
+                                        if (_dtRules != null && _dtRules.Rows.Count > 0)
+                                        {
+                                            string whereClause = "StandardName='" + standard + "' AND TranMasterId=" + transactionMaster + (string.IsNullOrEmpty(section) ? string.Empty : " AND SectionName='" + section + "'");
+                                            DataRow[] arrRules = _dtRules.Select(whereClause);
+                                            if (arrRules != null && arrRules.Length == 1)
+                                            {
+                                                string ruleId = arrRules[0]["TranRuleId"].ToString();
+
+                                                DateTime dueDate = (DateTime)dr["DUE_DATE"];
+
+                                                DateTime transactionDate = dueDate.Subtract(new TimeSpan(30, 0, 0, 0, 0));
+
+                                                string amountImposed = "";
+
+                                                if (dr["TYPE"].ToString().ToUpper().Contains("MONTHLY"))
+                                                {
+                                                    amountImposed = dr["MONTHLY_DUE"].ToString();
+                                                }
+                                                else if (dr["TYPE"].ToString().ToUpper().Contains("YEARLY"))
+                                                {
+                                                    amountImposed = dr["YEARLY_DUE"].ToString();
+                                                }
+                                                else if (dr["TYPE"].ToString().ToUpper().Contains("BUS"))
+                                                {
+                                                    amountImposed = dr["BUS_DUE"].ToString();
+                                                }
+
+                                                if (!string.IsNullOrEmpty(amountImposed))
+                                                {
+                                                    string userMasterId = _dataAccess.GetUserMasterId(dr["REGNO"].ToString());
+
+                                                    if (!string.IsNullOrEmpty(userMasterId))
+                                                    {
+                                                        string query1 = "INSERT INTO transactionlog(Active,TransactionDate,TransactionDueDate,IsCompleted,TranMasterId" +
+                                                            "AmountImposed,AmountGiven,DueAmount,TransactionType,HasPenalty,UserMasterId,TranRuleId,PenaltyTransactionRule) VALUES (1," +
+                                                            "'" + transactionDate.ToString("yyyy-MM-dd") + "','" + dueDate.ToString("yyyy-MM-dd") + "',0,'" + transactionMaster + "'," +
+                                                            "'" + amountImposed + "','0','" + amountImposed + "','D',0,'" + userMasterId + "','" + ruleId + "','" + ruleId + "')";
+                                                        _dataAccess.InsertTransactionLog(query1);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                catch { }
+                            }
                         }
                     }
                 }
             }
         }
-
-
-        //public IEnumerable<OpMgr.Common.DTOs.TransactionLogDTO> CovertToTransactionLog(DataTable dtData)
-        //{
-            
-        //}
     }
 }
