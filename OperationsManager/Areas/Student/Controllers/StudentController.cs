@@ -305,6 +305,13 @@ namespace OperationsManager.Areas.Student.Controllers
             StatusDTO<List<StudentDTO>> status = _studSvc.Select(null);
             StudentVM studView = null;
 
+            if(Session["SEARCH_RESULT"]!=null)
+            {
+                studView = (StudentVM)Session["SEARCH_RESULT"];
+                Session["SEARCH_RESULT"] = null;
+                return View(studView);
+            }
+
             if (status.ReturnObj != null && status.ReturnObj.Count > 0)
             {
                 studView = new StudentVM(); // Instantiating Student View model
@@ -376,6 +383,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.MsgColor = "green";
                 studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
             }
+
+            
 
             return View(studView);
         }
@@ -475,6 +484,7 @@ namespace OperationsManager.Areas.Student.Controllers
                                 searchItem.StandardSectionMap.Section.SectionName = stud.StandardSectionMap.Section.SectionName;
 
                                 searchItem.UserDetails.Location.LocationDescription = stud.UserDetails.Location.LocationDescription;
+                                searchItem.UserDetails.ContactNo = stud.UserDetails.ContactNo;
 
                                 //Add into Student vIew Model List
                                 studView.studentList.Add(searchItem);
@@ -492,6 +502,8 @@ namespace OperationsManager.Areas.Student.Controllers
                     studView.LocationList = _uiddlRepo.getLocationDropDown();
                 }
             }
+
+            Session["SEARCH_RESULT"] = studView;
             return View(studView);
         }
 

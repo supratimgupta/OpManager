@@ -49,30 +49,6 @@
       <script src="js/html5shiv.js"></script>
       <script src="js/respond.min.js"></script>
     <![endif]-->
-
-    <script type="text/javascript" language="javascript">
-
-
-    function forgotPassword() {
-        
-        $.showModalDialog({
-            url: "/Login/Login/ForgotPassword",
-            height: 400,
-            width: 600,
-            position: { my: "center", at: "middle", of: window },
-            scrollable: false,
-            open: function (event, ui) {
-                this.css('overflow', 'scroll');
-            },
-            onclose: function () {
-                var returnedValue = this.returnValue;
-                if (returnedValue) {
-                    //do something
-                }
-            }
-        });
-    }
-    </script>
 </head>
 
 <body>
@@ -164,7 +140,7 @@
     <!-- Todo -->
     <script src="~/admin/js/jquery.todo.js"></script>
     <script src="~/Content/jquery-validation-1.16.0/dist/jquery.validate.js"></script>
-
+    <script src="~/Scripts/jqModalDialog.js"></script>
     <script type="text/javascript">
         /* ==============================================
              Counter Up
@@ -182,5 +158,29 @@
         $("#loginForm").validate();
     });
     </script>
+    <script type="text/javascript" language="javascript">
+
+
+    function forgotPassword() {
+
+        $.showModalDialog({
+            url: "/Login/Login/ForgotPassword",
+            height: 400,
+            width: 600,
+            position: { my: "center", at: "middle", of: window },
+            scrollable: false,
+            open: function (event, ui) {
+                this.css('overflow', 'scroll');
+            },
+            onclose: function () {
+                var returnedValue = this.returnValue;
+                if (returnedValue) {
+                    //do something
+                }
+            }
+        });
+    }
+    </script>
+
 </body>    
 </html>

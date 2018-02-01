@@ -157,7 +157,7 @@
     <value>Education Qualification</value>
   </data>
   <data name="EmailId" xml:space="preserve">
-    <value>EmailId</value>
+    <value>Email Id</value>
   </data>
   <data name="FatherAnnualIncome" xml:space="preserve">
     <value>Father's Annual Income</value>

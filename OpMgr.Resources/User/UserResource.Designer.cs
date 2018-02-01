@@ -241,7 +241,7 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EmailId.
+        ///   Looks up a localized string similar to Email Id.
         /// </summary>
         public static string EmailId {
             get {

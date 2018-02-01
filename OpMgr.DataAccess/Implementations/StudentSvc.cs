@@ -364,7 +364,7 @@ namespace OpMgr.DataAccess.Implementations
 
                         selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName,Lo.LocationDescription," +
                                        "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
-                                       "student.FathersContactNo " +
+                                       "student.FathersContactNo, users.ContactNo " +
                                        "FROM studentinfo student " +
                                        " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
                                        " INNER JOIN Location Lo ON Lo.LocationId = users.LocationId" +
@@ -463,6 +463,7 @@ namespace OpMgr.DataAccess.Implementations
                                 student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
                                 student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
                                 student.UserDetails.Location.LocationDescription = dsStudentLst.Tables[0].Rows[i]["LocationDescription"].ToString();
+                                student.UserDetails.ContactNo = dsStudentLst.Tables[0].Rows[i]["ContactNo"].ToString();
                                 studLst.ReturnObj.Add(student);
 
                                 studLst.IsSuccess = true;
