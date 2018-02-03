@@ -913,7 +913,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT usr.UserMasterId, student.StudentInfoId, usr.FName, usr.MName, usr.LName, student.StandardSectionId FROM usermaster usr, studentinfo student WHERE usr.UserMasterId=student.UserMasterId AND student.RegistrationNumber=@regNo";
+                    command.CommandText = "SELECT usr.UserMasterId, student.StudentInfoId, usr.FName, usr.MName, usr.LName, student.StandardSectionId, usr.LocationId FROM usermaster usr, studentinfo student WHERE usr.UserMasterId=student.UserMasterId AND student.RegistrationNumber=@regNo";
                     command.Parameters.Add("@regNo", MySqlDbType.String).Value = registrationNo;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     MySqlDataAdapter mDA = new MySqlDataAdapter(command);
@@ -930,6 +930,11 @@ namespace OpMgr.DataAccess.Implementations
                         student.UserDetails.FName = _dsData.Tables[0].Rows[0]["FName"].ToString();
                         student.UserDetails.MName = _dsData.Tables[0].Rows[0]["MName"].ToString();
                         student.UserDetails.LName = _dsData.Tables[0].Rows[0]["LName"].ToString();
+                        if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["LocationId"].ToString()))
+                        {
+                            student.UserDetails.Location = new LocationDTO();
+                            student.UserDetails.Location.LocationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["LocationId"]);
+                        }
                         if(!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["StandardSectionId"].ToString()))
                         {
                             student.StandardSectionMap = new StandardSectionMapDTO();

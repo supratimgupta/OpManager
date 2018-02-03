@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.FileWatcher", "OpMgr.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.Utilities", "OpMgr.Utilities\OpMgr.Utilities.csproj", "{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpMgr.Backlog.Handler", "OpMgr.Backlog.Handler\OpMgr.Backlog.Handler.csproj", "{B76592D8-23AD-40C3-A0FF-534646BC5136}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,12 @@ Global
 		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3B12D54-7B11-4AE8-9B7D-F8B45FF4EBE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{B76592D8-23AD-40C3-A0FF-534646BC5136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B76592D8-23AD-40C3-A0FF-534646BC5136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B76592D8-23AD-40C3-A0FF-534646BC5136}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B76592D8-23AD-40C3-A0FF-534646BC5136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B76592D8-23AD-40C3-A0FF-534646BC5136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B76592D8-23AD-40C3-A0FF-534646BC5136}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

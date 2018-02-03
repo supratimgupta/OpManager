@@ -132,6 +132,9 @@
   <data name="FirstDueAfterDays" xml:space="preserve">
     <value>First Due After Days</value>
   </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="PageHeader" xml:space="preserve">
     <value>Fees Rule</value>
   </data>

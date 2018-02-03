@@ -323,7 +323,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, SSM.StandardSectionId, S.ClassTypeId, UM.RoleId, TM.TransactionType FROM UserTransaction UT" +
+                    command.CommandText = "SELECT UT.UserTransactionId, UT.UserMasterId, UT.TranMasterId, UT.GraceAmountOn, UT.GraceAmount, UT.LastAutoTransactionOn, UT.NextAutoTransactionOn, UM.RoleId, UM.EmailId, SSM.StandardId, SSM.SectionId, SSM.StandardSectionId, S.ClassTypeId, UM.RoleId, TM.TransactionType, UM.LocationId FROM UserTransaction UT" +
                                             " LEFT JOIN UserMaster UM ON UM.UserMasterId = UT.UserMasterId LEFT JOIN StudentInfo SI ON UM.UserMasterId=SI.UserMasterId LEFT JOIN StandardSectionMap SSM ON SI.StandardSectionId = SSM.StandardSectionId" +
                                             " LEFT JOIN Standard S ON SSM.StandardId = S.StandardId LEFT JOIN transactionmaster TM ON UT.TranMasterId=TM.TranMasterId" +
                                             " WHERE UT.Active=1 AND UM.Active=1 AND ((NextAutoTransactionOn IS NULL AND LastAutoTransactionOn IS NULL) OR NextAutoTransactionOn<=@runDate)";

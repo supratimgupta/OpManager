@@ -171,9 +171,10 @@
                             <input type="hidden" value="@Model.IsPostBack" name="IsPostBack" id="hfIsPostBack" />
                             <div class="row">
                                 <div class="col-lg-5">
-                                    @Html.OpMgrDropDownListFor(m => m.SelectedFrequency, Model.TransactionFrequencies, TransactionRule.SelectFrequency, new { @class = "form-control", onchange="getTrnsMasterData(this);" })
+                                    @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.Locations, "Location", new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-5">
+                                    @Html.OpMgrDropDownListFor(m => m.SelectedFrequency, Model.TransactionFrequencies, TransactionRule.SelectFrequency, new { @class = "form-control", onchange="getTrnsMasterData(this);" })
                                 </div>
                             </div>
                             <div class="row">

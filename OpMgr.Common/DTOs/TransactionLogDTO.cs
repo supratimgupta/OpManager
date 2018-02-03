@@ -81,5 +81,17 @@ namespace OpMgr.Common.DTOs
         public string PaymentChequeNo { get; set; }
 
         public DateTime? PaymentDate { get; set; }
+
+        public double? MonthlyBacklogAmount { get; set; }
+
+        public double? LateFineBacklogAmount { get; set; }
+
+        public double? YearlyBacklogAmount { get; set; }
+
+        public double? BusBacklogAmount { get; set; }
+
+        public DateTime? BacklogFromDate { get; set; }
+
+        public DateTime? BacklogToDate { get; set; }
     }
 }

@@ -61,6 +61,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
                     trRuleVM.TranMaster = trRule.ReturnObj.TranMaster;
                     trRuleVM.TranRuleId = trRule.ReturnObj.TranRuleId;
                     trRuleVM.UserDTO = trRule.ReturnObj.UserDTO;
+                    trRuleVM.Location = trRule.ReturnObj.Location;
 
                     trRuleVM.MODE = "EDIT";
 
@@ -109,6 +110,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             trRuleVM.PenaltyCalcIn = uiDDLRepo.getCalcType();
             trRuleVM.ClassTypes = uiDDLRepo.getClassTypeDropDown();
             trRuleVM.PenaltyTransactionTypes = uiDDLRepo.getTransactionTypes();
+            trRuleVM.Locations = uiDDLRepo.getLocationDropDown();
             
             trRuleVM.PenaltyTransactionRules = uiDDLRepo.getTransactionRules();
             trRuleVM.ErrorMsg = string.Empty;
@@ -140,6 +142,11 @@ namespace OperationsManager.Areas.Transaction.Controllers
             if (trRuleVM.TranMaster == null && trRuleVM.TranMaster.TranMasterId <= 0)
             {
                 message = message + "Please select a transaction name.";
+                return false;
+            }
+            if (trRuleVM.Location == null || trRuleVM.Location.LocationId<1)
+            {
+                message = message + "Please select a location.";
                 return false;
             }
             diffTo = _trnsMaster.GetIsDifferentTo(trRuleVM.TranMaster.TranMasterId);
@@ -207,7 +214,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             {
                 //string diffTo = _trnsMaster.GetIsDifferentTo(trRuleVM.TranMaster.TranMasterId);
 
-                if(!_trRule.IsDuplicate(trRuleVM.TranMaster.TranMasterId, trRuleVM.Standard==null?-1: trRuleVM.Standard.StandardId, trRuleVM.Section==null?-1: trRuleVM.Section.SectionId, trRuleVM.ClassType==null?-1: trRuleVM.ClassType.ClassTypeId, trRuleVM.UserDTO==null?-1: trRuleVM.UserDTO.UserMasterId, diffTo, trRuleVM.MODE, trRuleVM.TranRuleId))
+                if(!_trRule.IsDuplicate(trRuleVM.Location.LocationId, trRuleVM.TranMaster.TranMasterId, trRuleVM.Standard==null?-1: trRuleVM.Standard.StandardId, trRuleVM.Section==null?-1: trRuleVM.Section.SectionId, trRuleVM.ClassType==null?-1: trRuleVM.ClassType.ClassTypeId, trRuleVM.UserDTO==null?-1: trRuleVM.UserDTO.UserMasterId, diffTo, trRuleVM.MODE, trRuleVM.TranRuleId))
                 {
                     if (string.Equals(trRuleVM.MODE, "EDIT"))
                     {
@@ -284,7 +291,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             tranRule.Standards = uiDDLRepo.getStandardDropDown();
             tranRule.Sections = uiDDLRepo.getSectionDropDown();
             tranRule.ClassTypes = uiDDLRepo.getClassTypeDropDown();
-            
+            tranRule.Locations = uiDDLRepo.getLocationDropDown();
 
             
 
@@ -305,45 +312,45 @@ namespace OperationsManager.Areas.Transaction.Controllers
                     case "NONE":
                         if (tranRule.TranMaster.TranMasterId > 0)
                         {
-                            searchResult = _trRule.GetNoneLevelRules(tranRule.TranMaster.TranMasterId);
+                            searchResult = _trRule.GetNoneLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId);
                         }
                         else
                         {
-                            searchResult = _trRule.GetNoneLevelRules();
+                            searchResult = _trRule.GetNoneLevelRules(tranRule.Location.LocationId);
                         }
                         break;
                     case "CLASS-TYPE":
                         if (tranRule.ClassType != null && tranRule.ClassType.ClassTypeId > 0)
                         {
-                            searchResult = _trRule.GetClassTypeLevelRules(tranRule.TranMaster.TranMasterId, tranRule.ClassType.ClassTypeId);
+                            searchResult = _trRule.GetClassTypeLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId, tranRule.ClassType.ClassTypeId);
                         }
                         else
                         {
-                            searchResult = _trRule.GetClassTypeLevelRules(tranRule.TranMaster.TranMasterId);
+                            searchResult = _trRule.GetClassTypeLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId);
                         }
                         break;
                     case "STANDARD":
                         if (tranRule.Standard != null && tranRule.Standard.StandardId > 0)
                         {
-                            searchResult = _trRule.GetStandardLevelRules(tranRule.TranMaster.TranMasterId, tranRule.Standard.StandardId);
+                            searchResult = _trRule.GetStandardLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId, tranRule.Standard.StandardId);
                         }
                         else
                         {
-                            searchResult = _trRule.GetStandardLevelRules(tranRule.TranMaster.TranMasterId);
+                            searchResult = _trRule.GetStandardLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId);
                         }
                         break;
                     case "SECTION":
                         if (tranRule.Section != null && tranRule.Section.SectionId > 0)
                         {
-                            searchResult = _trRule.GetStandardSectionLevelRules(tranRule.TranMaster.TranMasterId, tranRule.Standard.StandardId, tranRule.Section.SectionId);
+                            searchResult = _trRule.GetStandardSectionLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId, tranRule.Standard.StandardId, tranRule.Section.SectionId);
                         }
                         else
                         {
-                            searchResult = _trRule.GetStandardSectionLevelRules(tranRule.TranMaster.TranMasterId, tranRule.Standard.StandardId);
+                            searchResult = _trRule.GetStandardSectionLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId, tranRule.Standard.StandardId);
                         }
                         break;
                     case "USER":
-                        searchResult = _trRule.GetUserLevelRules(tranRule.TranMaster.TranMasterId, tranRule.UserDTO.UserMasterId);
+                        searchResult = _trRule.GetUserLevelRules(tranRule.Location.LocationId, tranRule.TranMaster.TranMasterId, tranRule.UserDTO.UserMasterId);
                         break;
                 }
                 if (searchResult != null && searchResult.Count > 0)
@@ -394,6 +401,7 @@ namespace OperationsManager.Areas.Transaction.Controllers
             tranRule.Standards = uiDDLRepo.getStandardDropDown();
             tranRule.Sections = uiDDLRepo.getSectionDropDown();
             tranRule.ClassTypes = uiDDLRepo.getClassTypeDropDown();
+            tranRule.Locations = uiDDLRepo.getLocationDropDown();
             tranRule.TransactionMasters = new SelectList(_ddlRepo.GetTransactionMasters(tranRule.SelectedFrequency), "TranMasterId", "TransactionName");
 
             return View(tranRule);
@@ -407,7 +415,10 @@ namespace OperationsManager.Areas.Transaction.Controllers
                 message = "Please select a frequency and a fees name to proceed.";
                 return false;
             }
-
+            if(trRule.Location==null || trRule.Location.LocationId<1)
+            {
+                message = "Please select the location.";
+            }
             if(string.Equals(trRule.IsdifferentTo,"USER"))
             {
                 if(trRule.UserDTO==null || trRule.UserDTO.UserMasterId<=0)

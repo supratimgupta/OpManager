@@ -32,5 +32,7 @@ namespace OperationsManager.Areas.Transaction.Models
         public string LabelCurrentlyAdjust { get; set; }
 
         public SelectList PaymentModeList { get; set; }
+
+        public List<TransactionLogDTO> BacklogDues { get; set; }
     }
 }

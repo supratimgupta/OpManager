@@ -169,29 +169,29 @@ namespace OpMgr.TransactionHandler.Implementations
             return retValue;
         }
 
-        private DataRow[] GetRuleRow(int trnsMasterId, string isDiffTo, object standardId, object sectionId, object uMasterId, object classTypeId)
+        private DataRow[] GetRuleRow(int trnsMasterId, string isDiffTo, object standardId, object sectionId, object uMasterId, object classTypeId, int locationId)
         {
             DataRow[] rule = null;
 
             if (string.Equals(isDiffTo, "NONE", StringComparison.OrdinalIgnoreCase))
             {
-                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId);
+                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId +" AND LocationId=" + locationId);
             }
             if (string.Equals(isDiffTo, "USER", StringComparison.OrdinalIgnoreCase))
             {
-                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId +" AND UserMasterId=" + (int)uMasterId);
+                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId +" AND UserMasterId=" + (int)uMasterId + " AND LocationId="+locationId);
             }
             if(string.Equals(isDiffTo, "CLASS-TYPE", StringComparison.OrdinalIgnoreCase))
             {
-                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId + " AND ClassTypeId=" + (int)classTypeId);
+                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId + " AND ClassTypeId=" + (int)classTypeId + " AND LocationId=" + locationId);
             }
             if(string.Equals(isDiffTo, "STANDARD", StringComparison.OrdinalIgnoreCase))
             {
-                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId + " AND StandardId=" + (int)standardId);
+                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId + " AND StandardId=" + (int)standardId + " AND LocationId=" + locationId);
             }
             if(string.Equals(isDiffTo, "SECTION", StringComparison.OrdinalIgnoreCase))
             {
-                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId + " AND StandardId=" + (int)standardId + " AND SectionId="+(int)sectionId);
+                rule = _dtTransRule.Select("TranMasterId=" + trnsMasterId + " AND StandardId=" + (int)standardId + " AND SectionId=" + (int)sectionId + " AND LocationId=" + locationId);
             }
 
             if(rule.Length>1)
@@ -262,7 +262,13 @@ namespace OpMgr.TransactionHandler.Implementations
                            int transMasterId = (int)reader["TranMasterId"];
                            if (IsTransactionRequired(transMasterId, string.IsNullOrEmpty(reader["NextAutoTransactionOn"].ToString())?null: reader["NextAutoTransactionOn"], string.IsNullOrEmpty(reader["LastAutoTransactionOn"].ToString())?null: reader["LastAutoTransactionOn"], out lastDayOfRun, out nextDayToRun, out isDiffTo))
                            {
-                               DataRow[] rules = GetRuleRow(transMasterId, isDiffTo, reader["StandardId"], reader["SectionId"], reader["UserMasterId"], reader["ClassTypeId"]);
+                               int locationId = -1;
+                               if(!string.IsNullOrEmpty(reader["LocationId"].ToString()))
+                               {
+                                   locationId = Convert.ToInt32(reader["LocationId"]);
+                               }
+
+                               DataRow[] rules = GetRuleRow(transMasterId, isDiffTo, reader["StandardId"], reader["SectionId"], reader["UserMasterId"], reader["ClassTypeId"], locationId);
 
                                if(rules!=null)
                                {
