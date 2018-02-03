@@ -1199,10 +1199,10 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE TransactionLog Active=0, IsCompleted=1 WHERE UserMasterId=@userMasterId";
+                    command.CommandText = "UPDATE TransactionLog SET Active=0, IsCompleted=1 WHERE UserMasterId=@userMasterId";
                     command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = userMasterId;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    return command.ExecuteNonQuery() > 1;
+                    return command.ExecuteNonQuery() > 0;
                 }
                 catch (Exception exp)
                 {
