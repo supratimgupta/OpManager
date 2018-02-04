@@ -47,20 +47,34 @@ namespace OperationsManager.Areas.Transaction.Controllers
             return View(paymentvm);
         }
 
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ClearAllBacklog(PaymentVM paymentvm)
+        {
+            if(_transactionLogSvc.ClearAllBacklogs(paymentvm.User.UserMasterId))
+            {
+                return Json(new { Status = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Status = false }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult GetPayment(PaymentVM paymentvm)
         {
             PaymentVM paymentview = null;
             StudentDTO student = null;
-            
+
+            bool isStudentPayment = false; 
 
             if (paymentvm != null)
             {
-                
+                  
                 if (!String.IsNullOrEmpty(paymentvm.RegistrationNumber))
                 {
                     student = new StudentDTO();
                     student.RegistrationNumber = paymentvm.RegistrationNumber;
+                    isStudentPayment = true;
                 }
                 if (!String.IsNullOrEmpty(paymentvm.StaffEmployeeId))
                 {
@@ -70,13 +84,15 @@ namespace OperationsManager.Areas.Transaction.Controllers
                     student.UserDetails.Employee.StaffEmployeeId = paymentvm.StaffEmployeeId;
                 }
                 StatusDTO<List<TransactionLogDTO>> status = _transactionLogSvc.SelectPayment(student);
+
+                paymentview = new PaymentVM(); // Instantiating Payment View model
+                paymentview.paymentDetailsList = new List<PaymentVM>(); // instantiating list of Payment
+
                 if (status.ReturnObj != null && status.ReturnObj.Count > 0)
-                {
-                    paymentview = new PaymentVM(); // Instantiating Payment View model
-                    paymentview.paymentDetailsList = new List<PaymentVM>(); // instantiating list of Payment
+                {                 
 
                     if (status.IsSuccess && !status.IsException)
-                    {
+                    {                        
                         PaymentVM searchItem = null;
                         foreach (TransactionLogDTO tranlog in status.ReturnObj)
                         {
@@ -155,6 +171,12 @@ namespace OperationsManager.Areas.Transaction.Controllers
                     paymentvm.IsSearchSuccessful = false;
                 }
             }
+
+            if (isStudentPayment)
+            {
+                paymentview.BacklogDues = _transactionLogSvc.GetBacklogDues(paymentvm.RegistrationNumber);
+            }
+
             paymentview.TransferMode = "-1";
             return View(paymentview);
         }

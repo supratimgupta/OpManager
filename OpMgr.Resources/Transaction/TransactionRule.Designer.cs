@@ -106,6 +106,15 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fees Rule.
         /// </summary>
         public static string PageHeader {

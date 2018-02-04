@@ -115,7 +115,7 @@ namespace OpMgr.FileWatcher
 
                                                 DateTime dueDate = (DateTime)dr["DUE_DATE"];
 
-                                                DateTime transactionDate = dueDate.Subtract(new TimeSpan(30, 0, 0, 0, 0));
+                                                DateTime transactionDate = DateTime.Parse("03-" + dr["FOR_THE_MONTH"].ToString()+"-"+ DateTime.Today.Year);
 
                                                 string amountImposed = "";
 

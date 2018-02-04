@@ -51,5 +51,7 @@ namespace OpMgr.Common.DTOs
         public string PenaltyTransactionType { get; set; }
 
         public TransactionRuleDTO PenaltyTransactionRule { get; set; }
+
+        public LocationDTO Location { get; set; }
     }
 }

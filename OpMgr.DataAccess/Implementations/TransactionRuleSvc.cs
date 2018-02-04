@@ -44,8 +44,8 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    command.CommandText = "INSERT INTO transactionrule(Active, TranMasterId, UserMasterId, StandardId, SectionId, FirstDueAfterDays, DueDateIncreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, ClassTypeId, RuleName, PenaltyTransactionType, PenaltyTranRuleId)" + 
-                                          " VALUES (@active, @tmId,@umId,@stdId,@secId,@frstDueAfter,@dueDTIncreasesBy,@penaltyCalcIn,@penaltyAmt,@actualAmt,@ctId,@ruleName,@penaltyTrType,@penaltyTrRuleId)";
+                    command.CommandText = "INSERT INTO transactionrule(Active, TranMasterId, UserMasterId, StandardId, SectionId, FirstDueAfterDays, DueDateIncreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, ClassTypeId, RuleName, PenaltyTransactionType, PenaltyTranRuleId, LocationId)" + 
+                                          " VALUES (@active, @tmId,@umId,@stdId,@secId,@frstDueAfter,@dueDTIncreasesBy,@penaltyCalcIn,@penaltyAmt,@actualAmt,@ctId,@ruleName,@penaltyTrType,@penaltyTrRuleId,@locationId)";
 
                     command.Parameters.Add("@active", MySqlDbType.Bit).Value = data.Active;
                     if (data.TranMaster!=null && data.TranMaster.TranMasterId>0)
@@ -138,6 +138,14 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@penaltyTrRuleId", MySqlDbType.Int32).Value = DBNull.Value;
                     }
+                    if(data.Location!=null && data.Location.LocationId>0)
+                    {
+                        command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = data.Location.LocationId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     if(command.ExecuteNonQuery()>0)
                     {
                         status.IsSuccess = true;
@@ -164,7 +172,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    command.CommandText = "UPDATE transactionrule SET Active=@active, TranMasterId=@tmId, UserMasterId=@umId, StandardId=@stdId, SectionId=@secId, FirstDueAfterDays=@frstDueAfter, DueDateIncreasesBy=@dueDTIncreasesBy, PenaltyCalculatedIn=@penaltyCalcIn, PenaltyAmount=@penaltyAmt, ActualAmount=@actualAmt, ClassTypeId=@ctId, RuleName=@ruleName, PenaltyTransactionType=@penaltyTrType, PenaltyTranRuleId=@penaltyTrRuleId WHERE TranRuleId=@trRuleId";
+                    command.CommandText = "UPDATE transactionrule SET Active=@active, TranMasterId=@tmId, UserMasterId=@umId, StandardId=@stdId, SectionId=@secId, FirstDueAfterDays=@frstDueAfter, DueDateIncreasesBy=@dueDTIncreasesBy, PenaltyCalculatedIn=@penaltyCalcIn, PenaltyAmount=@penaltyAmt, ActualAmount=@actualAmt, ClassTypeId=@ctId, RuleName=@ruleName, PenaltyTransactionType=@penaltyTrType, PenaltyTranRuleId=@penaltyTrRuleId, LocationId=@locationId WHERE TranRuleId=@trRuleId";
                     command.Parameters.Add("@active", MySqlDbType.Bit).Value = data.Active;
                     if (data.TranMaster != null && data.TranMaster.TranMasterId > 0)
                     {
@@ -256,6 +264,14 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@penaltyTrRuleId", MySqlDbType.Int32).Value = DBNull.Value;
                     }
+                    if (data.Location != null && data.Location.LocationId > 0)
+                    {
+                        command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = data.Location.LocationId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
                     command.Parameters.Add("@trRuleId", MySqlDbType.Int32).Value = data.TranRuleId;
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -293,7 +309,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    command.CommandText = "SELECT TranRuleId, Active, TranMasterId, UserMasterId, StandardId, SectionId, FirstDueAfterDays, DueDateIncreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, ClassTypeId, RuleName, PenaltyTransactionType, PenaltyTranRuleId from transactionrule where TranRuleId=@trRuleId";
+                    command.CommandText = "SELECT TranRuleId, Active, TranMasterId, UserMasterId, StandardId, SectionId, FirstDueAfterDays, DueDateIncreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, ClassTypeId, RuleName, PenaltyTransactionType, PenaltyTranRuleId, LocationId from transactionrule where TranRuleId=@trRuleId";
                     command.Parameters.Add("@trRuleId", MySqlDbType.Int32).Value = rowId;
                     DataTable dtResult = new DataTable();
                     MySqlDataAdapter mDa = new MySqlDataAdapter(command);
@@ -322,6 +338,8 @@ namespace OpMgr.DataAccess.Implementations
                         status.ReturnObj.PenaltyTransactionType = dtResult.Rows[0]["PenaltyTransactionType"].ToString();
                         status.ReturnObj.PenaltyTransactionRule = new TransactionRuleDTO();
                         status.ReturnObj.PenaltyTransactionRule.TranRuleId = string.IsNullOrEmpty(dtResult.Rows[0]["PenaltyTranRuleId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["PenaltyTranRuleId"].ToString());
+                        status.ReturnObj.Location = new LocationDTO();
+                        status.ReturnObj.Location.LocationId = string.IsNullOrEmpty(dtResult.Rows[0]["LocationId"].ToString()) ? -1 : int.Parse(dtResult.Rows[0]["LocationId"].ToString());
                     }
                     return status;
                 }
@@ -340,7 +358,7 @@ namespace OpMgr.DataAccess.Implementations
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT TranRuleId, TranMasterId, StandardId, SectionId, UserMasterId, ClassTypeId, FirstDueAfterDays, DueDateincreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, PenaltyTransactionType, PenaltyTranRuleId FROM TransactionRule WHERE Active=1";
+                    command.CommandText = "SELECT TranRuleId, TranMasterId, StandardId, SectionId, UserMasterId, ClassTypeId, FirstDueAfterDays, DueDateincreasesBy, PenaltyCalculatedIn, PenaltyAmount, ActualAmount, PenaltyTransactionType, PenaltyTranRuleId, LocationId FROM TransactionRule WHERE Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     MySqlDataAdapter dataAdap = new MySqlDataAdapter(command);
                     _dtResult = new DataTable("TRANS_RULE");
@@ -408,15 +426,16 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public bool IsDuplicate(int trnsMasterId, int standardId, int sectionId, int classTypeId, int userMasterId, string isDiffTo, string mode, int ruleId)
+        public bool IsDuplicate(int location, int trnsMasterId, int standardId, int sectionId, int classTypeId, int userMasterId, string isDiffTo, string mode, int ruleId)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT TranRuleId FROM TransactionRule WHERE TranMasterId=@tranMaster";
+                    command.CommandText = "SELECT TranRuleId FROM TransactionRule WHERE TranMasterId=@tranMaster AND LocationId=@locationId";
                     command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = trnsMasterId;
+                    command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = location;
                     if(string.Equals(isDiffTo, "CLASS-TYPE", StringComparison.OrdinalIgnoreCase))
                     {
                         command.CommandText = command.CommandText + " AND ClassTypeId=@classType";
@@ -469,7 +488,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionRuleDTO> GetUserLevelRules(int transactionMasterId, int userRowId)
+        public List<TransactionRuleDTO> GetUserLevelRules(int location, int transactionMasterId, int userRowId)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -522,16 +541,17 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionRuleDTO> GetClassTypeLevelRules(int transactionMasterId, int? classTypeRowId = null)
+        public List<TransactionRuleDTO> GetClassTypeLevelRules(int location, int transactionMasterId, int? classTypeRowId = null)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT * FROM (SELECT trans.TranRuleId, ct.ClassTypeId, ct.ClassTypeName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, trans.RuleName, trans.ActualAmount, trans.TranMasterId, ct.Active, trans.IsDifferentTo FROM classtype ct LEFT OUTER JOIN (SELECT tr.TranRuleId, tr.RuleName, tr.ActualAmount, tr.TranMasterId, tm.IsDifferentTo, tr.ClassTypeId FROM transactionrule tr LEFT JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId AND tm.TranMasterId=@tranMaster AND tm.IsdifferentTo='CLASS-TYPE') trans ON trans.ClassTypeId=ct.ClassTypeId AND ct.Active=1) res";
+                    command.CommandText = "SELECT * FROM (SELECT trans.TranRuleId, ct.ClassTypeId, ct.ClassTypeName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, trans.RuleName, trans.ActualAmount, trans.TranMasterId, ct.Active, trans.IsDifferentTo FROM classtype ct LEFT OUTER JOIN (SELECT tr.TranRuleId, tr.RuleName, tr.ActualAmount, tr.TranMasterId, tm.IsDifferentTo, tr.ClassTypeId FROM transactionrule tr LEFT JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId AND tm.TranMasterId=@tranMaster AND tm.IsdifferentTo='CLASS-TYPE' AND tr.LocationId=@locationId) trans ON trans.ClassTypeId=ct.ClassTypeId AND ct.Active=1) res";
                     command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
                     command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = location;
                     if(classTypeRowId!=null && classTypeRowId.Value>0)
                     {
                         command.CommandText += " WHERE res.ClassTypeId=@classType";
@@ -578,16 +598,17 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionRuleDTO> GetStandardLevelRules(int transactionMasterId, int? standardRowId = null)
+        public List<TransactionRuleDTO> GetStandardLevelRules(int location, int transactionMasterId, int? standardRowId = null)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT * FROM (SELECT trans.TranRuleId, std.StandardId, std.StandardName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, trans.RuleName, trans.ActualAmount, trans.TranMasterId, std.Active, trans.IsDifferentTo FROM standard std LEFT OUTER JOIN (SELECT tr.TranRuleId, tr.RuleName, tr.ActualAmount, tr.TranMasterId, tm.IsDifferentTo, tr.StandardId from transactionrule tr LEFT JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId where tr.TranMasterId=@tranMaster and tm.IsdifferentTo='STANDARD') trans ON trans.StandardId=std.StandardId AND std.Active=1) res";
+                    command.CommandText = "SELECT * FROM (SELECT trans.TranRuleId, std.StandardId, std.StandardName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, trans.RuleName, trans.ActualAmount, trans.TranMasterId, std.Active, trans.IsDifferentTo FROM standard std LEFT OUTER JOIN (SELECT tr.TranRuleId, tr.RuleName, tr.ActualAmount, tr.TranMasterId, tm.IsDifferentTo, tr.StandardId from transactionrule tr LEFT JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId where tr.TranMasterId=@tranMaster and tm.IsdifferentTo='STANDARD' and tr.LocationId=@trLocationId) trans ON trans.StandardId=std.StandardId AND std.Active=1) res";
                     command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
                     command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@trLocationId", MySqlDbType.Int32).Value = location;
                     if (standardRowId != null && standardRowId.Value > 0)
                     {
                         command.CommandText += " WHERE res.StandardId=@stdId";
@@ -634,16 +655,17 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionRuleDTO> GetStandardSectionLevelRules(int transactionMasterId, int standardId, int? sectionId = null)
+        public List<TransactionRuleDTO> GetStandardSectionLevelRules(int location, int transactionMasterId, int standardId, int? sectionId = null)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT * FROM (SELECT trans.TranRuleId, std.StandardId, std.StandardName, sec.SectionId, sec.SectionName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, trans.RuleName, trans.ActualAmount, trans.TranMasterId, stdsec.Active as stdSecActive, std.Active as stdActive, sec.Active as secActive, trans.IsDifferentTo FROM standardsectionmap stdsec LEFT OUTER JOIN standard std ON stdsec.StandardId=std.StandardId LEFT OUTER JOIN section sec ON stdsec.SectionId=sec.SectionId LEFT OUTER JOIN (SELECT tr.TranRuleId, tr.RuleName, tr.ActualAmount, tr.TranMasterId, tm.IsDifferentTo,tr.StandardId,tr.SectionId FROM transactionrule tr LEFT JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId AND tr.TranMasterId=@tranMaster AND tm.IsdifferentTo='SECTION') trans ON (trans.StandardId=stdsec.StandardId AND trans.SectionId=stdsec.SectionId) WHERE std.Active=1 AND stdsec.Active=1 AND sec.Active=1 "+ (standardId>0? "AND stdsec.StandardId=@stdId)":")")+" res";
+                    command.CommandText = "SELECT * FROM (SELECT trans.TranRuleId, std.StandardId, std.StandardName, sec.SectionId, sec.SectionName, (select TransactionName from transactionmaster where tranmasterid=@nameSelect) as TransactionName, trans.RuleName, trans.ActualAmount, trans.TranMasterId, stdsec.Active as stdSecActive, std.Active as stdActive, sec.Active as secActive, trans.IsDifferentTo FROM standardsectionmap stdsec LEFT OUTER JOIN standard std ON stdsec.StandardId=std.StandardId LEFT OUTER JOIN section sec ON stdsec.SectionId=sec.SectionId LEFT OUTER JOIN (SELECT tr.TranRuleId, tr.RuleName, tr.ActualAmount, tr.TranMasterId, tm.IsDifferentTo,tr.StandardId,tr.SectionId FROM transactionrule tr LEFT JOIN transactionmaster tm ON tr.TranMasterId=tm.TranMasterId AND tr.TranMasterId=@tranMaster AND tm.IsdifferentTo='SECTION' AND tr.LocationId=@trLocationId) trans ON (trans.StandardId=stdsec.StandardId AND trans.SectionId=stdsec.SectionId) WHERE std.Active=1 AND stdsec.Active=1 AND sec.Active=1 "+ (standardId>0? "AND stdsec.StandardId=@stdId)":")")+" res";
                     command.Parameters.Add("@nameSelect", MySqlDbType.Int32).Value = transactionMasterId;
                     command.Parameters.Add("@tranMaster", MySqlDbType.Int32).Value = transactionMasterId;
+                    command.Parameters.Add("@trLocationId", MySqlDbType.Int32).Value = location;
                     if(standardId>0)
                     {
                         command.Parameters.Add("@stdId", MySqlDbType.Int32).Value = standardId;
@@ -695,15 +717,15 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<TransactionRuleDTO> GetNoneLevelRules(int? transactionMasterId = null)
+        public List<TransactionRuleDTO> GetNoneLevelRules(int location, int? transactionMasterId = null)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 try
                 {
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT tr.TranRuleId, tm.TranMasterId, tm.TransactionName, tr.RuleName, tr.ActualAmount FROM transactionmaster tm LEFT OUTER JOIN transactionrule tr ON tm.TranMasterId=tr.TranMasterId WHERE tm.Active=1 AND (tm.IsDifferentTo='NONE' OR tm.IsDifferentTo IS NULL)";
-                    
+                    command.CommandText = "SELECT tr.TranRuleId, tm.TranMasterId, tm.TransactionName, tr.RuleName, tr.ActualAmount FROM transactionmaster tm LEFT OUTER JOIN transactionrule tr ON tm.TranMasterId=tr.TranMasterId WHERE tm.Active=1 AND (tm.IsDifferentTo='NONE' OR tm.IsDifferentTo IS NULL) AND tr.LocationId=@locationId";
+                    command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = location;
                     if (transactionMasterId != null && transactionMasterId.Value > 0)
                     {
                         command.CommandText += " AND tm.TranMasterId=@tmId";

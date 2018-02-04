@@ -397,6 +397,27 @@
             });
         }
 
+        function clearAll(userMasterId) {
+            var paymentvm = new Object();
+            paymentvm.User = new Object();
+            paymentvm.User.UserMasterId = userMasterId;
+            $.ajax({
+                type: 'POST',
+                url: 'ClearAllBacklog',
+                data: paymentvm,
+                dataType: "json",
+                success: function (resultData) {
+
+                    if (resultData.Status) {
+                        document.getElementById("divBacklog").innerHTML = "";
+                    }
+                },
+                error: function (error) {
+                    alert('Error to clear all.');
+                }
+            });
+        }
+
         function setChequeNo(ddlPaymentMode)
         {
             var selectedMode = ddlPaymentMode.options[ddlPaymentMode.selectedIndex].value;
@@ -508,8 +529,95 @@
             <div class="panel-heading">@Payment.TableTransaction</div>
             <div class="panel-body">
                 @if (Model != null)
-
                 {
+                    if (Model.BacklogDues != null && Model.BacklogDues.Count > 0)
+                    {
+                        <div style="overflow:scroll;" id="divBacklog">
+                            <table id="tablePendingDues" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                                <thead>
+                                    <tr>
+                                        <th colspan="6">
+                                            Following are the details of the backlogs for this student (Please note no due fines are calculated by the system on this)
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Backlog From
+                                        </th>
+                                        <th>
+                                            Backlog To
+                                        </th>
+                                        <th>
+                                            Monthly Due
+                                        </th>
+                                        <th>
+                                            Yearly Due
+                                        </th>
+                                        <th>
+                                            Bus Due
+                                        </th>
+                                        <th>
+                                            Late Fine Due
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.BacklogDues.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (Model.BacklogDues[i].BacklogFromDate != null)
+                                                {
+                                                    <span>@Model.BacklogDues[i].BacklogFromDate.Value.ToString("dd-MMM-yyyy")</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.BacklogDues[i].BacklogToDate != null)
+                                                {
+                                                    <span>@Model.BacklogDues[i].BacklogToDate.Value.ToString("dd-MMM-yyyy")</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.BacklogDues[i].MonthlyBacklogAmount != null)
+                                                {
+                                                    <span>@Model.BacklogDues[i].MonthlyBacklogAmount.Value.ToString()</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.BacklogDues[i].YearlyBacklogAmount != null)
+                                                {
+                                                    <span>@Model.BacklogDues[i].YearlyBacklogAmount.Value.ToString()</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.BacklogDues[i].BusBacklogAmount != null)
+                                                {
+                                                    <span>@Model.BacklogDues[i].BusBacklogAmount.Value.ToString()</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (Model.BacklogDues[i].LateFineBacklogAmount != null)
+                                                {
+                                                    <span>@Model.BacklogDues[i].LateFineBacklogAmount.Value.ToString()</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-block individualPay" onclick="clearAll(@Model.BacklogDues[0].User.UserMasterId);">Clear All Dues</button>
+                                        </td>
+                                        <td colspan="5">
+                                            @Html.HiddenFor(m => m.User.UserMasterId)
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    }
+
                     if (Model.IsSearchSuccessful)
                     {
                         <div style="overflow:scroll;">

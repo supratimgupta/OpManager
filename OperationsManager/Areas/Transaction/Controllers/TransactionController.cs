@@ -493,35 +493,35 @@ namespace OperationsManager.Areas.Transaction.Controllers
                 switch(isDiffTo)
                 {
                     case "NONE":
-                        rules = _trRule.GetNoneLevelRules(trDetails.TransactionMasterId);
+                        rules = _trRule.GetNoneLevelRules(trDetails.Location.LocationId, trDetails.TransactionMasterId);
                         if(rules!=null && rules.Count>0)
                         {
                             rule = rules[0];
                         }
                         break;
                     case "USER":
-                        rules = _trRule.GetUserLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.UserDetails.UserMasterId);
+                        rules = _trRule.GetUserLevelRules(trDetails.Location.LocationId, trDetails.TransactionMasterId, studStatus.ReturnObj.UserDetails.UserMasterId);
                         if(rules!=null && rules.Count>0)
                         {
                             rule = rules[0];
                         }
                         break;
                     case "STANDARD":
-                        rules = _trRule.GetStandardLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.StandardId);
+                        rules = _trRule.GetStandardLevelRules(trDetails.Location.LocationId, trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.StandardId);
                         if(rules!=null && rules.Count>0)
                         {
                             rule = rules[0];
                         }
                         break;
                     case "SECTION":
-                        rules = _trRule.GetStandardSectionLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.StandardId, studStatus.ReturnObj.StandardSectionMap.Section.SectionId);
+                        rules = _trRule.GetStandardSectionLevelRules(trDetails.Location.LocationId, trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.StandardId, studStatus.ReturnObj.StandardSectionMap.Section.SectionId);
                         if(rules!=null && rules.Count>0)
                         {
                             rule = rules[0];
                         }
                         break;
                     case "CLASS-TYPE":
-                        rules = _trRule.GetClassTypeLevelRules(trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.ClassType.ClassTypeId);
+                        rules = _trRule.GetClassTypeLevelRules(trDetails.Location.LocationId, trDetails.TransactionMasterId, studStatus.ReturnObj.StandardSectionMap.Standard.ClassType.ClassTypeId);
                         if(rules!=null && rules.Count>0)
                         {
                             rule = rules[0];

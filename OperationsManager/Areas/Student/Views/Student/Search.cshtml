@@ -167,12 +167,12 @@
                                                     @student.RegistrationNumber
                                                 </td>
                                                 <td>
-                                                    @student.FatherContact
+                                                    @student.UserDetails.ContactNo
                                                 </td>
                                                 <td>
-                                                    @Html.OpMgrActionLinkMultiple("VIEW", "Register?mode=VIEW&id="+ student.UserDetails.UserMasterId, new { name = "viewStudent" })
-                                                    @Html.OpMgrActionLinkMultiple("EDIT", "Register?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
-                                                    @Html.OpMgrActionLinkMultiple("DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
+                                                    @Html.OpMgrActionLinkMultiple("VIEW /", "Register?mode=VIEW&id="+ student.UserDetails.UserMasterId, new { name = "viewStudent" })
+                                                    @Html.OpMgrActionLinkMultiple(" EDIT /", "Register?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
+                                                    @Html.OpMgrActionLinkMultiple(" DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
                                                 </td>
                                             </tr>
                                         }

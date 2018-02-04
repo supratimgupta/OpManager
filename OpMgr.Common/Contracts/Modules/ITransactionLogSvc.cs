@@ -25,5 +25,11 @@ namespace OpMgr.Common.Contracts.Modules
         bool ResendRequest(int transactionLogId);
 
         StatusDTO<List<TransactionLogDTO>> GetPaidTransaction(TransactionLogDTO trnsLog, string identifier, string role);
+
+        bool InsertBacklogAmount(TransactionLogDTO transLog);
+
+        List<TransactionLogDTO> GetBacklogDues(string registrationNo);
+
+        bool ClearAllBacklogs(int userMasterId);
     }
 }

@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48BFC7FB-8015-4A52-B404-5CFC383402BF}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{B76592D8-23AD-40C3-A0FF-534646BC5136}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpMgr.DataAccess</RootNamespace>
-    <AssemblyName>OpMgr.DataAccess</AssemblyName>
+    <RootNamespace>OpMgr.Backlog.Handler</RootNamespace>
+    <AssemblyName>OpMgr.Backlog.Handler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,13 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data">
-      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,32 +41,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementations\BookMasterSvc.cs" />
-    <Compile Include="Implementations\ChatSvc.cs" />
-    <Compile Include="Implementations\CommonConfigDataSvc.cs" />
-    <Compile Include="Implementations\DropdownRepo.cs" />
-    <Compile Include="Implementations\DbSvc.cs" />
-    <Compile Include="Implementations\ExamMarksSvc.cs" />
-    <Compile Include="Implementations\LibraryTransactionSvc.cs" />
-    <Compile Include="Implementations\NotificationSvc.cs" />
-    <Compile Include="Implementations\PMSSvc.cs" />
-    <Compile Include="Implementations\ResetPasswordSvc.cs" />
-    <Compile Include="Implementations\RoleSvc.cs" />
-    <Compile Include="Implementations\StudentSvc.cs" />
-    <Compile Include="Implementations\EntitlementActionSvc.cs" />
-    <Compile Include="Implementations\TransactionBacklog.cs" />
-    <Compile Include="Implementations\TransactionLogPaymentSvc.cs" />
-    <Compile Include="Implementations\UserSvc.cs" />
-    <Compile Include="Implementations\TransactionLogSvc.cs" />
-    <Compile Include="Implementations\TransactionMasterSvc.cs" />
-    <Compile Include="Implementations\TransactionRuleSvc.cs" />
-    <Compile Include="Implementations\UserTransactionSvc.cs" />
+    <Compile Include="BacklogHandler.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpMgr.Common\OpMgr.Common.csproj">
       <Project>{31813560-3d31-4b02-b7fa-40d5c61050bb}</Project>
       <Name>OpMgr.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.Configurations\OpMgr.Configurations.csproj">
+      <Project>{f7259df2-da9d-4a4f-8454-4416cf55a744}</Project>
+      <Name>OpMgr.Configurations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpMgr.DataAccess\OpMgr.DataAccess.csproj">
+      <Project>{48bfc7fb-8015-4a52-b404-5cfc383402bf}</Project>
+      <Name>OpMgr.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

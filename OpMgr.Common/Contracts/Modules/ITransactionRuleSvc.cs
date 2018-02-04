@@ -14,17 +14,17 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<TransactionRuleDTO> GetAllRulesWithInactive();
 
-        bool IsDuplicate(int trnsMasterId, int standardId, int sectionId, int classTypeId, int userMasterId, string isDiffTo, string mode, int ruleId);
+        bool IsDuplicate(int location, int trnsMasterId, int standardId, int sectionId, int classTypeId, int userMasterId, string isDiffTo, string mode, int ruleId);
 
-        List<TransactionRuleDTO> GetUserLevelRules(int transactionMasterId, int userRowId);
+        List<TransactionRuleDTO> GetUserLevelRules(int location, int transactionMasterId, int userRowId);
 
-        List<TransactionRuleDTO> GetClassTypeLevelRules(int transactionMasterId, int? classTypeRowId=null);
+        List<TransactionRuleDTO> GetClassTypeLevelRules(int location, int transactionMasterId, int? classTypeRowId=null);
 
-        List<TransactionRuleDTO> GetStandardLevelRules(int transactionMasterId, int? standardRowId=null);
+        List<TransactionRuleDTO> GetStandardLevelRules(int location, int transactionMasterId, int? standardRowId=null);
 
-        List<TransactionRuleDTO> GetStandardSectionLevelRules(int transactionMasterId, int standardId, int? sectionId=null);
+        List<TransactionRuleDTO> GetStandardSectionLevelRules(int location, int transactionMasterId, int standardId, int? sectionId=null);
 
-        List<TransactionRuleDTO> GetNoneLevelRules(int? transactionMasterId=null);
+        List<TransactionRuleDTO> GetNoneLevelRules(int location, int? transactionMasterId=null);
 
         int? GetFirstDueAfterDays(int trRuleId);
     }

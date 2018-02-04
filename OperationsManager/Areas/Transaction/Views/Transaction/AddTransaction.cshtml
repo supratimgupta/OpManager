@@ -44,6 +44,7 @@
                             </div>
                             <div class="col-lg-5">
                                 @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, TransactionLogAdd.LocationLabel, new { @class = "form-control", disabled="disabled", id="ddlLocation" })
+                                @Html.HiddenFor(m => m.Location.LocationId, new { id = "hfLocation" })
                             </div>
                         </div>
                         <div class="row">
@@ -139,6 +140,39 @@
                 {
                     document.getElementById("ddlStandSectionMap").selectedIndex = 0;
                 }
+
+                if(data.UserDetails && data.UserDetails.Location && data.UserDetails.Location.LocationId && data.UserDetails.Location.LocationId>0)
+                {
+                    document.getElementById("hfLocation").value = data.UserDetails.Location.LocationId;
+
+                    var ddlLocation = document.getElementById("ddlLocation");
+
+                    for(i=0;i<ddlLocation.options.length;i++)
+                    {
+                        if(ddlLocation.options[i].value==data.UserDetails.Location.LocationId.toString())
+                        {
+                            ddlLocation.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    alert('No location is assigned for this student. Please first set data correctly.');
+                    document.getElementById("txtRegNo").value = "";
+
+                    document.getElementById("hfUserMasterId").value = "";
+                    document.getElementById("hfStudentInfoId").value = "";
+                    document.getElementById("hfLocation").value = "";
+
+                    $("#ddlTranMaster").attr('disabled', 'disabled');
+                    $("#txtDueDate").attr('disabled', 'disabled');
+                    $("#ddlLocation").attr('disabled', 'disabled');
+                    $("#btnSubmit").attr('disabled', 'disabled');
+
+                    document.getElementById("hfStandSecMap").value = "";
+                    document.getElementById("ddlStandSectionMap").selectedIndex = 0;
+                }
             }
             else
             {
@@ -147,6 +181,7 @@
 
                 document.getElementById("hfUserMasterId").value = "";
                 document.getElementById("hfStudentInfoId").value = "";
+                document.getElementById("hfLocation").value = "";
 
                 $("#ddlTranMaster").attr('disabled','disabled');
                 $("#txtDueDate").attr('disabled', 'disabled');
@@ -168,6 +203,8 @@
                 trDetails.TransactionMasterId = selectedTrMaster;
                 trDetails.StudentInfoId = document.getElementById("hfStudentInfoId").value;
                 trDetails.TransactionDateString = document.getElementById("txtTransDate").value;
+                trDetails.Location = new Object();
+                trDetails.Location.LocationId = document.getElementById("hfLocation").value;
                 $.ajax({
                     type: 'POST',
                     url: 'GetStudentPaymentDetails',

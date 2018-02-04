@@ -28,6 +28,8 @@ namespace OperationsManager.Areas.Transaction.Models
 
         public SelectList TransactionFrequencies { get; set; }
 
+        public SelectList Locations { get; set; }
+
         public string MODE { get; set; }
 
         public string SuccessMsg { get; set; }

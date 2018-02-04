@@ -1020,5 +1020,196 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        /// <summary>
+        /// Added to pint out only the backlog amounts (No other calculations are done on this - No RULE, no penalties are calculated)
+        /// </summary>
+        /// <param name="transLog">Transaction Log DTO object</param>
+        /// <returns>true: if success / false: if failed</returns>
+        public bool InsertBacklogAmount(TransactionLogDTO transLog)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                bool status = false;
+                try
+                {
+                    if (transLog != null)
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        command.CommandText = "INSERT INTO TransactionLog (CreatedDate, Active, UserMasterId, TransactionDate, IsCompleted, MonthlyBacklogAmount, " +
+                                               "LateFineBacklogAmount, YearlyBacklogAmount, BusBacklogAmount, BacklogFromDate, BacklogToDate)" +
+                                               " VALUES " +
+                                               "(@createdDate, @active, @userMasterId, @transactionDate, @isCompleted, @monthlyBackLogAmt, " +
+                                               "@lateFineBackLogAmt, @yearlyBacklogAmt, @busBackLogAmt, @backLogFrom, @backLogTo)";
+
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                        command.Parameters.Add("@createdDate", MySqlDbType.DateTime).Value = DateTime.Now.Date;
+                        command.Parameters.Add("@active", MySqlDbType.Bit).Value = true;
+
+                        if (transLog.User != null)
+                        {
+                            command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = transLog.User.UserMasterId;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = DBNull.Value;
+                        }
+                        command.Parameters.Add("@transactionDate", MySqlDbType.DateTime).Value = DateTime.Today.Date;
+
+                        command.Parameters.Add("@isCompleted", MySqlDbType.Bit).Value = false;
+
+                        if (transLog.MonthlyBacklogAmount.HasValue)
+                        {
+                            command.Parameters.Add("@monthlyBackLogAmt", MySqlDbType.Double).Value = transLog.MonthlyBacklogAmount.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@monthlyBackLogAmt", MySqlDbType.Double).Value = DBNull.Value;
+                        }
+
+                        if (transLog.LateFineBacklogAmount.HasValue)
+                        {
+                            command.Parameters.Add("@lateFineBackLogAmt", MySqlDbType.Double).Value = transLog.LateFineBacklogAmount.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@lateFineBackLogAmt", MySqlDbType.Double).Value = DBNull.Value;
+                        }
+
+                        if (transLog.YearlyBacklogAmount.HasValue)
+                        {
+                            command.Parameters.Add("@yearlyBacklogAmt", MySqlDbType.Double).Value = transLog.YearlyBacklogAmount.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@yearlyBacklogAmt", MySqlDbType.Double).Value = DBNull.Value;
+                        }
+
+                        if (transLog.BusBacklogAmount.HasValue)
+                        {
+                            command.Parameters.Add("@busBackLogAmt", MySqlDbType.Double).Value = transLog.BusBacklogAmount.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@busBackLogAmt", MySqlDbType.Double).Value = DBNull.Value;
+                        }
+
+                        if (transLog.BacklogFromDate.HasValue)
+                        {
+                            command.Parameters.Add("@backLogFrom", MySqlDbType.DateTime).Value = transLog.BacklogFromDate.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@backLogFrom", MySqlDbType.DateTime).Value = DBNull.Value;
+                        }
+
+                        if (transLog.BacklogToDate.HasValue)
+                        {
+                            command.Parameters.Add("@backLogTo", MySqlDbType.DateTime).Value = transLog.BacklogToDate.Value;
+                        }
+                        else
+                        {
+                            command.Parameters.Add("@backLogTo", MySqlDbType.DateTime).Value = DBNull.Value;
+                        }
+
+                        status = command.ExecuteNonQuery() > 0;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    //_logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+
+        public List<TransactionLogDTO> GetBacklogDues(string registrationNo)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                List<TransactionLogDTO> trBackLogs = null;
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT DISTINCT tr.TransactionLogId, tr.UserMasterId, tr.MonthlyBacklogAmount, tr.YearlyBacklogAmount, tr.BusBacklogAmount, tr.BacklogFromDate, tr.BacklogToDate, tr.LateFineBacklogAmount " +
+                                           "FROM TransactionLog tr LEFT JOIN studentinfo st ON tr.UserMasterId=st.UserMasterId WHERE st.RegistrationNumber=@regNo AND tr.Active=1 AND tr.IsCompleted<>1";
+                    command.Parameters.Add("@regNo", MySqlDbType.VarChar).Value = registrationNo;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    MySqlDataAdapter mDA = new MySqlDataAdapter(command);
+                    _dtResult = new DataTable();
+                    mDA.Fill(_dtResult);
+                    if(_dtResult!=null && _dtResult.Rows.Count>0)
+                    {
+                        trBackLogs = new List<TransactionLogDTO>();
+                        TransactionLogDTO trBackLog = null;
+                        foreach(DataRow dr in _dtResult.Rows)
+                        {
+                            trBackLog = new TransactionLogDTO();
+                            trBackLog.TransactionLogId = (int)dr["TransactionLogId"];
+                            trBackLog.User = new UserMasterDTO();
+                            trBackLog.User.UserMasterId = (int)dr["UserMasterId"];
+                            if (!string.IsNullOrEmpty(dr["MonthlyBacklogAmount"].ToString()))
+                            {
+                                trBackLog.MonthlyBacklogAmount = Convert.ToDouble(dr["MonthlyBacklogAmount"]);
+                            }
+                            if(!string.IsNullOrEmpty(dr["YearlyBacklogAmount"].ToString()))
+                            {
+                                trBackLog.YearlyBacklogAmount =  Convert.ToDouble(dr["YearlyBacklogAmount"]);
+                            }
+                            if(!string.IsNullOrEmpty(dr["BusBacklogAmount"].ToString()))
+                            {
+                                trBackLog.BusBacklogAmount =  Convert.ToDouble(dr["BusBacklogAmount"]);
+                            }
+                            if(!string.IsNullOrEmpty(dr["LateFineBacklogAmount"].ToString()))
+                            {
+                                trBackLog.LateFineBacklogAmount =  Convert.ToDouble(dr["LateFineBacklogAmount"]);
+                            }
+                            if(!string.IsNullOrEmpty(dr["BacklogFromDate"].ToString()))
+                            {
+                                trBackLog.BacklogFromDate =  Convert.ToDateTime(dr["BacklogFromDate"]);
+                            }
+                            if(!string.IsNullOrEmpty(dr["BacklogToDate"].ToString()))
+                            {
+                                trBackLog.BacklogToDate =  Convert.ToDateTime(dr["BacklogToDate"]);
+                            }
+                            
+                            trBackLogs.Add(trBackLog);
+                        }
+                    }                    
+                    return trBackLogs;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+
+        public bool ClearAllBacklogs(int userMasterId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE TransactionLog SET Active=0, IsCompleted=1 WHERE UserMasterId=@userMasterId";
+                    command.Parameters.Add("@userMasterId", MySqlDbType.Int32).Value = userMasterId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    return command.ExecuteNonQuery() > 0;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
     }
 }
