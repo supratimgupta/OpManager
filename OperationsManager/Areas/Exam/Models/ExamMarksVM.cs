@@ -16,5 +16,7 @@ namespace OperationsManager.Areas.Exam.Models
         public SelectList ExamSubTypeList { get; set; }
 
         public SelectList SubjectList { get; set; }
+
+        public SelectList LocationList { get; set; }
     }
 }

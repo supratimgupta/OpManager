@@ -80,6 +80,7 @@
     <Compile Include="DTOs\ClassTypeDTO.cs" />
     <Compile Include="DTOs\CompetencyDTO.cs" />
     <Compile Include="DTOs\ConfigDTO.cs" />
+    <Compile Include="DTOs\CourseExam.cs" />
     <Compile Include="DTOs\CourseMappingDTO.cs" />
     <Compile Include="DTOs\DepartmentDTO.cs" />
     <Compile Include="DTOs\DesignationDTO.cs" />

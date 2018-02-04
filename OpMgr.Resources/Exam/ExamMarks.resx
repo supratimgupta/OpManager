@@ -120,6 +120,9 @@
   <data name="CalculatedMarks" xml:space="preserve">
     <value>Calculated Marks</value>
   </data>
+  <data name="Course" xml:space="preserve">
+    <value>Course</value>
+  </data>
   <data name="CourseFrom" xml:space="preserve">
     <value>Course From</value>
   </data>
@@ -132,6 +135,9 @@
   <data name="ExamType" xml:space="preserve">
     <value>Exam Type</value>
   </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="MarksObtained" xml:space="preserve">
     <value>Marks Obtained</value>
   </data>
@@ -141,8 +147,8 @@
   <data name="RollNumber" xml:space="preserve">
     <value>Roll Number</value>
   </data>
-  <data name="StandardSection" xml:space="preserve">
-    <value>Standard-Section</value>
+  <data name="StandardSectionId" xml:space="preserve">
+    <value>Class</value>
   </data>
   <data name="Subject" xml:space="preserve">
     <value>Subject</value>

@@ -2,7 +2,7 @@
 @using OperationsManager.ExtendedHtmlHelpers
 @model OperationsManager.Areas.Exam.Models.ExamMarksVM
 
-@{    
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
     <script>
         $(document).ready(function () {
 
-           
+
         });
 
         function getStudentDetails(txtReg) {
@@ -82,45 +82,24 @@
                     @Html.AntiForgeryToken()
                     <fieldset>
                         <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
+                        </div>
+
+                        <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.Student.RegistrationNumber, ExamMarks.RegistrationNo, new { @class = "form-control requiredField", onblur = "getStudentDetails(this);", data_rule_required = "true", data_msg_required = "Please enter registration no", id = "txtRegNo" })
                         </div>
                         <div class="col-lg-5">
                             @Html.OpMgrTextBoxFor(m => m.Student.RollNumber, ExamMarks.RollNumber, new { @class = "form-control" })
                         </div>
-                        <div class="col-lg-5" id="standardSectionDiv">
-                            @Html.OpMgrDropDownListFor(m => m.StandardSectionList, Model.StandardSectionList, TransactionLogAdd.StandardSectionLabel, new { @class = "form-control", disabled = "disabled", id = "ddlStandSectionMap" })
-                            @Html.HiddenFor(m => m.StandardSectionMap.StandardSectionId, new { id = "hfStandSecMap" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact Number is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Location is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Gender is required" })
-                        </div>
-                                              
+                        
                         <div class="col-lg-4">
-                            <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
+                            @*<button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>*@
                         </div>
                     </fieldset>
                 }

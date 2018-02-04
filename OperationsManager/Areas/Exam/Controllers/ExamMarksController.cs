@@ -34,6 +34,9 @@ namespace OperationsManager.Areas.Exam.Controllers
             Models.ExamMarksVM examMarksVM = new Models.ExamMarksVM();
             examMarksVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             examMarksVM.SubjectList = _uiddlRepo.getSubjectDropDown();
+            examMarksVM.LocationList = _uiddlRepo.getLocationDropDown();
+
+
             //examMarksVM.ExamTypeList = _uiddlRepo.getExamTypeList();
             //examMarksVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeList();
             return View();

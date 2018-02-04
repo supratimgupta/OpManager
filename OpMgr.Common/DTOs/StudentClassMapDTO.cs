@@ -22,10 +22,10 @@ namespace OpMgr.Common.DTOs
 
         public StudentDTO Student { get; set; }
 
-        public StandardSectionMapDTO StandardSection { get; set; }
+        //public StandardSectionMapDTO StandardSection { get; set; }
 
         public HouseTypeDTO HouseType { get; set; }
 
-        public int CourseYear { get; set; }
+        public CourseMappingDTO Coursemap { get; set; }
     }
 }
