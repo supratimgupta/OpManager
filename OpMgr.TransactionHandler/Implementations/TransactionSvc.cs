@@ -9,6 +9,7 @@ using OpMgr.Common.Contracts;
 using System.Data;
 using System.Transactions;
 using OpMgr.Common.DTOs;
+using System.Configuration;
 
 namespace OpMgr.TransactionHandler.Implementations
 {
@@ -281,7 +282,18 @@ namespace OpMgr.TransactionHandler.Implementations
 
                                    if (rules[0]["FirstDueAfterDays"] != null || !string.IsNullOrEmpty(rules[0]["FirstDueAfterDays"].ToString()))
                                    {
-                                       trnsLogDto.TransactionDueDate = _runDate.AddDays((int)rules[0]["FirstDueAfterDays"]);
+                                       if (string.Equals(ConfigurationManager.AppSettings["Is30IsOneMonth"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(rules[0]["FirstDueAfterDays"].ToString(), "30"))
+                                       {
+                                           trnsLogDto.TransactionDueDate = _runDate.AddMonths(1);
+                                       }
+                                       else if (string.Equals(ConfigurationManager.AppSettings["Is365IsOneYear"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(rules[0]["FirstDueAfterDays"].ToString(), "365"))
+                                       {
+                                           trnsLogDto.TransactionDueDate = _runDate.AddYears(1);
+                                       }
+                                       else
+                                       {
+                                           trnsLogDto.TransactionDueDate = _runDate.AddDays((int)rules[0]["FirstDueAfterDays"]);
+                                       }                                       
                                    }
                                    else
                                    {
@@ -374,7 +386,26 @@ namespace OpMgr.TransactionHandler.Implementations
                                     trnsLog.User = new UserMasterDTO();
                                     trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
                                     trnsLog.TransactionDate = _runDate;
-                                    trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
+
+                                    trnsLog.TransactionDueDate = null;
+
+                                    if (trnsRule[0]["DueDateincreasesBy"] != null && !string.IsNullOrEmpty(trnsRule[0]["DueDateincreasesBy"].ToString()))
+                                    {
+                                        if (string.Equals(ConfigurationManager.AppSettings["Is30IsOneMonth"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(trnsRule[0]["DueDateincreasesBy"].ToString(), "30"))
+                                        {
+                                            trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddMonths(1);
+                                        }
+                                        else if (string.Equals(ConfigurationManager.AppSettings["Is365IsOneYear"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(trnsRule[0]["DueDateincreasesBy"].ToString(), "365"))
+                                        {
+                                            trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddYears(1);
+                                        }
+                                        else
+                                        {
+                                            trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
+                                        }
+                                    }                                    
+
+                                    //trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
                                     trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionDueDate"];
                                     trnsLog.ParentTransactionLogId = new TransactionLogDTO();
                                     trnsLog.ParentTransactionLogId.TransactionLogId = (int)reader["TransactionLogId"];
@@ -407,8 +438,14 @@ namespace OpMgr.TransactionHandler.Implementations
                                     }
                                     trnsLog.TransactionRule = new TransactionRuleDTO();
                                     trnsLog.TransactionRule.TranRuleId = (int)trnsRule[0]["TranRuleId"];
-                                    trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
-                                    trnsLog.PenaltyTransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"] == null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTranRuleId"].ToString()) ? (int)trnsRule[0]["TranRuleId"] : (int)trnsRule[0]["PenaltyTranRuleId"];
+
+                                    //To stop penalty for a rule which can be stopped after 2/3 occurance
+                                    if (trnsLog.TransactionDueDate != null)
+                                    {
+                                        trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
+                                        trnsLog.PenaltyTransactionRule.TranRuleId = trnsRule[0]["PenaltyTranRuleId"] == null || string.IsNullOrEmpty(trnsRule[0]["PenaltyTranRuleId"].ToString()) ? (int)trnsRule[0]["TranRuleId"] : (int)trnsRule[0]["PenaltyTranRuleId"];
+                                    }                                    
+                                    
                                     StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
                                     if (status.IsSuccess)
                                     {
@@ -457,7 +494,26 @@ namespace OpMgr.TransactionHandler.Implementations
                                 trnsLog.User = new UserMasterDTO();
                                 trnsLog.User.UserMasterId = (int)reader["UserMasterId"];
                                 trnsLog.TransactionDate = _runDate;
-                                trnsLog.TransactionDueDate = (_runDate.AddDays((int)trnsRule[0]["FirstDueAfterDays"]));
+
+                                trnsLog.TransactionDueDate = null;
+
+                                if (trnsRule[0]["FirstDueAfterDays"] != null && !string.IsNullOrEmpty(trnsRule[0]["FirstDueAfterDays"].ToString()))
+                                {
+                                    if (string.Equals(ConfigurationManager.AppSettings["Is30IsOneMonth"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(trnsRule[0]["FirstDueAfterDays"].ToString(), "30"))
+                                    {
+                                        trnsLog.TransactionDueDate = _runDate.AddMonths(1);
+                                    }
+                                    else if (string.Equals(ConfigurationManager.AppSettings["Is365IsOneYear"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(trnsRule[0]["FirstDueAfterDays"].ToString(), "365"))
+                                    {
+                                        trnsLog.TransactionDueDate = _runDate.AddYears(1);
+                                    }
+                                    else
+                                    {
+                                        trnsLog.TransactionDueDate = _runDate.AddDays((int)trnsRule[0]["FirstDueAfterDays"]);
+                                    }
+                                }
+                                
+                                //trnsLog.TransactionDueDate = (_runDate.AddDays((int)trnsRule[0]["FirstDueAfterDays"]));
                                 trnsLog.TransactionPreviousDueDate = null;
                                 trnsLog.ParentTransactionLogId = null;
                                 trnsLog.IsCompleted = false;
@@ -473,8 +529,14 @@ namespace OpMgr.TransactionHandler.Implementations
                                 trnsLog.OriginalTransLog = null;
                                 trnsLog.TransactionRule = new TransactionRuleDTO();
                                 trnsLog.TransactionRule.TranRuleId = (int)trnsRule[0]["TranRuleId"];
-                                trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
-                                trnsLog.PenaltyTransactionRule.TranRuleId = trnsLog.TransactionRule.TranRuleId;
+
+                                //To block a penaly from occurance if no due date
+                                if (trnsLog.TransactionDueDate!=null)
+                                {
+                                    trnsLog.PenaltyTransactionRule = new TransactionRuleDTO();
+                                    trnsLog.PenaltyTransactionRule.TranRuleId = trnsLog.TransactionRule.TranRuleId;
+                                }
+                                
                                 StatusDTO<TransactionLogDTO> status = _transLog.Insert(trnsLog);
                                 if (status.IsSuccess)
                                 {
