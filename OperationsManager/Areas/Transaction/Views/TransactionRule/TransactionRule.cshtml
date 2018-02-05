@@ -211,7 +211,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-5">
-                                    @Html.OpMgrTextBoxFor(m => m.PenaltyAmount, TransactionRule.PenaltyAmount, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Enter Penalty Amount" })
+                                    @Html.OpMgrTextBoxFor(m => m.PenaltyAmount, TransactionRule.PenaltyAmount, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-5">
                                     @Html.OpMgrDropDownListFor(m => m.PenaltyTransactionType, Model.PenaltyTransactionTypes, TransactionRule.PenaltyTransactionType, new { @class = "form-control" })
