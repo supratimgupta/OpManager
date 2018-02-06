@@ -280,7 +280,7 @@ namespace OpMgr.TransactionHandler.Implementations
                                    trnsLogDto.User.UserMasterId = (int)reader["UserMasterId"];
                                    trnsLogDto.TransactionDate = _runDate;
 
-                                   if (rules[0]["FirstDueAfterDays"] != null || !string.IsNullOrEmpty(rules[0]["FirstDueAfterDays"].ToString()))
+                                   if (rules[0]["FirstDueAfterDays"] != null && !string.IsNullOrEmpty(rules[0]["FirstDueAfterDays"].ToString()))
                                    {
                                        if (string.Equals(ConfigurationManager.AppSettings["Is30IsOneMonth"], "Y", StringComparison.OrdinalIgnoreCase) && string.Equals(rules[0]["FirstDueAfterDays"].ToString(), "30"))
                                        {

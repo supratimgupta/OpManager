@@ -760,7 +760,10 @@ namespace OpMgr.DataAccess.Implementations
                             tranlog.User.FName = _dsData.Tables[0].Rows[i]["FName"].ToString();
                             tranlog.User.LName = _dsData.Tables[0].Rows[i]["Lname"].ToString();
                             tranlog.TransactionDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionDate"]);
-                            tranlog.TransactionDueDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionDueDate"]);
+                            if (_dsData.Tables[0].Rows[i]["TransactionDueDate"] != null && !string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["TransactionDueDate"].ToString()))
+                            {
+                                tranlog.TransactionDueDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionDueDate"]);
+                            }                            
                             if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["TransactionPreviousDueDate"].ToString()))
                             {
                                 tranlog.TransactionPreviousDueDate = Convert.ToDateTime(_dsData.Tables[0].Rows[i]["TransactionPreviousDueDate"]);
@@ -1136,7 +1139,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "SELECT DISTINCT tr.TransactionLogId, tr.UserMasterId, tr.MonthlyBacklogAmount, tr.YearlyBacklogAmount, tr.BusBacklogAmount, tr.BacklogFromDate, tr.BacklogToDate, tr.LateFineBacklogAmount " +
-                                           "FROM TransactionLog tr LEFT JOIN studentinfo st ON tr.UserMasterId=st.UserMasterId WHERE st.RegistrationNumber=@regNo AND tr.Active=1 AND tr.IsCompleted<>1";
+                                           "FROM TransactionLog tr LEFT JOIN studentinfo st ON tr.UserMasterId=st.UserMasterId WHERE st.RegistrationNumber=@regNo AND tr.Active=1 AND tr.IsCompleted<>1 AND tr.BacklogFromDate IS NOT NULL AND tr.BacklogToDate IS NOT NULL";
                     command.Parameters.Add("@regNo", MySqlDbType.VarChar).Value = registrationNo;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     MySqlDataAdapter mDA = new MySqlDataAdapter(command);
@@ -1177,7 +1180,10 @@ namespace OpMgr.DataAccess.Implementations
                                 trBackLog.BacklogToDate =  Convert.ToDateTime(dr["BacklogToDate"]);
                             }
                             
-                            trBackLogs.Add(trBackLog);
+                            if(trBackLog.BacklogFromDate.HasValue && trBackLog.BacklogToDate.HasValue && (trBackLog.MonthlyBacklogAmount.HasValue || trBackLog.YearlyBacklogAmount.HasValue || trBackLog.BusBacklogAmount.HasValue || trBackLog.LateFineBacklogAmount.HasValue))
+                            {
+                                trBackLogs.Add(trBackLog);
+                            }                            
                         }
                     }                    
                     return trBackLogs;
