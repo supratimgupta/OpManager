@@ -219,7 +219,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-5">
-                                    @Html.OpMgrDropDownListFor(m => m.PenaltyTransactionRule, Model.PenaltyTransactionRules, TransactionRule.PenaltyTransactionRule, new { @class = "form-control" })
+                                    @Html.OpMgrDropDownListFor(m => m.PenaltyTransactionRule.TranRuleId, Model.PenaltyTransactionRules, TransactionRule.PenaltyTransactionRule, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-5">
                                     @Html.OpMgrTextBoxFor(m => m.FirstDueAfterDays, TransactionRule.FirstDueAfterDays, new { @class = "form-control" })

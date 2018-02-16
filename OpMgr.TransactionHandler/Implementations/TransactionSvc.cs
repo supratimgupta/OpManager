@@ -271,7 +271,7 @@ namespace OpMgr.TransactionHandler.Implementations
 
                                DataRow[] rules = GetRuleRow(transMasterId, isDiffTo, reader["StandardId"], reader["SectionId"], reader["UserMasterId"], reader["ClassTypeId"], locationId);
 
-                               if(rules!=null)
+                               if(rules!=null && rules.Length>0)
                                {
                                    //Insert records as pending in trans log
                                    TransactionLogDTO trnsLogDto = new TransactionLogDTO();
