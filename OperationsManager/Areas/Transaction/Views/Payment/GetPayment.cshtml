@@ -607,7 +607,7 @@
                                 <tfoot>
                                     <tr>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-block individualPay" onclick="clearAll(@Model.BacklogDues[0].User.UserMasterId);">Clear All Dues</button>
+                                            @*<button type="button" class="btn btn-primary btn-block individualPay" onclick="clearAll(@Model.BacklogDues[0].User.UserMasterId);">Clear All Dues</button>*@
                                         </td>
                                         <td colspan="5">
                                             @Html.HiddenFor(m => m.User.UserMasterId)
@@ -658,7 +658,7 @@
                                             @Payment.GridRowAdjustingAmount
                                         </th>
                                         <th>
-                                            Current Payment Mode
+                                            @Payment.GridRowPaymentMode
                                         </th>
                                         <th>
                                             @Payment.GridRowSubmit
@@ -677,10 +677,16 @@
                                                 @Model.paymentDetailsList[i].TransactionRule.TranMaster.TransactionName
                                             </td>
                                             <td>
-                                                @Model.paymentDetailsList[i].TransactionDate
+                                                @if (Model.paymentDetailsList[i].TransactionDate.HasValue)
+                                                {
+                                                    @Model.paymentDetailsList[i].TransactionDate.Value.ToString("MMM");
+                                                }                                                
                                             </td>
                                             <td>
-                                                @Model.paymentDetailsList[i].TransactionDueDate
+                                                @if (Model.paymentDetailsList[i].TransactionDueDate.HasValue)
+                                                {
+                                                    @Model.paymentDetailsList[i].TransactionDueDate.Value.ToString("dd-MMM-yyyy")
+                                                }                                                
                                             </td>
                                             <td>
                                                 <span>@Model.paymentDetailsList[i].AmountImposed</span>

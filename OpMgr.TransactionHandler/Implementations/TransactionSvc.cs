@@ -299,7 +299,13 @@ namespace OpMgr.TransactionHandler.Implementations
                                    {
                                        trnsLogDto.TransactionDueDate = null;
                                    }
-
+                                   if (trnsLogDto.TransactionDueDate !=null && trnsLogDto.TransactionDueDate.HasValue && string.Equals(ConfigurationManager.AppSettings["SkipWeekOffsForDueDate"], "Y", StringComparison.OrdinalIgnoreCase))
+                                   {
+                                       while(_commonConfig.WeekOffDays.Contains(trnsLogDto.TransactionDueDate.Value.DayOfWeek))
+                                       {
+                                           trnsLogDto.TransactionDueDate = trnsLogDto.TransactionDueDate.Value.AddDays(1);
+                                       }
+                                   }
                                    trnsLogDto.TransactionPreviousDueDate = null;
                                    trnsLogDto.ParentTransactionLogId = null;
                                    trnsLogDto.IsCompleted = false;
@@ -403,8 +409,15 @@ namespace OpMgr.TransactionHandler.Implementations
                                         {
                                             trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
                                         }
-                                    }                                    
+                                    }
 
+                                    if (trnsLog.TransactionDueDate != null && trnsLog.TransactionDueDate.HasValue && string.Equals(ConfigurationManager.AppSettings["SkipWeekOffsForDueDate"], "Y", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        while (_commonConfig.WeekOffDays.Contains(trnsLog.TransactionDueDate.Value.DayOfWeek))
+                                        {
+                                            trnsLog.TransactionDueDate = trnsLog.TransactionDueDate.Value.AddDays(1);
+                                        }
+                                    }
                                     //trnsLog.TransactionDueDate = ((DateTime)reader["TransactionDueDate"]).AddDays((int)trnsRule[0]["DueDateincreasesBy"]);
                                     trnsLog.TransactionPreviousDueDate = (DateTime)reader["TransactionDueDate"];
                                     trnsLog.ParentTransactionLogId = new TransactionLogDTO();
