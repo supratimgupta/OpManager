@@ -13,5 +13,7 @@ namespace OpMgr.Common.Contracts
         string GetConfigValue(string key);
 
         string this[string key]{ get; }
+
+        List<DayOfWeek> WeekOffDays { get; }
     }
 }

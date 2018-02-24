@@ -74,5 +74,26 @@ namespace OpMgr.Configurations.Implementations
             }
             return value;
         }
+
+
+        public List<DayOfWeek> WeekOffDays
+        {
+            get {
+                List<DayOfWeek> lstWeekOffDays = new List<DayOfWeek>();
+                string weekOffDays = this["WEEK_OFF_DAYS"];
+                if(!string.IsNullOrEmpty(weekOffDays))
+                {
+                    string[] arrWeekOffDays = weekOffDays.Split(',');
+                    foreach(string weekOffDay in arrWeekOffDays)
+                    {
+                        if(!string.IsNullOrEmpty(weekOffDay))
+                        {
+                            lstWeekOffDays.Add((DayOfWeek)Convert.ToInt32(weekOffDay));
+                        }
+                    }
+                }
+                return lstWeekOffDays;
+            }
+        }
     }
 }

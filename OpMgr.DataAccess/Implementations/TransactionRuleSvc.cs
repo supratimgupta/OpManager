@@ -82,7 +82,7 @@ namespace OpMgr.DataAccess.Implementations
                     }
                     command.Parameters.Add("@frstDueAfter", MySqlDbType.Int32).Value = data.FirstDueAfterDays;
                     command.Parameters.Add("@dueDTIncreasesBy", MySqlDbType.Int32).Value = data.DueDateIncreasesBy;
-                    if (!string.IsNullOrEmpty(data.PenaltyCalculatedIn))
+                    if (!string.IsNullOrEmpty(data.PenaltyCalculatedIn) && !string.Equals("-1",data.PenaltyCalculatedIn))
                     {
                         command.Parameters.Add("@penaltyCalcIn", MySqlDbType.String).Value = data.PenaltyCalculatedIn;
                     }
@@ -122,7 +122,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@ruleName", MySqlDbType.String).Value = DBNull.Value;
                     }
-                    if(!string.IsNullOrEmpty(data.PenaltyTransactionType))
+                    if(!string.IsNullOrEmpty(data.PenaltyTransactionType) && !string.Equals("-1", data.PenaltyTransactionType))
                     {
                         command.Parameters.Add("@penaltyTrType", MySqlDbType.String).Value = data.PenaltyTransactionType;
                     }
@@ -208,7 +208,7 @@ namespace OpMgr.DataAccess.Implementations
                     }
                     command.Parameters.Add("@frstDueAfter", MySqlDbType.Int32).Value = data.FirstDueAfterDays;
                     command.Parameters.Add("@dueDTIncreasesBy", MySqlDbType.Int32).Value = data.DueDateIncreasesBy;
-                    if (!string.IsNullOrEmpty(data.PenaltyCalculatedIn))
+                    if (!string.IsNullOrEmpty(data.PenaltyCalculatedIn) && !string.Equals("-1",data.PenaltyCalculatedIn))
                     {
                         command.Parameters.Add("@penaltyCalcIn", MySqlDbType.String).Value = data.PenaltyCalculatedIn;
                     }
@@ -248,7 +248,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@ruleName", MySqlDbType.String).Value = DBNull.Value;
                     }
-                    if (!string.IsNullOrEmpty(data.PenaltyTransactionType))
+                    if (!string.IsNullOrEmpty(data.PenaltyTransactionType) && !string.Equals("-1", data.PenaltyTransactionType))
                     {
                         command.Parameters.Add("@penaltyTrType", MySqlDbType.String).Value = data.PenaltyTransactionType;
                     }
@@ -469,16 +469,11 @@ namespace OpMgr.DataAccess.Implementations
                         }
                         return false;
                     }
-                    if(_dtResult!=null && _dtResult.Rows.Count==1)
+                    if((_dtResult==null) || (_dtResult.Rows.Count==0) || (_dtResult.Rows.Count==1 && string.Equals(_dtResult.Rows[0]["TranRuleId"].ToString(), ruleId.ToString(), StringComparison.OrdinalIgnoreCase)))
                     {
-                        if(string.Equals(_dtResult.Rows[0]["TranRuleId"].ToString(), ruleId.ToString(), StringComparison.OrdinalIgnoreCase))
-                        {
-                            return false;
-                        }
-                        return true;
+                        return false;
                     }
-                    return true;
-                    
+                    return true;                    
                 }
                 catch (Exception exp)
                 {

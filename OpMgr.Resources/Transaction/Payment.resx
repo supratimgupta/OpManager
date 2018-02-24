@@ -127,10 +127,10 @@
     <value>Adjusted</value>
   </data>
   <data name="GridRowAdjustingAmount" xml:space="preserve">
-    <value>Adjusting</value>
+    <value>Adjust Amount</value>
   </data>
   <data name="GridRowCurrentlyPaying" xml:space="preserve">
-    <value>Currently Paying</value>
+    <value>Payment Recieved</value>
   </data>
   <data name="GridRowDue" xml:space="preserve">
     <value>Due</value>
@@ -140,6 +140,9 @@
   </data>
   <data name="GridRowPaymentButton" xml:space="preserve">
     <value>Pay</value>
+  </data>
+  <data name="GridRowPaymentMode" xml:space="preserve">
+    <value>Payment Mode</value>
   </data>
   <data name="GridRowSubmit" xml:space="preserve">
     <value>Submit</value>
@@ -187,15 +190,15 @@
     <value>Pending Payment for User</value>
   </data>
   <data name="TransactionDate" xml:space="preserve">
-    <value>Date</value>
+    <value>Month</value>
   </data>
   <data name="TransactionDueDate" xml:space="preserve">
     <value>Due Date</value>
   </data>
   <data name="TransactionName" xml:space="preserve">
-    <value>Transaction Name</value>
+    <value>Transaction Type</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Name</value>
+    <value>Student Name</value>
   </data>
 </root>

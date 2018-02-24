@@ -88,7 +88,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjusting.
+        ///   Looks up a localized string similar to Adjust Amount.
         /// </summary>
         public static string GridRowAdjustingAmount {
             get {
@@ -97,7 +97,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Currently Paying.
+        ///   Looks up a localized string similar to Payment Recieved.
         /// </summary>
         public static string GridRowCurrentlyPaying {
             get {
@@ -129,6 +129,15 @@ namespace OpMgr.Resources.Transaction {
         public static string GridRowPaymentButton {
             get {
                 return ResourceManager.GetString("GridRowPaymentButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Mode.
+        /// </summary>
+        public static string GridRowPaymentMode {
+            get {
+                return ResourceManager.GetString("GridRowPaymentMode", resourceCulture);
             }
         }
         
@@ -268,7 +277,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date.
+        ///   Looks up a localized string similar to Month.
         /// </summary>
         public static string TransactionDate {
             get {
@@ -286,7 +295,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transaction Name.
+        ///   Looks up a localized string similar to Transaction Type.
         /// </summary>
         public static string TransactionName {
             get {
@@ -295,7 +304,7 @@ namespace OpMgr.Resources.Transaction {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Student Name.
         /// </summary>
         public static string UserName {
             get {
