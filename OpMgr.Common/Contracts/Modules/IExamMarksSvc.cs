@@ -11,5 +11,6 @@ namespace OpMgr.Common.Contracts.Modules
     {
         StatusDTO<CourseMappingDTO> GetCourseMappingDetails(CourseMappingDTO coursemappingDTO);
         StatusDTO<ExamRuleDTO> GetExamRuleDetails(CourseExam courseExamDTO);
+        StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId);
     }
 }

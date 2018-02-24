@@ -85,5 +85,23 @@ namespace OperationsManager.Areas.Exam.Controllers
             }
             return Json(new { data = new ExamRuleDTO(), message = "ExamRule is not registered for proper course", status = true }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetStudentDetailsMarks(CourseMappingDTO coursemap)
+        {
+            StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId);
+            //if (status.IsSuccess)
+            //{
+            //    Exam examMarksVM = new Models.ExamMarksVM();
+            //    examMarksVM.hdnExamRuleId = status.ReturnObj.ExamRuleId;
+            //    return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
+            //}
+            //if (status.IsException)
+            //{
+            //    return Json(new { data = new ExamRuleDTO(), message = "Exception: " + status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
+            //}
+            return Json(new { data = new ExamRuleDTO(), message = "ExamRule is not registered for proper course", status = true }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

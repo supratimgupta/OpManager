@@ -141,6 +141,9 @@
   <data name="MarksObtained" xml:space="preserve">
     <value>Marks Obtained</value>
   </data>
+  <data name="ObtainedMarks" xml:space="preserve">
+    <value>ObtainedMarks</value>
+  </data>
   <data name="RegistrationNo" xml:space="preserve">
     <value>Registration No</value>
   </data>
@@ -150,7 +153,16 @@
   <data name="StandardSectionId" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="StudentMarksMaeding" xml:space="preserve">
+    <value>Student Marks</value>
+  </data>
+  <data name="StudentName" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="Subject" xml:space="preserve">
     <value>Subject</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

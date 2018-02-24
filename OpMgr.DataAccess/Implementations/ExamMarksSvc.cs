@@ -120,6 +120,65 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
+        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId)
+        {
+            StatusDTO<List<ExamMarksDTO>> examMarksList = new StatusDTO<List<ExamMarksDTO>>();
+            examMarksList.IsException = false;
+            examMarksList.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "getStudentDetailsForMarksEntry";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@LocationId1", MySqlDbType.Int32).Value = LocationId;
+                    command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
+                    
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+                    
+                    if (_dsData != null && _dsData.Tables.Count > 0)
+                    {
+                        examMarksList.ReturnObj = new List<ExamMarksDTO>();
+                        for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
+                        {
+                            ExamMarksDTO exammarks = new ExamMarksDTO();
+                            exammarks.Student = new StudentDTO();
+                            exammarks.Student.StandardSectionMap = new StandardSectionMapDTO();
+                            exammarks.Student.StandardSectionMap.Standard = new StandardDTO();
+                            exammarks.Student.StandardSectionMap.Section = new SectionDTO();
+                            exammarks.Student.UserDetails = new UserMasterDTO();
+                            exammarks.Student.UserDetails.Location = new LocationDTO();
+                            exammarks.Student.StudentInfoId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StudentInfoId"]);
+                            exammarks.Student.RegistrationNumber = _dsData.Tables[0].Rows[i]["RegistrationNumber"].ToString();
+                            exammarks.Student.StandardSectionMap.Standard.StandardName = _dsData.Tables[0].Rows[i]["StandardName"].ToString();
+                            exammarks.Student.StandardSectionMap.Section.SectionName = _dsData.Tables[0].Rows[i]["SectionName"].ToString();
+
+                            exammarks.Student.RollNumber = _dsData.Tables[0].Rows[i]["RollNumber"].ToString();
+                            exammarks.Student.UserDetails.FName = _dsData.Tables[0].Rows[i]["FName"].ToString();
+                            exammarks.Student.UserDetails.LName = _dsData.Tables[0].Rows[i]["LName"].ToString();
+                            exammarks.Student.UserDetails.Location.LocationDescription = _dsData.Tables[0].Rows[i]["LocationDescription"].ToString();
+
+                            examMarksList.ReturnObj.Add(exammarks);
+                            examMarksList.IsSuccess = true;
+                            
+                        }
+                    }
+                    
+                    return examMarksList;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+
+        }
+
         public StatusDTO<ExamMarksDTO> Insert(ExamMarksDTO data)
         {
             throw new NotImplementedException();

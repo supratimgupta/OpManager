@@ -28,5 +28,7 @@ namespace OperationsManager.Areas.Exam.Models
         public string FromDateString { get; set; }
 
         public string ToDateString { get; set; }
+
+        public List<ExamMarksDTO> ExamMarksList { get; set; }
     }
 }

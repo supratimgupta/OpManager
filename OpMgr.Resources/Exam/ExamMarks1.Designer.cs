@@ -133,6 +133,15 @@ namespace OpMgr.Resources.Exam {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ObtainedMarks.
+        /// </summary>
+        public static string ObtainedMarks {
+            get {
+                return ResourceManager.GetString("ObtainedMarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration No.
         /// </summary>
         public static string RegistrationNo {
@@ -160,11 +169,38 @@ namespace OpMgr.Resources.Exam {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Student Marks.
+        /// </summary>
+        public static string StudentMarksMaeding {
+            get {
+                return ResourceManager.GetString("StudentMarksMaeding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string StudentName {
+            get {
+                return ResourceManager.GetString("StudentName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subject.
         /// </summary>
         public static string Subject {
             get {
                 return ResourceManager.GetString("Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        public static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
             }
         }
     }
