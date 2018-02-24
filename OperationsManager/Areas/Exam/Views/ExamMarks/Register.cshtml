@@ -3,70 +3,167 @@
 @model OperationsManager.Areas.Exam.Models.ExamMarksVM
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 @section PageScripts{
     <script>
         $(document).ready(function () {
 
+            $('.CourseFrom').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_Location_LocationId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+
+                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
+                    
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (StandardSectionId < 0) {
+                    alert("Please Select Standard Section");
+                }
+                else if (SubjectId < 0) {
+                    alert("Please Select Subject");
+                }
+                return false;
+            });
+
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+
+                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (locationId < 0) {
+                    alert("Please Select Location");
+                }
+                else if (SubjectId < 0) {
+                    alert("Please Select Subject");
+                }
+                return false;
+            });
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_Subject_SubjectId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+                
+                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
+                    
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (locationId < 0) {
+                    alert("Please Select Location");
+                }
+                else if (StandardSectionId < 0) {
+                    alert("Please Select Standard Section");
+                }
+                return false;
+            });
+
+
+            // If Selected ExamType , ExamSubType and CourseMappingId(hdncoursemapid) > 0 then will get ExamRuleId
+            $("#CourseExam_ExamType_ExamTypeId").change(function () {
+                var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
+                var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
+                var CourseMapId = document.getElementById("hdncoursemapid").value;
+                if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
+                    GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
+                }
+                
+                return false;
+            });
+
+            // If Selected ExamType , ExamSubType and CourseMappingId(hdncoursemapid) > 0 then will get ExamRuleId
+            $("#CourseExam_ExamSubType_ExamSubTypeId").change(function () {
+                debugger;
+                var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
+                var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
+                var CourseMapId = document.getElementById("hdncoursemapid").value;
+                alert(document.getElementById("hdncoursemapid").value);
+                if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
+                    GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
+                }
+
+                return false;
+            });
 
         });
 
-        function getStudentDetails(txtReg) {
-            var regNo = document.getElementById("txtRegNo").value;
-            if (regNo.length > 0) {
-                var student = new Object();
-                student.RegistrationNumber = regNo;
-                $.ajax({
-                    type: 'POST',
-                    url: 'GetStudentDetails',
-                    dataType: "json",
-                    data: student,
-                    success: function (resultData) { getStudentDetails_callback(resultData); },
-                    error: function (error) { }
-                });
+        function GetCourseMappingDetails(locationId, StandardSectionId, SubjectId) {
+            
+            var coursemap = new Object();
+            coursemap.Location = new Object();            
+            coursemap.StandardSection = new Object();
+            coursemap.Subject = new Object();
+            coursemap.Employee = new Object();
+            coursemap.Location.LocationId = locationId;
+            coursemap.StandardSection.StandardSectionId = StandardSectionId;
+            coursemap.Subject.SubjectId = SubjectId;
+            coursemap.Employee.EmployeeId = document.getElementById("hdnEmployeeId").value;
+            
+            $.ajax({
+                
+                type: 'POST',
+                url: 'GetCourseMappingDetails',
+                dataType: "json",
+                data: coursemap,
+                success: function (resultData) { getcoursemappingDetails_callback(resultData); },
+                error: function (error) { }
+            });
+        }
+
+        function getcoursemappingDetails_callback(result) {
+            if (result.status) {
+                debugger;
+                var FromDate = result.FromDateString;
+                var ToDate = result.ToDateString;
+                var data = result.data;
+                
+                document.getElementById("hdncoursemapid").value = data.CourseMappingId;
+                alert(document.getElementById("hdncoursemapid").value);
+                document.getElementById("FromDateString").value = FromDate;
+                document.getElementById("ToDateString").value = ToDate;
             }
         }
 
-        function getStudentDetails_callback(result) {
+        function GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId) {
+           
+            var courseexam = new Object();
+            courseexam.ExamType = new Object();
+            courseexam.ExamSubType = new Object();
+            courseexam.CourseMapping = new Object();
+            
+            courseexam.ExamType.ExamTypeId = ExamTypeId;
+            courseexam.ExamSubType.ExamSubTypeId = ExamSubTypeId;            
+            courseexam.CourseMapping.CourseMappingId = CourseMapId;
+            debugger;
+            $.ajax({
+
+                type: 'POST',
+                url: 'GetExamRuleDetails',
+                dataType: "json",
+                data: courseexam,
+                success: function (resultData) { getcourseExamDetails_callback(resultData); },
+                error: function (error) { }
+            });
+        }
+        
+        function getcourseExamDetails_callback(result) {
+            debugger;
             if (result.status) {
+
                 var data = result.data;
-                document.getElementById("txtRegNo").value = data.RegistrationNumber;
-                document.getElementById("hfUserMasterId").value = data.UserDetails.UserMasterId;
-                document.getElementById("hfStudentInfoId").value = data.StudentInfoId;
-                $("#ddlTranMaster").removeAttr('disabled');
-                $("#txtDueDate").removeAttr('disabled');
-                $("#ddlLocation").removeAttr('disabled');
-
-                if (data.StandardSectionMap && data.StandardSectionMap.StandardSectionId) {
-                    document.getElementById("hfStandSecMap").value = data.StandardSectionMap.StandardSectionId;
-
-                    var ddlStandSectionMap = document.getElementById("ddlStandSectionMap");
-
-                    for (i = 0; i < ddlStandSectionMap.options.length; i++) {
-                        if (ddlStandSectionMap.options[i].value == data.StandardSectionMap.StandardSectionId.toString()) {
-                            ddlStandSectionMap.selectedIndex = i;
-                            break;
-                        }
-                    }
-                }
-                else {
-                    document.getElementById("ddlStandSectionMap").selectedIndex = 0;
-                }
-            }
-            else {
-                alert('Registration number is not valid');
-                document.getElementById("txtRegNo").value = "";
-
-                document.getElementById("hfUserMasterId").value = "";
-                document.getElementById("hfStudentInfoId").value = "";
-
-                $("#ddlLocation").attr('disabled', 'disabled');
-                $("#btnSubmit").attr('disabled', 'disabled');
-
-                document.getElementById("hfStandSecMap").value = "";
-                document.getElementById("ddlStandSectionMap").selectedIndex = 0;
+                document.getElementById("hdnExamRuleId").value = data.ExamRuleId;
             }
         }
     </script>
@@ -77,7 +174,7 @@
             <div class="panel-heading"><b></b></div>
             <div class="panel-body">
 
-                @using (Html.BeginForm("Register", "ExamMarks", FormMethod.Post, new { id = "registerform" }))
+                @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
@@ -85,19 +182,27 @@
                             @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
+                            @Html.HiddenFor(m => m.hdnEmployeeId)
+                            @Html.HiddenFor(m => m.hdncoursemapid)
+                            @Html.HiddenFor(m => m.hdnExamRuleId)
                         </div>
 
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.Student.RegistrationNumber, ExamMarks.RegistrationNo, new { @class = "form-control requiredField", onblur = "getStudentDetails(this);", data_rule_required = "true", data_msg_required = "Please enter registration no", id = "txtRegNo" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.Student.RollNumber, ExamMarks.RollNumber, new { @class = "form-control" })
-                        </div>
-                        
                         <div class="col-lg-4">
                             @*<button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>*@
                         </div>

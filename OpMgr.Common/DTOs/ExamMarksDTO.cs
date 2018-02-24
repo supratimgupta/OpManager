@@ -47,7 +47,6 @@ namespace OpMgr.Common.DTOs
         public DateTime CourseFrom { get; set; }
 
         public DateTime CourseTo { get; set; }
-
         
     }
 }

@@ -9,6 +9,7 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface IExamMarksSvc :ICRUDSvc<ExamMarksDTO,ExamMarksDTO>
     {
-
+        StatusDTO<CourseMappingDTO> GetCourseMappingDetails(CourseMappingDTO coursemappingDTO);
+        StatusDTO<ExamRuleDTO> GetExamRuleDetails(CourseExam courseExamDTO);
     }
 }

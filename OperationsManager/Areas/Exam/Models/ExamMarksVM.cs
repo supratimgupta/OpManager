@@ -18,5 +18,15 @@ namespace OperationsManager.Areas.Exam.Models
         public SelectList SubjectList { get; set; }
 
         public SelectList LocationList { get; set; }
+
+        public int hdnEmployeeId { get; set; }
+
+        public int hdncoursemapid { get; set; }
+
+        public int hdnExamRuleId { get; set; }
+
+        public string FromDateString { get; set; }
+
+        public string ToDateString { get; set; }
     }
 }

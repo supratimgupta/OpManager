@@ -732,7 +732,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<ExamTypeDTO> getExamTypeList()
+        public List<ExamTypeDTO> getExamType()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -766,7 +766,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<ExamSubTypeDTO> getExamSubTypeList()
+        public List<ExamSubTypeDTO> getExamSubType()
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -774,7 +774,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select ExamSubTypeId, ExamSubTypeDescription from examsubtype where Active=1";
+                    command.CommandText = "select ExamSubTypeId, ExamSubTypeDescription from examsubtypes where Active=1";
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);

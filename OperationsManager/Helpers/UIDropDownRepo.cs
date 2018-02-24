@@ -62,6 +62,12 @@ namespace OperationsManager.Helpers
         public SelectList getSubjectDropDown()
         {
             List<SubjectDTO> rDto = _ddlRepo.Subject();
+            SubjectDTO subjectDTO = new SubjectDTO();
+            subjectDTO.SubjectId = -1;
+            subjectDTO.SubjectName = "";
+
+            rDto.Insert(0, subjectDTO);
+
             return new SelectList(rDto, "SubjectId", "SubjectName");
         }
 
@@ -392,6 +398,30 @@ namespace OperationsManager.Helpers
             //blank.AppraisalStatusDescription = "";
             //statusDto.Insert(0, blank);
             return new SelectList(ratingDto, "Minimum", "RatingLevel");
+        }
+
+        public SelectList getExamTypeDropDown()
+        {
+            List<ExamTypeDTO> rDto = _ddlRepo.getExamType();
+            ExamTypeDTO examtypeDTO = new ExamTypeDTO();
+            examtypeDTO.ExamTypeId = -1;
+            examtypeDTO.ExamTypeDescription = "";
+
+            rDto.Insert(0, examtypeDTO);
+
+            return new SelectList(rDto, "ExamTypeId", "ExamTypeDescription");
+        }
+
+        public SelectList getExamSubTypeDropDown()
+        {
+            List<ExamSubTypeDTO> rDto = _ddlRepo.getExamSubType();
+            ExamSubTypeDTO examSubtypeDTO = new ExamSubTypeDTO();
+            examSubtypeDTO.ExamSubTypeId = -1;
+            examSubtypeDTO.ExamSubTypeDescription = "";
+
+            rDto.Insert(0, examSubtypeDTO);
+
+            return new SelectList(rDto, "ExamSubTypeId", "ExamSubTypeDescription");
         }
     }
 }

@@ -58,5 +58,9 @@ namespace OpMgr.Common.Contracts.Modules
         List<AppraisalStatusDTO> AppraisalStatus();
 
         List<RatingDTO> AppraisalRating();
+
+        List<ExamTypeDTO> getExamType();
+
+        List<ExamSubTypeDTO> getExamSubType();
     }
 }
