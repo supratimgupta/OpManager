@@ -153,6 +153,7 @@ namespace OpMgr.DataAccess.Implementations
                             exammarks.Student.StandardSectionMap.Section = new SectionDTO();
                             exammarks.Student.UserDetails = new UserMasterDTO();
                             exammarks.Student.UserDetails.Location = new LocationDTO();
+                            
                             exammarks.Student.StudentInfoId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StudentInfoId"]);
                             exammarks.Student.RegistrationNumber = _dsData.Tables[0].Rows[i]["RegistrationNumber"].ToString();
                             exammarks.Student.StandardSectionMap.Standard.StandardName = _dsData.Tables[0].Rows[i]["StandardName"].ToString();
@@ -162,6 +163,18 @@ namespace OpMgr.DataAccess.Implementations
                             exammarks.Student.UserDetails.FName = _dsData.Tables[0].Rows[i]["FName"].ToString();
                             exammarks.Student.UserDetails.LName = _dsData.Tables[0].Rows[i]["LName"].ToString();
                             exammarks.Student.UserDetails.Location.LocationDescription = _dsData.Tables[0].Rows[i]["LocationDescription"].ToString();
+                            exammarks.StandardSection = new StandardSectionMapDTO();
+                            exammarks.StandardSection.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StandardSectionId"]);
+                            exammarks.CourseExam = new CourseExam();
+                            exammarks.CourseExam.CourseExamId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["CourseExamId"]);
+
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["ExamMarksId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]) > 0)
+                                {
+                                    exammarks.ExamMarksId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]);
+                                }
+                            }
 
                             examMarksList.ReturnObj.Add(exammarks);
                             examMarksList.IsSuccess = true;
