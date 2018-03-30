@@ -142,7 +142,7 @@
     <value>Marks Obtained</value>
   </data>
   <data name="ObtainedMarks" xml:space="preserve">
-    <value>ObtainedMarks</value>
+    <value>Obtained Marks</value>
   </data>
   <data name="RegistrationNo" xml:space="preserve">
     <value>Registration No</value>
@@ -163,6 +163,9 @@
     <value>Subject</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
+    <value>Search</value>
+  </data>
+  <data name="Submitmarks" xml:space="preserve">
+    <value>Save Marks</value>
   </data>
 </root>

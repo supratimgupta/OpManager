@@ -89,7 +89,7 @@
                 var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
                 var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
                 var CourseMapId = document.getElementById("hdncoursemapid").value;
-                alert(document.getElementById("hdncoursemapid").value);
+
                 if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
                     GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
                 }
@@ -124,13 +124,13 @@
 
         function getcoursemappingDetails_callback(result) {
             if (result.status) {
-                debugger;
+
                 var FromDate = result.FromDateString;
                 var ToDate = result.ToDateString;
                 var data = result.data;
 
                 document.getElementById("hdncoursemapid").value = data.CourseMappingId;
-                alert(document.getElementById("hdncoursemapid").value);
+
                 document.getElementById("FromDateString").value = FromDate;
                 document.getElementById("ToDateString").value = ToDate;
             }
@@ -159,19 +159,18 @@
         }
 
         function getcourseExamDetails_callback(result) {
-            debugger;
+
             if (result.status) {
 
                 var data = result.data;
                 document.getElementById("hdnExamRuleId").value = data.ExamRuleId;
-                alert(data.ExamRuleId);
+
                 if (data.ExamRuleId > 0) {
                     var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
                     var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                    alert(locationId);
-                    alert(StandardSectionId);
+
                     if (locationId > 0 && StandardSectionId > 0) {
-                        GetStudentDetailsMarks(locationId, StandardSectionId);
+                        //GetStudentDetailsMarks(locationId, StandardSectionId);
                     }
 
                 }
@@ -210,7 +209,7 @@
             <div class="panel-heading"><b></b></div>
             <div class="panel-body">
 
-                @using (Html.BeginForm())
+                @using (Html.BeginForm("Register", "ExamMarks", FormMethod.Post, new { id = "exammarksform", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
@@ -247,82 +246,104 @@
             </div>
         </div>
 
-        @*<div class="panel panel-color panel-primary">
+        <div class="panel panel-color panel-primary">
             <div class="panel-heading">
 
                 <b>@ExamMarks.StudentMarksMaeding</b>
 
             </div>
             <div class="panel-body">
+                @using (Html.BeginForm("SubmitMarks", "ExamMarks", FormMethod.Post, new { id = "exammarkssubmit", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div style="overflow:scroll;">
+                        <div class="col-lg-12">
+                            <div class="col-lg-4">
+                            </div>
+                            <div class="col-lg-4">
+                            </div>
+                            <div class="col-lg-4">
+                                <button type="submit" class="btn btn-primary">@ExamMarks.Submitmarks</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                                <thead>
+                                    <tr>
+                                        <th th data-field="name" data-sortable="true">
+                                            @ExamMarks.StudentName
+                                        </th>
+                                        <th h data-field="Location" data-sortable="true">
+                                            @ExamMarks.Location
+                                        </th>
+                                        <th h data-field="RegistrationNo" data-sortable="true">
+                                            @ExamMarks.RegistrationNo
+                                        </th>
+                                        <th th data-field="RollNumber" data-sortable="true">
+                                            @ExamMarks.RollNumber
+                                        </th>
+                                        <th th data-field="StandardSectionId" data-sortable="true">
+                                            @ExamMarks.StandardSectionId
+                                        </th>
+                                        <th th data-field="Obtainedmarks" data-sortable="true">
+                                            @ExamMarks.ObtainedMarks
+                                        </th>
+                                        <th th data-field="Calculatedmarks" data-sortable="true">
+                                            @ExamMarks.CalculatedMarks
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        if (Model.IsSearchSuccessful)
+                                        {
+                                            for (int i = 0; i < Model.ExamMarksList.Count; i++)
+                                            {
+                                            <tr>
+                                                <td>
+                                                    @Model.ExamMarksList[i].FullName
 
-                <div style="overflow:scroll;">
-                    <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                            <tr>
-                                <th th data-field="name" data-sortable="true">
-                                    @ExamMarks.StudentName
-                                </th>
-                                <th h data-field="Location" data-sortable="true">
-                                    @ExamMarks.Location
-                                </th>
-                                <th h data-field="RegistrationNo" data-sortable="true">
-                                    @ExamMarks.RegistrationNo
-                                </th>
-                                <th th data-field="RollNumber" data-sortable="true">
-                                    @ExamMarks.RollNumber
-                                </th>
-                                <th th data-field="StandardSectionId" data-sortable="true">
-                                    @ExamMarks.StandardSectionId
-                                </th>
-                                <th th data-field="Obtainedmarks" data-sortable="true">
-                                    @ExamMarks.ObtainedMarks
-                                </th>
-                                <th th data-field="Calculatedmarks" data-sortable="true">
-                                    @ExamMarks.CalculatedMarks
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                                </td>
+                                                <td>
+                                                    @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
+                                                </td>
+                                                <td>
+                                                    @Model.ExamMarksList[i].Student.RegistrationNumber
+                                                </td>
+                                                <td>
+                                                    @Model.ExamMarksList[i].Student.RollNumber
+                                                </td>
+                                                <td>
+                                                    @Model.ExamMarksList[i].Class
+                                                </td>
+                                                <td>
+                                                    @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
+                                                </td>
+                                                <td>
+                                                    @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField" })
+                                                </td>
+                                            </tr>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                            <tr>
+                                                <td colspan="7">
+                                                    No Records Found
+                                                </td>
+                                            </tr>
+                                    }
+                                </tbody>
 
-                            @for (int i = 0; i < Model.ExamMarksList.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        @Model.ExamMarksList[i].Student.UserDetails.FName + " " + @Model.ExamMarksList[i].Student.UserDetails.LName
+                            </table>
+                        </div>
+                    </div>
 
-                                    </td>
-                                    <td>
-                                        @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
-                                    </td>
-                                    <td>
-                                        @Model.ExamMarksList[i].Student.RegistrationNumber
-                                    </td>
-                                    <td>
-                                        @Model.ExamMarksList[i].Student.RollNumber
-                                    </td>
-                                    <td>
-                                        @Model.ExamMarksList[i].Student.StandardSectionMap.StandardSectionDesc
-                                    </td>
-
-                                    <td>
-
-                                        @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
-
-                                    </td>
-                                    <td>
-                                        @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField" })
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-
-                    </table>
-                </div>
-
-
+                }
             </div>
-        </div>*@
+        </div>
     </div>
 
 </div>
-

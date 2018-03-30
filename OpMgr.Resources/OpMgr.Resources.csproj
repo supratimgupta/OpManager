@@ -66,10 +66,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkOnTransaction.resx</DependentUpon>
     </Compile>
-    <Compile Include="Exam\ExamMarks1.Designer.cs">
-      <DependentUpon>ExamMarks.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Exam\ExamMarks.Designer.cs">
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExamMarks.resx</DependentUpon>
     </Compile>
     <Compile Include="Library\Library.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -171,7 +171,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Exam\ExamMarks.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExamMarks1.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExamMarks.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Library\Library.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
