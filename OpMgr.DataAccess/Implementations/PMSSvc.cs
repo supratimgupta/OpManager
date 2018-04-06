@@ -226,7 +226,10 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 EmployeeGoalLogDTO empgoallog = new EmployeeGoalLogDTO();
                                 empgoallog.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                                empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                if (!String.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"].ToString()))
+                                {
+                                    empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                }
                                 empgoallog.GoalAttribute = new GoalAttributeDTO();
                                 empgoallog.GoalAttribute.Goal = new GoalDTO();
                                 empgoallog.GoalAttribute.GoalAttributeId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["goalattributeid"]);
@@ -655,8 +658,8 @@ namespace OpMgr.DataAccess.Implementations
             {
                 try
                 {
-                    if (data != null)
-                    {
+                    //if (data != null)
+                    //{
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
                         command.CommandText = "get_AppraiseeDetails";
@@ -756,7 +759,7 @@ namespace OpMgr.DataAccess.Implementations
                                 }
                             }
                         }                        
-                    }
+                    //}
                     return appraiseeList;
                 }
                 catch (Exception exp)
