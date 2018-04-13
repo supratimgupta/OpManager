@@ -321,7 +321,7 @@
                                                     @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
                                                 </td>
                                                 <td>
-                                                    @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField" })
+                                                    @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField" })
                                                 </td>
                                             </tr>
                                             }

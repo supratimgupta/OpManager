@@ -227,23 +227,22 @@ namespace OperationsManager.Areas.Exam.Controllers
         [AllowAnonymous]
         public ActionResult SubmitMarks(Models.ExamMarksVM examVm)
         {
-            if(examVm.IsSearchSuccessful)
+
+            if (examVm.ExamMarksList != null && examVm.ExamMarksList.Count > 0)
             {
-               if (examVm.ExamMarksList !=null && examVm.ExamMarksList.Count > 0)
+                for (int i = 0; i < examVm.ExamMarksList.Count; i++)
                 {
-                    for(int i=0; i < examVm.ExamMarksList.Count; i ++)
+                    if (examVm.ExamMarksList[i].ExamMarksId > 0)
                     {
-                        if(examVm.ExamMarksList[i].ExamMarksId > 0)
-                        {
 
-                        }
-                        else
-                        {
-
-                        }
+                    }
+                    else
+                    {
+                        _examMarksSvc.Insert(examVm.ExamMarksList[i]);
                     }
                 }
             }
+
             return RedirectToAction("Register");
         }
     }
