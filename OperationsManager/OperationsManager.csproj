@@ -1123,6 +1123,7 @@
     <Content Include="Areas\Notification\Views\Notification\ViewAll.cshtml" />
     <Content Include="Areas\Notification\Views\Notification\Chat.cshtml" />
     <Content Include="Areas\Login\Views\Login\StudentLanding.cshtml" />
+    <Content Include="Areas\PMS\Views\PMS\PMSMultipleGoalSheet.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
