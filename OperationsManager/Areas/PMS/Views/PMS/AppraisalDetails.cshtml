@@ -1,0 +1,66 @@
+﻿@using OpMgr.Resources.PMS
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.PMS.Models.PmsMasterVM
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SearchAppraisee</title>
+</head>
+<body>   
+    <div class="table-responsive">       
+        <table class="table table table-bordered table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1">
+            <thead>
+                <tr>
+                    <th th data-field="location" data-sortable="true">
+                        @GoalSheetResource.AppraisalStatus
+                    </th>
+                    <th th data-field="location" data-sortable="true">
+                        @GoalSheetResource.Location
+                    </th>
+                    <th th data-field="role" data-sortable="true">
+                        @GoalSheetResource.Designation
+                    </th>
+                    <th th data-field="role" data-sortable="false">
+                        @GoalSheetResource.Action
+                    </th>                    
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    if (Model.IsSearchSuccessful)
+                    {
+                        foreach (var pmsMaster in Model.pmsViewList)
+                        {
+                            <tr>
+                                <td>
+                                    @pmsMaster.AppraisalStatus.AppraisalStatusDescription
+                                </td>
+                                <td>
+                                    @pmsMaster.Employee.UserDetails.Location.LocationDescription
+                                </td>
+                                <td>
+                                    @pmsMaster.Employee.Designation.DesignationDescription
+                                </td>
+                                <td>
+                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pmsMaster.EmployeeAppraisalMasterId, new { name = "editPMS" })
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" align="center" style="font-style:oblique">
+                                No Data Found
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>   
+</body>
+</html>

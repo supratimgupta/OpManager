@@ -273,4 +273,7 @@
   <data name="FinalRating" xml:space="preserve">
     <value>Final Rating</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
 </root>

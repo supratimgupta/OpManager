@@ -655,67 +655,67 @@ namespace OpMgr.DataAccess.Implementations
             {
                 try
                 {
-                    if (data != null)
-                    {
+                   // if (data != null)
+                   // {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
-                        command.CommandText = "get_AppraiseeDetails";
+                        command.CommandText = "searchpmsmasterdata";
                         command.CommandType = CommandType.StoredProcedure;
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                        data.Employee = new EmployeeDetailsDTO();
-                        data.Employee.UserDetails = new UserMasterDTO();
-                        if (!string.IsNullOrEmpty(data.Employee.UserDetails.FName))
-                        {
-                            command.Parameters.Add("@Fname", MySqlDbType.String).Value = data.Employee.UserDetails.FName;
-                        }
-                        else
-                        {
-                            command.Parameters.Add("@Fname", MySqlDbType.String).Value = DBNull.Value;
-                        }
-                        if (!string.IsNullOrEmpty(data.Employee.UserDetails.LName))
-                        {
-                            command.Parameters.Add("@Lname", MySqlDbType.String).Value = data.Employee.UserDetails.LName;
-                        }
-                        else
-                        {
-                            command.Parameters.Add("@Lname", MySqlDbType.String).Value = DBNull.Value;
-                        }
-                        if (!string.IsNullOrEmpty(data.Employee.StaffEmployeeId))
-                        {
-                            command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
-                        }
-                        else
-                        {
-                            command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
-                        }
+                        //data.Employee = new EmployeeDetailsDTO();
+                        //data.Employee.UserDetails = new UserMasterDTO();
+                        //if (!string.IsNullOrEmpty(data.Employee.UserDetails.FName))
+                        //{
+                        //    command.Parameters.Add("@Fname", MySqlDbType.String).Value = data.Employee.UserDetails.FName;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@Fname", MySqlDbType.String).Value = DBNull.Value;
+                        //}
+                        //if (!string.IsNullOrEmpty(data.Employee.UserDetails.LName))
+                        //{
+                        //    command.Parameters.Add("@Lname", MySqlDbType.String).Value = data.Employee.UserDetails.LName;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@Lname", MySqlDbType.String).Value = DBNull.Value;
+                        //}
+                        //if (!string.IsNullOrEmpty(data.Employee.StaffEmployeeId))
+                        //{
+                        //    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = data.Employee.StaffEmployeeId;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@StaffEmployeeId", MySqlDbType.String).Value = DBNull.Value;
+                        //}
 
-                        //command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Employee.UserDetails.Location.LocationId;
-                        data.AppraisalStatus = new AppraisalStatusDTO();
-                        if (data.AppraisalStatus.AppraisalStatusId > 0)
-                        {
-                            command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = data.AppraisalStatus.AppraisalStatusId;
-                        }
-                        else
-                        {
-                            command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = DBNull.Value;
-                        }
-                        if (!string.IsNullOrEmpty(data.Employee.UserDetails.Gender))
-                        {
-                            command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = data.Employee.UserDetails.Gender;
-                        }
-                        else
-                        {
-                            command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = DBNull.Value;
-                        }
-                        if (!string.IsNullOrEmpty(data.AppraisalType))
-                        {
-                            command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = data.AppraisalType;
-                        }
-                        else
-                        {
-                            command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = DBNull.Value;
-                        }
+                        ////command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.Employee.UserDetails.Location.LocationId;
+                        //data.AppraisalStatus = new AppraisalStatusDTO();
+                        //if (data.AppraisalStatus.AppraisalStatusId > 0)
+                        //{
+                        //    command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = data.AppraisalStatus.AppraisalStatusId;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@AppraisalStatusId", MySqlDbType.Int32).Value = DBNull.Value;
+                        //}
+                        //if (!string.IsNullOrEmpty(data.Employee.UserDetails.Gender))
+                        //{
+                        //    command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = data.Employee.UserDetails.Gender;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@Gender", MySqlDbType.Int32).Value = DBNull.Value;
+                        //}
+                        //if (!string.IsNullOrEmpty(data.AppraisalType))
+                        //{
+                        //    command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = data.AppraisalType;
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = DBNull.Value;
+                        //}
 
                         MySqlDataAdapter da = new MySqlDataAdapter(command);
                         dsAppraiseeLst = new DataSet();
@@ -731,32 +731,36 @@ namespace OpMgr.DataAccess.Implementations
                                 for (int i = 0; i < dsAppraiseeLst.Tables[0].Rows.Count; i++)
                                 {
                                     EmployeeAppraisalMasterDTO empAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                                    empAppraisalMaster.EmployeeAppraisalMasterId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                    //empAppraisalMaster.EmployeeAppraisalMasterId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
                                     empAppraisalMaster.Employee = new EmployeeDetailsDTO();
-                                    empAppraisalMaster.Employee.UserDetails = new UserMasterDTO();
-                                    empAppraisalMaster.Employee.UserDetails.Location = new LocationDTO();
-                                    empAppraisalMaster.AppraisalStatus = new AppraisalStatusDTO();
+                                    empAppraisalMaster.Employee.UserDetails = new UserMasterDTO();                                   
                                     empAppraisalMaster.Employee.Designation = new DesignationDTO();
 
-                                    empAppraisalMaster.Employee.UserDetails.FName = dsAppraiseeLst.Tables[0].Rows[i]["Fname"].ToString();
+                                    empAppraisalMaster.Employee.UserDetails.FName = dsAppraiseeLst.Tables[0].Rows[i]["Fname"].ToString();                                    
                                     empAppraisalMaster.Employee.UserDetails.LName = dsAppraiseeLst.Tables[0].Rows[i]["Lname"].ToString();
+
+                                    if (dsAppraiseeLst.Tables[0].Rows[i]["PmsMasterId"] != DBNull.Value)
+                                        empAppraisalMaster.EmpAppPmsMasterId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["PmsMasterId"]);
+                                    else
+                                        empAppraisalMaster.EmpAppPmsMasterId = 0;
+
                                     empAppraisalMaster.Employee.UserDetails.Gender = dsAppraiseeLst.Tables[0].Rows[i]["Gender"].ToString();
-                                    empAppraisalMaster.Employee.UserDetails.Location.LocationId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["LocationId"].ToString());
-                                    empAppraisalMaster.Employee.UserDetails.Location.LocationDescription = dsAppraiseeLst.Tables[0].Rows[i]["LocationDescription"].ToString();
+                                    //empAppraisalMaster.Employee.UserDetails.Location.LocationId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["LocationId"].ToString());
+                                    //empAppraisalMaster.Employee.UserDetails.Location.LocationDescription = dsAppraiseeLst.Tables[0].Rows[i]["LocationDescription"].ToString();
                                     empAppraisalMaster.AppraisalType = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalType"].ToString();
                                     empAppraisalMaster.Employee.StaffEmployeeId = dsAppraiseeLst.Tables[0].Rows[i]["StaffEmployeeId"].ToString();
 
-                                    empAppraisalMaster.AppraisalStatus.AppraisalStatusId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
-                                    empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
+                                   // empAppraisalMaster.AppraisalStatus.AppraisalStatusId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
+                                   // empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
 
-                                    empAppraisalMaster.Employee.Designation.DesignationDescription = dsAppraiseeLst.Tables[0].Rows[i]["DesignationDescription"].ToString();
+                                   // empAppraisalMaster.Employee.Designation.DesignationDescription = dsAppraiseeLst.Tables[0].Rows[i]["DesignationDescription"].ToString();
 
                                     appraiseeList.ReturnObj.Add(empAppraisalMaster);
                                     appraiseeList.IsSuccess = true;
                                 }
                             }
                         }                        
-                    }
+                   // }
                     return appraiseeList;
                 }
                 catch (Exception exp)
@@ -766,5 +770,65 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public StatusDTO<List<PMSMasterDTO>> GetAppraisalDetails(int pmsMasterId)
+        {
+            StatusDTO<List<PMSMasterDTO>> statusPmsList = null;
+            try
+            {
+                
+                DataSet dsPmsMasterData = null;
+
+                if (pmsMasterId != 0)
+                {
+
+                    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        command.CommandText = "getpmsmasterdataByAppMasterId";
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                        command.Parameters.AddWithValue("@pmsmasterid1", pmsMasterId);
+
+                        MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                        dsPmsMasterData = new DataSet();
+                        mDa.Fill(dsPmsMasterData);
+
+                        if (dsPmsMasterData != null && dsPmsMasterData.Tables.Count > 0 && dsPmsMasterData.Tables[0].Rows.Count > 0)
+                        {
+                            statusPmsList = new StatusDTO<List<PMSMasterDTO>>();
+                            statusPmsList.ReturnObj = new List<PMSMasterDTO>();                            
+                            for (int i = 0; i < dsPmsMasterData.Tables[0].Rows.Count; i++)
+                            {
+                                
+                                PMSMasterDTO pmsMaster = new PMSMasterDTO();
+                                pmsMaster.AppraisalStatus = new AppraisalStatusDTO();
+                                pmsMaster.AppraisalStatus.AppraisalStatusDescription = dsPmsMasterData.Tables[0].Rows[i]["appraisalstatusdescription"].ToString().Trim();
+
+                                pmsMaster.Employee = new EmployeeDetailsDTO();
+                                pmsMaster.Employee.UserDetails = new UserMasterDTO();
+
+                                pmsMaster.Employee.UserDetails.Location = new LocationDTO();
+                                pmsMaster.Employee.UserDetails.Location.LocationDescription = dsPmsMasterData.Tables[0].Rows[i]["locationdescription"].ToString().Trim();
+                                pmsMaster.EmployeeAppraisalMasterId = Convert.ToInt32(dsPmsMasterData.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+
+                                pmsMaster.Employee.Designation = new DesignationDTO();
+                                pmsMaster.Employee.Designation.DesignationDescription= dsPmsMasterData.Tables[0].Rows[i]["pmsdesignationdescription"].ToString().Trim();
+                                statusPmsList.ReturnObj.Add(pmsMaster);
+                                if(!statusPmsList.IsSuccess)
+                                    statusPmsList.IsSuccess = true;                                
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return statusPmsList;
+        }
     }
 }

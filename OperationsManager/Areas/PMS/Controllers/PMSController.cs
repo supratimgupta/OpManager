@@ -327,7 +327,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 pmsview.GenderList = _uiddlRepo.getGenderDropDown();
                 // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
-                pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                //pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
 
                 if (status.IsSuccess && !status.IsException)
                 {
@@ -343,6 +343,8 @@ namespace OperationsManager.Areas.PMS.Controllers
                             searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
                             searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
 
+                            searchItem.EmpAppPmsMasterId = appraisalmaster.EmpAppPmsMasterId;// added by Navajit for fetching appraisal details
+
                             searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
                             if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
                             {
@@ -353,15 +355,16 @@ namespace OperationsManager.Areas.PMS.Controllers
                             searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
                             searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
                             searchItem.AppraisalType = appraisalmaster.AppraisalType;
-                            searchItem.AppraisalStatus = new AppraisalStatusDTO();
-                            searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
+                            //searchItem.AppraisalStatus = new AppraisalStatusDTO();
+                            //searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
 
-                            searchItem.UserDetails.Location = new LocationDTO();
-                            searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                            //searchItem.UserDetails.Location = new LocationDTO();
+                            //searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
                             searchItem.Employee = new EmployeeDetailsDTO();
                             searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
-                            searchItem.Employee.Designation = new DesignationDTO();
-                            searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
+                            //searchItem.Employee.Designation = new DesignationDTO();
+                            //searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
+                            
                             //Add into PMSView vIew Model List
                             pmsview.PMSVMList.Add(searchItem);
                             pmsview.IsSearchSuccessful = true;
@@ -389,6 +392,56 @@ namespace OperationsManager.Areas.PMS.Controllers
             }
 
             return View(pmsview);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult AppraisalDetails(int pmsId)
+        {
+
+            PmsMasterVM pmsView = new PmsMasterVM();//main model to be passed to View
+            StatusDTO<List<PMSMasterDTO>> statusPms = _pmsSvc.GetAppraisalDetails(pmsId);
+            if (statusPms != null && statusPms.ReturnObj!=null && statusPms.IsSuccess && !statusPms.IsException)
+            {
+                if(statusPms.ReturnObj.Count>0)
+                {
+                    pmsView.pmsViewList = new List<PmsMasterVM>();//List in View Model
+                    foreach (PMSMasterDTO pms in statusPms.ReturnObj)
+                    {
+                        PmsMasterVM pmsViewSearchItem = new PmsMasterVM();
+
+                        pmsViewSearchItem.AppraisalStatus = new AppraisalStatusDTO();
+                        pmsViewSearchItem.AppraisalStatus.AppraisalStatusDescription = pms.AppraisalStatus.AppraisalStatusDescription;
+
+                        pmsViewSearchItem.Employee = new EmployeeDetailsDTO();
+                        pmsViewSearchItem.Employee.UserDetails = new UserMasterDTO();
+
+                        pmsViewSearchItem.Employee.UserDetails.Location = new LocationDTO();
+                        pmsViewSearchItem.Employee.UserDetails.Location.LocationDescription = pms.Employee.UserDetails.Location.LocationDescription;
+
+                        pmsViewSearchItem.EmployeeAppraisalMasterId = pms.EmployeeAppraisalMasterId;
+
+                        pmsViewSearchItem.Employee.Designation = new DesignationDTO();
+                        pmsViewSearchItem.Employee.Designation.DesignationDescription = pms.Employee.Designation.DesignationDescription;
+
+                        pmsView.pmsViewList.Add(pmsViewSearchItem);
+                        if(pmsView.pmsViewList!=null && pmsView.pmsViewList.Count>0)
+                        {
+                            pmsView.IsSearchSuccessful = true;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                pmsView.IsSearchSuccessful = false;
+
+            }
+            return View(pmsView);
+
+
+
         }
 
         [HttpPost]

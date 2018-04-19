@@ -6,12 +6,61 @@
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
+@section PageScripts
+{
+    <script src="~/Scripts/DataTables-1.10.16/media/js/jquery.dataTables.js"></script>
+
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            debugger;
+
+            $("#searchAppraisee tbody tr td img").attr('title', 'View Appraisal Details');
+            $("#searchAppraisee tbody tr td img").click(function () {
+                ////debugger;
+                ////alert("Hi");
+                var tableRow = this.parentNode.parentNode;
+                if (this.src.match("expand")) {
+                    debugger;
+                    var pmsId = $(this).attr("rel");
+                    this.src = "../../Images/collapse.png"
+                    $(this).attr("title", "Collapse");
+                    $.get("AppraisalDetails?pmsId=" + pmsId, function (data) {
+                        oTable.fnOpen(tableRow, data, '');
+                    });
+                }
+                else {
+                    if (this.src.match("collapse")) {
+                        debugger;
+                        this.src = "../../Images/expand.png";
+                        $(this).attr("title", "View Appraisal Details");
+                        oTable.fnClose(tableRow);
+                    }
+                }
+            })
+
+            var oTable = $("#searchAppraisee").dataTable({
+                responsive: true
+            });
+        });
+
+    </script>
+
+}
 <!DOCTYPE html>
 
 <html>
 <head>
+    <!--For data table-->
+
+
     <meta name="viewport" content="width=device-width" />
     <title>SearchAppraisee</title>
+    @*<script src="~/Scripts/jquery-1.10.2.js"></script>
+        <script src="~/Scripts/DataTables-1.10.16/media/js/jquery.dataTables.js"></script>*@
+
+
+
 </head>
 <body>
 
@@ -29,7 +78,7 @@
                             <div class="row col-lg-12">
                                 <div class="col-lg-2">
                                     @Html.OpMgrTextBoxFor(m => m.Employee.UserDetails.FName, GoalSheetResource.FirstName, new { @class = "form-control" })
-                                </div>                               
+                                </div>
                                 <div class="col-lg-2">
                                     @Html.OpMgrTextBoxFor(m => m.Employee.UserDetails.LName, GoalSheetResource.LastName, new { @class = "form-control" })
                                 </div>
@@ -37,19 +86,19 @@
                                     @Html.OpMgrTextBoxFor(m => m.Employee.StaffEmployeeId, GoalSheetResource.StaffEmployeeId, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrDropDownListFor(m => m.AppraisalType, Model.AppraisalTypeList,  GoalSheetResource.AppraisalType, new { @class = "form-control" })
+                                    @Html.OpMgrDropDownListFor(m => m.AppraisalType, Model.AppraisalTypeList, GoalSheetResource.AppraisalType, new { @class = "form-control" })
                                 </div>
-                                <div class="col-lg-2">
-                                        @Html.OpMgrDropDownListFor(m => m.AppraisalStatus, Model.AppraisalStatusList, GoalSheetResource.AppraisalStatus, new { @class = "form-control" })
-                                    </div>
+                                @*<div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m => m.AppraisalStatus, Model.AppraisalStatusList, GoalSheetResource.AppraisalStatus, new { @class = "form-control" })
+                                </div>*@
                                 <div class="col-lg-2">
                                     @Html.OpMgrDropDownListFor(m => m.Employee.UserDetails.Gender, Model.GenderList, GoalSheetResource.Gender, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="row col-lg-12">
                                 <div class="col-lg-2">
-                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block" }, "fa fa-search")                                    
-                                </div>                                
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                </div>
                             </div>
                         </fieldset>
                     }
@@ -59,32 +108,33 @@
                 <div class="panel-heading"><b>@GoalSheetResource.AppraiseeResult</b></div>
                 <div class="panel-body">
                     <div style="overflow:scroll;">
-                        <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                        <table id="searchAppraisee" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                             <thead>
-                                <tr>                                    
+                                <tr>
+                                    <th></th>
                                     <th th data-field="name" data-sortable="true">
                                         @GoalSheetResource.Name
                                     </th>
                                     <th h data-field="Gender" data-sortable="true">
                                         @GoalSheetResource.Gender
-                                    </th>                                    
+                                    </th>
                                     <th th data-field="address" data-sortable="true">
                                         @GoalSheetResource.StaffEmployeeId
                                     </th>
-                                    <th th data-field="contact" data-sortable="true">
+                                    @*<th th data-field="contact" data-sortable="true">
                                         @GoalSheetResource.Location
-                                    </th>
+                                    </th>*@
                                     <th th data-field="location" data-sortable="true">
                                         @GoalSheetResource.AppraisalType
                                     </th>
-                                    <th th data-field="role" data-sortable="true">
+                                    @*<th th data-field="role" data-sortable="true">
                                         @GoalSheetResource.AppraisalStatus
                                     </th>
                                     <th>
                                         @GoalSheetResource.Designation
-                                    </th>
+                                    </th>*@
                                     <th>
-                                        @GoalSheetResource.Edit
+                                        @GoalSheetResource.Action
                                     </th>
                                 </tr>
                             </thead>
@@ -95,7 +145,10 @@
                                     {
                                         foreach (var pms in Model.PMSVMList)
                                         {
-                                            <tr>                                               
+                                            <tr>
+                                                <td>
+                                                    <img alt="Expand" src="~/Images/expand.png" rel="@pms.EmpAppPmsMasterId" width="20px" style="cursor:pointer" />
+                                                </td>
                                                 <td>
                                                     @pms.FullName
                                                 </td>
@@ -106,7 +159,7 @@
                                                 else if (string.Equals(pms.UserDetails.Gender, "2"))
                                                 {
                                                     <td>Female</td>
-                                                }                                                
+                                                }
                                                 else
                                                 {
                                                     <td></td>
@@ -115,22 +168,22 @@
                                                 <td>
                                                     @pms.Employee.StaffEmployeeId
                                                 </td>
-                                                <td>
+                                                @*<td>
                                                     @pms.UserDetails.Location.LocationDescription
-                                                </td>
+                                                </td>*@
                                                 <td>
                                                     @pms.AppraisalType
                                                 </td>
-                                                <td>
+                                                @*<td>
                                                     @pms.AppraisalStatus.AppraisalStatusDescription
 
                                                 </td>
                                                 <td>
                                                     @pms.Employee.Designation.DesignationDescription
 
-                                                </td>
+                                                </td>*@
                                                 <td>
-                                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId, new { name = "editPMS" })                                                    
+                                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId, new { name = "editPMS" })
                                                 </td>
                                             </tr>
                                         }
@@ -153,3 +206,42 @@
     </div>
 </body>
 </html>
+@*<script src="~/Scripts/jquery-1.10.2.js"></script>*@
+@*<script src="~/Scripts/DataTables-1.10.16/media/js/jquery.dataTables.js"></script>
+
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            debugger;
+
+            $("#searchAppraisee tbody tr td img").attr('title', 'View Appraisal Details');
+            $("#searchAppraisee tbody tr td img").click(function () {
+                ////debugger;
+                ////alert("Hi");
+                var tableRow = this.parentNode.parentNode;
+                if (this.src.match("expand")) {
+                    debugger;
+                    this.src = "../../Images/collapse.png";
+
+                    //$.get("AppraisalDetails.cshtml", function (data) {
+                    //    debugger;
+                    //    if(data!=null)
+                    //    tableRow.innerHTML = data;
+                    //});
+
+
+                }
+                else {
+                    if (this.src.match("collapse")) {
+                        debugger;
+                        this.src = "../../Images/expand.png";
+                    }
+                }
+            })
+
+            var oTable = $("#searchAppraisee").dataTable({
+                responsive: true
+            });
+        });
+
+    </script>*@
