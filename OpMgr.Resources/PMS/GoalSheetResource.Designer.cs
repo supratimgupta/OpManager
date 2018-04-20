@@ -286,6 +286,15 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Goal Sheet List.
+        /// </summary>
+        public static string GoalSheetBasedOnDesignation {
+            get {
+                return ResourceManager.GetString("GoalSheetBasedOnDesignation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Appraisal Form.
         /// </summary>
         public static string Header {
