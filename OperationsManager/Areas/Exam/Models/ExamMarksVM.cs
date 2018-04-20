@@ -36,5 +36,13 @@ namespace OperationsManager.Areas.Exam.Models
         public string FullName { get; set; }
 
         public string Class { get; set; }
+
+        public ExamRuleDTO Rule { get; set; }
+
+        public bool IsRuleOk { get; set; }
+
+        public bool IsRuleNeededToBeAdded { get; set; }
+
+        public string RuleAdditionMessage { get; set; }
     }
 }

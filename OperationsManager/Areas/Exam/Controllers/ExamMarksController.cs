@@ -16,13 +16,15 @@ namespace OperationsManager.Areas.Exam.Controllers
         private Helpers.UIDropDownRepo _uiddlRepo;
         private IConfigSvc _configSvc;
         private ISessionSvc _sessionSvc;
+        private IExamRuleSvc _examRuleSvc;
 
-        public ExamMarksController(IExamMarksSvc examMarksSvc, IDropdownRepo dropDwnRepo, IConfigSvc configSvc, ISessionSvc sessionSvc)
+        public ExamMarksController(IExamMarksSvc examMarksSvc, IDropdownRepo dropDwnRepo, IConfigSvc configSvc, ISessionSvc sessionSvc, IExamRuleSvc examRuleSvc)
         {
             _examMarksSvc = examMarksSvc;
             _dropDwnRepo = dropDwnRepo;
             _configSvc = configSvc;
             _sessionSvc = sessionSvc;
+            _examRuleSvc = examRuleSvc;
             _uiddlRepo = new Helpers.UIDropDownRepo(_dropDwnRepo);
         }
         // GET: Exam/ExamMarks
@@ -44,6 +46,10 @@ namespace OperationsManager.Areas.Exam.Controllers
             SessionDTO sessionRet = _sessionSvc.GetUserSession();
 
             examMarksVM.hdnEmployeeId = sessionRet.UniqueEmployeeId;
+
+            examMarksVM.IsRuleOk = true;
+            examMarksVM.IsRuleNeededToBeAdded = false;
+            examMarksVM.Rule = null;
 
             return View(examMarksVM);
         }
@@ -172,13 +178,47 @@ namespace OperationsManager.Areas.Exam.Controllers
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                         examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
 
+                        examVM.Rule = null;
+
                         Models.ExamMarksVM exammarksvm = null;
-                        foreach (ExamMarksDTO exammarksdto in status.ReturnObj)
+                        ExamMarksDTO exammarksdto = null;
+                        for(int i=0;i<status.ReturnObj.Count;i++)
                         {
+                            exammarksdto = status.ReturnObj[i];
                             if (exammarksdto != null)
                             {
                                 exammarksvm = new Models.ExamMarksVM();
                                 exammarksvm.ExamMarksId = exammarksdto.ExamMarksId;
+
+                                if(examVM.Rule==null)
+                                {
+                                    ExamRuleDTO rule = new ExamRuleDTO();
+                                    rule.CourseExam = new CourseExamDTO();
+                                    rule.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+                                    List<ExamRuleDTO> rules = _examRuleSvc.Select(rule).ReturnObj;
+
+                                    if(rules==null || rules.Count==0)
+                                    {
+                                        examVM.IsRuleOk = false;
+                                        examVM.RuleAdditionMessage = "Please add marks rule for this exam first.";
+                                        examVM.IsRuleNeededToBeAdded = true;
+                                        break;
+                                    }
+                                    else if(rules.Count>1)
+                                    {
+                                        examVM.IsRuleOk = false;
+                                        examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
+                                        examVM.IsRuleNeededToBeAdded = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        examVM.IsRuleOk = true;
+                                        examVM.Rule = rules[0];
+                                        examVM.RuleAdditionMessage = string.Empty;
+                                        examVM.IsRuleNeededToBeAdded = false;
+                                    }
+                                }
 
                                 exammarksvm.CourseExam = new CourseExam();
                                 exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;

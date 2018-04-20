@@ -121,7 +121,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT AssesmentMarks, ActualFullMarks, PassMarks, DateTimeLog WHERE CourseExamId=@courseExamId AND Active=1";
+                    command.CommandText = "SELECT ExamRuleId, AssesmentMarks, ActualFullMarks, PassMarks, DateTimeLog FROM ExamRule WHERE CourseExamId=@courseExamId AND Active=1";
                     command.Parameters.Add("@courseExamId", MySqlDbType.Int32).Value = data.CourseExam.CourseExamId;
 
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
@@ -140,10 +140,18 @@ namespace OpMgr.DataAccess.Implementations
                         foreach (DataRow dr in dtData.Rows)
                         {
                             examRuleDTO = new ExamRuleDTO();
+                            examRuleDTO.ExamRuleId = int.Parse(dr["ExamRuleId"].ToString());
                             examRuleDTO.AssesmentMarks = double.Parse(dr["AssesmentMarks"].ToString());
                             examRuleDTO.ActualFullMarks = double.Parse(dr["ActualFullMarks"].ToString());
                             examRuleDTO.PassMarks = double.Parse(dr["PassMarks"].ToString());
-                            examRuleDTO.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());
+                            if (!string.IsNullOrEmpty(dr["DateTimeLog"].ToString()))
+                            {
+                                examRuleDTO.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());
+                            }
+                            else
+                            {
+                                examRuleDTO.DateTimeLog = DateTime.Now;
+                            }
                             status.ReturnObj.Add(examRuleDTO);
                         }
                     }
@@ -168,7 +176,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "SELECT AssesmentMarks, ActualFullMarks, PassMarks, DateTimeLog, Active WHERE ExamRuleId=@examRuleId";
+                    command.CommandText = "SELECT AssesmentMarks, ActualFullMarks, PassMarks, DateTimeLog, Active FROM ExamRule WHERE ExamRuleId=@examRuleId";
                     command.Parameters.Add("@examRuleId", MySqlDbType.Int32).Value = rowId;
 
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
@@ -187,8 +195,18 @@ namespace OpMgr.DataAccess.Implementations
                         status.ReturnObj.AssesmentMarks = double.Parse(dr["AssesmentMarks"].ToString());
                         status.ReturnObj.ActualFullMarks = double.Parse(dr["ActualFullMarks"].ToString());
                         status.ReturnObj.PassMarks = double.Parse(dr["PassMarks"].ToString());
-                        status.ReturnObj.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());
-                        status.ReturnObj.Active = bool.Parse(dr["Active"].ToString());
+                        if (!string.IsNullOrEmpty(dr["DateTimeLog"].ToString()))
+                        {
+                            status.ReturnObj.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());
+                        }
+                        if (string.Equals(dr["Active"].ToString(),"1"))
+                        {
+                            status.ReturnObj.Active = true;
+                        }
+                        else
+                        {
+                            status.ReturnObj.Active = false;
+                        }
                         status.ReturnObj.ExamRuleId = rowId;
                     }
 

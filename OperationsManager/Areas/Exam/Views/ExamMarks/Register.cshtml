@@ -202,6 +202,11 @@
         }
 
     </script>
+    <script language="javascript" type="text/javascript">
+        function openRuleWindow(id, mode) {
+            window.open("/Exam/ExamRules/Rule?rowId=" + id + "&mode=" + mode, "ruleWindow", "width=400,height=400");
+        }
+    </script>
 }
 <div class="row">
     <div class="col-lg-12">
@@ -245,7 +250,38 @@
                 }
             </div>
         </div>
-
+        @if(Model.IsRuleNeededToBeAdded)
+        {
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">You need to add rule first. Please <a onclick="openRuleWindow(@Model.CourseExam.CourseExamId, 'ADD');" style="cursor:pointer;"> + add</a> rules. </div>
+            </div>
+        }
+        else if(Model.Rule!=null)
+        {
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">Following rule is your active rule</div>
+                <div class="panel-body">
+                    <table class="table table table-striped table-bordered table-responsive table-hover" border="1">
+                        <thead>
+                            <tr>
+                                <th>Assesment marks</th>
+                                <th>Actual marks</th>
+                                <th>Pass marks</th>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.Rule.AssesmentMarks</td>
+                                <td>@Model.Rule.ActualFullMarks</td>
+                                <td>@Model.Rule.PassMarks</td>
+                                <td><a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
         <div class="panel panel-color panel-primary">
             <div class="panel-heading">
 
@@ -253,95 +289,104 @@
 
             </div>
             <div class="panel-body">
-                @using (Html.BeginForm("SubmitMarks", "ExamMarks", FormMethod.Post, new { id = "exammarkssubmit", enctype = "multipart/form-data" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <div style="overflow:scroll;">
-                        <div class="col-lg-12">
-                            <div class="col-lg-4">
-                            </div>
-                            <div class="col-lg-4">
-                            </div>
-                            <div class="col-lg-4">
-                                <button type="submit" class="btn btn-primary">@ExamMarks.Submitmarks</button>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                                <thead>
-                                    <tr>
-                                        <th th data-field="name" data-sortable="true">
-                                            @ExamMarks.StudentName
-                                        </th>
-                                        <th h data-field="Location" data-sortable="true">
-                                            @ExamMarks.Location
-                                        </th>
-                                        <th h data-field="RegistrationNo" data-sortable="true">
-                                            @ExamMarks.RegistrationNo
-                                        </th>
-                                        <th th data-field="RollNumber" data-sortable="true">
-                                            @ExamMarks.RollNumber
-                                        </th>
-                                        <th th data-field="StandardSectionId" data-sortable="true">
-                                            @ExamMarks.StandardSectionId
-                                        </th>
-                                        <th th data-field="Obtainedmarks" data-sortable="true">
-                                            @ExamMarks.ObtainedMarks
-                                        </th>
-                                        <th th data-field="Calculatedmarks" data-sortable="true">
-                                            @ExamMarks.CalculatedMarks
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model != null)
-                                    {
-                                        if (Model.IsSearchSuccessful)
-                                        {
-                                            for (int i = 0; i < Model.ExamMarksList.Count; i++)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @Model.ExamMarksList[i].FullName
 
-                                                    </td>
-                                                    <td>
-                                                        @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
-                                                    </td>
-                                                    <td>
-                                                        @Model.ExamMarksList[i].Student.RegistrationNumber
-                                                    </td>
-                                                    <td>
-                                                        @Model.ExamMarksList[i].Student.RollNumber
-                                                    </td>
-                                                    <td>
-                                                        @Model.ExamMarksList[i].Class
-                                                    </td>
-                                                    <td>
-                                                        @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
-                                                    </td>
-                                                    <td>
-                                                        @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField" })
-                                                    </td>
-                                                </tr>
+                @if(!Model.IsRuleOk)
+                {
+                    <span class="danger" style="color:red">@Model.RuleAdditionMessage</span>
+                }
+                else
+                {
+                    using (Html.BeginForm("SubmitMarks", "ExamMarks", FormMethod.Post, new { id = "exammarkssubmit", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div style="overflow:scroll;">
+                            <div class="col-lg-12">
+                                <div class="col-lg-4">
+                                </div>
+                                <div class="col-lg-4">
+                                </div>
+                                <div class="col-lg-4">
+                                    <button type="submit" class="btn btn-primary">@ExamMarks.Submitmarks</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                                    <thead>
+                                        <tr>
+                                            <th th data-field="name" data-sortable="true">
+                                                @ExamMarks.StudentName
+                                            </th>
+                                            <th h data-field="Location" data-sortable="true">
+                                                @ExamMarks.Location
+                                            </th>
+                                            <th h data-field="RegistrationNo" data-sortable="true">
+                                                @ExamMarks.RegistrationNo
+                                            </th>
+                                            <th th data-field="RollNumber" data-sortable="true">
+                                                @ExamMarks.RollNumber
+                                            </th>
+                                            <th th data-field="StandardSectionId" data-sortable="true">
+                                                @ExamMarks.StandardSectionId
+                                            </th>
+                                            <th th data-field="Obtainedmarks" data-sortable="true">
+                                                @ExamMarks.ObtainedMarks
+                                            </th>
+                                            <th th data-field="Calculatedmarks" data-sortable="true">
+                                                @ExamMarks.CalculatedMarks
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            if (Model.IsSearchSuccessful)
+                                            {
+                                                for (int i = 0; i < Model.ExamMarksList.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Model.ExamMarksList[i].FullName
+
+                                                        </td>
+                                                        <td>
+                                                            @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
+                                                        </td>
+                                                        <td>
+                                                            @Model.ExamMarksList[i].Student.RegistrationNumber
+                                                        </td>
+                                                        <td>
+                                                            @Model.ExamMarksList[i].Student.RollNumber
+                                                        </td>
+                                                        <td>
+                                                            @Model.ExamMarksList[i].Class
+                                                        </td>
+                                                        <td>
+                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField" })
+                                                        </td>
+                                                    </tr>
+                                                }
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        <tr>
-                                            <td colspan="7">
-                                                No Records Found
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="7">
+                                                    No Records Found
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
 
-                            </table>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
+                    }
                 }
+                
             </div>
         </div>
     </div>
