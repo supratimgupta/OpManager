@@ -201,6 +201,21 @@
 
         }
 
+        function calcMarks(txtActualMarks, txtCalcMarksId) {
+            var actualMarks = txtActualMarks.value;
+            var assesmentMarks = document.getElementById("spnAssesmentMarks").innerHTML;
+            var fullMarks = document.getElementById("spnFullMarks").innerHTML;
+            var passMarks = document.getElementById("spnPassmarks").innerHTML;
+
+            var calculatedMark = (parseFloat(actualMarks) / parseFloat(assesmentMarks)) * fullMarks;
+
+            if (calculatedMark < passMarks) {
+                alert('Marks is below passmarks.');
+            }
+
+            document.getElementById(txtCalcMarksId).value = calculatedMark;
+        }
+
     </script>
     <script language="javascript" type="text/javascript">
         function openRuleWindow(id, mode) {
@@ -272,9 +287,9 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>@Model.Rule.AssesmentMarks</td>
-                                <td>@Model.Rule.ActualFullMarks</td>
-                                <td>@Model.Rule.PassMarks</td>
+                                <td><span id="spnAssesmentMarks">@Model.Rule.AssesmentMarks</span></td>
+                                <td><span id="spnFullMarks">@Model.Rule.ActualFullMarks</span></td>
+                                <td><span id="spnPassmarks">@Model.Rule.PassMarks</span></td>
                                 <td><a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a></td>
                             </tr>
                         </tbody>
@@ -302,6 +317,9 @@
                         <div style="overflow:scroll;">
                             <div class="col-lg-12">
                                 <div class="col-lg-4">
+                                    @Html.HiddenFor(m => m.hdnEmployeeId)
+                                    @Html.HiddenFor(m => m.hdncoursemapid)
+                                    @Html.HiddenFor(m => m.Rule.ExamRuleId)
                                 </div>
                                 <div class="col-lg-4">
                                 </div>
@@ -361,10 +379,10 @@
                                                             @Model.ExamMarksList[i].Class
                                                         </td>
                                                         <td>
-                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
+                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'txtActualMarks_" + i +"');" })
                                                         </td>
                                                         <td>
-                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField" })
+                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField", id="txtActualMarks_"+i })
                                                         </td>
                                                     </tr>
                                                 }

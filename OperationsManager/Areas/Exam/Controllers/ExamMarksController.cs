@@ -272,6 +272,10 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 for (int i = 0; i < examVm.ExamMarksList.Count; i++)
                 {
+                    examVm.ExamMarksList[i].ExamRule = new ExamRuleDTO();
+                    examVm.ExamMarksList[i].ExamRule.ExamRuleId = examVm.Rule.ExamRuleId;
+                    examVm.ExamMarksList[i].CourseExam = new CourseExam();
+                    //examVm.ExamMarksList[i].CourseExam.CourseExamId = examVm.hd
                     if (examVm.ExamMarksList[i].ExamMarksId > 0)
                     {
 
