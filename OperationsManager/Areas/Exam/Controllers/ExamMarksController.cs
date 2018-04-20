@@ -57,8 +57,8 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 Models.ExamMarksVM examMarksVM = new Models.ExamMarksVM();
                 examMarksVM.hdncoursemapid = status.ReturnObj.CourseMappingId;
-                examMarksVM.FromDateString = status.ReturnObj.CourseFrom.ToShortDateString();
-                examMarksVM.ToDateString = status.ReturnObj.CourseTo.ToShortDateString();
+                examMarksVM.FromDateString = status.ReturnObj.CourseFrom.Value.ToShortDateString();
+                examMarksVM.ToDateString = status.ReturnObj.CourseTo.Value.ToShortDateString();
                 return Json(new { data = status.ReturnObj, message = "", status = true, examMarksVM.FromDateString, examMarksVM.ToDateString }, JsonRequestBehavior.AllowGet);
             }
             if (status.IsException)

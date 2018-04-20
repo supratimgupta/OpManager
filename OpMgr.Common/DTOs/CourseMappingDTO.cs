@@ -23,5 +23,15 @@ namespace OpMgr.Common.DTOs
         public StudentClassMapDTO StudentClassMap { get; set; }
 
         public SubjectDTO Subject { get; set; }
+
+        public LocationDTO Location { get; set; }
+
+        public StandardSectionMapDTO StandardSection { get; set; }
+
+        public EmployeeDetailsDTO Employee { get; set; }
+
+        public DateTime? CourseFrom { get; set; }
+
+        public DateTime? CourseTo { get; set; }
     }
 }

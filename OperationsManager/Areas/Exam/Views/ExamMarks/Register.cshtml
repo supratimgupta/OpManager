@@ -2,73 +2,205 @@
 @using OperationsManager.ExtendedHtmlHelpers
 @model OperationsManager.Areas.Exam.Models.ExamMarksVM
 
-@{    
-    Layout = "~/Views/Shared/_Layout.cshtml";
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
 @section PageScripts{
     <script>
         $(document).ready(function () {
 
-           
+            $('.CourseFrom').datepicker({ dateFormat: 'dd-M-yy' });
+            $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_Location_LocationId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+
+                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
+
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (StandardSectionId < 0) {
+                    alert("Please Select Standard Section");
+                }
+                else if (SubjectId < 0) {
+                    alert("Please Select Subject");
+                }
+                return false;
+            });
+
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+
+                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (locationId < 0) {
+                    alert("Please Select Location");
+                }
+                else if (SubjectId < 0) {
+                    alert("Please Select Subject");
+                }
+                return false;
+            });
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_Subject_SubjectId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+
+                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
+
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (locationId < 0) {
+                    alert("Please Select Location");
+                }
+                else if (StandardSectionId < 0) {
+                    alert("Please Select Standard Section");
+                }
+                return false;
+            });
+
+
+            // If Selected ExamType , ExamSubType and CourseMappingId(hdncoursemapid) > 0 then will get ExamRuleId
+            $("#CourseExam_ExamType_ExamTypeId").change(function () {
+                var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
+                var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
+                var CourseMapId = document.getElementById("hdncoursemapid").value;
+                if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
+                    GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
+                }
+
+                return false;
+            });
+
+            // If Selected ExamType , ExamSubType and CourseMappingId(hdncoursemapid) > 0 then will get ExamRuleId
+            $("#CourseExam_ExamSubType_ExamSubTypeId").change(function () {
+                debugger;
+                var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
+                var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
+                var CourseMapId = document.getElementById("hdncoursemapid").value;
+
+                if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
+                    GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
+                }
+
+                return false;
+            });
+
         });
 
-        function getStudentDetails(txtReg) {
-            var regNo = document.getElementById("txtRegNo").value;
-            if (regNo.length > 0) {
-                var student = new Object();
-                student.RegistrationNumber = regNo;
-                $.ajax({
-                    type: 'POST',
-                    url: 'GetStudentDetails',
-                    dataType: "json",
-                    data: student,
-                    success: function (resultData) { getStudentDetails_callback(resultData); },
-                    error: function (error) { }
-                });
-            }
+        function GetCourseMappingDetails(locationId, StandardSectionId, SubjectId) {
+
+            var coursemap = new Object();
+            coursemap.Location = new Object();
+            coursemap.StandardSection = new Object();
+            coursemap.Subject = new Object();
+            coursemap.Employee = new Object();
+            coursemap.Location.LocationId = locationId;
+            coursemap.StandardSection.StandardSectionId = StandardSectionId;
+            coursemap.Subject.SubjectId = SubjectId;
+            coursemap.Employee.EmployeeId = document.getElementById("hdnEmployeeId").value;
+
+            $.ajax({
+
+                type: 'POST',
+                url: 'GetCourseMappingDetails',
+                dataType: "json",
+                data: coursemap,
+                success: function (resultData) { getcoursemappingDetails_callback(resultData); },
+                error: function (error) { }
+            });
         }
 
-        function getStudentDetails_callback(result) {
+        function getcoursemappingDetails_callback(result) {
             if (result.status) {
+
+                var FromDate = result.FromDateString;
+                var ToDate = result.ToDateString;
                 var data = result.data;
-                document.getElementById("txtRegNo").value = data.RegistrationNumber;
-                document.getElementById("hfUserMasterId").value = data.UserDetails.UserMasterId;
-                document.getElementById("hfStudentInfoId").value = data.StudentInfoId;
-                $("#ddlTranMaster").removeAttr('disabled');
-                $("#txtDueDate").removeAttr('disabled');
-                $("#ddlLocation").removeAttr('disabled');
 
-                if (data.StandardSectionMap && data.StandardSectionMap.StandardSectionId) {
-                    document.getElementById("hfStandSecMap").value = data.StandardSectionMap.StandardSectionId;
+                document.getElementById("hdncoursemapid").value = data.CourseMappingId;
 
-                    var ddlStandSectionMap = document.getElementById("ddlStandSectionMap");
-
-                    for (i = 0; i < ddlStandSectionMap.options.length; i++) {
-                        if (ddlStandSectionMap.options[i].value == data.StandardSectionMap.StandardSectionId.toString()) {
-                            ddlStandSectionMap.selectedIndex = i;
-                            break;
-                        }
-                    }
-                }
-                else {
-                    document.getElementById("ddlStandSectionMap").selectedIndex = 0;
-                }
-            }
-            else {
-                alert('Registration number is not valid');
-                document.getElementById("txtRegNo").value = "";
-
-                document.getElementById("hfUserMasterId").value = "";
-                document.getElementById("hfStudentInfoId").value = "";
-
-                $("#ddlLocation").attr('disabled', 'disabled');
-                $("#btnSubmit").attr('disabled', 'disabled');
-
-                document.getElementById("hfStandSecMap").value = "";
-                document.getElementById("ddlStandSectionMap").selectedIndex = 0;
+                document.getElementById("FromDateString").value = FromDate;
+                document.getElementById("ToDateString").value = ToDate;
             }
         }
+
+        function GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId) {
+
+            var courseexam = new Object();
+            courseexam.ExamType = new Object();
+            courseexam.ExamSubType = new Object();
+            courseexam.CourseMapping = new Object();
+
+            courseexam.ExamType.ExamTypeId = ExamTypeId;
+            courseexam.ExamSubType.ExamSubTypeId = ExamSubTypeId;
+            courseexam.CourseMapping.CourseMappingId = CourseMapId;
+            debugger;
+            $.ajax({
+
+                type: 'POST',
+                url: 'GetExamRuleDetails',
+                dataType: "json",
+                data: courseexam,
+                success: function (resultData) { getcourseExamDetails_callback(resultData); },
+                error: function (error) { }
+            });
+        }
+
+        function getcourseExamDetails_callback(result) {
+
+            if (result.status) {
+
+                var data = result.data;
+                document.getElementById("hdnExamRuleId").value = data.ExamRuleId;
+
+                if (data.ExamRuleId > 0) {
+                    var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                    var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+
+                    if (locationId > 0 && StandardSectionId > 0) {
+                        //GetStudentDetailsMarks(locationId, StandardSectionId);
+                    }
+
+                }
+            }
+        }
+
+        function GetStudentDetailsMarks(locationId, StandardSectionId) {
+
+            var coursemap = new Object();
+            coursemap.Location = new Object();
+            coursemap.StandardSection = new Object();
+
+            coursemap.Location.LocationId = locationId;
+            coursemap.StandardSection.StandardSectionId = StandardSectionId;
+
+            $.ajax({
+
+                type: 'POST',
+                url: 'GetStudentDetailsMarks',
+                dataType: "json",
+                data: coursemap,
+                success: function (resultData) { studentmarksentry(resultData); },
+                error: function (error) { }
+            });
+        }
+
+        function studentmarksentry(result) {
+
+        }
+
     </script>
 }
 <div class="row">
@@ -77,55 +209,141 @@
             <div class="panel-heading"><b></b></div>
             <div class="panel-body">
 
-                @using (Html.BeginForm("Register", "ExamMarks", FormMethod.Post, new { id = "registerform" }))
+                @using (Html.BeginForm("Register", "ExamMarks", FormMethod.Post, new { id = "exammarksform", enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
                     <fieldset>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.Student.RegistrationNumber, ExamMarks.RegistrationNo, new { @class = "form-control requiredField", onblur = "getStudentDetails(this);", data_rule_required = "true", data_msg_required = "Please enter registration no", id = "txtRegNo" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.Student.RollNumber, ExamMarks.RollNumber, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5" id="standardSectionDiv">
-                            @Html.OpMgrDropDownListFor(m => m.StandardSectionList, Model.StandardSectionList, TransactionLogAdd.StandardSectionLabel, new { @class = "form-control", disabled = "disabled", id = "ddlStandSectionMap" })
-                            @Html.HiddenFor(m => m.StandardSectionMap.StandardSectionId, new { id = "hfStandSecMap" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact Number is required" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.DOB, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
+                            @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
+                            @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
+                            @Html.HiddenFor(m => m.hdnEmployeeId)
+                            @Html.HiddenFor(m => m.hdncoursemapid)
+                            @Html.HiddenFor(m => m.hdnExamRuleId)
                         </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Residential Address is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextAreaFor(m => m.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Location is required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Gender is required" })
-                        </div>
-                                              
+
                         <div class="col-lg-4">
-                            <button type="submit" class="btn btn-primary">@UserResource.RegisterButton</button>
+                            <button type="submit" class="btn btn-primary">@ExamMarks.Submit</button>
                         </div>
                     </fieldset>
                 }
             </div>
         </div>
-    </div>
-</div>
 
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading">
+
+                <b>@ExamMarks.StudentMarksMaeding</b>
+
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("SubmitMarks", "ExamMarks", FormMethod.Post, new { id = "exammarkssubmit", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div style="overflow:scroll;">
+                        <div class="col-lg-12">
+                            <div class="col-lg-4">
+                            </div>
+                            <div class="col-lg-4">
+                            </div>
+                            <div class="col-lg-4">
+                                <button type="submit" class="btn btn-primary">@ExamMarks.Submitmarks</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                                <thead>
+                                    <tr>
+                                        <th th data-field="name" data-sortable="true">
+                                            @ExamMarks.StudentName
+                                        </th>
+                                        <th h data-field="Location" data-sortable="true">
+                                            @ExamMarks.Location
+                                        </th>
+                                        <th h data-field="RegistrationNo" data-sortable="true">
+                                            @ExamMarks.RegistrationNo
+                                        </th>
+                                        <th th data-field="RollNumber" data-sortable="true">
+                                            @ExamMarks.RollNumber
+                                        </th>
+                                        <th th data-field="StandardSectionId" data-sortable="true">
+                                            @ExamMarks.StandardSectionId
+                                        </th>
+                                        <th th data-field="Obtainedmarks" data-sortable="true">
+                                            @ExamMarks.ObtainedMarks
+                                        </th>
+                                        <th th data-field="Calculatedmarks" data-sortable="true">
+                                            @ExamMarks.CalculatedMarks
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        if (Model.IsSearchSuccessful)
+                                        {
+                                            for (int i = 0; i < Model.ExamMarksList.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Model.ExamMarksList[i].FullName
+
+                                                    </td>
+                                                    <td>
+                                                        @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
+                                                    </td>
+                                                    <td>
+                                                        @Model.ExamMarksList[i].Student.RegistrationNumber
+                                                    </td>
+                                                    <td>
+                                                        @Model.ExamMarksList[i].Student.RollNumber
+                                                    </td>
+                                                    <td>
+                                                        @Model.ExamMarksList[i].Class
+                                                    </td>
+                                                    <td>
+                                                        @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'staffRating_" + i + "_" + i + "'," + Model.ExamMarksList[i].MarksObtained + ",'staffRating');" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField" })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="7">
+                                                No Records Found
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
