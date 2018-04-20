@@ -210,8 +210,10 @@
     <Compile Include="Areas\DataImport\Models\DataImportViewModel.cs" />
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
     <Compile Include="Areas\Exam\Controllers\ExamMarksController.cs" />
+    <Compile Include="Areas\Exam\Controllers\ExamRulesController.cs" />
     <Compile Include="Areas\Exam\ExamAreaRegistration.cs" />
     <Compile Include="Areas\Exam\Models\ExamMarksVM.cs" />
+    <Compile Include="Areas\Exam\Models\ExamRuleVM.cs" />
     <Compile Include="Areas\Library\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Library\LibraryAreaRegistration.cs" />
     <Compile Include="Areas\Library\Models\LibraryViewModel.cs" />
@@ -1122,6 +1124,7 @@
     <Content Include="Areas\Notification\Views\web.config" />
     <Content Include="Areas\Notification\Views\Notification\ViewAll.cshtml" />
     <Content Include="Areas\Notification\Views\Notification\Chat.cshtml" />
+    <Content Include="Areas\Exam\Views\ExamRules\Rule.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1268,6 +1271,7 @@
     <Folder Include="Images\Father\" />
     <Folder Include="Images\Mother\" />
     <Folder Include="Images\Student\" />
+    <Folder Include="Reports\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Chat\" />
   </ItemGroup>

@@ -1,0 +1,70 @@
+﻿@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Exam.Models.ExamRuleVM
+
+@{
+    ViewBag.Title = "Exam Rule";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>Set Your Exam Rules</b></div>
+            <div class="panel-body">
+                @if(Model.IsError)
+                {
+                    <span class="danger" style="color:red">@Model.ErrorMessage</span>
+                }
+                else
+                {
+                    using (Html.BeginForm("Rule", "ExamRules", FormMethod.Post, new { id = "frmExamRule" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <div class="row">
+                                @Html.HiddenFor(m => m.ExamRuleId)
+                                @Html.HiddenFor(m => m.Mode)
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    @Html.OpMgrTextBoxFor(m => m.AssesmentMarks, "Assesment Marks", new { placeholder = "Assesment marks", @class = "form-control requiredField", data_rule_required = "true", data_msg_required = "Please enter registration no" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    @Html.OpMgrTextBoxFor(m => m.ActualFullMarks, "Actual Marks", new { placeholder = "Actual marks", @class = "form-control requiredField", data_rule_required = "true", data_msg_required = "Please enter registration no" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    @Html.OpMgrTextBoxFor(m => m.PassMarks, "Pass Marks", new { placeholder = "Pass marks", @class = "form-control requiredField", data_rule_required = "true", data_msg_required = "Please enter registration no" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    @Html.OpMgrSubmitButtonWithIcon("save", "Save", new { @class = "btn btn-primary btn-block" }, "fa fa-save")
+                                </div>
+                                <div class="col-lg-3">
+                                    @Html.OpMgrButtonWithIcon("close", "Close", new { @class = "btn btn-primary btn-block", onclick="refreshParentPage();" }, "fa fa-save")
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    }
+                }
+                
+            </div>
+        </div>
+    </div><!-- /.col-->
+</div>
+@section PageScripts
+{
+    <script language="javascript" type="text/javascript">
+        function refreshParentPage() {
+            var registerform = window.parent.document.getElementById("registerform");
+            registerform.submit();
+            window.focus();
+            window.close();
+        }
+    </script>
+}

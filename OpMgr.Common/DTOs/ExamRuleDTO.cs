@@ -12,15 +12,13 @@ namespace OpMgr.Common.DTOs
 
         public double? AssesmentMarks { get; set; }
 
-        public double? ConvertedMarks { get; set; }
+        public double? ActualFullMarks { get; set; }
 
-        public ExamSubTypeDTO ExamSubType { get; set; }
-
-        public StandardSectionMapDTO StandardSection { get; set; }
-
-        public ExamTypeDTO ExamType { get; set; }
+        public double? PassMarks { get; set; }
 
         public DateTime? DateTimeLog { get; set; }
+
+        public CourseExamDTO CourseExam { get; set; }
 
         public UserMasterDTO CreatedBy { get; set; }
 
@@ -30,6 +28,6 @@ namespace OpMgr.Common.DTOs
 
         public DateTime? UpdatedDate { get; set; }
 
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
     }
 }
