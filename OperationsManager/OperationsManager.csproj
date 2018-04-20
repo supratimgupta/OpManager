@@ -1124,6 +1124,7 @@
     <Content Include="Areas\Notification\Views\web.config" />
     <Content Include="Areas\Notification\Views\Notification\ViewAll.cshtml" />
     <Content Include="Areas\Notification\Views\Notification\Chat.cshtml" />
+    <Content Include="Areas\Exam\Views\ExamRules\Rule.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
