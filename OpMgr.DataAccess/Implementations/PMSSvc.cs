@@ -763,12 +763,9 @@ namespace OpMgr.DataAccess.Implementations
                                 }
                             }
                         }                        
-                   // }
-                                appraiseeList.ReturnObj.Add(empAppraisalMaster);
-                                appraiseeList.IsSuccess = true;
-                            }
-                        }
-                    }
+                   //
+                        
+                
                     //}
                     return appraiseeList;
                 }

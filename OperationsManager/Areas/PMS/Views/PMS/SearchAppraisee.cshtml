@@ -133,9 +133,9 @@
                                     <th>
                                         @GoalSheetResource.Designation
                                     </th>*@
-                                    <th>
+                                    @*<th>
                                         @GoalSheetResource.Action
-                                    </th>
+                                    </th>*@
                                 </tr>
                             </thead>
                             <tbody>
@@ -182,9 +182,9 @@
                                                     @pms.Employee.Designation.DesignationDescription
 
                                                 </td>*@
-                                                <td>
+                                                @*<td>
                                                     @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId, new { name = "editPMS" })
-                                                </td>
+                                                </td>*@
                                             </tr>
                                         }
                                     }
