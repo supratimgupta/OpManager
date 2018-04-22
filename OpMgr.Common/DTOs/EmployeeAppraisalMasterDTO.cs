@@ -10,6 +10,8 @@ namespace OpMgr.Common.DTOs
     {
         public int EmployeeAppraisalMasterId { get; set; }
 
+        public int EmpAppPmsMasterId { get; set; }
+
         public EmployeeDetailsDTO Employee { get; set; }
 
         public string AppraisalType { get; set; }
