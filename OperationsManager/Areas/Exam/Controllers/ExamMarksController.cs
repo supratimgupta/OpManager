@@ -16,13 +16,15 @@ namespace OperationsManager.Areas.Exam.Controllers
         private Helpers.UIDropDownRepo _uiddlRepo;
         private IConfigSvc _configSvc;
         private ISessionSvc _sessionSvc;
+        private IExamRuleSvc _examRuleSvc;
 
-        public ExamMarksController(IExamMarksSvc examMarksSvc, IDropdownRepo dropDwnRepo, IConfigSvc configSvc, ISessionSvc sessionSvc)
+        public ExamMarksController(IExamMarksSvc examMarksSvc, IDropdownRepo dropDwnRepo, IConfigSvc configSvc, ISessionSvc sessionSvc, IExamRuleSvc examRuleSvc)
         {
             _examMarksSvc = examMarksSvc;
             _dropDwnRepo = dropDwnRepo;
             _configSvc = configSvc;
             _sessionSvc = sessionSvc;
+            _examRuleSvc = examRuleSvc;
             _uiddlRepo = new Helpers.UIDropDownRepo(_dropDwnRepo);
         }
         // GET: Exam/ExamMarks
@@ -45,6 +47,10 @@ namespace OperationsManager.Areas.Exam.Controllers
 
             examMarksVM.hdnEmployeeId = sessionRet.UniqueEmployeeId;
 
+            examMarksVM.IsRuleOk = true;
+            examMarksVM.IsRuleNeededToBeAdded = false;
+            examMarksVM.Rule = null;
+
             return View(examMarksVM);
         }
 
@@ -57,8 +63,8 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 Models.ExamMarksVM examMarksVM = new Models.ExamMarksVM();
                 examMarksVM.hdncoursemapid = status.ReturnObj.CourseMappingId;
-                examMarksVM.FromDateString = status.ReturnObj.CourseFrom.ToShortDateString();
-                examMarksVM.ToDateString = status.ReturnObj.CourseTo.ToShortDateString();
+                examMarksVM.FromDateString = status.ReturnObj.CourseFrom.Value.ToShortDateString();
+                examMarksVM.ToDateString = status.ReturnObj.CourseTo.Value.ToShortDateString();
                 return Json(new { data = status.ReturnObj, message = "", status = true, examMarksVM.FromDateString, examMarksVM.ToDateString }, JsonRequestBehavior.AllowGet);
             }
             if (status.IsException)
@@ -172,13 +178,47 @@ namespace OperationsManager.Areas.Exam.Controllers
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                         examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
 
+                        examVM.Rule = null;
+
                         Models.ExamMarksVM exammarksvm = null;
-                        foreach (ExamMarksDTO exammarksdto in status.ReturnObj)
+                        ExamMarksDTO exammarksdto = null;
+                        for(int i=0;i<status.ReturnObj.Count;i++)
                         {
+                            exammarksdto = status.ReturnObj[i];
                             if (exammarksdto != null)
                             {
                                 exammarksvm = new Models.ExamMarksVM();
                                 exammarksvm.ExamMarksId = exammarksdto.ExamMarksId;
+
+                                if(examVM.Rule==null)
+                                {
+                                    ExamRuleDTO rule = new ExamRuleDTO();
+                                    rule.CourseExam = new CourseExamDTO();
+                                    rule.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+                                    List<ExamRuleDTO> rules = _examRuleSvc.Select(rule).ReturnObj;
+
+                                    if(rules==null || rules.Count==0)
+                                    {
+                                        examVM.IsRuleOk = false;
+                                        examVM.RuleAdditionMessage = "Please add marks rule for this exam first.";
+                                        examVM.IsRuleNeededToBeAdded = true;
+                                        break;
+                                    }
+                                    else if(rules.Count>1)
+                                    {
+                                        examVM.IsRuleOk = false;
+                                        examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
+                                        examVM.IsRuleNeededToBeAdded = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        examVM.IsRuleOk = true;
+                                        examVM.Rule = rules[0];
+                                        examVM.RuleAdditionMessage = string.Empty;
+                                        examVM.IsRuleNeededToBeAdded = false;
+                                    }
+                                }
 
                                 exammarksvm.CourseExam = new CourseExam();
                                 exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
@@ -232,6 +272,10 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 for (int i = 0; i < examVm.ExamMarksList.Count; i++)
                 {
+                    examVm.ExamMarksList[i].ExamRule = new ExamRuleDTO();
+                    examVm.ExamMarksList[i].ExamRule.ExamRuleId = examVm.Rule.ExamRuleId;
+                    examVm.ExamMarksList[i].CourseExam = new CourseExam();
+                    //examVm.ExamMarksList[i].CourseExam.CourseExamId = examVm.hd
                     if (examVm.ExamMarksList[i].ExamMarksId > 0)
                     {
 

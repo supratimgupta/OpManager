@@ -1,88 +1,203 @@
 ﻿@using OpMgr.Resources.Common
+@using Ninject
+@using OpMgr.Common.Contracts
+@using OperationsManager.Helpers;
+@using OpMgr.Common.DTOs;
+@using OperationsManager.Hubs.Connections
+@{
+    NinjectControllerFactory ncf = new NinjectControllerFactory();
+    IKernel kernel = ncf.GetNinjectKernel();
+    List<OperationsManager.Models.MenuModel> menu = new List<OperationsManager.Models.MenuModel>();
+
+    OperationsManager.Helpers.MenuHelper menuHelper = new OperationsManager.Helpers.MenuHelper();
+    menu = menuHelper.GetMenuItems(kernel.Get<ISessionSvc>());
+    SessionDTO session = kernel.Get<ISessionSvc>().GetUserSession();
+
+    System.Web.HttpContext.Current.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+
+    System.Web.HttpContext.Current.Response.Cache.SetNoStore();
+
+    UserConnectionRepo uConnRepo = UserConnectionRepo.GetInstance();
+    Dictionary<int, UserConnection> activeUsers = uConnRepo.GetAllActiveUsers();
+}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@CommonResource.PageTitle - @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+    <meta name="author" content="Coderthemes">
 
-    <link href="~/template/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/template/css/datepicker3.css" rel="stylesheet">
-    <link href="~/template/css/styles.css" rel="stylesheet">
+    <link rel="shortcut icon" href="~/admin/img/favicon_1.ico">
+
+    <title>St. Augustine's Day School</title>
+
+    <!-- Google-Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/admin/css/bootstrap-reset.css" rel="stylesheet">
+
+    <!--Animation css-->
+    <link href="~/admin/css/animate.css" rel="stylesheet">
+
+    <!--Icon-fonts css-->
+    <link href="~/admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/admin/assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
+
+    <!--Morris Chart CSS -->
+    <link rel="stylesheet" href="~/admin/assets/morris/morris.css">
+
+    <!-- sweet alerts -->
+    <link href="~/admin/assets/sweet-alert/sweet-alert.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/admin/css/style.css" rel="stylesheet">
+    <link href="~/admin/css/helper.css" rel="stylesheet">
+    <link href="~/admin/css/style-responsive.css" rel="stylesheet" />
     <link href="~/Content/OpMgrCommonStyles.css" rel="stylesheet" />
     <link href="~/Scripts/jquery-ui.css" rel="stylesheet" />
-    <style>
-        .panel-default .panel-heading {
-            background-color: lightblue;
-        }
-    </style>
-    <!--Icons-->
-    <script src="~/template/js/lumino.glyphs.js"></script>
+    <link href="~/template/css/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/bootstrap-tags-input/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link href="~/Scripts/custom_chat/custom_chat.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
     <![endif]-->
 
 </head>
 
+
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#"><span>@CommonResource.BrandName</span>@CommonResource.PageHeader</a>
-                <ul class="user-menu">
-                    <li class="dropdown pull-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> @OpMgr.Resources.Common.CommonResource.WelcomeText<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            @*<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
-                                <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>*@
-                            <li><a href="/Login/Login/Logout"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
 
-        </div><!-- /.container-fluid -->
-    </nav>
+    <!-- Aside Start-->
+    <aside class="left-panel">
 
-    <div class="col-sm-10 col-sm-offset-2 col-lg-10 col-lg-offset-2 main">
-        @*<div class="row">
-                <ol class="breadcrumb">
-                    <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-                    <li class="active">Icons</li>
-                </ol>
-            </div>*@<!--/.row-->
-        @RenderBody()
-    </div><!--/.main-->
+        <!-- brand -->
+        <div class="logo">
+            <a href="/Login/Login/Landing" class="logo-expanded">
+                <img src="~/Images/logo.gif" style="border-radius:20%; border:1px solid wheat;" width="30" height="20" alt="logo">
+                <span class="nav-label" style="font-size:12px;">St. Augustine's <span style="font-size:8px;">Day</span></span>
+            </a>
+        </div>
 
-    <script src="~/template/js/jquery-1.11.1.min.js"></script>
-    <script src="~/template/js/bootstrap.min.js"></script>
+    </aside>
+    <!-- Aside Ends-->
+    <!--Main Content Start -->
+    <section class="content">
+
+        <!-- Header -->
+        <header class="top-head container-fluid">
+            <button type="button" class="navbar-toggle pull-left">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </header>
+        <!-- Header Ends -->
+        <!-- Page Content Start -->
+        <!-- ================== -->
+
+        <div class="wraper container-fluid">
+
+            @RenderBody()
+
+        </div>
+
+        <div class="container chat-container">
+        </div>
+
+        <!-- Page Content Ends -->
+        <!-- ================== -->
+        <!-- Footer Start -->
+        <footer class="footer">
+            © St. Augustine's Day School
+        </footer>
+        <!-- Footer Ends -->
+
+
+
+    </section>
+    <!-- Main Content Ends -->
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="~/admin/js/jquery.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalR/hubs"></script>
+    <script src="~/admin/js/bootstrap.min.js"></script>
+    <script src="~/admin/js/modernizr.min.js"></script>
+    <script src="~/admin/js/pace.min.js"></script>
+    <script src="~/admin/js/wow.min.js"></script>
+    <script src="~/admin/js/jquery.scrollTo.min.js"></script>
+    <script src="~/admin/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="~/admin/assets/chat/moment-2.2.1.js"></script>
     <script src="~/template/js/bootstrap-datepicker.js"></script>
-    <script src="~/Content/js/OpMgrStyleJs.js"></script>
-    <script src="~/Scripts/jquery-ui.js"></script>
-    <script src="~/Content/jquery-validation-1.16.0/dist/jquery.validate.js"></script>
-    @*<script>
-            !function ($) {
-                $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
-                    $(this).find('em:first').toggleClass("glyphicon-minus");
-                });
-                $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-            }(window.jQuery);
+    <!-- Counter-up -->
+    <script src="~/admin/js/waypoints.min.js" type="text/javascript"></script>
+    <script src="~/admin/js/jquery.counterup.min.js" type="text/javascript"></script>
 
-            $(window).on('resize', function () {
-                if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-            })
-            $(window).on('resize', function () {
-                if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-            })
-        </script>*@
+    <!-- EASY PIE CHART JS -->
+    <script src="~/admin/assets/easypie-chart/easypiechart.min.js"></script>
+    <script src="~/admin/assets/easypie-chart/jquery.easypiechart.min.js"></script>
+    <script src="~/admin/assets/easypie-chart/example.js"></script>
+
+
+    <!--C3 Chart-->
+    <script src="~/admin/assets/c3-chart/d3.v3.min.js"></script>
+    <script src="~/admin/assets/c3-chart/c3.js"></script>
+
+    <!--Morris Chart-->
+    @*<script src="~/admin/assets/morris/morris.min.js"></script>
+        <script src="~/admin/assets/morris/raphael.min.js"></script>*@
+
+    <!-- sparkline -->
+    <script src="~/admin/assets/sparkline-chart/jquery.sparkline.min.js" type="text/javascript"></script>
+    <script src="~/admin/assets/sparkline-chart/chart-sparkline.js" type="text/javascript"></script>
+
+    <!-- sweet alerts -->
+    <script src="~/admin/assets/sweet-alert/sweet-alert.min.js"></script>
+    <script src="~/admin/assets/sweet-alert/sweet-alert.init.js"></script>
+
+    <script src="~/admin/js/jquery.app.js"></script>
+    <!-- Chat -->
+    <script src="~/admin/js/jquery.chat.js"></script>
+    <!-- Dashboard -->
+    @*<script src="~/admin/js/jquery.dashboard.js"></script>*@
+
+    <!-- Todo -->
+    <script src="~/admin/js/jquery.todo.js"></script>
+    <script src="~/Content/jquery-validation-1.16.0/dist/jquery.validate.js"></script>
+    <script src="~/Content/bootstrap-tags-input/bootstrap-tagsinput.min.js"></script>
+    @*<script src="~/Content/bootstrap-tags-input/bootstrap-tagsinput-angular.min.js"></script>*@
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/custom_chat/custom_chat.js"></script>
+    <!--Chat js-->
+    <script type="text/javascript">
+        /* ==============================================
+             Counter Up
+             =============================================== */
+        jQuery(document).ready(function($) {
+            $('.counter').counterUp({
+                delay: 100,
+                time: 1200
+            });
+        });
+
+        
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+        });
+    </script>
+
+    <script src="~/Content/js/OpMgrStyleJs.js"></script>
+    @*<script src="~/Scripts/voice/artyom.window.js"></script>
+        <script src="~/Scripts/voice/voiceApi.js"></script>*@
     @RenderSection("PageScripts", false)
 </body>
-
 </html>

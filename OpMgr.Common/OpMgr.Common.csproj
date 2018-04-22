@@ -55,6 +55,7 @@
     <Compile Include="Contracts\Modules\IEntitlementActionSvc.cs" />
     <Compile Include="Contracts\Modules\IEntitlementSvc.cs" />
     <Compile Include="Contracts\Modules\IExamMarksSvc.cs" />
+    <Compile Include="Contracts\Modules\IExamRuleSvc.cs" />
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
     <Compile Include="Contracts\Modules\INotificationSvc.cs" />
     <Compile Include="Contracts\Modules\IPMSSvc.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="DTOs\CompetencyDTO.cs" />
     <Compile Include="DTOs\ConfigDTO.cs" />
     <Compile Include="DTOs\CourseExam.cs" />
+    <Compile Include="DTOs\CourseExamDTO.cs" />
     <Compile Include="DTOs\CourseMappingDTO.cs" />
     <Compile Include="DTOs\DepartmentDTO.cs" />
     <Compile Include="DTOs\DesignationDTO.cs" />
