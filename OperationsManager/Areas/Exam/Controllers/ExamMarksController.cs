@@ -83,6 +83,7 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 Models.ExamMarksVM examMarksVM = new Models.ExamMarksVM();
                 examMarksVM.hdnExamRuleId = status.ReturnObj.ExamRuleId;
+                examMarksVM.hdnCourseExamId = status.ReturnObj.CourseExam.CourseExamId;
                 return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
             }
             if (status.IsException)
@@ -220,12 +221,14 @@ namespace OperationsManager.Areas.Exam.Controllers
                                     }
                                 }
 
-                                exammarksvm.CourseExam = new CourseExam();
-                                exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+                                //exammarksvm.CourseExam = new CourseExam();
+                                //exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
                                 exammarksvm.StandardSection = new StandardSectionMapDTO();
                                 exammarksvm.StandardSection.StandardSectionId = exammarksdto.StandardSection.StandardSectionId;
+                                
                                 exammarksvm.CourseExam = new CourseExam();
                                 exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+                                
                                 exammarksvm.Student = new StudentDTO();
 
                                 exammarksvm.Student.StandardSectionMap = new StandardSectionMapDTO();
@@ -274,15 +277,15 @@ namespace OperationsManager.Areas.Exam.Controllers
                 {
                     examVm.ExamMarksList[i].ExamRule = new ExamRuleDTO();
                     examVm.ExamMarksList[i].ExamRule.ExamRuleId = examVm.Rule.ExamRuleId;
-                    examVm.ExamMarksList[i].CourseExam = new CourseExam();
+                    //examVm.ExamMarksList[i].CourseExam = new CourseExam();
                     //examVm.ExamMarksList[i].CourseExam.CourseExamId = examVm.hd
                     if (examVm.ExamMarksList[i].ExamMarksId > 0)
                     {
-
+                        _examMarksSvc.Update(examVm.ExamMarksList[i]);
                     }
                     else
                     {
-                        _examMarksSvc.Insert(examVm.ExamMarksList[i]);
+                        _examMarksSvc.InsertMarks(examVm.ExamMarksList[i],examVm.hdnCourseExamId, examVm.hdnStandardSectionId,examVm.hdnSubjectId,examVm.hdnFromDate,examVm.hdnToDate);
                     }
                 }
             }

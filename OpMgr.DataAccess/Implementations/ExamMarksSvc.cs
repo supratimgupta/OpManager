@@ -103,12 +103,14 @@ namespace OpMgr.DataAccess.Implementations
                     _dsData = new DataSet();
                     rdr.Fill(_dsData);
                     ExamRuleDTO examruleDTO = new ExamRuleDTO();
+                    examruleDTO.CourseExam = new CourseExamDTO();
                     if (_dsData != null && _dsData.Tables.Count > 0)
                     {
                         if (_dsData.Tables[0].Rows.Count > 0)
                         {
                             status.IsSuccess = true;
                             examruleDTO.ExamRuleId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["ExamRuleId"]);
+                            examruleDTO.CourseExam.CourseExamId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CourseExamId"]);
                         }
                     }
                     status.ReturnObj = examruleDTO;
@@ -194,7 +196,7 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
-        public StatusDTO<ExamMarksDTO> Insert(ExamMarksDTO data)
+        public StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data,int CourseExamId,int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -210,13 +212,13 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@RollNumber1", MySqlDbType.String).Value = data.Student.RollNumber;
                     command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
                     command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
-                    command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = data.Subject.SubjectId;
+                    command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = SubjectId;
                     command.Parameters.Add("@ExamRuleId1", MySqlDbType.Int32).Value = data.ExamRule.ExamRuleId;
-                    command.Parameters.Add("@CourseExamId1", MySqlDbType.Int32).Value = data.CourseExam.CourseExamId;
+                    command.Parameters.Add("@CourseExamId1", MySqlDbType.Int32).Value = CourseExamId;
                     command.Parameters.Add("@StudentInfoId1", MySqlDbType.Int32).Value = data.Student.StudentInfoId;
-                    command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = data.StandardSection.StandardSectionId;
-                    command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = data.CourseFrom;
-                    command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = data.CourseTo;
+                    command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
+                    command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = FromDate;
+                    command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = ToDate;
                     
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
@@ -255,7 +257,46 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<ExamMarksDTO> Update(ExamMarksDTO data)
         {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "updateExamMarks";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@ExamMarksId1", MySqlDbType.Int32).Value = data.ExamMarksId;
+                    command.Parameters.Add("@UpdatedBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;                    
+                    command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
+                    command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
+
+                    StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = data;
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "User Insertion Failed";
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<ExamMarksDTO> Insert(ExamMarksDTO data)
+        {
             throw new NotImplementedException();
         }
+        
     }
 }

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace OperationsManager.Areas.Exam.Models
 {
-    public class ExamMarksVM :ExamMarksDTO
+    public class ExamMarksVM : ExamMarksDTO
     {
         public SelectList StandardSectionList { get; set; }
 
@@ -44,5 +44,14 @@ namespace OperationsManager.Areas.Exam.Models
         public bool IsRuleNeededToBeAdded { get; set; }
 
         public string RuleAdditionMessage { get; set; }
+
+        public int hdnSubjectId { get; set; }
+
+        public int hdnStandardSectionId { get; set; }
+        public int hdnCourseExamId { get; set; }
+
+        public DateTime hdnFromDate { get; set; }
+
+        public DateTime hdnToDate { get; set; }
     }
 }

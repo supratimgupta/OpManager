@@ -12,6 +12,7 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<CourseMappingDTO> GetCourseMappingDetails(CourseMappingDTO coursemappingDTO);
         StatusDTO<ExamRuleDTO> GetExamRuleDetails(CourseExam courseExamDTO);
         StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId);
+        StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data, int CourseExamId, int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate);
         //StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(CourseExam courseexamdto);
     }
 }

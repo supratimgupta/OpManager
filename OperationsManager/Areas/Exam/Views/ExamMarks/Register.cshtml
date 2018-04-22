@@ -13,6 +13,8 @@
             $('.CourseFrom').datepicker({ dateFormat: 'dd-M-yy' });
             $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
 
+            
+
             // If Selected Location , StandardSection and Subject Below Code will populate
             $("#CourseExam_CourseMapping_Location_LocationId").change(function () {
                 var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
@@ -130,9 +132,11 @@
                 var data = result.data;
 
                 document.getElementById("hdncoursemapid").value = data.CourseMappingId;
-
                 document.getElementById("FromDateString").value = FromDate;
                 document.getElementById("ToDateString").value = ToDate;
+
+                document.getElementById("hdnFromDate").value = FromDate;
+                document.getElementById("hdnToDate").value = ToDate;
             }
         }
 
@@ -146,7 +150,7 @@
             courseexam.ExamType.ExamTypeId = ExamTypeId;
             courseexam.ExamSubType.ExamSubTypeId = ExamSubTypeId;
             courseexam.CourseMapping.CourseMappingId = CourseMapId;
-            debugger;
+            
             $.ajax({
 
                 type: 'POST',
@@ -161,13 +165,17 @@
         function getcourseExamDetails_callback(result) {
 
             if (result.status) {
-
+                
                 var data = result.data;
                 document.getElementById("hdnExamRuleId").value = data.ExamRuleId;
-
+                document.getElementById("hdnCourseExamId").value = data.CourseExam.CourseExamId;
+                
                 if (data.ExamRuleId > 0) {
                     var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
                     var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                    document.getElementById("hdnStandardSectionId").value = StandardSectionId;
+                    document.getElementById("hdnSubjectId").value = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
+                    
 
                     if (locationId > 0 && StandardSectionId > 0) {
                         //GetStudentDetailsMarks(locationId, StandardSectionId);
@@ -216,6 +224,11 @@
             document.getElementById(txtCalcMarksId).value = calculatedMark;
         }
 
+        function getExamInfo()
+        {
+            
+        }
+
     </script>
     <script language="javascript" type="text/javascript">
         function openRuleWindow(id, mode) {
@@ -256,6 +269,11 @@
                             @Html.HiddenFor(m => m.hdnEmployeeId)
                             @Html.HiddenFor(m => m.hdncoursemapid)
                             @Html.HiddenFor(m => m.hdnExamRuleId)
+                            @Html.HiddenFor(m => m.hdnSubjectId)
+                            @Html.HiddenFor(m => m.hdnStandardSectionId)
+                            @Html.HiddenFor(m => m.hdnCourseExamId)
+                            @Html.HiddenFor(m => m.hdnFromDate)
+                            @Html.HiddenFor(m => m.hdnToDate)
                         </div>
 
                         <div class="col-lg-4">
@@ -320,11 +338,17 @@
                                     @Html.HiddenFor(m => m.hdnEmployeeId)
                                     @Html.HiddenFor(m => m.hdncoursemapid)
                                     @Html.HiddenFor(m => m.Rule.ExamRuleId)
+                                    @Html.HiddenFor(m => m.hdnSubjectId)
+                                    @Html.HiddenFor(m => m.hdnStandardSectionId)
+                                    @Html.HiddenFor(m => m.hdnCourseExamId)
+                                    @Html.HiddenFor(m => m.hdnFromDate)
+                                    @Html.HiddenFor(m => m.hdnToDate)
+                                    @*@Html.HiddenFor(m => m.hdnExamRuleId)*@
                                 </div>
                                 <div class="col-lg-4">
                                 </div>
                                 <div class="col-lg-4">
-                                    <button type="submit" class="btn btn-primary">@ExamMarks.Submitmarks</button>
+                                    <button type="submit" id="btnsavemarks"  class="btn btn-primary">@ExamMarks.Submitmarks</button>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -371,6 +395,7 @@
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.RegistrationNumber
+                                                            @Html.HiddenFor(m =>m.ExamMarksList[i].Student.StudentInfoId)
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.RollNumber
