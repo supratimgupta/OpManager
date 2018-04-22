@@ -29,6 +29,12 @@ namespace OperationsManager.Areas.Exam.Models
 
         public string ToDateString { get; set; }
 
-        public List<ExamMarksDTO> ExamMarksList { get; set; }
+        public List<ExamMarksVM> ExamMarksList { get; set; }
+
+        public Boolean IsSearchSuccessful { get; set; }
+
+        public string FullName { get; set; }
+
+        public string Class { get; set; }
     }
 }

@@ -226,7 +226,10 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 EmployeeGoalLogDTO empgoallog = new EmployeeGoalLogDTO();
                                 empgoallog.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                                empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                if (!String.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"].ToString()))
+                                {
+                                    empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                }
                                 empgoallog.GoalAttribute = new GoalAttributeDTO();
                                 empgoallog.GoalAttribute.Goal = new GoalDTO();
                                 empgoallog.GoalAttribute.GoalAttributeId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["goalattributeid"]);
@@ -717,9 +720,9 @@ namespace OpMgr.DataAccess.Implementations
                         //    command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = DBNull.Value;
                         //}
 
-                        MySqlDataAdapter da = new MySqlDataAdapter(command);
-                        dsAppraiseeLst = new DataSet();
-                        da.Fill(dsAppraiseeLst);
+                    MySqlDataAdapter da = new MySqlDataAdapter(command);
+                    dsAppraiseeLst = new DataSet();
+                    da.Fill(dsAppraiseeLst);
 
                         StatusDTO<EmployeeAppraisalMasterDTO> status = new StatusDTO<EmployeeAppraisalMasterDTO>();
                         EmployeeAppraisalMasterDTO appraisalMasterDTO = new EmployeeAppraisalMasterDTO();
@@ -761,6 +764,92 @@ namespace OpMgr.DataAccess.Implementations
                             }
                         }                        
                    // }
+                                appraiseeList.ReturnObj.Add(empAppraisalMaster);
+                                appraiseeList.IsSuccess = true;
+                            }
+                        }
+                    }
+                    //}
+                    return appraiseeList;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<List<EmployeeAppraisalMasterDTO>> GetAppraiseePMSLIst(int EmployeeId)
+        {
+            StatusDTO<List<EmployeeAppraisalMasterDTO>> appraiseeList = new StatusDTO<List<EmployeeAppraisalMasterDTO>>();
+            DataSet dsAppraiseeLst = null;
+            int empAppraisalMasterId = -1;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    //if (data != null)
+                    //{
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "get_AppraiseePMSList";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (Convert.ToInt32(EmployeeId) > 0)
+                    {
+                        command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = EmployeeId;
+                    }
+                    else
+                    {
+                        command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = DBNull.Value;
+                    }
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(command);
+                    dsAppraiseeLst = new DataSet();
+                    da.Fill(dsAppraiseeLst);
+
+                    StatusDTO<EmployeeAppraisalMasterDTO> status = new StatusDTO<EmployeeAppraisalMasterDTO>();
+                    EmployeeAppraisalMasterDTO appraisalMasterDTO = new EmployeeAppraisalMasterDTO();
+                    if (dsAppraiseeLst != null && dsAppraiseeLst.Tables.Count > 0)
+                    {
+                        appraiseeList.ReturnObj = new List<EmployeeAppraisalMasterDTO>();
+                        if (dsAppraiseeLst.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dsAppraiseeLst.Tables[0].Rows.Count; i++)
+                            {
+                                EmployeeAppraisalMasterDTO empAppraisalMaster = new EmployeeAppraisalMasterDTO();
+                                if (!string.IsNullOrEmpty(dsAppraiseeLst.Tables[0].Rows[i]["employeeappraisalmasterid"].ToString()))
+                                {
+                                    empAppraisalMaster.EmployeeAppraisalMasterId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                }
+                                empAppraisalMaster.Employee = new EmployeeDetailsDTO();
+                                empAppraisalMaster.Employee.UserDetails = new UserMasterDTO();
+                                empAppraisalMaster.Employee.UserDetails.Location = new LocationDTO();
+                                empAppraisalMaster.AppraisalStatus = new AppraisalStatusDTO();
+                                empAppraisalMaster.Employee.Designation = new DesignationDTO();
+                                                                
+                                empAppraisalMaster.Employee.UserDetails.FName = dsAppraiseeLst.Tables[0].Rows[i]["Fname"].ToString();
+                                empAppraisalMaster.Employee.UserDetails.LName = dsAppraiseeLst.Tables[0].Rows[i]["Lname"].ToString();
+                                empAppraisalMaster.Employee.UserDetails.Gender = dsAppraiseeLst.Tables[0].Rows[i]["Gender"].ToString();
+                                empAppraisalMaster.Employee.UserDetails.Location.LocationId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["LocationId"].ToString());
+                                empAppraisalMaster.Employee.UserDetails.Location.LocationDescription = dsAppraiseeLst.Tables[0].Rows[i]["LocationDescription"].ToString();
+                                empAppraisalMaster.AppraisalType = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalType"].ToString();
+                                empAppraisalMaster.Employee.StaffEmployeeId = dsAppraiseeLst.Tables[0].Rows[i]["StaffEmployeeId"].ToString();
+                                if (!string.IsNullOrEmpty(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString()))
+                                {
+                                    empAppraisalMaster.AppraisalStatus.AppraisalStatusId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
+                                }
+                                empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
+
+                                empAppraisalMaster.Employee.Designation.DesignationDescription = dsAppraiseeLst.Tables[0].Rows[i]["pmsdesignationdescription"].ToString();
+
+                                appraiseeList.ReturnObj.Add(empAppraisalMaster);
+                                appraiseeList.IsSuccess = true;
+                            }
+                        }
+                    }
+                    //}
                     return appraiseeList;
                 }
                 catch (Exception exp)

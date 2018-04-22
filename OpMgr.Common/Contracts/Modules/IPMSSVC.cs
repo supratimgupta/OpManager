@@ -21,5 +21,6 @@ namespace OpMgr.Common.Contracts.Modules
         bool UpdateInitiativeandSupport(int apprMasterId, string IndividualInitiative, string InstitutionalSupport);
 
         StatusDTO<List<PMSMasterDTO>> GetAppraisalDetails(int pmsMasterId);
+        StatusDTO<List<EmployeeAppraisalMasterDTO>> GetAppraiseePMSLIst(int EmployeeId);
     }
 }

@@ -276,4 +276,7 @@
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
+  <data name="GoalSheetBasedOnDesignation" xml:space="preserve">
+    <value>Goal Sheet List</value>
+  </data>
 </root>

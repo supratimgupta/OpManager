@@ -537,5 +537,76 @@ namespace OperationsManager.Areas.PMS.Controllers
             }
             return View(pmsview);
         }
+
+        // To get multiple goal sheet for same employee multiple designation 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PMSMUltipleGoalSheet()
+        {
+            StatusDTO<List<EmployeeAppraisalMasterDTO>> status = _pmsSvc.GetAppraiseePMSLIst(_sessionSvc.GetUserSession().UniqueEmployeeId);
+            PMSVM pmsview = null;
+
+            if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+            {
+                pmsview = new PMSVM(); // Instantiating PMS View model
+                pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
+                
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();                
+
+                if (status.IsSuccess && !status.IsException)
+                {
+                    //studView = new List<StudentVM>();
+                    PMSVM searchItem = null;
+                    foreach (EmployeeAppraisalMasterDTO appraisalmaster in status.ReturnObj)
+                    {
+                        if (appraisalmaster != null)
+                        {
+                            searchItem = new PMSVM(); // instantiating each PMVM                            
+                            searchItem.UserDetails = new UserMasterDTO();
+                            searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
+                            searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
+                            searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
+
+                            searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
+                            if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
+                            {
+                                searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.MName;
+                            }
+
+                            searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
+                            searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
+                            searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
+                            searchItem.AppraisalType = appraisalmaster.AppraisalType;
+                            searchItem.AppraisalStatus = new AppraisalStatusDTO();
+                            searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
+
+                            searchItem.UserDetails.Location = new LocationDTO();
+                            searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                            searchItem.Employee = new EmployeeDetailsDTO();
+                            searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
+                            searchItem.Employee.Designation = new DesignationDTO();
+                            searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
+                            //Add into PMSView vIew Model List
+                            pmsview.PMSVMList.Add(searchItem);
+                            pmsview.IsSearchSuccessful = true;
+                        }
+                    }
+                }
+                if (status.IsException)
+                {
+                    throw new Exception(status.ExceptionMessage);
+                }
+            }
+            else
+            {
+                pmsview = new PMSVM();                
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();                
+                pmsview.IsSearchSuccessful = false;
+                //pmsview.MsgColor = "green";
+                //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
+            }
+
+            return View(pmsview);
+        }
     }
 }

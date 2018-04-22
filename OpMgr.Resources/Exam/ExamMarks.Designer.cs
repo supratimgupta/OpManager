@@ -70,6 +70,15 @@ namespace OpMgr.Resources.Exam {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Course.
+        /// </summary>
+        public static string Course {
+            get {
+                return ResourceManager.GetString("Course", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Course From.
         /// </summary>
         public static string CourseFrom {
@@ -106,11 +115,38 @@ namespace OpMgr.Resources.Exam {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Marks Obtained.
         /// </summary>
         public static string MarksObtained {
             get {
                 return ResourceManager.GetString("MarksObtained", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obtained Marks.
+        /// </summary>
+        public static string ObtainedMarks {
+            get {
+                return ResourceManager.GetString("ObtainedMarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration No.
+        /// </summary>
+        public static string RegistrationNo {
+            get {
+                return ResourceManager.GetString("RegistrationNo", resourceCulture);
             }
         }
         
@@ -124,11 +160,29 @@ namespace OpMgr.Resources.Exam {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Standard-Section.
+        ///   Looks up a localized string similar to Class.
         /// </summary>
-        public static string StandardSection {
+        public static string StandardSectionId {
             get {
-                return ResourceManager.GetString("StandardSection", resourceCulture);
+                return ResourceManager.GetString("StandardSectionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Student Marks.
+        /// </summary>
+        public static string StudentMarksMaeding {
+            get {
+                return ResourceManager.GetString("StudentMarksMaeding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string StudentName {
+            get {
+                return ResourceManager.GetString("StudentName", resourceCulture);
             }
         }
         
@@ -140,12 +194,22 @@ namespace OpMgr.Resources.Exam {
                 return ResourceManager.GetString("Subject", resourceCulture);
             }
         }
-
-        public static string RegistrationNo
-        {
-            get
-            {
-                return ResourceManager.GetString("RegistrationNo", resourceCulture);
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Marks.
+        /// </summary>
+        public static string Submitmarks {
+            get {
+                return ResourceManager.GetString("Submitmarks", resourceCulture);
             }
         }
     }

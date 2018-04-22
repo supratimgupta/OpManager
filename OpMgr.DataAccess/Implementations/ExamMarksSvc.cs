@@ -17,11 +17,13 @@ namespace OpMgr.DataAccess.Implementations
         private DataTable _dtData;
         private DataSet _dsData;
         private ILogSvc _logger;
+        private ISessionSvc _sessionSvc;
 
-        public ExamMarksSvc(IConfigSvc configSvc, ILogSvc logger)
+        public ExamMarksSvc(IConfigSvc configSvc, ILogSvc logger, ISessionSvc sessionSvc)
         {
             _configSvc = configSvc;
             _logger = logger;
+            _sessionSvc = sessionSvc;
         }
 
         public void Dispose()
@@ -194,7 +196,51 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<ExamMarksDTO> Insert(ExamMarksDTO data)
         {
-            throw new NotImplementedException();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "insertexammarks";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@createdBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId; 
+                    command.Parameters.Add("@RollNumber1", MySqlDbType.String).Value = data.Student.RollNumber;
+                    command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
+                    command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
+                    command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = data.Subject.SubjectId;
+                    command.Parameters.Add("@ExamRuleId1", MySqlDbType.Int32).Value = data.ExamRule.ExamRuleId;
+                    command.Parameters.Add("@CourseExamId1", MySqlDbType.Int32).Value = data.CourseExam.CourseExamId;
+                    command.Parameters.Add("@StudentInfoId1", MySqlDbType.Int32).Value = data.Student.StudentInfoId;
+                    command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = data.StandardSection.StandardSectionId;
+                    command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = data.CourseFrom;
+                    command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = data.CourseTo;
+                    
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
+
+                    if (_dtData.Rows.Count > 0 )
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new ExamMarksDTO();
+                        status.ReturnObj.ExamMarksId = (int)_dtData.Rows[0]["ExamMarksId"];                        
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "User Insertion Failed";
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
         }
 
         public StatusDTO<ExamMarksDTO> Select(int rowId)
