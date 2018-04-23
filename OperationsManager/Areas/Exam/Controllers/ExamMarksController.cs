@@ -98,7 +98,7 @@ namespace OperationsManager.Areas.Exam.Controllers
         public JsonResult GetStudentDetailsMarks(CourseMappingDTO coursemap)
         {
 
-            StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId);
+            StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId,coursemap.Subject.SubjectId);
             if (status.IsSuccess)
             {
                 if (status.ReturnObj != null && status.ReturnObj.Count > 0)
@@ -164,7 +164,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                 //exammarksdto.CourseExam.CourseMapping.Location.LocationId = examMarksVM.CourseExam.CourseMapping.Location.LocationId;
                 //exammarksdto.CourseExam.CourseMapping.StandardSection.StandardSectionId = examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId;
 
-                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId);
+                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId,examMarksVM.CourseExam.CourseMapping.Subject.SubjectId);
 
                 if (status.IsSuccess)
                 {

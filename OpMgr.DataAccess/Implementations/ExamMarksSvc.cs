@@ -124,7 +124,7 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
-        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId)
+        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId, int SubjectId)
         {
             StatusDTO<List<ExamMarksDTO>> examMarksList = new StatusDTO<List<ExamMarksDTO>>();
             examMarksList.IsException = false;
@@ -140,7 +140,8 @@ namespace OpMgr.DataAccess.Implementations
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     command.Parameters.Add("@LocationId1", MySqlDbType.Int32).Value = LocationId;
                     command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
-                    
+                    command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = SubjectId;
+
                     MySqlDataAdapter rdr = new MySqlDataAdapter(command);
                     _dsData = new DataSet();
                     rdr.Fill(_dsData);

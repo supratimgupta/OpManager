@@ -238,48 +238,50 @@
 }
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading"><b></b></div>
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading">
+                <b>@ExamMarks.StudentMarksMaeding</b>
+            </div>
             <div class="panel-body">
 
                 @using (Html.BeginForm("Register", "ExamMarks", FormMethod.Post, new { id = "exammarksform", enctype = "multipart/form-data" }))
                 {
-                    @Html.AntiForgeryToken()
-                    <fieldset>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
-                        </div>
-                        <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
-                            @Html.HiddenFor(m => m.hdnEmployeeId)
-                            @Html.HiddenFor(m => m.hdncoursemapid)
-                            @Html.HiddenFor(m => m.hdnExamRuleId)
-                            @Html.HiddenFor(m => m.hdnSubjectId)
-                            @Html.HiddenFor(m => m.hdnStandardSectionId)
-                            @Html.HiddenFor(m => m.hdnCourseExamId)
-                            @Html.HiddenFor(m => m.hdnFromDate)
-                            @Html.HiddenFor(m => m.hdnToDate)
-                        </div>
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <div class="col-lg-5">
+                        @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
+                    </div>
+                    <div class="col-lg-5">
+                        @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
+                        @Html.HiddenFor(m => m.hdnEmployeeId)
+                        @Html.HiddenFor(m => m.hdncoursemapid)
+                        @Html.HiddenFor(m => m.hdnExamRuleId)
+                        @Html.HiddenFor(m => m.hdnSubjectId)
+                        @Html.HiddenFor(m => m.hdnStandardSectionId)
+                        @Html.HiddenFor(m => m.hdnCourseExamId)
+                        @Html.HiddenFor(m => m.hdnFromDate)
+                        @Html.HiddenFor(m => m.hdnToDate)
+                    </div>
 
-                        <div class="col-lg-4">
-                            <button type="submit" class="btn btn-primary">@ExamMarks.Submit</button>
-                        </div>
-                    </fieldset>
+                    <div class="col-lg-4" style="padding-top:27px;">
+                        <button type="submit" class="btn btn-primary">@ExamMarks.Submit</button>
+                    </div>
+                </fieldset>
                 }
             </div>
         </div>
@@ -318,7 +320,7 @@
         <div class="panel panel-color panel-primary">
             <div class="panel-heading">
 
-                <b>@ExamMarks.StudentMarksMaeding</b>
+                <b>Exam Marks Details</b>
 
             </div>
             <div class="panel-body">
@@ -347,11 +349,11 @@
                                 </div>
                                 <div class="col-lg-4">
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-4" >
                                     <button type="submit" id="btnsavemarks"  class="btn btn-primary">@ExamMarks.Submitmarks</button>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding-top:20px;">
                                 <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                                     <thead>
                                         <tr>
