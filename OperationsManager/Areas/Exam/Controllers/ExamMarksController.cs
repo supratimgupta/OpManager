@@ -190,8 +190,16 @@ namespace OperationsManager.Areas.Exam.Controllers
                             {
                                 exammarksvm = new Models.ExamMarksVM();
                                 exammarksvm.ExamMarksId = exammarksdto.ExamMarksId;
+                                if(exammarksdto.MarksObtained > 0)
+                                {
+                                    exammarksvm.MarksObtained = exammarksdto.MarksObtained;
+                                }
+                                if (exammarksdto.CalculatedMarks > 0)
+                                {
+                                    exammarksvm.CalculatedMarks = exammarksdto.CalculatedMarks;
+                                }
 
-                                if(examVM.Rule==null)
+                                if (examVM.Rule==null)
                                 {
                                     ExamRuleDTO rule = new ExamRuleDTO();
                                     rule.CourseExam = new CourseExamDTO();

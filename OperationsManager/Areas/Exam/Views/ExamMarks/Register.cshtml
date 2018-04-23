@@ -390,7 +390,7 @@
                                                     <tr>
                                                         <td>
                                                             @Model.ExamMarksList[i].FullName
-
+                                                            @Html.HiddenFor(m => m.ExamMarksList[i].ExamMarksId)
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription

@@ -180,8 +180,16 @@ namespace OpMgr.DataAccess.Implementations
                                     exammarks.ExamMarksId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]);
                                 }
                             }
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["MarksObtained"].ToString()))
+                            {
+                                exammarks.MarksObtained = Convert.ToDouble(_dsData.Tables[0].Rows[i]["MarksObtained"]);
+                            }
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["CalculatedMarks"].ToString()))
+                            {
+                                exammarks.CalculatedMarks = Convert.ToDouble(_dsData.Tables[0].Rows[i]["CalculatedMarks"]);
+                            }
 
-                            examMarksList.ReturnObj.Add(exammarks);
+                                examMarksList.ReturnObj.Add(exammarks);
                             examMarksList.IsSuccess = true;
                             
                         }
