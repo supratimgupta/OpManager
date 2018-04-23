@@ -310,7 +310,23 @@
                                 <td><span id="spnAssesmentMarks">@Model.Rule.AssesmentMarks</span></td>
                                 <td><span id="spnFullMarks">@Model.Rule.ActualFullMarks</span></td>
                                 <td><span id="spnPassmarks">@Model.Rule.PassMarks</span></td>
-                                <td><a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a></td>
+                                <td>
+                                    @if (Model.ExamMarksList != null && Model.ExamMarksList.Count > 0)
+                                    {
+                                        if (Model.ExamMarksList.FirstOrDefault(em => em.ExamMarksId > 0) == null)
+                                        {
+                                            <a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a>
+                                        }
+                                        else
+                                        {
+                                            <span style="cursor:text;" title="Can't edit rule now.'">Edit</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a>
+                                    }
+                                </td>
                             </tr>
                         </tbody>
                     </table>

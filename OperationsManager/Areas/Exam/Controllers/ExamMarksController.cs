@@ -93,61 +93,61 @@ namespace OperationsManager.Areas.Exam.Controllers
             return Json(new { data = new ExamRuleDTO(), message = "ExamRule is not registered for proper course", status = true }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public JsonResult GetStudentDetailsMarks(CourseMappingDTO coursemap)
-        {
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public JsonResult GetStudentDetailsMarks(CourseMappingDTO coursemap)
+        //{
 
-            StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId,coursemap.Subject.SubjectId);
-            if (status.IsSuccess)
-            {
-                if (status.ReturnObj != null && status.ReturnObj.Count > 0)
-                {
-                    Models.ExamMarksVM exammarksvm = null;
-                    foreach (ExamMarksDTO exammarksdto in status.ReturnObj)
-                    {
-                        if (exammarksdto != null)
-                        {
-                            exammarksvm = new Models.ExamMarksVM();
-                            exammarksvm.ExamMarksId = exammarksdto.ExamMarksId;
+        //    StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId,coursemap.Subject.SubjectId);
+        //    if (status.IsSuccess)
+        //    {
+        //        if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+        //        {
+        //            Models.ExamMarksVM exammarksvm = null;
+        //            foreach (ExamMarksDTO exammarksdto in status.ReturnObj)
+        //            {
+        //                if (exammarksdto != null)
+        //                {
+        //                    exammarksvm = new Models.ExamMarksVM();
+        //                    exammarksvm.ExamMarksId = exammarksdto.ExamMarksId;
 
-                            exammarksvm.CourseExam = new CourseExam();
-                            exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
-                            exammarksvm.StandardSection = new StandardSectionMapDTO();
-                            exammarksvm.StandardSection.StandardSectionId = exammarksdto.StandardSection.StandardSectionId;
-                            exammarksvm.CourseExam = new CourseExam();
-                            exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
-                            exammarksvm.Student = new StudentDTO();
+        //                    exammarksvm.CourseExam = new CourseExam();
+        //                    exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+        //                    exammarksvm.StandardSection = new StandardSectionMapDTO();
+        //                    exammarksvm.StandardSection.StandardSectionId = exammarksdto.StandardSection.StandardSectionId;
+        //                    exammarksvm.CourseExam = new CourseExam();
+        //                    exammarksvm.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+        //                    exammarksvm.Student = new StudentDTO();
 
-                            exammarksvm.Student.StandardSectionMap = new StandardSectionMapDTO();
-                            exammarksvm.Student.StandardSectionMap.Standard = new StandardDTO();
-                            exammarksvm.Student.StandardSectionMap.Section = new SectionDTO();
-                            exammarksvm.Student.UserDetails = new UserMasterDTO();
-                            exammarksvm.Student.UserDetails.Location = new LocationDTO();
+        //                    exammarksvm.Student.StandardSectionMap = new StandardSectionMapDTO();
+        //                    exammarksvm.Student.StandardSectionMap.Standard = new StandardDTO();
+        //                    exammarksvm.Student.StandardSectionMap.Section = new SectionDTO();
+        //                    exammarksvm.Student.UserDetails = new UserMasterDTO();
+        //                    exammarksvm.Student.UserDetails.Location = new LocationDTO();
 
-                            exammarksvm.Student.StudentInfoId = exammarksdto.Student.StudentInfoId;
-                            exammarksvm.Student.RegistrationNumber = exammarksdto.Student.RegistrationNumber;
-                            exammarksvm.Student.RollNumber = exammarksdto.Student.RollNumber;
-                            exammarksvm.Student.UserDetails.FName = exammarksdto.Student.UserDetails.FName;
-                            exammarksvm.Student.UserDetails.LName = exammarksdto.Student.UserDetails.LName;
-                            exammarksvm.Student.UserDetails.Location.LocationDescription = exammarksdto.Student.UserDetails.Location.LocationDescription;
+        //                    exammarksvm.Student.StudentInfoId = exammarksdto.Student.StudentInfoId;
+        //                    exammarksvm.Student.RegistrationNumber = exammarksdto.Student.RegistrationNumber;
+        //                    exammarksvm.Student.RollNumber = exammarksdto.Student.RollNumber;
+        //                    exammarksvm.Student.UserDetails.FName = exammarksdto.Student.UserDetails.FName;
+        //                    exammarksvm.Student.UserDetails.LName = exammarksdto.Student.UserDetails.LName;
+        //                    exammarksvm.Student.UserDetails.Location.LocationDescription = exammarksdto.Student.UserDetails.Location.LocationDescription;
 
-                        }
-                    }
+        //                }
+        //            }
 
-                }
-
-
+        //        }
 
 
-                return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
-            }
-            if (status.IsException)
-            {
-                return Json(new { data = new ExamRuleDTO(), message = "Exception: " + status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { data = new ExamRuleDTO(), message = "ExamRule is not registered for proper course", status = true }, JsonRequestBehavior.AllowGet);
-        }
+
+
+        //        return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    if (status.IsException)
+        //    {
+        //        return Json(new { data = new ExamRuleDTO(), message = "Exception: " + status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return Json(new { data = new ExamRuleDTO(), message = "ExamRule is not registered for proper course", status = true }, JsonRequestBehavior.AllowGet);
+        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -164,7 +164,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                 //exammarksdto.CourseExam.CourseMapping.Location.LocationId = examMarksVM.CourseExam.CourseMapping.Location.LocationId;
                 //exammarksdto.CourseExam.CourseMapping.StandardSection.StandardSectionId = examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId;
 
-                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId,examMarksVM.CourseExam.CourseMapping.Subject.SubjectId);
+                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId,examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString));
 
                 if (status.IsSuccess)
                 {
@@ -263,11 +263,55 @@ namespace OperationsManager.Areas.Exam.Controllers
                 {
                     examVM = examMarksVM;
                     examVM.IsSearchSuccessful = false;
-                    examMarksVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-                    examMarksVM.SubjectList = _uiddlRepo.getSubjectDropDown();
-                    examMarksVM.LocationList = _uiddlRepo.getLocationDropDown();
-                    examMarksVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
-                    examMarksVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
+
+                    if (examVM.Rule == null)
+                    {
+                        ExamRuleDTO rule = new ExamRuleDTO();
+                        rule.CourseExam = new CourseExamDTO();
+                        string result = _examMarksSvc.GetCourseExamId(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examVM.FromDateString), DateTime.Parse(examVM.ToDateString));
+                        int test = -1;
+                        if(int.TryParse(result, out test))
+                        {
+                            rule.CourseExam.CourseExamId = test;
+                            List<ExamRuleDTO> rules = _examRuleSvc.Select(rule).ReturnObj;
+
+                            if (rules == null || rules.Count == 0)
+                            {
+                                examVM.IsRuleOk = false;
+                                examVM.RuleAdditionMessage = "Please add marks rule for this exam first.";
+                                examVM.IsRuleNeededToBeAdded = true;
+                            }
+                            else if (rules.Count > 1)
+                            {
+                                examVM.IsRuleOk = false;
+                                examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
+                                examVM.IsRuleNeededToBeAdded = false;
+                            }
+                            else
+                            {
+                                examVM.IsRuleOk = true;
+                                examVM.Rule = rules[0];
+                                examVM.RuleAdditionMessage = string.Empty;
+                                examVM.IsRuleNeededToBeAdded = false;
+                            }
+
+                            examVM.CourseExam = new CourseExam();
+                            examVM.CourseExam.CourseExamId = test;
+                        }
+                        else
+                        {
+                            examVM.IsRuleOk = false;
+                            examVM.RuleAdditionMessage = "Course mapping and course exam has not been setup properly, please contact dev team.";
+                            examVM.Rule = null;
+                            //examVM.IsRuleNeededToBeAdded = true;
+                        }
+                    }
+
+                    examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                    examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
+                    examVM.LocationList = _uiddlRepo.getLocationDropDown();
+                    examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
+                    examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
                 }
             }
             return View(examVM);

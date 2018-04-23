@@ -124,7 +124,7 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
-        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId, int SubjectId)
+        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId, int SubjectId, DateTime fromDate, DateTime toDate)
         {
             StatusDTO<List<ExamMarksDTO>> examMarksList = new StatusDTO<List<ExamMarksDTO>>();
             examMarksList.IsException = false;
@@ -135,12 +135,14 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "getStudentDetailsForMarksEntry";
+                    command.CommandText = "getStudentDetailsForMarksEntry_1";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     command.Parameters.Add("@LocationId1", MySqlDbType.Int32).Value = LocationId;
                     command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
                     command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = SubjectId;
+                    command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = fromDate.ToString("yyyy-MM-dd");
+                    command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = toDate.ToString("yyyy-MM-dd");
 
                     MySqlDataAdapter rdr = new MySqlDataAdapter(command);
                     _dsData = new DataSet();
@@ -306,6 +308,44 @@ namespace OpMgr.DataAccess.Implementations
         {
             throw new NotImplementedException();
         }
-        
+
+
+
+        public string GetCourseExamId(int location, int standardSection, int subject, DateTime courseFrom, DateTime courseTo)
+        {
+            StatusDTO<List<ExamRuleDTO>> status = new StatusDTO<List<ExamRuleDTO>>();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "Select CourseExamId from CourseExam where CourseMappingId = (select CourseMappingId from CourseMapping where LocationId = @location and SubjectId=@subject and (CourseFrom<=@courseFrom and CourseTo>=@courseFrom) and (CourseFrom<=@courseTo and CourseTo>=@courseTo))";
+                    command.Parameters.Add("@location", MySqlDbType.Int32).Value = location;
+                    command.Parameters.Add("@subject", MySqlDbType.Int32).Value = subject;
+                    command.Parameters.Add("@courseFrom", MySqlDbType.Date).Value = courseFrom.ToString("yyyy-MM-dd");
+                    command.Parameters.Add("@courseTo", MySqlDbType.Date).Value = courseTo.ToString("yyyy-MM-dd");
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDA = new MySqlDataAdapter(command);
+                    DataTable dtData = new DataTable("TR_DATA");
+                    mDA.Fill(dtData);
+                    
+                    if (dtData != null && dtData.Rows.Count > 0)
+                    {
+                        return dtData.Rows[0]["CourseExamId"].ToString();
+                    }
+
+                    return "Course exam not setup properly.";
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+
+            }
+        }
     }
 }

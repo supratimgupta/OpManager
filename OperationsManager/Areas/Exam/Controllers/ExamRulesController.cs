@@ -15,11 +15,12 @@ namespace OperationsManager.Areas.Exam.Controllers
 
         private IExamRuleSvc _examRuleSvc;
         private IConfigSvc _configSvc;
-
-        public ExamRulesController(IExamRuleSvc examRuleSvc, IConfigSvc configSvc)
+        private ISessionSvc _sessionSvc;
+        public ExamRulesController(IExamRuleSvc examRuleSvc, IConfigSvc configSvc, ISessionSvc sessionSvc)
         {
             _examRuleSvc = examRuleSvc;
             _configSvc = configSvc;
+            _sessionSvc = sessionSvc;
         }
 
         // For mode ADD rowId is CourseExamId, for mode edit rowId is ExamRuleId
@@ -69,10 +70,15 @@ namespace OperationsManager.Areas.Exam.Controllers
             examRuleVM.ErrorMessage = string.Empty;
             if(string.Equals(examRuleVM.Mode, "ADD", StringComparison.OrdinalIgnoreCase))
             {
+                examRuleVM.CreatedBy = new UserMasterDTO();
+                examRuleVM.CreatedBy.UserMasterId = _sessionSvc.GetUserSession().UserMasterId;
                 status = _examRuleSvc.Insert(examRuleVM);
             }
             else if(string.Equals(examRuleVM.Mode, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
+                examRuleVM.Active = true;
+                examRuleVM.UpdatedBy = new UserMasterDTO();
+                examRuleVM.UpdatedBy.UserMasterId = _sessionSvc.GetUserSession().UserMasterId;
                 status = _examRuleSvc.Update(examRuleVM);
             }
             if(!status.IsSuccess)
