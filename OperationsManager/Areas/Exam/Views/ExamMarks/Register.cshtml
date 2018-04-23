@@ -13,202 +13,7 @@
             $('.CourseFrom').datepicker({ dateFormat: 'dd-M-yy' });
             $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
 
-            
-
-            // If Selected Location , StandardSection and Subject Below Code will populate
-            $("#CourseExam_CourseMapping_Location_LocationId").change(function () {
-                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
-                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
-
-                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
-
-                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
-                }
-                else if (StandardSectionId < 0) {
-                    alert("Please Select Standard Section");
-                }
-                else if (SubjectId < 0) {
-                    alert("Please Select Subject");
-                }
-                return false;
-            });
-
-
-            // If Selected Location , StandardSection and Subject Below Code will populate
-            $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").change(function () {
-                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
-                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
-
-                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
-                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
-                }
-                else if (locationId < 0) {
-                    alert("Please Select Location");
-                }
-                else if (SubjectId < 0) {
-                    alert("Please Select Subject");
-                }
-                return false;
-            });
-
-            // If Selected Location , StandardSection and Subject Below Code will populate
-            $("#CourseExam_CourseMapping_Subject_SubjectId").change(function () {
-                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
-                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                var SubjectId = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
-
-                if (locationId > 0 && StandardSectionId > 0 && SubjectId > 0) {
-
-                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
-                }
-                else if (locationId < 0) {
-                    alert("Please Select Location");
-                }
-                else if (StandardSectionId < 0) {
-                    alert("Please Select Standard Section");
-                }
-                return false;
-            });
-
-
-            // If Selected ExamType , ExamSubType and CourseMappingId(hdncoursemapid) > 0 then will get ExamRuleId
-            $("#CourseExam_ExamType_ExamTypeId").change(function () {
-                var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
-                var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
-                var CourseMapId = document.getElementById("hdncoursemapid").value;
-                if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
-                    GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
-                }
-
-                return false;
-            });
-
-            // If Selected ExamType , ExamSubType and CourseMappingId(hdncoursemapid) > 0 then will get ExamRuleId
-            $("#CourseExam_ExamSubType_ExamSubTypeId").change(function () {
-                debugger;
-                var ExamTypeId = $("#CourseExam_ExamType_ExamTypeId").val();
-                var ExamSubTypeId = $("#CourseExam_ExamSubType_ExamSubTypeId").val();
-                var CourseMapId = document.getElementById("hdncoursemapid").value;
-
-                if (ExamTypeId > 0 && ExamSubTypeId > 0 && CourseMapId > 0) {
-                    GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId);
-                }
-
-                return false;
-            });
-
         });
-
-        function GetCourseMappingDetails(locationId, StandardSectionId, SubjectId) {
-
-            var coursemap = new Object();
-            coursemap.Location = new Object();
-            coursemap.StandardSection = new Object();
-            coursemap.Subject = new Object();
-            coursemap.Employee = new Object();
-            coursemap.Location.LocationId = locationId;
-            coursemap.StandardSection.StandardSectionId = StandardSectionId;
-            coursemap.Subject.SubjectId = SubjectId;
-            coursemap.Employee.EmployeeId = document.getElementById("hdnEmployeeId").value;
-
-            $.ajax({
-
-                type: 'POST',
-                url: 'GetCourseMappingDetails',
-                dataType: "json",
-                data: coursemap,
-                success: function (resultData) { getcoursemappingDetails_callback(resultData); },
-                error: function (error) { }
-            });
-        }
-
-        function getcoursemappingDetails_callback(result) {
-            if (result.status) {
-
-                var FromDate = result.FromDateString;
-                var ToDate = result.ToDateString;
-                var data = result.data;
-
-                document.getElementById("hdncoursemapid").value = data.CourseMappingId;
-                document.getElementById("FromDateString").value = FromDate;
-                document.getElementById("ToDateString").value = ToDate;
-
-                document.getElementById("hdnFromDate").value = FromDate;
-                document.getElementById("hdnToDate").value = ToDate;
-            }
-        }
-
-        function GetExamRuleDetails(ExamTypeId, ExamSubTypeId, CourseMapId) {
-
-            var courseexam = new Object();
-            courseexam.ExamType = new Object();
-            courseexam.ExamSubType = new Object();
-            courseexam.CourseMapping = new Object();
-
-            courseexam.ExamType.ExamTypeId = ExamTypeId;
-            courseexam.ExamSubType.ExamSubTypeId = ExamSubTypeId;
-            courseexam.CourseMapping.CourseMappingId = CourseMapId;
-            
-            $.ajax({
-
-                type: 'POST',
-                url: 'GetExamRuleDetails',
-                dataType: "json",
-                data: courseexam,
-                success: function (resultData) { getcourseExamDetails_callback(resultData); },
-                error: function (error) { }
-            });
-        }
-
-        function getcourseExamDetails_callback(result) {
-
-            if (result.status) {
-                
-                var data = result.data;
-                document.getElementById("hdnExamRuleId").value = data.ExamRuleId;
-                document.getElementById("hdnCourseExamId").value = data.CourseExam.CourseExamId;
-                
-                if (data.ExamRuleId > 0) {
-                    var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
-                    var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                    document.getElementById("hdnStandardSectionId").value = StandardSectionId;
-                    document.getElementById("hdnSubjectId").value = $("#CourseExam_CourseMapping_Subject_SubjectId").val();
-                    
-
-                    if (locationId > 0 && StandardSectionId > 0) {
-                        //GetStudentDetailsMarks(locationId, StandardSectionId);
-                    }
-
-                }
-            }
-        }
-
-        function GetStudentDetailsMarks(locationId, StandardSectionId) {
-
-            var coursemap = new Object();
-            coursemap.Location = new Object();
-            coursemap.StandardSection = new Object();
-
-            coursemap.Location.LocationId = locationId;
-            coursemap.StandardSection.StandardSectionId = StandardSectionId;
-
-            $.ajax({
-
-                type: 'POST',
-                url: 'GetStudentDetailsMarks',
-                dataType: "json",
-                data: coursemap,
-                success: function (resultData) { studentmarksentry(resultData); },
-                error: function (error) { }
-            });
-        }
-
-        function studentmarksentry(result) {
-
-        }
-
         function calcMarks(txtActualMarks, txtCalcMarksId) {
             var actualMarks = txtActualMarks.value;
             var assesmentMarks = document.getElementById("spnAssesmentMarks").innerHTML;
@@ -223,150 +28,155 @@
 
             document.getElementById(txtCalcMarksId).value = calculatedMark;
         }
-
-        function getExamInfo()
-        {
-            
-        }
-
     </script>
     <script language="javascript" type="text/javascript">
         function openRuleWindow(id, mode) {
             window.open("/Exam/ExamRules/Rule?rowId=" + id + "&mode=" + mode, "ruleWindow", "width=400,height=400");
         }
+
+        function changeMode(mode) {
+            debugger;
+            document.getElementById("hfMode").value = mode;
+            if (mode === "SEARCH") {
+                return validate('reqSearch');
+            }
+            if (mode === "SAVE") {
+                return validate('reqSave');
+            }
+
+        }
+
+        function validate(className) {
+            debugger;
+            var arrRequired = document.getElementsByClassName(className);
+            var retValue = true;
+            for (i = 0; i < arrRequired.length; i++) {
+                if ($(arrRequired[i]).val().length === 0) {
+                    retValue = false;
+                    alert('Marked fields are mandatory.');
+                    break;
+                }
+            }
+            return retValue;
+        }
     </script>
 }
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-color panel-primary">
-            <div class="panel-heading">
-                <b>@ExamMarks.StudentMarksMaeding</b>
-            </div>
-            <div class="panel-body">
 
-                @using (Html.BeginForm("Register", "ExamMarks", FormMethod.Post, new { id = "exammarksform", enctype = "multipart/form-data" }))
-                {
-                @Html.AntiForgeryToken()
-                <fieldset>
-                    <div class="col-lg-5">
-                        @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control" })
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control" })
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control" })
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control" })
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control" })
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
-                    </div>
-                    <div class="col-lg-5">
-                        @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
-                        @Html.HiddenFor(m => m.hdnEmployeeId)
-                        @Html.HiddenFor(m => m.hdncoursemapid)
-                        @Html.HiddenFor(m => m.hdnExamRuleId)
-                        @Html.HiddenFor(m => m.hdnSubjectId)
-                        @Html.HiddenFor(m => m.hdnStandardSectionId)
-                        @Html.HiddenFor(m => m.hdnCourseExamId)
-                        @Html.HiddenFor(m => m.hdnFromDate)
-                        @Html.HiddenFor(m => m.hdnToDate)
-                    </div>
-
-                    <div class="col-lg-4" style="padding-top:27px;">
-                        <button type="submit" class="btn btn-primary">@ExamMarks.Submit</button>
-                    </div>
-                </fieldset>
-                }
-            </div>
-        </div>
-        @if(Model.IsRuleNeededToBeAdded)
-        {
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
             <div class="panel panel-color panel-primary">
-                <div class="panel-heading">You need to add rule first. Please <a onclick="openRuleWindow(@Model.CourseExam.CourseExamId, 'ADD');" style="cursor:pointer;"> + add</a> rules. </div>
-            </div>
-        }
-        else if(Model.Rule!=null)
-        {
-            <div class="panel panel-color panel-primary">
-                <div class="panel-heading">Following rule is your active rule</div>
+                <div class="panel-heading">
+                    <b>@ExamMarks.StudentMarksMaeding</b>
+                </div>
                 <div class="panel-body">
-                    <table class="table table table-striped table-bordered table-responsive table-hover" border="1">
-                        <thead>
-                            <tr>
-                                <th>Assesment marks</th>
-                                <th>Actual marks</th>
-                                <th>Pass marks</th>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span id="spnAssesmentMarks">@Model.Rule.AssesmentMarks</span></td>
-                                <td><span id="spnFullMarks">@Model.Rule.ActualFullMarks</span></td>
-                                <td><span id="spnPassmarks">@Model.Rule.PassMarks</span></td>
-                                <td>
-                                    @if (Model.ExamMarksList != null && Model.ExamMarksList.Count > 0)
-                                    {
-                                        if (Model.ExamMarksList.FirstOrDefault(em => em.ExamMarksId > 0) == null)
+
+
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Location.LocationId, Model.LocationList, ExamMarks.Location, new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control requiredField reqSearch", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control requiredField reqSearch", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
+                            <input type="hidden" value="@Model.CourseExamId" name="CourseExamId" />
+                            <input type="hidden" value="@Model.RuleId" name="RuleId" />
+                            @Html.HiddenFor(m => m.Mode, new { id = "hfMode" })
+                        </div>
+
+                        <div class="col-lg-4" style="padding-top:27px;">
+                            <button type="submit" class="btn btn-primary" onclick="return changeMode('SEARCH');" id="btnSearch">@ExamMarks.Submit</button>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            @if (Model.IsRuleNeededToBeAdded)
+            {
+                <div class="panel panel-color panel-primary">
+                    <div class="panel-heading">You need to add rule first. Please <a onclick="openRuleWindow(@Model.CourseExam.CourseExamId, 'ADD');" style="cursor:pointer;"> + add</a> rules. </div>
+                </div>
+            }
+            else if (Model.Rule != null)
+            {
+                <div class="panel panel-color panel-primary">
+                    <div class="panel-heading">Following rule is your active rule</div>
+                    <div class="panel-body">
+                        <table class="table table table-striped table-bordered table-responsive table-hover" border="1">
+                            <thead>
+                                <tr>
+                                    <th>Assesment marks</th>
+                                    <th>Actual marks</th>
+                                    <th>Pass marks</th>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span id="spnAssesmentMarks">@Model.Rule.AssesmentMarks</span></td>
+                                    <td><span id="spnFullMarks">@Model.Rule.ActualFullMarks</span></td>
+                                    <td><span id="spnPassmarks">@Model.Rule.PassMarks</span></td>
+                                    <td>
+                                        @if (Model.ExamMarksList != null && Model.ExamMarksList.Count > 0)
                                         {
-                                            <a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a>
+                                            if (Model.ExamMarksList.FirstOrDefault(em => em.ExamMarksId > 0) == null)
+                                            {
+                                                <a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a>
+                                            }
+                                            else
+                                            {
+                                                <span style="cursor:text;" title="Can't edit rule now.'">Edit</span>
+                                            }
                                         }
                                         else
                                         {
-                                            <span style="cursor:text;" title="Can't edit rule now.'">Edit</span>
+                                            <a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a>
                                         }
-                                    }
-                                    else
-                                    {
-                                        <a onclick="openRuleWindow(@Model.Rule.ExamRuleId, 'EDIT');">Edit</a>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        }
-        <div class="panel panel-color panel-primary">
-            <div class="panel-heading">
+            }
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
 
-                <b>Exam Marks Details</b>
+                    <b>Exam Marks Details</b>
 
-            </div>
-            <div class="panel-body">
+                </div>
+                <div class="panel-body">
 
-                @if(!Model.IsRuleOk)
-                {
-                    <span class="danger" style="color:red">@Model.RuleAdditionMessage</span>
-                }
-                else
-                {
-                    using (Html.BeginForm("SubmitMarks", "ExamMarks", FormMethod.Post, new { id = "exammarkssubmit", enctype = "multipart/form-data" }))
+                    @if (!Model.IsRuleOk)
                     {
-                        @Html.AntiForgeryToken()
+                        <span class="danger" style="color:red">@Model.RuleAdditionMessage</span>
+                    }
+                    else
+                    {
+
                         <div style="overflow:scroll;">
                             <div class="col-lg-12">
                                 <div class="col-lg-4">
-                                    @Html.HiddenFor(m => m.hdnEmployeeId)
-                                    @Html.HiddenFor(m => m.hdncoursemapid)
-                                    @Html.HiddenFor(m => m.Rule.ExamRuleId)
-                                    @Html.HiddenFor(m => m.hdnSubjectId)
-                                    @Html.HiddenFor(m => m.hdnStandardSectionId)
-                                    @Html.HiddenFor(m => m.hdnCourseExamId)
-                                    @Html.HiddenFor(m => m.hdnFromDate)
-                                    @Html.HiddenFor(m => m.hdnToDate)
-                                    @*@Html.HiddenFor(m => m.hdnExamRuleId)*@
                                 </div>
                                 <div class="col-lg-4">
                                 </div>
-                                <div class="col-lg-4" >
-                                    <button type="submit" id="btnsavemarks"  class="btn btn-primary">@ExamMarks.Submitmarks</button>
+                                <div class="col-lg-4">
+                                    <button type="submit" id="btnsavemarks" class="btn btn-primary" onclick="return changeMode('SAVE');">@ExamMarks.Submitmarks</button>
                                 </div>
                             </div>
                             <div class="col-lg-12" style="padding-top:20px;">
@@ -413,7 +223,7 @@
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.RegistrationNumber
-                                                            @Html.HiddenFor(m =>m.ExamMarksList[i].Student.StudentInfoId)
+                                                            @Html.HiddenFor(m => m.ExamMarksList[i].Student.StudentInfoId)
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.RollNumber
@@ -422,10 +232,10 @@
                                                             @Model.ExamMarksList[i].Class
                                                         </td>
                                                         <td>
-                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField", onchange = "calcMarks(this,'txtActualMarks_" + i +"');" })
+                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');" })
                                                         </td>
                                                         <td>
-                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField", id="txtActualMarks_"+i })
+                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i })
                                                         </td>
                                                     </tr>
                                                 }
@@ -444,12 +254,13 @@
                                 </table>
                             </div>
                         </div>
-
                     }
-                }
-                
+
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
+}
+ 
+

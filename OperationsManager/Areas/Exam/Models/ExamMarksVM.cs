@@ -19,12 +19,6 @@ namespace OperationsManager.Areas.Exam.Models
 
         public SelectList LocationList { get; set; }
 
-        public int hdnEmployeeId { get; set; }
-
-        public int hdncoursemapid { get; set; }
-
-        public int hdnExamRuleId { get; set; }
-
         public string FromDateString { get; set; }
 
         public string ToDateString { get; set; }
@@ -45,13 +39,14 @@ namespace OperationsManager.Areas.Exam.Models
 
         public string RuleAdditionMessage { get; set; }
 
-        public int hdnSubjectId { get; set; }
+        public string Mode { get; set; }
 
-        public int hdnStandardSectionId { get; set; }
-        public int hdnCourseExamId { get; set; }
+        public int StandardSectionId { get; set; }
 
-        public DateTime hdnFromDate { get; set; }
+        public int SubjectId { get; set; }
 
-        public DateTime hdnToDate { get; set; }
+        public int CourseExamId { get; set; }
+
+        public int RuleId { get; set; }
     }
 }

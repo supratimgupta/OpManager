@@ -62,8 +62,8 @@
 {
     <script language="javascript" type="text/javascript">
         function refreshParentPage() {
-            var registerform = window.opener.document.getElementById("exammarksform");
-            registerform.submit();
+            var searchBtn = window.opener.document.getElementById("btnSearch");
+            searchBtn.click();
             window.focus();
             window.close();
         }
