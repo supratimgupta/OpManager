@@ -38,7 +38,9 @@
             debugger;
             document.getElementById("hfMode").value = mode;
             if (mode === "SEARCH") {
-                return validate('reqSearch');
+                if (validate('reqSearch')) {
+                    return validateDates();
+                }
             }
             if (mode === "SAVE") {
                 return validate('reqSave');
@@ -58,6 +60,21 @@
                 }
             }
             return retValue;
+        }
+
+        function validateDates() {
+            debugger;
+            var fromDate = document.getElementById("txtFromDate").value;
+            var toDate = document.getElementById("txtToDate").value;
+
+            var dtFromDate = new Date(fromDate);
+            var dtToDate = new Date(toDate);
+
+            if (dtToDate < dtFromDate) {
+                alert('To date must be after from date.');
+                return false;
+            }
+            return true;
         }
     </script>
 }
@@ -91,10 +108,10 @@
                             @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control requiredField reqSearch", data_rule_required = "true", data_msg_required = "Course Start Date is Required" })
+                            @Html.OpMgrTextBoxFor(m => m.FromDateString, ExamMarks.CourseFrom, new { @class = "CourseFrom form-control requiredField reqSearch", data_rule_required = "true", data_msg_required = "Course Start Date is Required", id="txtFromDate" })
                         </div>
                         <div class="col-lg-5">
-                            @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control requiredField reqSearch", data_rule_required = "true", data_msg_required = "Course End Date is Required" })
+                            @Html.OpMgrTextBoxFor(m => m.ToDateString, ExamMarks.CourseTo, new { @class = "CourseTo form-control requiredField reqSearch", data_rule_required = "true", data_msg_required = "Course End Date is Required", id="txtToDate" })
                             <input type="hidden" value="@Model.CourseExamId" name="CourseExamId" />
                             <input type="hidden" value="@Model.RuleId" name="RuleId" />
                             @Html.HiddenFor(m => m.Mode, new { id = "hfMode" })
@@ -233,9 +250,11 @@
                                                         </td>
                                                         <td>
                                                             @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');" })
+                                                            @*@Model.ExamMarksList[i].MarksObtained*@
                                                         </td>
                                                         <td>
                                                             @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i })
+                                                            @*@Model.ExamMarksList[i].CalculatedMarks*@
                                                         </td>
                                                     </tr>
                                                 }
