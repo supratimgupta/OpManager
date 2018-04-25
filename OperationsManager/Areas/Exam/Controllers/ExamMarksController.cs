@@ -66,7 +66,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                     examVM.StandardSectionId = examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId;
                     examVM.SubjectId = examMarksVM.CourseExam.CourseMapping.Subject.SubjectId;
 
-                    StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString));
+                    StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.CourseExam.ExamType.ExamTypeId, examMarksVM.CourseExam.ExamSubType.ExamSubTypeId);
 
                     if (status.IsSuccess)
                     {
@@ -163,50 +163,13 @@ namespace OperationsManager.Areas.Exam.Controllers
                     {
                         examVM = examMarksVM;
                         examVM.IsSearchSuccessful = false;
-
-                        if (examVM.Rule == null)
+                        examVM.IsRuleOk = false;
+                        examVM.IsRuleNeededToBeAdded = false;
+                        examVM.RuleAdditionMessage = status.FailureReason;
+                        if (status.FailureReason.Contains("PLEASE ADD RULE"))
                         {
-                            ExamRuleDTO rule = new ExamRuleDTO();
-                            rule.CourseExam = new CourseExamDTO();
-                            string result = _examMarksSvc.GetCourseExamId(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examVM.FromDateString), DateTime.Parse(examVM.ToDateString));
-                            int test = -1;
-                            if (int.TryParse(result, out test))
-                            {
-                                rule.CourseExam.CourseExamId = test;
-                                List<ExamRuleDTO> rules = _examRuleSvc.Select(rule).ReturnObj;
-
-                                if (rules == null || rules.Count == 0)
-                                {
-                                    examVM.IsRuleOk = false;
-                                    examVM.RuleAdditionMessage = "Please add marks rule for this exam first.";
-                                    examVM.IsRuleNeededToBeAdded = true;
-                                }
-                                else if (rules.Count > 1)
-                                {
-                                    examVM.IsRuleOk = false;
-                                    examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
-                                    examVM.IsRuleNeededToBeAdded = false;
-                                }
-                                else
-                                {
-                                    examVM.IsRuleOk = true;
-                                    examVM.Rule = rules[0];
-                                    examVM.RuleAdditionMessage = string.Empty;
-                                    examVM.IsRuleNeededToBeAdded = false;
-                                }
-
-                                examVM.CourseExam = new CourseExam();
-                                examVM.CourseExam.CourseExamId = test;
-                            }
-                            else
-                            {
-                                examVM.IsRuleOk = false;
-                                examVM.RuleAdditionMessage = "Course mapping and course exam has not been setup properly, please contact dev team.";
-                                examVM.Rule = null;
-                                //examVM.IsRuleNeededToBeAdded = true;
-                            }
+                            examVM.IsRuleNeededToBeAdded = true;
                         }
-
                         examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
                         examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
                         examVM.LocationList = _uiddlRepo.getLocationDropDown();

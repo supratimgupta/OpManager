@@ -124,7 +124,7 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
-        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId, int SubjectId, DateTime fromDate, DateTime toDate)
+        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(int LocationId, int StandardSectionId, int SubjectId, DateTime fromDate, DateTime toDate, int examTypeId, int examSubTypeId)
         {
             StatusDTO<List<ExamMarksDTO>> examMarksList = new StatusDTO<List<ExamMarksDTO>>();
             examMarksList.IsException = false;
@@ -143,57 +143,66 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = SubjectId;
                     command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = fromDate.ToString("yyyy-MM-dd");
                     command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = toDate.ToString("yyyy-MM-dd");
+                    command.Parameters.Add("@ExamTypeId1", MySqlDbType.Int32).Value = examTypeId;
+                    command.Parameters.Add("@ExamSubTypeId1", MySqlDbType.Int32).Value = examSubTypeId;
 
                     MySqlDataAdapter rdr = new MySqlDataAdapter(command);
                     _dsData = new DataSet();
                     rdr.Fill(_dsData);
                     
-                    if (_dsData != null && _dsData.Tables.Count > 0)
+                    if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0]!=null && _dsData.Tables[0].Rows.Count>0)
                     {
-                        examMarksList.ReturnObj = new List<ExamMarksDTO>();
-                        for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
+                        if(_dsData.Tables[0].Columns.Count>2)
                         {
-                            ExamMarksDTO exammarks = new ExamMarksDTO();
-                            exammarks.Student = new StudentDTO();
-                            exammarks.Student.StandardSectionMap = new StandardSectionMapDTO();
-                            exammarks.Student.StandardSectionMap.Standard = new StandardDTO();
-                            exammarks.Student.StandardSectionMap.Section = new SectionDTO();
-                            exammarks.Student.UserDetails = new UserMasterDTO();
-                            exammarks.Student.UserDetails.Location = new LocationDTO();
-                            
-                            exammarks.Student.StudentInfoId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StudentInfoId"]);
-                            exammarks.Student.RegistrationNumber = _dsData.Tables[0].Rows[i]["RegistrationNumber"].ToString();
-                            exammarks.Student.StandardSectionMap.Standard.StandardName = _dsData.Tables[0].Rows[i]["StandardName"].ToString();
-                            exammarks.Student.StandardSectionMap.Section.SectionName = _dsData.Tables[0].Rows[i]["SectionName"].ToString();
-
-                            exammarks.Student.RollNumber = _dsData.Tables[0].Rows[i]["RollNumber"].ToString();
-                            exammarks.Student.UserDetails.FName = _dsData.Tables[0].Rows[i]["FName"].ToString();
-                            exammarks.Student.UserDetails.LName = _dsData.Tables[0].Rows[i]["LName"].ToString();
-                            exammarks.Student.UserDetails.Location.LocationDescription = _dsData.Tables[0].Rows[i]["LocationDescription"].ToString();
-                            exammarks.StandardSection = new StandardSectionMapDTO();
-                            exammarks.StandardSection.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StandardSectionId"]);
-                            exammarks.CourseExam = new CourseExam();
-                            exammarks.CourseExam.CourseExamId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["CourseExamId"]);
-
-                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["ExamMarksId"].ToString()))
+                            examMarksList.ReturnObj = new List<ExamMarksDTO>();
+                            for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
                             {
-                                if (Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]) > 0)
+                                ExamMarksDTO exammarks = new ExamMarksDTO();
+                                exammarks.Student = new StudentDTO();
+                                exammarks.Student.StandardSectionMap = new StandardSectionMapDTO();
+                                exammarks.Student.StandardSectionMap.Standard = new StandardDTO();
+                                exammarks.Student.StandardSectionMap.Section = new SectionDTO();
+                                exammarks.Student.UserDetails = new UserMasterDTO();
+                                exammarks.Student.UserDetails.Location = new LocationDTO();
+
+                                exammarks.Student.StudentInfoId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StudentInfoId"]);
+                                exammarks.Student.RegistrationNumber = _dsData.Tables[0].Rows[i]["RegistrationNumber"].ToString();
+                                exammarks.Student.StandardSectionMap.Standard.StandardName = _dsData.Tables[0].Rows[i]["StandardName"].ToString();
+                                exammarks.Student.StandardSectionMap.Section.SectionName = _dsData.Tables[0].Rows[i]["SectionName"].ToString();
+
+                                exammarks.Student.RollNumber = _dsData.Tables[0].Rows[i]["RollNumber"].ToString();
+                                exammarks.Student.UserDetails.FName = _dsData.Tables[0].Rows[i]["FName"].ToString();
+                                exammarks.Student.UserDetails.LName = _dsData.Tables[0].Rows[i]["LName"].ToString();
+                                exammarks.Student.UserDetails.Location.LocationDescription = _dsData.Tables[0].Rows[i]["LocationDescription"].ToString();
+                                exammarks.StandardSection = new StandardSectionMapDTO();
+                                exammarks.StandardSection.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["StandardSectionId"]);
+                                exammarks.CourseExam = new CourseExam();
+                                exammarks.CourseExam.CourseExamId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["CourseExamId"]);
+
+                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["ExamMarksId"].ToString()))
                                 {
-                                    exammarks.ExamMarksId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]);
+                                    if (Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]) > 0)
+                                    {
+                                        exammarks.ExamMarksId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]);
+                                    }
                                 }
-                            }
-                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["MarksObtained"].ToString()))
-                            {
-                                exammarks.MarksObtained = Convert.ToDouble(_dsData.Tables[0].Rows[i]["MarksObtained"]);
-                            }
-                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["CalculatedMarks"].ToString()))
-                            {
-                                exammarks.CalculatedMarks = Convert.ToDouble(_dsData.Tables[0].Rows[i]["CalculatedMarks"]);
-                            }
+                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["MarksObtained"].ToString()))
+                                {
+                                    exammarks.MarksObtained = Convert.ToDouble(_dsData.Tables[0].Rows[i]["MarksObtained"]);
+                                }
+                                if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["CalculatedMarks"].ToString()))
+                                {
+                                    exammarks.CalculatedMarks = Convert.ToDouble(_dsData.Tables[0].Rows[i]["CalculatedMarks"]);
+                                }
 
                                 examMarksList.ReturnObj.Add(exammarks);
+                            }
                             examMarksList.IsSuccess = true;
-                            
+                        }
+                        else
+                        {
+                            examMarksList.IsSuccess = false;
+                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString();
                         }
                     }
                     
