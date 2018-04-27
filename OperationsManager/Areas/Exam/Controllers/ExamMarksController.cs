@@ -42,6 +42,7 @@ namespace OperationsManager.Areas.Exam.Controllers
             examMarksVM.LocationList = _uiddlRepo.getLocationDropDown();
             examMarksVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
             examMarksVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
+            examMarksVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
             //examMarksVM.FromDateString = examMarksVM.FromDate ? examMarksVM.DOB.Value.ToString("dd-MMM-yyyy") : string.Empty;
             SessionDTO sessionRet = _sessionSvc.GetUserSession();
             examMarksVM.IsRuleOk = true;
@@ -55,6 +56,10 @@ namespace OperationsManager.Areas.Exam.Controllers
         [AllowAnonymous]
         public ActionResult Register(Models.ExamMarksVM examMarksVM)
         {
+            examMarksVM.FromDateString = examMarksVM.SelectedAcademicSession.Split(';')[0];
+            examMarksVM.ToDateString = examMarksVM.SelectedAcademicSession.Split(';')[1];
+            examMarksVM.CourseFrom = DateTime.Parse(examMarksVM.FromDateString);
+            examMarksVM.CourseTo = DateTime.Parse(examMarksVM.ToDateString);
             if(string.Equals(examMarksVM.Mode,"SEARCH", StringComparison.OrdinalIgnoreCase))
             {
                 Models.ExamMarksVM examVM = null;
@@ -79,6 +84,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                             examVM.LocationList = _uiddlRepo.getLocationDropDown();
                             examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                             examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
+                            examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
 
                             examVM.Rule = null;
 
@@ -175,6 +181,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                         examVM.LocationList = _uiddlRepo.getLocationDropDown();
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                         examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
+                        examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
                     }
                 }
                 return View(examVM);

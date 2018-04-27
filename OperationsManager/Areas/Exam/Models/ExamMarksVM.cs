@@ -19,6 +19,8 @@ namespace OperationsManager.Areas.Exam.Models
 
         public SelectList LocationList { get; set; }
 
+        public SelectList AcademicSessions { get; set; }
+
         public string FromDateString { get; set; }
 
         public string ToDateString { get; set; }
@@ -48,5 +50,7 @@ namespace OperationsManager.Areas.Exam.Models
         public int CourseExamId { get; set; }
 
         public int RuleId { get; set; }
+
+        public string SelectedAcademicSession { get; set; }
     }
 }

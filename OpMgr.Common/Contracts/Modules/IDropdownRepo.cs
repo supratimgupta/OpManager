@@ -62,5 +62,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<ExamTypeDTO> getExamType();
 
         List<ExamSubTypeDTO> getExamSubType();
+
+        List<AcademicSessionDTO> GetAcademicSessions();
     }
 }

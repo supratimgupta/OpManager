@@ -59,6 +59,7 @@
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
     <Compile Include="Contracts\Modules\INotificationSvc.cs" />
     <Compile Include="Contracts\Modules\IPMSSvc.cs" />
+    <Compile Include="Contracts\Modules\IResultSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
     <Compile Include="Contracts\Modules\IStudentSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionBacklog.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Contracts\Modules\IUserSvc.cs" />
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
     <Compile Include="Contracts\IResetPasswordSvc.cs" />
+    <Compile Include="DTOs\AcademicSessionDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusLogDTO.cs" />
     <Compile Include="DTOs\ApprovalMappingDTO.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="DTOs\PasswordDTO.cs" />
     <Compile Include="DTOs\PMSMasterDTO.cs" />
     <Compile Include="DTOs\RatingDTO.cs" />
+    <Compile Include="DTOs\ResultCardDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />

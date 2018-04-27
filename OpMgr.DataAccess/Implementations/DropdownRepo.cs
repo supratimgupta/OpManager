@@ -938,5 +938,40 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+
+        public List<AcademicSessionDTO> GetAcademicSessions()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select distinct CourseFrom,CourseTo from coursemapping";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<AcademicSessionDTO> lstAcademicSessionDTO = new List<AcademicSessionDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        AcademicSessionDTO academicSessionDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            academicSessionDTO = new AcademicSessionDTO();
+                            academicSessionDTO.AcademicSessionFromTo = ((DateTime)dr["CourseFrom"]).ToString("dd-MMM-yyyy") + ";" + ((DateTime)dr["CourseTo"]).ToString("dd-MMM-yyyy");
+                            academicSessionDTO.AcademicSessionViewFromTo = ((DateTime)dr["CourseFrom"]).ToString("yyyy") + " - " + ((DateTime)dr["CourseTo"]).ToString("yyyy");
+                            lstAcademicSessionDTO.Add(academicSessionDTO);
+                        }
+                    }
+                    return lstAcademicSessionDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

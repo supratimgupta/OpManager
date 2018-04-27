@@ -423,5 +423,11 @@ namespace OperationsManager.Helpers
 
             return new SelectList(rDto, "ExamSubTypeId", "ExamSubTypeDescription");
         }
+
+        public SelectList getAcademicSessionDropDown()
+        {
+            List<AcademicSessionDTO> rDto = _ddlRepo.GetAcademicSessions();
+            return new SelectList(rDto, "AcademicSessionFromTo", "AcademicSessionViewFromTo");
+        }
     }
 }
