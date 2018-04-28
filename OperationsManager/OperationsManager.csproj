@@ -212,9 +212,11 @@
     <Compile Include="Areas\Employee\EmployeeAreaRegistration.cs" />
     <Compile Include="Areas\Exam\Controllers\ExamMarksController.cs" />
     <Compile Include="Areas\Exam\Controllers\ExamRulesController.cs" />
+    <Compile Include="Areas\Exam\Controllers\ResultController.cs" />
     <Compile Include="Areas\Exam\ExamAreaRegistration.cs" />
     <Compile Include="Areas\Exam\Models\ExamMarksVM.cs" />
     <Compile Include="Areas\Exam\Models\ExamRuleVM.cs" />
+    <Compile Include="Areas\Exam\Models\ResultVM.cs" />
     <Compile Include="Areas\Library\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Library\LibraryAreaRegistration.cs" />
     <Compile Include="Areas\Library\Models\LibraryViewModel.cs" />
@@ -967,6 +969,7 @@
     <Content Include="Content\jquery-validation-1.16.0\test\test.js" />
     <Content Include="Content\js\OpMgrStyleJs.js" />
     <Content Include="Content\OpMgrCommonStyles.css" />
+    <Content Include="Content\printStyles.css" />
     <Content Include="DependencyResolver.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -1132,6 +1135,7 @@
     <Content Include="Areas\Login\Views\Login\StudentLanding.cshtml" />
     <Content Include="Areas\PMS\Views\PMS\AppraisalDetails.cshtml" />
     <Content Include="Areas\PMS\Views\PMS\PMSMultipleGoalSheet.cshtml" />
+    <Content Include="Areas\Exam\Views\Result\Results.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

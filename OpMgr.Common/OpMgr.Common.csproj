@@ -103,6 +103,7 @@
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
     <Compile Include="DTOs\GoalAttributeDTO.cs" />
     <Compile Include="DTOs\GoalDTO.cs" />
+    <Compile Include="DTOs\GradeConfigDTO.cs" />
     <Compile Include="DTOs\HouseTypeDTO.cs" />
     <Compile Include="DTOs\KeyValueDTO.cs" />
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />

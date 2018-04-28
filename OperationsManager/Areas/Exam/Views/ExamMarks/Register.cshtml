@@ -125,7 +125,7 @@
             @if (Model.IsRuleNeededToBeAdded)
             {
                 <div class="panel panel-color panel-primary">
-                    <div class="panel-heading">You need to add rule first. Please <a onclick="openRuleWindow(@Model.CourseExam.CourseExamId, 'ADD');" style="cursor:pointer;"> + add</a> rules. </div>
+                    <div class="panel-heading">You need to add rule first. Please <a onclick="openRuleWindow(@Model.CourseExamId, 'ADD');" style="cursor:pointer;"> + add</a> rules. </div>
                 </div>
             }
             else if (Model.Rule != null)
@@ -220,12 +220,22 @@
                                             <th th data-field="StandardSectionId" data-sortable="true">
                                                 @ExamMarks.StandardSectionId
                                             </th>
-                                            <th th data-field="Obtainedmarks" data-sortable="true">
-                                                @ExamMarks.ObtainedMarks
-                                            </th>
-                                            <th th data-field="Calculatedmarks" data-sortable="true">
-                                                @ExamMarks.CalculatedMarks
-                                            </th>
+                                            @if (Model.ExamMarksList != null && Model.ExamMarksList.Count > 0 && Model.ExamMarksList[0].SubjectExamType == "G")
+                                            {
+                                                <th>
+                                                    Enter Grade
+                                                </th>
+                                            }
+                                            else
+                                            {
+                                                <th th data-field="Obtainedmarks" data-sortable="true">
+                                                    @ExamMarks.ObtainedMarks
+                                                </th>
+                                                <th th data-field="Calculatedmarks" data-sortable="true">
+                                                    @ExamMarks.CalculatedMarks
+                                                </th>
+                                            }
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -239,6 +249,7 @@
                                                         <td>
                                                             @Model.ExamMarksList[i].FullName
                                                             @Html.HiddenFor(m => m.ExamMarksList[i].ExamMarksId)
+                                                            @Html.HiddenFor(m=> m.ExamMarksList[i].SubjectExamType)
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
@@ -253,14 +264,19 @@
                                                         <td>
                                                             @Model.ExamMarksList[i].Class
                                                         </td>
-                                                        <td>
-                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');" })
-                                                            @*@Model.ExamMarksList[i].MarksObtained*@
-                                                        </td>
-                                                        <td>
-                                                            @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i })
-                                                            @*@Model.ExamMarksList[i].CalculatedMarks*@
-                                                        </td>
+                                                        @if(Model.ExamMarksList[i].SubjectExamType=="G")
+                                                        {
+                                                            <td>@Html.OpMgrDropDownListFor(m => m.ExamMarksList[i].DirectGrade, Model.Grades, "", new { @class = "form-control requiredField reqSearch" })</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');" })
+                                                            </td>
+                                                            <td>
+                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i })
+                                                            </td>
+                                                        }
                                                     </tr>
                                                 }
                                             }

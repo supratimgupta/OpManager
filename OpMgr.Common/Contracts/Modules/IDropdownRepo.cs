@@ -64,5 +64,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<ExamSubTypeDTO> getExamSubType();
 
         List<AcademicSessionDTO> GetAcademicSessions();
+
+        List<GradeConfigDTO> getGrades(int location);
     }
 }

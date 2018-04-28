@@ -61,7 +61,7 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
-        public List<ResultCardDTO> GetResult(int standardSectionId, List<int> examTypes, DateTime academicSessionStartDate, DateTime academicSessionEndDate)
+        public List<ResultCardDTO> GetResult(int locationId, int standardSectionId, List<int> examTypes, DateTime academicSessionStartDate, DateTime academicSessionEndDate)
         {
             //string currentStudentId = string.Empty;
             List<ResultCardDTO> lstResultCards = new List<ResultCardDTO>();
@@ -73,7 +73,7 @@ namespace OpMgr.DataAccess.Implementations
             //    dtFormat.TableName = "Format_"+examType;
             //    dsResultFormats.Tables.Add(dtFormat);
             //}
-            DataTable dtResults = this.GetStudentResults(standardSectionId, examTypes, academicSessionStartDate, academicSessionEndDate);
+            DataTable dtResults = this.GetStudentResults(locationId, standardSectionId, examTypes, academicSessionStartDate, academicSessionEndDate);
             List<string> doneWithStudents = new List<string>();
             for (int i = 0; i < dtResults.Rows.Count;i++)
             {
@@ -86,8 +86,8 @@ namespace OpMgr.DataAccess.Implementations
                         ResultCardDTO rc = new ResultCardDTO();
                         rc.ClassName = arrStudentMarks[0]["StandardName"].ToString();
                         rc.SectionName = arrStudentMarks[0]["SectionName"].ToString();
-                        rc.SessionEnd = academicSessionEndDate.ToString("dd-MMM-yyyy");
-                        rc.SessionStart = academicSessionStartDate.ToString("dd-MMM-yyyy");
+                        rc.SessionEnd = academicSessionEndDate.ToString("yyyy");
+                        rc.SessionStart = academicSessionStartDate.ToString("yyyy");
                         rc.StudentInfoId = arrStudentMarks[0]["StudentInfoId"].ToString();
                         rc.StudentName = arrStudentMarks[0]["FName"].ToString() + " " + arrStudentMarks[0]["LName"].ToString();
                         rc.StudentRegNo = arrStudentMarks[0]["RegistrationNumber"].ToString();
@@ -119,6 +119,7 @@ namespace OpMgr.DataAccess.Implementations
                                         rsltItem.ExamTypeId = arrResults[0]["ExamTypeId"].ToString();
                                         rsltItem.ExamTypeName = arrResults[0]["ExamTypeDescription"].ToString();
                                         rsltItem.ResultSubItems = new List<ResultSubItem>();
+                                        rsltItem.TotalMarksForSubItems = "0.0";
                                         foreach(DataRow drSubItems in arrResults)
                                         {
                                             ResultSubItem rsubItem = new ResultSubItem();
@@ -127,6 +128,11 @@ namespace OpMgr.DataAccess.Implementations
                                             rsubItem.FullMarks = drSubItems["ActualFullMarks"].ToString();
                                             rsubItem.ObtainedMarks = drSubItems["CalculatedMarks"].ToString();
                                             rsubItem.PassMarks = drSubItems["PassMarks"].ToString();
+                                            double dbl = 0.0;
+                                            if(double.TryParse(rsubItem.ObtainedMarks, out dbl))
+                                            {
+                                                rsltItem.TotalMarksForSubItems = (double.Parse(rsltItem.TotalMarksForSubItems) + dbl).ToString();
+                                            }
                                             rsltItem.ResultSubItems.Add(rsubItem);
                                         }
                                         rli.ResultItems.Add(rsltItem);
@@ -146,7 +152,7 @@ namespace OpMgr.DataAccess.Implementations
         }
 
 
-        public DataTable GetStudentResults(int standardSectionId, List<int> examTypes, DateTime academicStartDate, DateTime academicEndDate)
+        public DataTable GetStudentResults(int locationId, int standardSectionId, List<int> examTypes, DateTime academicStartDate, DateTime academicEndDate)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -176,9 +182,11 @@ namespace OpMgr.DataAccess.Implementations
                                       "FROM exammarks exm LEFT JOIN StudentInfo st ON exm.StudentInfoId=st.StudentInfoId LEFT JOIN usermaster u ON st.UserMasterId=u.UserMasterId "+
                                       "LEFT JOIN StandardSectionMap scm ON exm.StandardSectionId=scm.StandardSectionId LEFT JOIN standard std ON scm.StandardId=std.StandardId "+
                                       "LEFT JOIN Section sc ON scm.SectionId=sc.SectionId LEFT JOIN subject sub ON exm.SubjectId=sub.SubjectId "+
-                                      "LEFT JOIN examrule er ON exm.ExamRuleId=er.ExamRuleId LEFT JOIN courseexam cexm ON er.CourseExamId=cexm.CourseExamId " +
+                                      "LEFT JOIN ExamRule er ON exm.ExamRuleId=er.ExamRuleId "+
+                                      "LEFT JOIN courseexam cexm ON exm.CourseExamId=cexm.CourseExamId LEFT JOIN coursemapping cmpng ON cexm.CourseMappingId=cmpng.CourseMappingId " +
                                       "LEFT JOIN ExamTypes et ON cexm.ExamTypeId=et.ExamTypeId LEFT JOIN ExamSubTypes est ON cexm.ExamSubTypeId=est.ExamSubTypeId " +
-                                      "WHERE exm.StandardSectionId=@stdSecId" + examTypeWhereClause + " AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,sub.SubjectId";
+                                      "WHERE cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId" + examTypeWhereClause + " AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,sub.SubjectId";
+                command.Parameters.Add("@locId", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@courseFrom", MySqlDbType.DateTime).Value = academicStartDate;
                 command.Parameters.Add("@courseTo", MySqlDbType.DateTime).Value = academicEndDate;

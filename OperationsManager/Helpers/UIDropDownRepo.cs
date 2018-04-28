@@ -429,5 +429,11 @@ namespace OperationsManager.Helpers
             List<AcademicSessionDTO> rDto = _ddlRepo.GetAcademicSessions();
             return new SelectList(rDto, "AcademicSessionFromTo", "AcademicSessionViewFromTo");
         }
+
+        public SelectList getGradesDropDown(int location)
+        {
+            List<GradeConfigDTO> gradeDTO = _ddlRepo.getGrades(location);
+            return new SelectList(gradeDTO, "GreadeName", "GreadeName");
+        }
     }
 }

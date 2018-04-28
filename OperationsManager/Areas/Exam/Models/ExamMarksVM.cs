@@ -21,6 +21,8 @@ namespace OperationsManager.Areas.Exam.Models
 
         public SelectList AcademicSessions { get; set; }
 
+        public SelectList Grades { get; set; }
+
         public string FromDateString { get; set; }
 
         public string ToDateString { get; set; }

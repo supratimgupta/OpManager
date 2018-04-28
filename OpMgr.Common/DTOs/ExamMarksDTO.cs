@@ -49,5 +49,9 @@ namespace OpMgr.Common.DTOs
         public DateTime CourseTo { get; set; }
 
         public LocationDTO Location { get; set; }
+
+        public string SubjectExamType { get; set; }
+
+        public string DirectGrade { get; set; }
     }
 }

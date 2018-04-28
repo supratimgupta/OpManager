@@ -973,5 +973,41 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+
+        public List<GradeConfigDTO> getGrades(int location)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select  grade_config_id, grade_name from grade_config where location=@loc";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@loc", MySqlDbType.Int32).Value = location;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<GradeConfigDTO> lstGradeDTO = new List<GradeConfigDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        GradeConfigDTO gradeDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            gradeDTO = new GradeConfigDTO();
+                            gradeDTO.GradeConfigId = (int)dr["grade_config_id"];
+                            gradeDTO.GreadeName = dr["grade_name"].ToString();
+                            lstGradeDTO.Add(gradeDTO);
+                        }
+                    }
+                    return lstGradeDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

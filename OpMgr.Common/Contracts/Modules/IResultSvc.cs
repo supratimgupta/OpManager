@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpMgr.Common.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,12 +10,6 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface IResultSvc
     {
-        DataTable GetResultFormat(int standardSectionId, int examTypeId);
-
-        DataTable GetResultRule(int standardSectionId);
-
-        DataTable GetGradeConfig();
-
-        DataTable GetStudentResults(int standardSectionId, List<int> examTypes, DateTime academicStartDate, DateTime academicEndDate);
+        List<ResultCardDTO> GetResult(int locationId, int standardSectionId, List<int> examTypes, DateTime academicSessionStartDate, DateTime academicSessionEndDate);
     }
 }

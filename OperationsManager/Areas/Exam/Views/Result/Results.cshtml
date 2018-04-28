@@ -1,0 +1,150 @@
+﻿@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Exam.Models.ResultVM
+
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+@section StyleBlocks
+{
+    <link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />
+}
+@section PageScripts
+{
+    <script type="text/javascript">
+        function printResult() {
+
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + document.title + '</title>');
+            mywindow.document.write('</head><body >');
+            mywindow.document.write('<h1>' + document.title + '</h1>');
+            mywindow.document.write(document.getElementById("printSection").innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+            return true;
+        }
+    </script>
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <b>Result Cards</b>
+                </div>
+                <div class="panel-body">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedLocation, Model.LocationList, "Location", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedStandardSection, Model.StandardSectionList, "Standard & Section", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedExamType, Model.ExamTypeList, "Exam Type", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrSubmitButtonWithIcon("btnSearch", "Search", new { @class = "btn btn-primary btn-block" }, "fa fa-search")
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrButtonWithIcon("btnSearch", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();" }, "fa fa-print")
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <b>Student Results</b>
+                </div>
+                <div id="printSection">
+                    <div class="panel-body printPanel">
+                        @if (Model.ResultCards == null || Model.ResultCards.Count == 0)
+                        {
+                            <span class="danger" style="color:red">NO RESULTS IS FOUND FOR THIS SEARCH</span>
+                        }
+                        else
+                        {
+                            foreach (OpMgr.Common.DTOs.ResultCardDTO rcDTO in Model.ResultCards)
+                            {
+                                <table class="table table-bordered" style="width:100%">
+                                    <tr>
+                                        <td align="left" width="150px;">NAME &amp; REG. NO: </td>
+                                        <td align="left">@rcDTO.StudentName &nbsp;(@rcDTO.StudentRegNo)</td>
+                                        <td align="left" width="100px;">DATE: </td>
+                                        <td align="left" width="100px;">@DateTime.Today.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" width="100px;">CLASS &amp; SEC: </td>
+                                        <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) / @rcDTO.StudentRollNo</td>
+                                        <td align="left" width="100px;">SESSION: </td>
+                                        <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
+                                    </tr>
+                                    <tr>
+                                        @if (rcDTO.LineItems != null && rcDTO.LineItems.Count > 0)
+                                        {
+                                            <td colspan="4">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th rowspan="2">Subject</th>
+                                                            @for (int h = 0; h < rcDTO.LineItems[0].ResultItems.Count; h++)
+                                                            {
+                                                                <th colspan="@(rcDTO.LineItems[0].ResultItems[0].ResultSubItems.Count+1)">@rcDTO.LineItems[0].ResultItems[0].ExamTypeName</th>
+                                                            }
+                                                        </tr>
+                                                        <tr>
+                                                            @for (int j = 0; j < rcDTO.LineItems[0].ResultItems.Count; j++)
+                                                            {
+                                                                for (int k = 0; k < rcDTO.LineItems[0].ResultItems[j].ResultSubItems.Count; k++)
+                                                                {
+                                                                    <th>
+                                                                        @rcDTO.LineItems[0].ResultItems[j].ResultSubItems[k].ExamSubTypeName
+                                                                    </th>
+                                                                }
+                                                                <th>
+                                                                    Total
+                                                                </th>
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @for (int i = 0; i < rcDTO.LineItems.Count; i++)
+                                                        {
+                                                            <tr>
+                                                                <td>@rcDTO.LineItems[i].Subject</td>
+                                                                @for (int x = 0; x < rcDTO.LineItems[i].ResultItems.Count; x++)
+                                                                {
+                                                                    for (int y = 0; y < rcDTO.LineItems[i].ResultItems[x].ResultSubItems.Count; y++)
+                                                                    {
+                                                                        <td>@rcDTO.LineItems[i].ResultItems[x].ResultSubItems[y].ObtainedMarks</td>
+                                                                    }
+                                                                    <td>@rcDTO.LineItems[i].ResultItems[x].TotalMarksForSubItems</td>
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        }
+                                    </tr>
+                                </table>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

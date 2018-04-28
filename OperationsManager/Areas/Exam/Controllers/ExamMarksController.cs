@@ -85,7 +85,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                             examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                             examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
                             examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
-
+                            examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
                             examVM.Rule = null;
 
                             Models.ExamMarksVM exammarksvm = null;
@@ -106,37 +106,51 @@ namespace OperationsManager.Areas.Exam.Controllers
                                         exammarksvm.CalculatedMarks = exammarksdto.CalculatedMarks;
                                     }
 
-                                    if (examVM.Rule == null)
-                                    {
-                                        ExamRuleDTO rule = new ExamRuleDTO();
-                                        rule.CourseExam = new CourseExamDTO();
-                                        rule.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
-                                        List<ExamRuleDTO> rules = _examRuleSvc.Select(rule).ReturnObj;
+                                    exammarksvm.DirectGrade = exammarksdto.DirectGrade;
+                                    exammarksvm.SubjectExamType = exammarksdto.SubjectExamType;
 
-                                        if (rules == null || rules.Count == 0)
+                                    if(string.Equals(exammarksdto.SubjectExamType, "G", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        examVM.IsRuleNeededToBeAdded = false;
+                                        examVM.Rule = null;
+                                        examVM.IsRuleOk = true;
+                                        examVM.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+                                    }
+                                    else
+                                    {
+                                        if (examVM.Rule == null)
                                         {
-                                            examVM.IsRuleOk = false;
-                                            examVM.RuleAdditionMessage = "Please add marks rule for this exam first.";
-                                            examVM.IsRuleNeededToBeAdded = true;
-                                            break;
-                                        }
-                                        else if (rules.Count > 1)
-                                        {
-                                            examVM.IsRuleOk = false;
-                                            examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
-                                            examVM.IsRuleNeededToBeAdded = false;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            examVM.IsRuleOk = true;
-                                            examVM.Rule = rules[0];
-                                            examVM.RuleAdditionMessage = string.Empty;
-                                            examVM.IsRuleNeededToBeAdded = false;
-                                            examVM.RuleId = examVM.Rule.ExamRuleId;
-                                            examVM.CourseExamId = rule.CourseExam.CourseExamId;
+                                            ExamRuleDTO rule = new ExamRuleDTO();
+                                            rule.CourseExam = new CourseExamDTO();
+                                            rule.CourseExam.CourseExamId = exammarksdto.CourseExam.CourseExamId;
+                                            List<ExamRuleDTO> rules = _examRuleSvc.Select(rule).ReturnObj;
+
+                                            if (rules == null || rules.Count == 0)
+                                            {
+                                                examVM.IsRuleOk = false;
+                                                examVM.RuleAdditionMessage = "Please add marks rule for this exam first.";
+                                                examVM.IsRuleNeededToBeAdded = true;
+                                                break;
+                                            }
+                                            else if (rules.Count > 1)
+                                            {
+                                                examVM.IsRuleOk = false;
+                                                examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
+                                                examVM.IsRuleNeededToBeAdded = false;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                examVM.IsRuleOk = true;
+                                                examVM.Rule = rules[0];
+                                                examVM.RuleAdditionMessage = string.Empty;
+                                                examVM.IsRuleNeededToBeAdded = false;
+                                                examVM.RuleId = examVM.Rule.ExamRuleId;
+                                                examVM.CourseExamId = rule.CourseExam.CourseExamId;
+                                            }
                                         }
                                     }
+                                    
                                     exammarksvm.StandardSection = new StandardSectionMapDTO();
                                     exammarksvm.StandardSection.StandardSectionId = exammarksdto.StandardSection.StandardSectionId;
 
@@ -176,12 +190,14 @@ namespace OperationsManager.Areas.Exam.Controllers
                         {
                             examVM.IsRuleNeededToBeAdded = true;
                         }
+                        examVM.CourseExamId = int.Parse(status.FailureReason.Split('^')[1]);
                         examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
                         examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
                         examVM.LocationList = _uiddlRepo.getLocationDropDown();
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                         examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
                         examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
+                        examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
                     }
                 }
                 return View(examVM);
@@ -202,7 +218,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                         }
                         else
                         {
-                            _examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString));
+                            _examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
                         }
                     }
                 }

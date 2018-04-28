@@ -152,7 +152,7 @@ namespace OpMgr.DataAccess.Implementations
                     
                     if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0]!=null && _dsData.Tables[0].Rows.Count>0)
                     {
-                        if(_dsData.Tables[0].Columns.Count>2)
+                        if(_dsData.Tables[0].Columns.Count>3)
                         {
                             examMarksList.ReturnObj = new List<ExamMarksDTO>();
                             for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
@@ -179,6 +179,9 @@ namespace OpMgr.DataAccess.Implementations
                                 exammarks.CourseExam = new CourseExam();
                                 exammarks.CourseExam.CourseExamId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["CourseExamId"]);
 
+                                exammarks.DirectGrade = _dsData.Tables[0].Rows[i]["DirectGrade"].ToString();
+                                exammarks.SubjectExamType = _dsData.Tables[0].Rows[i]["SubjectExamType"].ToString();
+
                                 if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["ExamMarksId"].ToString()))
                                 {
                                     if (Convert.ToInt32(_dsData.Tables[0].Rows[i]["ExamMarksId"]) > 0)
@@ -202,7 +205,7 @@ namespace OpMgr.DataAccess.Implementations
                         else
                         {
                             examMarksList.IsSuccess = false;
-                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString();
+                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString()+"^"+_dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
                         }
                     }
                     
@@ -216,7 +219,7 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
-        public StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data,int CourseExamId,int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate)
+        public StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data,int CourseExamId,int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate, string directGrade)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -239,7 +242,8 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
                     command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = FromDate;
                     command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = ToDate;
-                    
+                    command.Parameters.Add("@DirectGrade1", MySqlDbType.String).Value = directGrade;
+
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
@@ -291,19 +295,27 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@UpdatedBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;                    
                     command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
                     command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
-
-                    StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
-
-                    if (command.ExecuteNonQuery() > 0)
+                    if(!string.IsNullOrEmpty(data.DirectGrade))
                     {
-                        status.IsSuccess = true;
-                        status.ReturnObj = data;
+                        command.Parameters.Add("@DirectGrade1", MySqlDbType.VarChar).Value = data.DirectGrade;
                     }
                     else
                     {
-                        status.IsSuccess = false;
-                        status.FailureReason = "User Insertion Failed";
+                        command.Parameters.Add("@DirectGrade1", MySqlDbType.VarChar).Value = DBNull.Value;
                     }
+                    
+                    StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
+
+                    //if (command.ExecuteNonQuery() > 0)
+                    //{
+                    status.IsSuccess = true;
+                    status.ReturnObj = data;
+                    //}
+                    //else
+                    //{
+                    //   status.IsSuccess = false;
+                    //    status.FailureReason = "User Insertion Failed";
+                    //}
                     return status;
                 }
                 catch (Exception exp)
