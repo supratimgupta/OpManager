@@ -33,7 +33,8 @@ namespace OperationsManager.Areas.Exam.Controllers
             Models.ResultVM resultVM = new Models.ResultVM();
             resultVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             resultVM.LocationList = _uiddlRepo.getLocationDropDown();
-            resultVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
+            //resultVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
+            resultVM.ResultTypes = _uiddlRepo.getResultTypeDropDown();
             resultVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
             return View(resultVM);
         }
@@ -41,11 +42,12 @@ namespace OperationsManager.Areas.Exam.Controllers
         [HttpPost]
         public ActionResult Results(Models.ResultVM result)
         {
-            List<ResultCardDTO> resultCards = _resultSvc.GetResult(result.SelectedLocation, result.SelectedStandardSection, new List<int> { 2 }, DateTime.Parse(result.SelectedAcademicSession.Split(';')[0]), DateTime.Parse(result.SelectedAcademicSession.Split(';')[1]));
+            List<ResultCardDTO> resultCards = _resultSvc.GetResult(result.SelectedLocation, result.SelectedStandardSection, result.SelectedResultType, DateTime.Parse(result.SelectedAcademicSession.Split(';')[0]), DateTime.Parse(result.SelectedAcademicSession.Split(';')[1]));
             result.ResultCards = resultCards;
             result.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             result.LocationList = _uiddlRepo.getLocationDropDown();
-            result.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
+            //result.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
+            result.ResultTypes = _uiddlRepo.getResultTypeDropDown();
             result.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
             return View(result);
         }

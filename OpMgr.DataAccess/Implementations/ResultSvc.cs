@@ -31,17 +31,17 @@ namespace OpMgr.DataAccess.Implementations
             //_examMarksSvc = examMarksSvc;
         }
 
-        public System.Data.DataTable GetResultFormat(int standardSectionId, int examTypeId)
+        public System.Data.DataTable GetResultFormat(int standardSectionId, string resultType, int locationId)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 dbSvc.OpenConnection();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                command.CommandText = "SELECT et.ExamTypeDescription, rf.exam_type_id, rf.exam_sub_type_id, est.ExamSubTypeDescription"+
-                                      " FROM result_format rf LEFT JOIN ExamTypes et on rf.exam_type_id=et.ExamTypeId LEFT JOIN ExamSubTypes est ON rf.exam_sub_type_id=est.ExamSubTypeId WHERE rf.active=1 AND rf.standard_section_id=@stdSecId AND rf.exam_type_id=@exmTypeId";
-                command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = standardSectionId;
-                command.Parameters.Add("@exmTypeId", MySqlDbType.Int32).Value = examTypeId;
+                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
+                command.Parameters.Add("@stdSec", MySqlDbType.Int32).Value = standardSectionId;
+                command.Parameters.Add("@loc", MySqlDbType.Int32).Value = locationId;
+                command.Parameters.Add("@resType", MySqlDbType.String).Value = resultType;
                 using(MySqlDataAdapter mDA = new MySqlDataAdapter(command))
                 {
                     _dtData = new DataTable("FORMAT");
@@ -56,103 +56,244 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
-        public System.Data.DataTable GetGradeConfig()
+        public System.Data.DataTable GetGradeConfig(int location)
         {
-            throw new NotImplementedException();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                dbSvc.OpenConnection();
+                MySqlCommand command = new MySqlCommand();
+                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                command.CommandText = "SELECT full_marks, from_marks, to_marks, grade_name FROM grade_config WHERE active=1 AND location=@loc";
+                command.Parameters.Add("@loc", MySqlDbType.Int32).Value = location;
+                using (MySqlDataAdapter mDA = new MySqlDataAdapter(command))
+                {
+                    _dtData = new DataTable("GRADE");
+                    mDA.Fill(_dtData);
+                    return _dtData;
+                }
+            }
         }
 
-        public List<ResultCardDTO> GetResult(int locationId, int standardSectionId, List<int> examTypes, DateTime academicSessionStartDate, DateTime academicSessionEndDate)
+        public List<ResultCardDTO> GetResult(int locationId, int standardSectionId, string resultType, DateTime academicSessionStartDate, DateTime academicSessionEndDate)
         {
-            //string currentStudentId = string.Empty;
             List<ResultCardDTO> lstResultCards = new List<ResultCardDTO>();
-            //Shouldn't use format as this is a extra setup step (Unnecessary)
-            //DataSet dsResultFormats = new DataSet();
-            //foreach(int examType in examTypes)
-            //{
-            //    DataTable dtFormat = this.GetResultFormat(standardSectionId, examType);
-            //    dtFormat.TableName = "Format_"+examType;
-            //    dsResultFormats.Tables.Add(dtFormat);
-            //}
-            DataTable dtResults = this.GetStudentResults(locationId, standardSectionId, examTypes, academicSessionStartDate, academicSessionEndDate);
-            List<string> doneWithStudents = new List<string>();
-            for (int i = 0; i < dtResults.Rows.Count;i++)
+            DataTable dtResults = this.GetStudentResults(locationId, standardSectionId, academicSessionStartDate, academicSessionEndDate);
+            DataTable dtResultFormat = this.GetResultFormat(standardSectionId, resultType, locationId);
+            DataTable dtGrades = this.GetGradeConfig(locationId);
+            ResultCardDTO rsCard = null;
+            List<string> lstDoneWithStudents = new List<string>();
+            if(dtResults!=null && dtResults.Rows.Count>0 && dtResultFormat!=null && dtResultFormat.Rows.Count>0)
             {
-                string studentId = dtResults.Rows[i]["StudentInfoId"].ToString();
-                if (!doneWithStudents.Contains(studentId))
+                for (int st = 0; st < dtResults.Rows.Count; st++)
                 {
-                    DataRow[] arrStudentMarks = dtResults.Select("StudentInfoId='" + studentId + "'");
-                    if(arrStudentMarks!=null && arrStudentMarks.Length>0)
+                    rsCard = new ResultCardDTO();
+                    rsCard.StudentInfoId = dtResults.Rows[st]["StudentInfoId"].ToString();
+                    if(lstDoneWithStudents.Contains(rsCard.StudentInfoId))
                     {
-                        ResultCardDTO rc = new ResultCardDTO();
-                        rc.ClassName = arrStudentMarks[0]["StandardName"].ToString();
-                        rc.SectionName = arrStudentMarks[0]["SectionName"].ToString();
-                        rc.SessionEnd = academicSessionEndDate.ToString("yyyy");
-                        rc.SessionStart = academicSessionStartDate.ToString("yyyy");
-                        rc.StudentInfoId = arrStudentMarks[0]["StudentInfoId"].ToString();
-                        rc.StudentName = arrStudentMarks[0]["FName"].ToString() + " " + arrStudentMarks[0]["LName"].ToString();
-                        rc.StudentRegNo = arrStudentMarks[0]["RegistrationNumber"].ToString();
-                        rc.StudentRollNo = arrStudentMarks[0]["RollNumber"].ToString();
-
-                        List<string> lstCompletedLineItems = new List<string>();
-                        rc.LineItems = new List<ResultLineItemDTO>();
-                        for(int li=0;li<arrStudentMarks.Length;li++)
+                        continue;
+                    }
+                    rsCard.ClassName = dtResults.Rows[st]["StandardName"].ToString();
+                    rsCard.SectionName = dtResults.Rows[st]["SectionName"].ToString();
+                    rsCard.SessionEnd = academicSessionEndDate.ToString("yyyy");
+                    rsCard.SessionStart = academicSessionStartDate.ToString("yyyy");                    
+                    rsCard.StudentName = dtResults.Rows[st]["FName"].ToString() + " " + dtResults.Rows[st]["LName"].ToString();
+                    rsCard.StudentRegNo = dtResults.Rows[st]["RegistrationNumber"].ToString();
+                    rsCard.StudentRollNo = dtResults.Rows[st]["RollNumber"].ToString();
+                    List<string> lstDoneWithSubjects = new List<string>();
+                    DataRow[] arrStudentResults = dtResults.Select("StudentInfoId=" + rsCard.StudentInfoId);
+                    if(arrStudentResults!=null && arrStudentResults.Length>0)
+                    {
+                        rsCard.ResultRows = new List<ResultCardRows>();
+                        ResultCardRows rsRows = null;
+                        foreach(DataRow drSub in arrStudentResults)
                         {
-                            ResultLineItemDTO rli = new ResultLineItemDTO();
-                            rli.Subject = arrStudentMarks[li]["SubjectName"].ToString();
-                            rli.SubjectId = arrStudentMarks[li]["SubjectId"].ToString();
-
-                            if(lstCompletedLineItems.Contains(rli.SubjectId))
+                            string subjectId = drSub["SubjectId"].ToString();
+                            if(lstDoneWithSubjects.Contains(subjectId))
                             {
                                 continue;
                             }
-
-                            DataRow[] arrLineItems = arrStudentMarks.Where(dr => dr["SubjectId"].ToString() == rli.SubjectId).ToArray();
-                            if(arrLineItems!=null && arrLineItems.Length>0)
+                            rsRows = new ResultCardRows();                            
+                            DataRow[] drSubjects = arrStudentResults.Where(dr=>string.Equals(dr["SubjectId"].ToString(), subjectId)).ToArray();
+                            rsRows.SubjectName = drSub["SubjectName"].ToString();
+                            //----Need to modify this part for now skipping all G subjects ---
+                            //if(string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                            //{
+                            //    lstDoneWithSubjects.Add(subjectId);
+                            //    continue;
+                            //}
+                            //----Need to modify this part for now skipping all G subjects ---
+                            rsRows.ResultColumns = new List<ResultCardColumns>();
+                            ResultCardColumns resultCol = null;
+                            for(int rf=0; rf<dtResultFormat.Rows.Count;rf++)
                             {
-                                rli.ResultItems = new List<ResultItem>();
-                                for(int et=0;et<examTypes.Count;et++)
+                                resultCol = new ResultCardColumns();
+                                resultCol.ColumnName = dtResultFormat.Rows[rf]["column_header"].ToString();
+                                resultCol.ColumnSequence = Convert.ToInt32(dtResultFormat.Rows[rf]["column_sequence"]);
+                                string expression = dtResultFormat.Rows[rf]["value_expression"].ToString();
+                                string gradeExpression = dtResultFormat.Rows[rf]["grade_expression"].ToString();
+                                if(string.IsNullOrEmpty(gradeExpression) && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    DataRow[] arrResults = arrLineItems.Where(dr => dr["ExamTypeId"].ToString() == examTypes[et].ToString()).ToArray();
-                                    if(arrResults!=null && arrResults.Length>0)
+                                    resultCol.ColumnValue = string.Empty;
+                                    rsRows.ResultColumns.Add(resultCol);
+                                    continue;
+                                }
+                                if (string.IsNullOrEmpty(expression) && !string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    resultCol.ColumnValue = string.Empty;
+                                    rsRows.ResultColumns.Add(resultCol);
+                                    continue;
+                                }
+                                string valueType = dtResultFormat.Rows[rf]["value_type"].ToString();
+                                string fixedColName = dtResultFormat.Rows[rf]["fixed_column_name"].ToString();
+                                string hasGrade = dtResultFormat.Rows[rf]["has_grade"].ToString();
+                                string marks = string.Empty;
+                                if(string.Equals(valueType, "FIXED", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    marks = this.CreateValueWithExpression(expression, drSubjects, fixedColName, dtGrades, hasGrade);
+                                }
+                                else
+                                {
+                                    if (string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        ResultItem rsltItem = new ResultItem();
-                                        rsltItem.ExamTypeId = arrResults[0]["ExamTypeId"].ToString();
-                                        rsltItem.ExamTypeName = arrResults[0]["ExamTypeDescription"].ToString();
-                                        rsltItem.ResultSubItems = new List<ResultSubItem>();
-                                        rsltItem.TotalMarksForSubItems = "0.0";
-                                        foreach(DataRow drSubItems in arrResults)
-                                        {
-                                            ResultSubItem rsubItem = new ResultSubItem();
-                                            rsubItem.ExamSubTypeId = drSubItems["ExamSubTypeId"].ToString();
-                                            rsubItem.ExamSubTypeName = drSubItems["ExamSubTypeDescription"].ToString();
-                                            rsubItem.FullMarks = drSubItems["ActualFullMarks"].ToString();
-                                            rsubItem.ObtainedMarks = drSubItems["CalculatedMarks"].ToString();
-                                            rsubItem.PassMarks = drSubItems["PassMarks"].ToString();
-                                            double dbl = 0.0;
-                                            if(double.TryParse(rsubItem.ObtainedMarks, out dbl))
-                                            {
-                                                rsltItem.TotalMarksForSubItems = (double.Parse(rsltItem.TotalMarksForSubItems) + dbl).ToString();
-                                            }
-                                            rsltItem.ResultSubItems.Add(rsubItem);
-                                        }
-                                        rli.ResultItems.Add(rsltItem);
+                                        marks = this.CreateGradeWithExpression(gradeExpression, drSubjects, dtGrades);
+                                    }
+                                    else
+                                    {
+                                        marks = this.CreateValueWithExpression(expression, drSubjects, "CalculatedMarks", dtGrades, hasGrade);
                                     }
                                 }
-                                rc.LineItems.Add(rli);
+                                resultCol.ColumnValue = marks;
+                                rsRows.ResultColumns.Add(resultCol);
                             }
-                            lstCompletedLineItems.Add(rli.SubjectId);
+                            rsCard.ResultRows.Add(rsRows);
+                            lstDoneWithSubjects.Add(subjectId);
                         }
-                        lstResultCards.Add(rc);
                     }
-                    doneWithStudents.Add(studentId);
+                    lstResultCards.Add(rsCard);
+                    lstDoneWithStudents.Add(rsCard.StudentInfoId);
                 }
             }
-
             return lstResultCards;
         }
 
 
-        public DataTable GetStudentResults(int locationId, int standardSectionId, List<int> examTypes, DateTime academicStartDate, DateTime academicEndDate)
+        private string CreateGradeWithExpression(string expression, DataRow[] arrValues, DataTable dtGrade)
+        {
+            string tentativeFullMarks = dtGrade.Rows[0]["full_marks"].ToString();
+            while(expression.Contains("{{") && expression.Contains("}}"))
+            {
+                int indexOfOpenBrace = expression.IndexOf("{{");
+                int indexOfCloseBrace = expression.IndexOf("}}");
+                string expr = expression.Substring(indexOfOpenBrace + 2, indexOfCloseBrace - indexOfOpenBrace - 2);
+                string[] arrExpr = expr.Split(',');
+                string etId = string.Empty;
+                string estId = string.Empty;
+                if (arrExpr[0].Contains("ET-"))
+                {
+                    etId = arrExpr[0].Split('-')[1];
+                }
+                else if (arrExpr[0].Contains("EST-"))
+                {
+                    estId = arrExpr[0].Split('-')[1];
+                }
+                if (arrExpr[1].Contains("ET-"))
+                {
+                    etId = arrExpr[1].Split('-')[1];
+                }
+                else if (arrExpr[1].Contains("EST-"))
+                {
+                    estId = arrExpr[1].Split('-')[1];
+                }
+
+                DataRow drValue = arrValues.FirstOrDefault(dr => string.Equals(dr["ExamTypeId"].ToString(), etId) && string.Equals(dr["ExamSubTypeId"].ToString(), estId));
+                string gradeMarks = "0";
+
+                if (drValue != null && !string.IsNullOrEmpty(drValue["DirectGrade"].ToString()))
+                {
+                    string grade = drValue["DirectGrade"].ToString();
+                    DataRow[] grades = dtGrade.Select("grade_name='" + grade+"' AND full_marks="+tentativeFullMarks);
+                    if(grades!=null && grades.Length>0)
+                    {
+                        gradeMarks = grades[0]["to_marks"].ToString();
+                    }
+                }
+                expression = expression.Replace("{{" + expr + "}}", gradeMarks);
+            }
+
+            DataTable dtEvaluator = new DataTable();
+            var computedMarks = dtEvaluator.Compute(expression, "");
+
+            string retGrade = string.Empty;
+
+            DataRow[] arrGrade = dtGrade.Select("full_marks=" + tentativeFullMarks + " AND from_marks<=" + computedMarks + " AND to_marks>=" + computedMarks);
+            if (arrGrade != null && arrGrade.Length > 0)
+            {
+                retGrade = arrGrade[0]["grade_name"].ToString();
+            }
+
+            return retGrade;
+        }
+
+        private string CreateValueWithExpression(string expression, DataRow[] arrValues, string columnName, DataTable dtGrade, string hasGrade)
+        {
+            string totMarksExpr = expression;
+            while(expression.Contains("{{") && expression.Contains("}}") && totMarksExpr.Contains("{{") && totMarksExpr.Contains("}}"))
+            {
+                int indexOfOpenBrace = expression.IndexOf("{{");
+                int indexOfCloseBrace = expression.IndexOf("}}");
+                string expr = expression.Substring(indexOfOpenBrace + 2, indexOfCloseBrace - indexOfOpenBrace - 2);
+                string[] arrExpr = expr.Split(',');
+                string etId = string.Empty;
+                string estId = string.Empty;
+                if(arrExpr[0].Contains("ET-"))
+                {
+                    etId = arrExpr[0].Split('-')[1];
+                }
+                else if(arrExpr[0].Contains("EST-"))
+                {
+                    estId = arrExpr[0].Split('-')[1];
+                }
+                if (arrExpr[1].Contains("ET-"))
+                {
+                    etId = arrExpr[1].Split('-')[1];
+                }
+                else if (arrExpr[1].Contains("EST-"))
+                {
+                    estId = arrExpr[1].Split('-')[1];
+                }
+
+                DataRow drValue = arrValues.FirstOrDefault(dr => string.Equals(dr["ExamTypeId"].ToString(), etId) && string.Equals(dr["ExamSubTypeId"].ToString(), estId));
+                string marks = "0";
+                string fullMarks = "0";
+                if (drValue != null && !string.IsNullOrEmpty(drValue[columnName].ToString()) && !string.IsNullOrEmpty(drValue["ActualFullMarks"].ToString()))
+                {
+                    marks = drValue[columnName].ToString();
+                    fullMarks = drValue["ActualFullMarks"].ToString();
+                }
+                expression = expression.Replace("{{" + expr + "}}", marks);
+                totMarksExpr = expression.Replace("{{" + totMarksExpr + "}}", fullMarks);
+            }
+            DataTable dtEvaluator = new DataTable();
+            var computedMarks = dtEvaluator.Compute(expression, "");
+            var totalMarks = dtEvaluator.Compute(totMarksExpr,"").ToString();
+            totalMarks = totMarksExpr.Split('.')[0];
+            string grade = string.Empty;
+            if(string.Equals(hasGrade,"Y", StringComparison.OrdinalIgnoreCase))
+            {
+                DataRow[] arrGrade = dtGrade.Select("full_marks=" + totalMarks + " AND from_marks<=" + computedMarks + " AND to_marks>=" + computedMarks);
+                if(arrGrade!=null && arrGrade.Length>0)
+                {
+                    grade = arrGrade[0]["grade_name"].ToString();
+                }
+            }
+            if(!string.IsNullOrEmpty(grade))
+            {
+                computedMarks = computedMarks + " (" + grade + ")";
+            }
+            return computedMarks.ToString();
+        }
+
+        public DataTable GetStudentResults(int locationId, int standardSectionId, DateTime academicStartDate, DateTime academicEndDate)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -160,32 +301,16 @@ namespace OpMgr.DataAccess.Implementations
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
                 string examTypeWhereClause = string.Empty;
-                if(examTypes.Count>0)
-                {
-                    examTypeWhereClause = " AND cexm.ExamTypeId IN (";
-
-                    for (int i = 0; i < examTypes.Count;i++)
-                    {
-                        if(i==0)
-                        {
-                            examTypeWhereClause = examTypeWhereClause + "'" + examTypes[i] + "'";
-                        }
-                        else
-                        {
-                            examTypeWhereClause = examTypeWhereClause + ",'" + examTypes[i] + "'";
-                        }
-                    }
-                    examTypeWhereClause = examTypeWhereClause + ")";
-                }
-                command.CommandText = "SELECT u.FName, u.MName, u.LName, st.RegistrationNumber, st.StudentInfoId, st.RollNumber, std.StandardName, sc.SectionName, sub.SubjectName, sub.SubjectId, "+
-                                      "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, er.PassMarks, er.ActualFullMarks " +
+                
+                command.CommandText = "SELECT u.FName, u.MName, u.LName, st.RegistrationNumber, st.StudentInfoId, st.RollNumber, std.StandardName, sc.SectionName, sub.SubjectName, sub.SubjectId, sub.SubjectExamType, "+
+                                      "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, exm.DirectGrade, er.PassMarks, er.ActualFullMarks " +
                                       "FROM exammarks exm LEFT JOIN StudentInfo st ON exm.StudentInfoId=st.StudentInfoId LEFT JOIN usermaster u ON st.UserMasterId=u.UserMasterId "+
                                       "LEFT JOIN StandardSectionMap scm ON exm.StandardSectionId=scm.StandardSectionId LEFT JOIN standard std ON scm.StandardId=std.StandardId "+
                                       "LEFT JOIN Section sc ON scm.SectionId=sc.SectionId LEFT JOIN subject sub ON exm.SubjectId=sub.SubjectId "+
                                       "LEFT JOIN ExamRule er ON exm.ExamRuleId=er.ExamRuleId "+
                                       "LEFT JOIN courseexam cexm ON exm.CourseExamId=cexm.CourseExamId LEFT JOIN coursemapping cmpng ON cexm.CourseMappingId=cmpng.CourseMappingId " +
                                       "LEFT JOIN ExamTypes et ON cexm.ExamTypeId=et.ExamTypeId LEFT JOIN ExamSubTypes est ON cexm.ExamSubTypeId=est.ExamSubTypeId " +
-                                      "WHERE cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId" + examTypeWhereClause + " AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,sub.SubjectId";
+                                      "WHERE cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,sub.SubjectId";
                 command.Parameters.Add("@locId", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@courseFrom", MySqlDbType.DateTime).Value = academicStartDate;

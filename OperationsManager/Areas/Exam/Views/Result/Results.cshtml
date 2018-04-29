@@ -49,7 +49,7 @@
                             @Html.OpMgrDropDownListFor(m => m.SelectedStandardSection, Model.StandardSectionList, "Standard & Section", new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-3">
-                            @Html.OpMgrDropDownListFor(m => m.SelectedExamType, Model.ExamTypeList, "Exam Type", new { @class = "form-control requiredField reqSearch" })
+                            @Html.OpMgrDropDownListFor(m => m.SelectedResultType, Model.ResultTypes, "Exam Type", new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-3">
                             @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
@@ -91,45 +91,27 @@
                                         <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
                                     </tr>
                                     <tr>
-                                        @if (rcDTO.LineItems != null && rcDTO.LineItems.Count > 0)
+                                        @if (rcDTO.ResultRows != null && rcDTO.ResultRows.Count > 0)
                                         {
                                             <td colspan="4">
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th rowspan="2">Subject</th>
-                                                            @for (int h = 0; h < rcDTO.LineItems[0].ResultItems.Count; h++)
+                                                            @for (int h = 0; h < rcDTO.ResultRows[0].ResultColumns.Count; h++)
                                                             {
-                                                                <th colspan="@(rcDTO.LineItems[0].ResultItems[0].ResultSubItems.Count+1)">@rcDTO.LineItems[0].ResultItems[0].ExamTypeName</th>
-                                                            }
-                                                        </tr>
-                                                        <tr>
-                                                            @for (int j = 0; j < rcDTO.LineItems[0].ResultItems.Count; j++)
-                                                            {
-                                                                for (int k = 0; k < rcDTO.LineItems[0].ResultItems[j].ResultSubItems.Count; k++)
-                                                                {
-                                                                    <th>
-                                                                        @rcDTO.LineItems[0].ResultItems[j].ResultSubItems[k].ExamSubTypeName
-                                                                    </th>
-                                                                }
-                                                                <th>
-                                                                    Total
-                                                                </th>
+                                                                <th>@rcDTO.ResultRows[0].ResultColumns[h].ColumnName</th>
                                                             }
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @for (int i = 0; i < rcDTO.LineItems.Count; i++)
+                                                        @for (int i = 0; i < rcDTO.ResultRows.Count; i++)
                                                         {
                                                             <tr>
-                                                                <td>@rcDTO.LineItems[i].Subject</td>
-                                                                @for (int x = 0; x < rcDTO.LineItems[i].ResultItems.Count; x++)
+                                                                <td>@rcDTO.ResultRows[i].SubjectName</td>
+                                                                @for (int x = 0; x < rcDTO.ResultRows[i].ResultColumns.Count; x++)
                                                                 {
-                                                                    for (int y = 0; y < rcDTO.LineItems[i].ResultItems[x].ResultSubItems.Count; y++)
-                                                                    {
-                                                                        <td>@rcDTO.LineItems[i].ResultItems[x].ResultSubItems[y].ObtainedMarks</td>
-                                                                    }
-                                                                    <td>@rcDTO.LineItems[i].ResultItems[x].TotalMarksForSubItems</td>
+                                                                    <td>@rcDTO.ResultRows[i].ResultColumns[x].ColumnValue</td>
                                                                 }
                                                             </tr>
                                                         }

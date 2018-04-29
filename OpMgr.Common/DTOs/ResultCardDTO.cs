@@ -24,39 +24,22 @@ namespace OpMgr.Common.DTOs
 
         public string SessionEnd { get; set; }
 
-        public List<ResultLineItemDTO> LineItems { get; set; }
+        public List<ResultCardRows> ResultRows { get; set; }
     }
 
-    public class ResultLineItemDTO
+    public class ResultCardRows
     {
-        public string Subject { get; set; }
+        public string SubjectName { get; set; }
 
-        public string SubjectId { get; set; }
-
-        public List<ResultItem> ResultItems { get; set; }
+        public List<ResultCardColumns> ResultColumns { get; set; }
     }
 
-    public class ResultItem
+    public class ResultCardColumns
     {
-        public string ExamTypeName {get;set;}
+        public string ColumnName { get; set; }
 
-        public string ExamTypeId { get; set; }
+        public string ColumnValue { get; set; }
 
-        public List<ResultSubItem> ResultSubItems {get;set;}
-
-        public string TotalMarksForSubItems { get; set; }
-    }
-
-    public class ResultSubItem
-    {
-        public string ExamSubTypeName {get;set;}
-
-        public string ExamSubTypeId { get; set; }
-
-        public string ObtainedMarks {get;set;}
-
-        public string PassMarks { get; set; }
-
-        public string FullMarks { get; set; }
+        public int ColumnSequence { get; set; }
     }
 }

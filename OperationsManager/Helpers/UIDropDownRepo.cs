@@ -435,5 +435,15 @@ namespace OperationsManager.Helpers
             List<GradeConfigDTO> gradeDTO = _ddlRepo.getGrades(location);
             return new SelectList(gradeDTO, "GreadeName", "GreadeName");
         }
+
+        public SelectList getResultTypeDropDown()
+        {
+            Dictionary<string, string> dicResultType = new Dictionary<string, string>();
+            dicResultType.Add("-1", "");
+            dicResultType.Add("HALF", "HALF YEARLY");
+            dicResultType.Add("FINAL", "FINAL");
+            //dicGender.Add("3", "Other");
+            return new SelectList(dicResultType, "key", "value");
+        }
     }
 }

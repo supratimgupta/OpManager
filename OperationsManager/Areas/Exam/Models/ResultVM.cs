@@ -17,6 +17,8 @@ namespace OperationsManager.Areas.Exam.Models
 
         public SelectList AcademicSessions { get; set; }
 
+        public SelectList ResultTypes { get; set; }
+
         public int SelectedLocation { get; set; }
 
         public int SelectedExamType { get; set; }
@@ -24,6 +26,8 @@ namespace OperationsManager.Areas.Exam.Models
         public int SelectedStandardSection { get; set; }
 
         public string SelectedAcademicSession { get; set; }
+
+        public string SelectedResultType { get; set; }
 
         public List<ResultCardDTO> ResultCards { get; set; }
     }

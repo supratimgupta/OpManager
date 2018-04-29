@@ -10,6 +10,6 @@ namespace OpMgr.Common.Contracts.Modules
 {
     public interface IResultSvc
     {
-        List<ResultCardDTO> GetResult(int locationId, int standardSectionId, List<int> examTypes, DateTime academicSessionStartDate, DateTime academicSessionEndDate);
+        List<ResultCardDTO> GetResult(int locationId, int standardSectionId, string resultType, DateTime academicSessionStartDate, DateTime academicSessionEndDate);
     }
 }
