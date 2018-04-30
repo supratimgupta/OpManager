@@ -61,6 +61,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ACADEMICS.
+        /// </summary>
+        public static string Academics {
+            get {
+                return ResourceManager.GetString("Academics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MAP ROLE AND ACTION.
         /// </summary>
         public static string ActionRoleMap {
@@ -169,6 +178,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MARKS ENTRY.
+        /// </summary>
+        public static string MarksEntry {
+            get {
+                return ResourceManager.GetString("MarksEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MASTER INFORMATION.
         /// </summary>
         public static string MasterInformation {
@@ -219,6 +237,15 @@ namespace OpMgr.Resources.Common {
         public static string PromotionBatch {
             get {
                 return ResourceManager.GetString("PromotionBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RESULTS.
+        /// </summary>
+        public static string Results {
+            get {
+                return ResourceManager.GetString("Results", resourceCulture);
             }
         }
         

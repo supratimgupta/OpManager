@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Academics" xml:space="preserve">
+    <value>ACADEMICS</value>
+  </data>
   <data name="ActionRoleMap" xml:space="preserve">
     <value>MAP ROLE AND ACTION</value>
   </data>
@@ -153,6 +156,9 @@
   <data name="Library" xml:space="preserve">
     <value>Library</value>
   </data>
+  <data name="MarksEntry" xml:space="preserve">
+    <value>MARKS ENTRY</value>
+  </data>
   <data name="MasterInformation" xml:space="preserve">
     <value>MASTER INFORMATION</value>
   </data>
@@ -170,6 +176,9 @@
   </data>
   <data name="PromotionBatch" xml:space="preserve">
     <value>CONFIRM PROMOTION</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>RESULTS</value>
   </data>
   <data name="RulesCreation" xml:space="preserve">
     <value>RULES CREATION</value>
