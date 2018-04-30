@@ -15,14 +15,7 @@
         border:hidden;
     }
 
-    body * {
-    visibility: hidden;
-  }
-  #printSection, #printSection * {
-    visibility: visible;
-  }
-  #printSection {
-    position: absolute;
+  .resultCard {
     left: 0;
     top: 100px;
     display: block;

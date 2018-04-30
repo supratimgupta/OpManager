@@ -16,9 +16,11 @@
 
             var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-            mywindow.document.write('<html><head><title>' + document.title + '</title>');
+            mywindow.document.write('<html><head><title></title>');
+            //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
+            mywindow.document.write('<style>@@media print{.resultCard{page-break-after: always; margin-top: 300px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;}}</style>');
             mywindow.document.write('</head><body >');
-            mywindow.document.write('<h1>' + document.title + '</h1>');
+            //mywindow.document.write('<h1>' + document.title + '</h1>');
             mywindow.document.write(document.getElementById("printSection").innerHTML);
             mywindow.document.write('</body></html>');
 
@@ -77,24 +79,24 @@
                         {
                             foreach (OpMgr.Common.DTOs.ResultCardDTO rcDTO in Model.ResultCards)
                             {
-                                <table class="table table-bordered" style="width:100%">
+                                <table class="table table-bordered resultCard" style="width:100%">
                                     <tr>
-                                        <td align="left" width="150px;">NAME &amp; REG. NO: </td>
+                                        <td align="left" width="150px;" class="headerSummary">NAME &amp; REG. NO: </td>
                                         <td align="left">@rcDTO.StudentName &nbsp;(@rcDTO.StudentRegNo)</td>
-                                        <td align="left" width="100px;">DATE: </td>
+                                        <td align="left" width="100px;" class="headerSummary">DATE: </td>
                                         <td align="left" width="100px;">@DateTime.Today.ToString("dd-MMM-yyyy")</td>
                                     </tr>
                                     <tr>
-                                        <td align="left" width="100px;">CLASS &amp; SEC: </td>
+                                        <td align="left" width="100px;" class="headerSummary">CLASS &amp; SEC: </td>
                                         <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) / @rcDTO.StudentRollNo</td>
-                                        <td align="left" width="100px;">SESSION: </td>
+                                        <td align="left" width="100px;" class="headerSummary">SESSION: </td>
                                         <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
                                     </tr>
                                     <tr>
                                         @if (rcDTO.ResultRows != null && rcDTO.ResultRows.Count > 0)
                                         {
                                             <td colspan="4">
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered printInnerTable" style="width:100%;">
                                                     <thead>
                                                         <tr>
                                                             <th rowspan="2">Subject</th>
