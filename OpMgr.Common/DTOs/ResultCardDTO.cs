@@ -25,6 +25,8 @@ namespace OpMgr.Common.DTOs
         public string SessionEnd { get; set; }
 
         public List<ResultCardRows> ResultRows { get; set; }
+
+        public double TotalMarks { get; set; }
     }
 
     public class ResultCardRows
