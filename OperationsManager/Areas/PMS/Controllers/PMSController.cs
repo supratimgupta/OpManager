@@ -127,6 +127,10 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 pmsVM.CompetencyDDLSource = _uiddlRepo.getCompetencyDropDown();
             }
+            if (string.Equals(pmsVM.MODE, "Rating_Acceptance"))
+            {
+                this.CreateCompetencyLoaders(ref pmsVM);
+            }
             if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK") || string.Equals(pmsVM.MODE, "PROCESS_ENDED") || string.Equals(pmsVM.MODE, "EMP_PROCESS_ENDED"))
             {
                 this.CreateCompetencyLoaders(ref pmsVM);
@@ -234,6 +238,10 @@ namespace OperationsManager.Areas.PMS.Controllers
                         _pmsSvc.UpdateInitiativeandSupport(pmsVM.EmployeeAppraisalMasterId, pmsVM.IndividualInitiative, pmsVM.InstitutionalSupport);
                     }
                 }
+                else if(string.Equals(pmsVM.MODE, "Rating_Acceptance") && (string.Equals(pmsVM.SAVE_MODE, "AcceptRating")))
+                {
+                    
+                }
                 else
                 {
                     foreach (GoalViewModel gVM in lstGoalVM)
@@ -298,6 +306,14 @@ namespace OperationsManager.Areas.PMS.Controllers
                 {
                     int currentStatus = _pmsSvc.GetCurrentStatus(pmsVM.EmployeeAppraisalMasterId);
                     if (_pmsSvc.MoveFwdBckwd(pmsVM.EmployeeAppraisalMasterId, currentStatus, true))
+                    {
+                        ts.Complete();
+                    }
+                }
+                else if (string.Equals(pmsVM.SAVE_MODE, "AcceptRating"))
+                {
+                    int currentStatus = _pmsSvc.GetCurrentStatus(pmsVM.EmployeeAppraisalMasterId);
+                    if (_pmsSvc.MoveFwdBckwd(pmsVM.EmployeeAppraisalMasterId, currentStatus, false))
                     {
                         ts.Complete();
                     }
