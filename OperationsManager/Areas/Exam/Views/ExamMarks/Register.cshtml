@@ -20,7 +20,13 @@
             var fullMarks = document.getElementById("spnFullMarks").innerHTML;
             var passMarks = document.getElementById("spnPassmarks").innerHTML;
 
-            var calculatedMark = (parseFloat(actualMarks) / parseFloat(assesmentMarks)) * fullMarks;
+            if (parseFloat(actualMarks) > parseFloat(assesmentMarks)) {
+                alert('Obtained marks cannot be greater than assessment marks.')
+                txtActualMarks.value = "";
+                return;
+            }
+
+            var calculatedMark = Math.round((parseFloat(actualMarks) / parseFloat(assesmentMarks)) * fullMarks);
 
             if (calculatedMark < passMarks) {
                 alert('Marks is below passmarks.');
@@ -271,10 +277,10 @@
                                                         else
                                                         {
                                                             <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');" })
+                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');", type="number" })
                                                             </td>
                                                             <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i })
+                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i, type="number" })
                                                             </td>
                                                         }
                                                     </tr>

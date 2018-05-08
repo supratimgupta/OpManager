@@ -275,8 +275,10 @@ namespace OpMgr.DataAccess.Implementations
             }
             DataTable dtEvaluator = new DataTable();
             var computedMarks = dtEvaluator.Compute(expression, "");
+            computedMarks = (int)Math.Ceiling(Convert.ToDouble(computedMarks));
             dtEvaluator = new DataTable();
             var totalMarks = dtEvaluator.Compute(totMarksExpr,"");
+            totalMarks = (int)Math.Ceiling(Convert.ToDouble(totalMarks));
             totalMarks = totalMarks.ToString().Split('.')[0];
             string grade = string.Empty;
             if(string.Equals(hasGrade,"Y", StringComparison.OrdinalIgnoreCase))
