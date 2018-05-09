@@ -14,11 +14,17 @@
             $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
 
         });
-        function calcMarks(txtActualMarks, txtCalcMarksId) {
+        function calcMarks(txtActualMarks, txtCalcMarksId, hfCalcMarksId) {
             var actualMarks = txtActualMarks.value;
             var assesmentMarks = document.getElementById("spnAssesmentMarks").innerHTML;
             var fullMarks = document.getElementById("spnFullMarks").innerHTML;
             var passMarks = document.getElementById("spnPassmarks").innerHTML;
+
+            if (parseFloat(actualMarks) < 0) {
+                alert('Obtained marks cannot be less than 0.')
+                txtActualMarks.value = "";
+                return;
+            }
 
             if (parseFloat(actualMarks) > parseFloat(assesmentMarks)) {
                 alert('Obtained marks cannot be greater than assessment marks.')
@@ -29,10 +35,11 @@
             var calculatedMark = Math.round((parseFloat(actualMarks) / parseFloat(assesmentMarks)) * fullMarks);
 
             if (calculatedMark < passMarks) {
-                alert('Marks is below passmarks.');
+                //alert('Marks is below passmarks.');
             }
 
             document.getElementById(txtCalcMarksId).value = calculatedMark;
+            document.getElementById(hfCalcMarksId).value = calculatedMark;
         }
 
 
@@ -313,10 +320,11 @@
                                                         else
                                                         {
                                                             <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');", type="number" })
+                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "', 'hfActualMarks_"+i+"');", type = "number" })
                                                             </td>
-                                                            <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i, type="number" })
+                                                            <td style="padding-top:30px;">
+                                                                <input type="number" class="form-control reqSave" value="@Model.ExamMarksList[i].CalculatedMarks" id="txtActualMarks_@i" readonly />
+                                                                @Html.HiddenFor(m => m.ExamMarksList[i].CalculatedMarks, new { id = "hfActualMarks_" + i, @class = "reqSave" })
                                                             </td>
                                                         }
                                                     </tr>
