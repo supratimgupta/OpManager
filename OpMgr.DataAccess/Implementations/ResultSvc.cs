@@ -306,14 +306,15 @@ namespace OpMgr.DataAccess.Implementations
                 string examTypeWhereClause = string.Empty;
                 
                 command.CommandText = "SELECT u.FName, u.MName, u.LName, st.RegistrationNumber, st.StudentInfoId, st.RollNumber, std.StandardName, sc.SectionName, sub.SubjectName, sub.SubjectId, sub.SubjectExamType, "+
-                                      "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, exm.DirectGrade, er.PassMarks, er.ActualFullMarks " +
+                                      "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, exm.DirectGrade, er.PassMarks, er.ActualFullMarks, rsm.subject_order " +
                                       "FROM exammarks exm LEFT JOIN StudentInfo st ON exm.StudentInfoId=st.StudentInfoId LEFT JOIN usermaster u ON st.UserMasterId=u.UserMasterId "+
                                       "LEFT JOIN StandardSectionMap scm ON exm.StandardSectionId=scm.StandardSectionId LEFT JOIN standard std ON scm.StandardId=std.StandardId "+
                                       "LEFT JOIN Section sc ON scm.SectionId=sc.SectionId LEFT JOIN subject sub ON exm.SubjectId=sub.SubjectId "+
                                       "LEFT JOIN ExamRule er ON exm.ExamRuleId=er.ExamRuleId "+
                                       "LEFT JOIN courseexam cexm ON exm.CourseExamId=cexm.CourseExamId LEFT JOIN coursemapping cmpng ON cexm.CourseMappingId=cmpng.CourseMappingId " +
                                       "LEFT JOIN ExamTypes et ON cexm.ExamTypeId=et.ExamTypeId LEFT JOIN ExamSubTypes est ON cexm.ExamSubTypeId=est.ExamSubTypeId " +
-                                      "WHERE cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,sub.SubjectId";
+                                      "LEFT JOIN result_subject_map rsm ON exm.SubjectId=rsm.subject_id " +
+                                      "WHERE rsm.standard_id = std.StandardId AND cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,rsm.subject_order asc";
                 command.Parameters.Add("@locId", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@courseFrom", MySqlDbType.DateTime).Value = academicStartDate;
