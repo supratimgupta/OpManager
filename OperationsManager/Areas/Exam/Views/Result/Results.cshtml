@@ -31,6 +31,12 @@
             mywindow.close();
             return true;
         }
+
+        $(document).ready(function () {
+            var currentDate = new Date();
+            var strDate = currentDate.getDate() + "-" + (currentDate.getMonth()+1) + "-" + currentDate.getFullYear();
+            $(".spnDate").html(strDate);
+        });
     </script>
 }
 @using (Html.BeginForm())
@@ -84,7 +90,7 @@
                                         <td align="left" width="150px;" class="headerSummary">NAME &amp; REG. NO: </td>
                                         <td align="left">@rcDTO.StudentName &nbsp;(@rcDTO.StudentRegNo)</td>
                                         <td align="left" width="100px;" class="headerSummary">DATE: </td>
-                                        <td align="left" width="100px;">@DateTime.Today.ToString("dd-MMM-yyyy")</td>
+                                        <td align="left" width="100px;"><span class="spnDate"></span></td>
                                     </tr>
                                     <tr>
                                         <td align="left" width="100px;" class="headerSummary">CLASS &amp; SEC: </td>
