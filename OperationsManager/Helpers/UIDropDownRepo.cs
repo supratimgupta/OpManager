@@ -412,9 +412,9 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "ExamTypeId", "ExamTypeDescription");
         }
 
-        public SelectList getExamSubTypeDropDown()
+        public SelectList getExamSubTypeDropDown(int? examType=null)
         {
-            List<ExamSubTypeDTO> rDto = _ddlRepo.getExamSubType();
+            List<ExamSubTypeDTO> rDto = _ddlRepo.getExamSubType(examType);
             ExamSubTypeDTO examSubtypeDTO = new ExamSubTypeDTO();
             examSubtypeDTO.ExamSubTypeId = -1;
             examSubtypeDTO.ExamSubTypeDescription = "";
