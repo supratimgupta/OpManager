@@ -109,11 +109,18 @@ namespace OperationsManager.Areas.Exam.Controllers
                                     {
                                         exammarksvm.MarksObtained = exammarksdto.MarksObtained;
                                     }
+                                    else
+                                    {
+                                        exammarksvm.MarksObtained = 0;
+                                    }
                                     if (exammarksdto.CalculatedMarks > 0)
                                     {
                                         exammarksvm.CalculatedMarks = exammarksdto.CalculatedMarks;
                                     }
-
+                                    else
+                                    {
+                                        exammarksvm.CalculatedMarks = 0;
+                                    }
                                     exammarksvm.DirectGrade = exammarksdto.DirectGrade;
                                     exammarksvm.SubjectExamType = exammarksdto.SubjectExamType;
 

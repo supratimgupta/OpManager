@@ -320,9 +320,10 @@
                                                         else
                                                         {
                                                             <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "', 'hfActualMarks_"+i+"');", type = "number" })
+                                                                @*@Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "', 'hfActualMarks_"+i+"');", type = "number" })*@
+                                                                <input type="number" value="@Model.ExamMarksList[i].MarksObtained" name="ExamMarksList[@i].MarksObtained" class="form-control requiredField reqSave" onblur="calcMarks(this, 'txtActualMarks_@i', 'hfActualMarks_@i');" />
                                                             </td>
-                                                            <td style="padding-top:30px;">
+                                                            <td>
                                                                 <input type="number" class="form-control reqSave" value="@Model.ExamMarksList[i].CalculatedMarks" id="txtActualMarks_@i" readonly />
                                                                 @Html.HiddenFor(m => m.ExamMarksList[i].CalculatedMarks, new { id = "hfActualMarks_" + i, @class = "reqSave" })
                                                             </td>
