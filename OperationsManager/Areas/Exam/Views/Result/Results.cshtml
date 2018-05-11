@@ -127,6 +127,50 @@
                                                                         </tr>
                                                                     }
                                                                 </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th>Total: </th>
+                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        {
+                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            {
+                                                                                <th>@rcDTO.TotalMarks</th>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <th></th>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Class Heighest: </th>
+                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        {
+                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            {
+                                                                                <th>@Model.ClassHeighest</th>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <th></th>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Class Average: </th>
+                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        {
+                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            {
+                                                                                <th>@Model.ClassAverage</th>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <th></th>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                </tfoot>
                                                             </table>
                                                         </td>
                                                         <td>

@@ -47,5 +47,7 @@ namespace OpMgr.Common.DTOs
         public int ColumnSequence { get; set; }
 
         public bool IsAllowedForGrade { get; set; }
+
+        public bool IsUsedForTotal { get; set; }
     }
 }

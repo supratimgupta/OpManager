@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OpMgr.DataAccess.Implementations
@@ -38,7 +39,7 @@ namespace OpMgr.DataAccess.Implementations
                 dbSvc.OpenConnection();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade, is_allowed_for_grade FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
+                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade, is_allowed_for_grade, is_calc_for_total FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
                 command.Parameters.Add("@stdSec", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@loc", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@resType", MySqlDbType.String).Value = resultType;
@@ -88,6 +89,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     rsCard = new ResultCardDTO();
                     rsCard.StudentInfoId = dtResults.Rows[st]["StudentInfoId"].ToString();
+                    rsCard.TotalMarks = 0;
                     if(lstDoneWithStudents.Contains(rsCard.StudentInfoId))
                     {
                         continue;
@@ -148,13 +150,16 @@ namespace OpMgr.DataAccess.Implementations
                                 string fixedColName = dtResultFormat.Rows[rf]["fixed_column_name"].ToString();
                                 string hasGrade = dtResultFormat.Rows[rf]["has_grade"].ToString();
                                 string isAllowedForGrade = dtResultFormat.Rows[rf]["is_allowed_for_grade"].ToString();
-                                if(string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase) && string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
+                                string isCalcForTotal = dtResultFormat.Rows[rf]["is_calc_for_total"].ToString();
+                                resultCol.IsAllowedForGrade = false;
+                                resultCol.IsUsedForTotal = false;
+                                if(string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
                                 {
                                     resultCol.IsAllowedForGrade = true;
                                 }
-                                else
+                                if (string.Equals(isCalcForTotal, "Y", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    resultCol.IsAllowedForGrade = false;
+                                    resultCol.IsUsedForTotal = true;
                                 }
                                 if(!resultCol.IsAllowedForGrade && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
                                 {
@@ -174,6 +179,10 @@ namespace OpMgr.DataAccess.Implementations
                                     else
                                     {
                                         marks = this.CreateValueWithExpression(expression, drSubjects, "CalculatedMarks", dtGrades, hasGrade);
+                                        if(resultCol.IsUsedForTotal)
+                                        {
+                                            rsCard.TotalMarks = rsCard.TotalMarks + double.Parse(Regex.Match(marks, @"\d+").Value);
+                                        }
                                     }
                                 }
                                 resultCol.ColumnValue = marks;
