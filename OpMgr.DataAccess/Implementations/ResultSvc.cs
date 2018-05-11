@@ -38,7 +38,7 @@ namespace OpMgr.DataAccess.Implementations
                 dbSvc.OpenConnection();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
+                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade, is_allowed_for_grade FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
                 command.Parameters.Add("@stdSec", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@loc", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@resType", MySqlDbType.String).Value = resultType;
@@ -104,6 +104,7 @@ namespace OpMgr.DataAccess.Implementations
                     if(arrStudentResults!=null && arrStudentResults.Length>0)
                     {
                         rsCard.ResultRows = new List<ResultCardRows>();
+                        rsCard.GradeResultRows = new List<ResultCardRows>();
                         ResultCardRows rsRows = null;
                         foreach(DataRow drSub in arrStudentResults)
                         {
@@ -146,6 +147,19 @@ namespace OpMgr.DataAccess.Implementations
                                 string valueType = dtResultFormat.Rows[rf]["value_type"].ToString();
                                 string fixedColName = dtResultFormat.Rows[rf]["fixed_column_name"].ToString();
                                 string hasGrade = dtResultFormat.Rows[rf]["has_grade"].ToString();
+                                string isAllowedForGrade = dtResultFormat.Rows[rf]["is_allowed_for_grade"].ToString();
+                                if(string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase) && string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    resultCol.IsAllowedForGrade = true;
+                                }
+                                else
+                                {
+                                    resultCol.IsAllowedForGrade = false;
+                                }
+                                if(!resultCol.IsAllowedForGrade && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    continue;
+                                }
                                 string marks = string.Empty;
                                 if(string.Equals(valueType, "FIXED", StringComparison.OrdinalIgnoreCase))
                                 {
@@ -165,7 +179,14 @@ namespace OpMgr.DataAccess.Implementations
                                 resultCol.ColumnValue = marks;
                                 rsRows.ResultColumns.Add(resultCol);
                             }
-                            rsCard.ResultRows.Add(rsRows);
+                            if (string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                            {
+                                rsCard.GradeResultRows.Add(rsRows);
+                            }
+                            else
+                            {
+                                rsCard.ResultRows.Add(rsRows);
+                            }
                             lstDoneWithSubjects.Add(subjectId);
                         }
                     }

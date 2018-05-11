@@ -26,6 +26,8 @@ namespace OpMgr.Common.DTOs
 
         public List<ResultCardRows> ResultRows { get; set; }
 
+        public List<ResultCardRows> GradeResultRows { get; set; }
+
         public double TotalMarks { get; set; }
     }
 
@@ -43,5 +45,7 @@ namespace OpMgr.Common.DTOs
         public string ColumnValue { get; set; }
 
         public int ColumnSequence { get; set; }
+
+        public bool IsAllowedForGrade { get; set; }
     }
 }

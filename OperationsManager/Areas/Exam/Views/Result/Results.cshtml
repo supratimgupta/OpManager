@@ -98,36 +98,95 @@
                                         <td align="left" width="100px;" class="headerSummary">SESSION: </td>
                                         <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
                                     </tr>
-                                    <tr>
-                                        @if (rcDTO.ResultRows != null && rcDTO.ResultRows.Count > 0)
-                                        {
+                                    @if (rcDTO.ResultRows != null && rcDTO.ResultRows.Count > 0)
+                                    {
+                                        <tr>
                                             <td colspan="4">
-                                                <table class="table table-bordered printInnerTable" style="width:100%;">
-                                                    <thead>
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td style="width:60%">
+                                                            <table class="table table-bordered printInnerTable" style="width:100%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th rowspan="2">Subject</th>
+                                                                        @for (int h = 0; h < rcDTO.ResultRows[0].ResultColumns.Count; h++)
+                                                                        {
+                                                                            <th>@rcDTO.ResultRows[0].ResultColumns[h].ColumnName</th>
+                                                                        }
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @for (int i = 0; i < rcDTO.ResultRows.Count; i++)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@rcDTO.ResultRows[i].SubjectName</td>
+                                                                            @for (int x = 0; x < rcDTO.ResultRows[i].ResultColumns.Count; x++)
+                                                                            {
+                                                                                <td>@rcDTO.ResultRows[i].ResultColumns[x].ColumnValue</td>
+                                                                            }
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>  
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if(rcDTO.GradeResultRows!=null && rcDTO.GradeResultRows.Count>0)
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                <table style="width:100%" class="table table-bordered printInnerTable">
+                                                    @for(int i=0;i<rcDTO.GradeResultRows.Count;i++)
+                                                    {
                                                         <tr>
-                                                            <th rowspan="2">Subject</th>
-                                                            @for (int h = 0; h < rcDTO.ResultRows[0].ResultColumns.Count; h++)
+                                                            <td style="width:30%">
+                                                                @rcDTO.GradeResultRows[i].SubjectName
+                                                            </td>
+                                                            @for (int x = 0; x < rcDTO.GradeResultRows[i].ResultColumns.Count; x++)
                                                             {
-                                                                <th>@rcDTO.ResultRows[0].ResultColumns[h].ColumnName</th>
+                                                                if (rcDTO.GradeResultRows[i].ResultColumns[x].IsAllowedForGrade)
+                                                                {
+                                                                    <td>@rcDTO.GradeResultRows[i].ResultColumns[x].ColumnValue</td>
+                                                                }
+                                                            }
+                                                            <td style="width:30%">
+                                                                @if(i+1<rcDTO.GradeResultRows.Count)
+                                                                {
+                                                                    @rcDTO.GradeResultRows[i+1].SubjectName
+                                                                }
+                                                            </td>
+                                                            @if(i+1<rcDTO.GradeResultRows.Count)
+                                                            {
+                                                                for (int x = 0; x < rcDTO.GradeResultRows[i + 1].ResultColumns.Count; x++)
+                                                                {
+                                                                    if (rcDTO.GradeResultRows[i + 1].ResultColumns[x].IsAllowedForGrade)
+                                                                    {
+                                                                        <td>@rcDTO.GradeResultRows[i + 1].ResultColumns[x].ColumnValue</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                for (int x = 0; x < rcDTO.GradeResultRows[i].ResultColumns.Count; x++)
+                                                                {
+                                                                    if (rcDTO.GradeResultRows[i].ResultColumns[x].IsAllowedForGrade)
+                                                                    {
+                                                                        <td></td>
+                                                                    }
+                                                                }
                                                             }
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @for (int i = 0; i < rcDTO.ResultRows.Count; i++)
-                                                        {
-                                                            <tr>
-                                                                <td>@rcDTO.ResultRows[i].SubjectName</td>
-                                                                @for (int x = 0; x < rcDTO.ResultRows[i].ResultColumns.Count; x++)
-                                                                {
-                                                                    <td>@rcDTO.ResultRows[i].ResultColumns[x].ColumnValue</td>
-                                                                }
-                                                            </tr>
-                                                        }
-                                                    </tbody>
+                                                    }
                                                 </table>
                                             </td>
-                                        }
-                                    </tr>
+                                        </tr>
+                                    }
                                 </table>
                             }
                         }
