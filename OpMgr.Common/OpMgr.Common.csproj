@@ -111,6 +111,8 @@
     <Compile Include="DTOs\MailDTO.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\PasswordDTO.cs" />
+    <Compile Include="DTOs\PMSDesignationDTO.cs" />
+    <Compile Include="DTOs\PMSEmpDesignationMap.cs" />
     <Compile Include="DTOs\PMSMasterDTO.cs" />
     <Compile Include="DTOs\RatingDTO.cs" />
     <Compile Include="DTOs\ResultCardDTO.cs" />

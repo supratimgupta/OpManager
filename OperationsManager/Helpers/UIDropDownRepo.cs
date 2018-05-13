@@ -119,6 +119,16 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "DesignationId", "DesignationDescription");
         }
 
+        public SelectList getPMSDesignationDropDown()
+        {
+            List<PMSDesignationDTO> rDto = _ddlRepo.PmsDesignation();
+            PMSDesignationDTO dDesg = new PMSDesignationDTO();
+            dDesg.PmsDesignationId = -1;
+            dDesg.PmsDesignationDescription = "";
+            rDto.Insert(0, dDesg);
+            return new SelectList(rDto, "PmsDesignationId", "PmsDesignationDescription");
+        }
+
         public SelectList getStandardDropDown(ClassTypeDTO classTypeDTO)
         {
             List<StandardDTO> rDto = _ddlRepo.Standard(classTypeDTO);

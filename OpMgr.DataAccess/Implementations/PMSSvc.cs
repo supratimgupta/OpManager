@@ -820,6 +820,13 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     empAppraisalMaster.EmployeeAppraisalMasterId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
                                 }
+                                if (dsAppraiseeLst.Tables.Count > 1)
+                                {
+                                    if (dsAppraiseeLst.Tables[1].Rows.Count > 0)
+                                    {
+                                        empAppraisalMaster.AvgFinalRating = Convert.ToDecimal(dsAppraiseeLst.Tables[1].Rows[0]["avgfinalrating"]);
+                                    }
+                                }
                                 empAppraisalMaster.Employee = new EmployeeDetailsDTO();
                                 empAppraisalMaster.Employee.UserDetails = new UserMasterDTO();
                                 empAppraisalMaster.Employee.UserDetails.Location = new LocationDTO();
@@ -838,13 +845,14 @@ namespace OpMgr.DataAccess.Implementations
                                     empAppraisalMaster.AppraisalStatus.AppraisalStatusId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusId"].ToString());
                                 }
                                 empAppraisalMaster.AppraisalStatus.AppraisalStatusDescription = dsAppraiseeLst.Tables[0].Rows[i]["AppraisalStatusDescription"].ToString();
-
+                                empAppraisalMaster.Employee.Designation.DesignationId = Convert.ToInt32(dsAppraiseeLst.Tables[0].Rows[i]["PmsDesignationId"].ToString());
                                 empAppraisalMaster.Employee.Designation.DesignationDescription = dsAppraiseeLst.Tables[0].Rows[i]["pmsdesignationdescription"].ToString();
 
                                 appraiseeList.ReturnObj.Add(empAppraisalMaster);
                                 appraiseeList.IsSuccess = true;
                             }
                         }
+                       
                     }
                     //}
                     return appraiseeList;

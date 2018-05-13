@@ -39,7 +39,7 @@ namespace OperationsManager.Areas.PMS.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult GoalSheetForAll(int? apprMasterId)
+        public ActionResult GoalSheetForAll(int? apprMasterId, int? designationId)
         {
             Models.PMSVM pmsVM = new Models.PMSVM();
 
@@ -74,9 +74,15 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 int percentAchievement = Convert.ToInt32(Math.Ceiling(((pmsVM.SumOfAcheivement / Convert.ToDecimal(pmsVM.SumOfWeitage)) * 100)));
                 int percentAppraiser = Convert.ToInt32(Math.Ceiling(((pmsVM.SumOfAppraiserRating / Convert.ToDecimal(pmsVM.SumOfWeitage)) * 100)));
-
-                pmsVM.SummaryOfAcheivement = _pmsSvc.getSelfRating(Convert.ToInt32(percentAchievement)).ReturnObj.SelfRating;
-                pmsVM.SummaryOfAppraisal = _pmsSvc.getSelfRating(Convert.ToInt32(percentAppraiser)).ReturnObj.SelfRating;
+                if(Convert.ToInt32(percentAchievement) > 0)
+                {
+                    pmsVM.SummaryOfAcheivement = _pmsSvc.getSelfRating(Convert.ToInt32(percentAchievement)).ReturnObj.SelfRating;
+                }
+                if(Convert.ToInt32(percentAppraiser) > 0)
+                {
+                    pmsVM.SummaryOfAppraisal = _pmsSvc.getSelfRating(Convert.ToInt32(percentAppraiser)).ReturnObj.SelfRating;
+                }
+                
             }
 
             pmsVM.ReviewerRating = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerFinalRating;
@@ -592,6 +598,10 @@ namespace OperationsManager.Areas.PMS.Controllers
                             searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
                             searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
                             searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
+                            if (Convert.ToInt32(appraisalmaster.AvgFinalRating) > 0)
+                            {
+                                searchItem.AvgFinalLevel = _pmsSvc.getSelfRating(Convert.ToInt32(appraisalmaster.AvgFinalRating)).ReturnObj.SelfRating;
+                            }
                             searchItem.AppraisalType = appraisalmaster.AppraisalType;
                             searchItem.AppraisalStatus = new AppraisalStatusDTO();
                             searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
@@ -601,6 +611,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                             searchItem.Employee = new EmployeeDetailsDTO();
                             searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
                             searchItem.Employee.Designation = new DesignationDTO();
+                            searchItem.Employee.Designation.DesignationId = Convert.ToInt32(appraisalmaster.Employee.Designation.DesignationId); 
                             searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
                             //Add into PMSView vIew Model List
                             pmsview.PMSVMList.Add(searchItem);

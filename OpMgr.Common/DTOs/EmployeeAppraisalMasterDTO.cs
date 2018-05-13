@@ -39,5 +39,9 @@ namespace OpMgr.Common.DTOs
         public string IndividualInitiative { get; set; }
 
         public string InstitutionalSupport { get; set; }
+
+        public decimal AvgFinalRating { get; set; }
+
+        public string  AvgFinalLevel { get; set; }
     }
 }

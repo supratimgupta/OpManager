@@ -161,7 +161,9 @@
                                                 <td>
                                                     @if (string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
                                                     {
+
                                                         @Html.OpMgrTextBoxFor(m => m.GoalsAsList[i].GoalLog[j].AchivementPercent, "", new { @class = "form-control requiredField", onchange = "calcStaffRating(this,'staffRating_" + i + "_" + j + "'," + Model.GoalsAsList[i].GoalLog[j].GoalAttribute.WeightAge + ",'staffRating');" })
+
                                                     }
                                                     else
                                                     {
@@ -285,7 +287,7 @@
                             @GoalSheetResource.FinalRating
                         </div>
                         <div class="col-lg-6" style="font-weight:bold;">
-                            
+
                             @if (string.Equals(Model.MODE, "Rating_Acceptance"))
                             {
                                 @Html.DisplayFor(m => m.ReviewerRatingLevel)

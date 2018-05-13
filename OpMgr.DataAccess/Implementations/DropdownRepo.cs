@@ -328,6 +328,41 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public List<PMSDesignationDTO> PmsDesignation()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "getPMSDesignation";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<PMSDesignationDTO> lstPmsDesignation = new List<PMSDesignationDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        PMSDesignationDTO pmsdesignationDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            pmsdesignationDTO = new PMSDesignationDTO();
+                            pmsdesignationDTO.PmsDesignationId = (int)dr["PmsDesignationId"];
+                            pmsdesignationDTO.PmsDesignationDescription = dr["PmsDesignationDescription"].ToString();
+                            lstPmsDesignation.Add(pmsdesignationDTO);
+                        }
+                    }
+                    return lstPmsDesignation;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
         public List<StandardDTO> Standard(ClassTypeDTO classTypeDTO)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
