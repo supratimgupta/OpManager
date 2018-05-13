@@ -52,6 +52,14 @@ namespace OperationsManager.Areas.Exam.Controllers
             return View(examMarksVM);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult GetExamSubType(int examType)
+        {
+            List<ExamSubTypeDTO> lstSubTypes = _dropDwnRepo.getExamSubType(examType);
+            return Json(new { Status = true, Data = lstSubTypes }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Register(Models.ExamMarksVM examMarksVM)
@@ -83,7 +91,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                             examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
                             examVM.LocationList = _uiddlRepo.getLocationDropDown();
                             examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
-                            examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
+                            examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown(examMarksVM.CourseExam.ExamType.ExamTypeId);
                             examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
                             examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
                             examVM.Rule = null;
@@ -101,11 +109,18 @@ namespace OperationsManager.Areas.Exam.Controllers
                                     {
                                         exammarksvm.MarksObtained = exammarksdto.MarksObtained;
                                     }
+                                    else
+                                    {
+                                        exammarksvm.MarksObtained = 0;
+                                    }
                                     if (exammarksdto.CalculatedMarks > 0)
                                     {
                                         exammarksvm.CalculatedMarks = exammarksdto.CalculatedMarks;
                                     }
-
+                                    else
+                                    {
+                                        exammarksvm.CalculatedMarks = 0;
+                                    }
                                     exammarksvm.DirectGrade = exammarksdto.DirectGrade;
                                     exammarksvm.SubjectExamType = exammarksdto.SubjectExamType;
 
@@ -195,7 +210,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                         examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
                         examVM.LocationList = _uiddlRepo.getLocationDropDown();
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
-                        examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown();
+                        examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown(examMarksVM.CourseExam.ExamType.ExamTypeId);
                         examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
                         examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
                     }

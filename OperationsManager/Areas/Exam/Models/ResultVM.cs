@@ -30,5 +30,9 @@ namespace OperationsManager.Areas.Exam.Models
         public string SelectedResultType { get; set; }
 
         public List<ResultCardDTO> ResultCards { get; set; }
+
+        public double ClassHeighest { get; set; }
+
+        public double ClassAverage { get; set; }
     }
 }

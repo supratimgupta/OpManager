@@ -287,35 +287,39 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "updateExamMarks";
-                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "UPDATE exammarks SET UpdatedBy=@updatedBy, UpdatedDate=@updatedDate, MarksObtained=@marksObtained, CalculatedMarks=@calcMarks, "+
+                                          "DirectGrade=@directGrade WHERE ExamMarksId=@examMarksId";
+                    command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                    command.Parameters.Add("@updatedDate", MySqlDbType.DateTime).Value = DateTime.Today.Date;
+                    command.Parameters.Add("@marksObtained", MySqlDbType.Double).Value = data.MarksObtained;
+                    command.Parameters.Add("@calcMarks", MySqlDbType.Double).Value = data.CalculatedMarks;
 
-                    command.Parameters.Add("@ExamMarksId1", MySqlDbType.Int32).Value = data.ExamMarksId;
-                    command.Parameters.Add("@UpdatedBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;                    
-                    command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
-                    command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
-                    if(!string.IsNullOrEmpty(data.DirectGrade))
+                    if (!string.IsNullOrEmpty(data.DirectGrade))
                     {
-                        command.Parameters.Add("@DirectGrade1", MySqlDbType.VarChar).Value = data.DirectGrade;
+                        command.Parameters.Add("@directGrade", MySqlDbType.VarChar).Value = data.DirectGrade;
                     }
                     else
                     {
-                        command.Parameters.Add("@DirectGrade1", MySqlDbType.VarChar).Value = DBNull.Value;
+                        command.Parameters.Add("@directGrade", MySqlDbType.VarChar).Value = DBNull.Value;
                     }
+
+                    command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
+                    
                     
                     StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
 
-                    //if (command.ExecuteNonQuery() > 0)
-                    //{
-                    status.IsSuccess = true;
-                    status.ReturnObj = data;
-                    //}
-                    //else
-                    //{
-                    //   status.IsSuccess = false;
-                    //    status.FailureReason = "User Insertion Failed";
-                    //}
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = data;
+                    }
+                    else
+                    {
+                       status.IsSuccess = false;
+                       status.FailureReason = "User Insertion Failed";
+                    }
                     return status;
                 }
                 catch (Exception exp)

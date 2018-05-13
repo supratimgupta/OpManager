@@ -14,19 +14,68 @@
             $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
 
         });
-        function calcMarks(txtActualMarks, txtCalcMarksId) {
+        function calcMarks(txtActualMarks, txtCalcMarksId, hfCalcMarksId) {
             var actualMarks = txtActualMarks.value;
             var assesmentMarks = document.getElementById("spnAssesmentMarks").innerHTML;
             var fullMarks = document.getElementById("spnFullMarks").innerHTML;
             var passMarks = document.getElementById("spnPassmarks").innerHTML;
 
-            var calculatedMark = (parseFloat(actualMarks) / parseFloat(assesmentMarks)) * fullMarks;
+            if (parseFloat(actualMarks) < 0) {
+                alert('Obtained marks cannot be less than 0.')
+                txtActualMarks.value = "";
+                return;
+            }
+
+            if (parseFloat(actualMarks) > parseFloat(assesmentMarks)) {
+                alert('Obtained marks cannot be greater than assessment marks.')
+                txtActualMarks.value = "";
+                return;
+            }
+
+            var calculatedMark = Math.round((parseFloat(actualMarks) / parseFloat(assesmentMarks)) * fullMarks);
 
             if (calculatedMark < passMarks) {
-                alert('Marks is below passmarks.');
+                //alert('Marks is below passmarks.');
             }
 
             document.getElementById(txtCalcMarksId).value = calculatedMark;
+            document.getElementById(hfCalcMarksId).value = calculatedMark;
+        }
+
+
+        function getAndPopulateExamSubType(ddlExamType) {
+            debugger;
+            var selectedExamType = ddlExamType.options[ddlExamType.selectedIndex].value;
+            if(selectedExamType!=""){
+                $.ajax({
+                    dataType: 'JSON',
+                    url: "GetExamSubType?examType=" + selectedExamType,
+                    type: "GET",
+                    success: function (returnData) {
+                        if (returnData.Status) {
+                            populateExamSubTypeDropDown(returnData.Data);
+                        }
+                    },
+                    error: function (error) {
+                        alert(error.statusText);
+                    }
+                });
+            }            
+        }
+
+        function populateExamSubTypeDropDown(data) {
+            var ddlExamSubType = document.getElementById("ddlExamSubType");
+            ddlExamSubType.innerHTML = "";
+            var blankOpt = document.createElement("option");
+            blankOpt.innerHTML = "";
+            blankOpt.value = "";
+            ddlExamSubType.appendChild(blankOpt);
+            for (i = 0; i < data.length; i++) {
+                var newOpt = document.createElement("option");
+                newOpt.innerHTML = data[i].ExamSubTypeDescription;
+                newOpt.value = data[i].ExamSubTypeId;
+                ddlExamSubType.appendChild(newOpt);
+            }
         }
     </script>
     <script language="javascript" type="text/javascript">
@@ -101,10 +150,10 @@
                             @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-4">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control requiredField reqSearch" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control requiredField reqSearch", onchange = "getAndPopulateExamSubType(this);" })
                         </div>
                         <div class="col-lg-4">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control requiredField reqSearch" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control requiredField reqSearch", id="ddlExamSubType" })
                         </div>
                         <div class="col-lg-4">
                             @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
@@ -271,10 +320,12 @@
                                                         else
                                                         {
                                                             <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "');" })
+                                                                @*@Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "', 'hfActualMarks_"+i+"');", type = "number" })*@
+                                                                <input type="number" value="@Model.ExamMarksList[i].MarksObtained" name="ExamMarksList[@i].MarksObtained" class="form-control requiredField reqSave" onblur="calcMarks(this, 'txtActualMarks_@i', 'hfActualMarks_@i');" />
                                                             </td>
                                                             <td>
-                                                                @Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].CalculatedMarks, "", new { @class = "form-control requiredField reqSave", id = "txtActualMarks_" + i })
+                                                                <input type="number" class="form-control reqSave" value="@Model.ExamMarksList[i].CalculatedMarks" id="txtActualMarks_@i" readonly />
+                                                                @Html.HiddenFor(m => m.ExamMarksList[i].CalculatedMarks, new { id = "hfActualMarks_" + i, @class = "reqSave" })
                                                             </td>
                                                         }
                                                     </tr>

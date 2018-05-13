@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OpMgr.DataAccess.Implementations
@@ -38,7 +39,7 @@ namespace OpMgr.DataAccess.Implementations
                 dbSvc.OpenConnection();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
+                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade, is_allowed_for_grade, is_calc_for_total FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
                 command.Parameters.Add("@stdSec", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@loc", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@resType", MySqlDbType.String).Value = resultType;
@@ -88,6 +89,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     rsCard = new ResultCardDTO();
                     rsCard.StudentInfoId = dtResults.Rows[st]["StudentInfoId"].ToString();
+                    rsCard.TotalMarks = 0;
                     if(lstDoneWithStudents.Contains(rsCard.StudentInfoId))
                     {
                         continue;
@@ -104,6 +106,7 @@ namespace OpMgr.DataAccess.Implementations
                     if(arrStudentResults!=null && arrStudentResults.Length>0)
                     {
                         rsCard.ResultRows = new List<ResultCardRows>();
+                        rsCard.GradeResultRows = new List<ResultCardRows>();
                         ResultCardRows rsRows = null;
                         foreach(DataRow drSub in arrStudentResults)
                         {
@@ -146,6 +149,22 @@ namespace OpMgr.DataAccess.Implementations
                                 string valueType = dtResultFormat.Rows[rf]["value_type"].ToString();
                                 string fixedColName = dtResultFormat.Rows[rf]["fixed_column_name"].ToString();
                                 string hasGrade = dtResultFormat.Rows[rf]["has_grade"].ToString();
+                                string isAllowedForGrade = dtResultFormat.Rows[rf]["is_allowed_for_grade"].ToString();
+                                string isCalcForTotal = dtResultFormat.Rows[rf]["is_calc_for_total"].ToString();
+                                resultCol.IsAllowedForGrade = false;
+                                resultCol.IsUsedForTotal = false;
+                                if(string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    resultCol.IsAllowedForGrade = true;
+                                }
+                                if (string.Equals(isCalcForTotal, "Y", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    resultCol.IsUsedForTotal = true;
+                                }
+                                if(!resultCol.IsAllowedForGrade && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    continue;
+                                }
                                 string marks = string.Empty;
                                 if(string.Equals(valueType, "FIXED", StringComparison.OrdinalIgnoreCase))
                                 {
@@ -160,12 +179,23 @@ namespace OpMgr.DataAccess.Implementations
                                     else
                                     {
                                         marks = this.CreateValueWithExpression(expression, drSubjects, "CalculatedMarks", dtGrades, hasGrade);
+                                        if(resultCol.IsUsedForTotal)
+                                        {
+                                            rsCard.TotalMarks = rsCard.TotalMarks + double.Parse(Regex.Match(marks, @"\d+").Value);
+                                        }
                                     }
                                 }
                                 resultCol.ColumnValue = marks;
                                 rsRows.ResultColumns.Add(resultCol);
                             }
-                            rsCard.ResultRows.Add(rsRows);
+                            if (string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                            {
+                                rsCard.GradeResultRows.Add(rsRows);
+                            }
+                            else
+                            {
+                                rsCard.ResultRows.Add(rsRows);
+                            }
                             lstDoneWithSubjects.Add(subjectId);
                         }
                     }
@@ -275,8 +305,10 @@ namespace OpMgr.DataAccess.Implementations
             }
             DataTable dtEvaluator = new DataTable();
             var computedMarks = dtEvaluator.Compute(expression, "");
+            computedMarks = (int)Math.Ceiling(Convert.ToDouble(computedMarks));
             dtEvaluator = new DataTable();
             var totalMarks = dtEvaluator.Compute(totMarksExpr,"");
+            totalMarks = (int)Math.Ceiling(Convert.ToDouble(totalMarks));
             totalMarks = totalMarks.ToString().Split('.')[0];
             string grade = string.Empty;
             if(string.Equals(hasGrade,"Y", StringComparison.OrdinalIgnoreCase))
@@ -304,14 +336,15 @@ namespace OpMgr.DataAccess.Implementations
                 string examTypeWhereClause = string.Empty;
                 
                 command.CommandText = "SELECT u.FName, u.MName, u.LName, st.RegistrationNumber, st.StudentInfoId, st.RollNumber, std.StandardName, sc.SectionName, sub.SubjectName, sub.SubjectId, sub.SubjectExamType, "+
-                                      "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, exm.DirectGrade, er.PassMarks, er.ActualFullMarks " +
+                                      "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, exm.DirectGrade, er.PassMarks, er.ActualFullMarks, rsm.subject_order " +
                                       "FROM exammarks exm LEFT JOIN StudentInfo st ON exm.StudentInfoId=st.StudentInfoId LEFT JOIN usermaster u ON st.UserMasterId=u.UserMasterId "+
                                       "LEFT JOIN StandardSectionMap scm ON exm.StandardSectionId=scm.StandardSectionId LEFT JOIN standard std ON scm.StandardId=std.StandardId "+
                                       "LEFT JOIN Section sc ON scm.SectionId=sc.SectionId LEFT JOIN subject sub ON exm.SubjectId=sub.SubjectId "+
                                       "LEFT JOIN ExamRule er ON exm.ExamRuleId=er.ExamRuleId "+
                                       "LEFT JOIN courseexam cexm ON exm.CourseExamId=cexm.CourseExamId LEFT JOIN coursemapping cmpng ON cexm.CourseMappingId=cmpng.CourseMappingId " +
                                       "LEFT JOIN ExamTypes et ON cexm.ExamTypeId=et.ExamTypeId LEFT JOIN ExamSubTypes est ON cexm.ExamSubTypeId=est.ExamSubTypeId " +
-                                      "WHERE cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,sub.SubjectId";
+                                      "LEFT JOIN result_subject_map rsm ON exm.SubjectId=rsm.subject_id " +
+                                      "WHERE rsm.standard_id = std.StandardId AND cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,rsm.subject_order asc";
                 command.Parameters.Add("@locId", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@courseFrom", MySqlDbType.DateTime).Value = academicStartDate;
