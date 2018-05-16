@@ -43,5 +43,7 @@ namespace OpMgr.Common.DTOs
         public decimal AvgFinalRating { get; set; }
 
         public string  AvgFinalLevel { get; set; }
+
+        public PMSDesignationDTO PMSDesignation { get; set; }
     }
 }

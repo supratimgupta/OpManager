@@ -22,5 +22,6 @@ namespace OpMgr.Common.Contracts.Modules
 
         StatusDTO<List<PMSMasterDTO>> GetAppraisalDetails(int pmsMasterId);
         StatusDTO<List<EmployeeAppraisalMasterDTO>> GetAppraiseePMSLIst(int EmployeeId);
+        bool UpdateAppraiserFinalRating(int apprMasterId, decimal appraiserRating, string appraiserComment);
     }
 }

@@ -39,7 +39,7 @@
                             @GoalSheetResource.Designation
                         </div>
                         <div class="col-lg-3">
-                            @Html.DisplayFor(m => m.Employee.Designation.DesignationDescription)
+                            @Html.DisplayFor(m => m.PMSDesignation.PmsDesignationDescription)
                         </div>
                         <div class="col-lg-3" style="font-weight:bold;">
                             @GoalSheetResource.Location
@@ -240,7 +240,10 @@
                                             </td>
                                         </tr>
                                     }
-                                    else
+                                    //below Else if part will display reviewer rating which will only display to PMS /HR head and reviewer in readonly mode. Curretly Reviewer can't see after submit
+                                    // so in future if it require we need to change this SP - check_AppraisalStatus. In last Else part we need to check if it is reviewer or not by logged in id
+                                    // and need to return a new MODE which we will keep "OR"  condition to see readonly mode.
+                                    else if (string.Equals(Model.MODE, "HR_PMSHEAD_REVIEW"))
                                     {
                                         <tr>
                                             <td colspan="6">
@@ -252,6 +255,7 @@
                                             <td colspan="4">@Html.DisplayFor(m => m.ReviewerRatingLevel)</td>
                                         </tr>
                                     }
+
                                     @if (string.Equals(Model.MODE, "APPRAISER_REVIEW") || string.Equals(Model.MODE, "REVIEWER_REVIEW") || string.Equals(Model.MODE, "STAFF_FORM_FILLUP"))
                                     {
                                         <tr>
@@ -290,12 +294,12 @@
 
                             @if (string.Equals(Model.MODE, "Rating_Acceptance"))
                             {
-                                @Html.DisplayFor(m => m.ReviewerRatingLevel)
+                                @Html.DisplayFor(m => m.AppraiserFinalRatingLevel)
                                 <button type="submit" class="btn btn-primary" onclick="setSaveModeCompetency('AcceptRating');">Accept Rating</button>
                             }
                             else if (string.Equals(Model.MODE, "EMP_PROCESS_ENDED"))
                             {
-                                @Html.DisplayFor(m => m.ReviewerRatingLevel)
+                                @Html.DisplayFor(m => m.AppraiserFinalRatingLevel)
                             }
                             else
                             {
@@ -362,15 +366,26 @@
                                 <div class="col-lg-9">@Model.StrengthsShow</div>
                             }
                         </div>
-                        <div class="row">
+                        <div>
                             @if (string.Equals(Model.MODE, "COMPETENCY_CHECK"))
                             {
-                                <div class="col-lg-3">
-                                    @Html.OpMgrTextAreaFor(m => m.IndividualInitiative, GoalSheetResource.IndividualInitiative, new { @class = "form-control requiredField" })
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        @Html.OpMgrTextAreaFor(m => m.IndividualInitiative, GoalSheetResource.IndividualInitiative, new { @class = "form-control requiredField" })
+                                    </div>
+                                    <div class="col-lg-3">
+                                        @Html.OpMgrTextAreaFor(m => m.InstitutionalSupport, GoalSheetResource.InstitutionalSupport, new { @class = "form-control requiredField" })
+                                    </div>
                                 </div>
-                                <div class="col-lg-3">
-                                    @Html.OpMgrTextAreaFor(m => m.InstitutionalSupport, GoalSheetResource.InstitutionalSupport, new { @class = "form-control requiredField" })
-                                </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-3">
+                                            @Html.OpMgrTextAreaFor(m => m.AppraiserComment, GoalSheetResource.AppriserFinalComment, new { @class = "form-control requiredField" })
+                                        </div>
+                                        <div class="col-lg-3">
+                                            @Html.OpMgrDropDownListFor(m => m.AppraiserFinalRating, Model.RatingDropDown, "Final Rating After PMS Head Approval", new { @class = "form-control", @style = "width:200px;" })
+                                        </div>
+                                    </div>
                             }
                             else
                             {

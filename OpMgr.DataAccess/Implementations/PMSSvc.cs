@@ -200,7 +200,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    command.Parameters.Add("@DesignationId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.Designation.DesignationId;
+                    //command.Parameters.Add("@DesignationId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.Designation.DesignationId;
                     command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = data.EmployeeAppraisalMaster.Employee.EmployeeId;
                     if (data.EmployeeAppraisalMaster.EmployeeAppraisalMasterId == -1)
                     {
@@ -276,6 +276,15 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString();
                                 }
+
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"].ToString()))
+                                {
+                                    empgoallog.EmployeeAppraisalMaster.AppraiserFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"]);
+                                }
+                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString()))
+                                {
+                                    empgoallog.EmployeeAppraisalMaster.AppraiserComment = dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString();
+                                }
                                 goalList.ReturnObj.Add(empgoallog);
                             }
                         }
@@ -287,6 +296,8 @@ namespace OpMgr.DataAccess.Implementations
                                 //goalList.ReturnObj[0].EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
 
                                 goalList.ReturnObj[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId = empAppraisalMasterId;
+                                goalList.ReturnObj[0].EmployeeAppraisalMaster.PMSDesignation = new PMSDesignationDTO();
+                                goalList.ReturnObj[0].EmployeeAppraisalMaster.PMSDesignation.PmsDesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
                                 EmployeeDetailsDTO empdetails = new EmployeeDetailsDTO();
                                 empdetails.UserDetails = new UserMasterDTO();
                                 empdetails.UserDetails.Location = new LocationDTO();
@@ -294,7 +305,7 @@ namespace OpMgr.DataAccess.Implementations
                                 empdetails.UserDetails.FName = dsGoalLst.Tables[1].Rows[0]["FName"].ToString();
                                 empdetails.UserDetails.MName = dsGoalLst.Tables[1].Rows[0]["MName"].ToString();
                                 empdetails.UserDetails.LName = dsGoalLst.Tables[1].Rows[0]["LName"].ToString();
-                                empdetails.Designation.DesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
+                                //empdetails.Designation.DesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
                                 empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[1].Rows[0]["LocationDescription"].ToString();
                                 empdetails.EducationalQualification = dsGoalLst.Tables[1].Rows[0]["EducationQualification"].ToString();
                                 empdetails.DateOfJoining = Convert.ToDateTime(dsGoalLst.Tables[1].Rows[0]["DateOfJoining"]);
@@ -924,5 +935,40 @@ namespace OpMgr.DataAccess.Implementations
             }
             return statusPmsList;
         }
+
+        public bool UpdateAppraiserFinalRating(int apprMasterId, decimal appraiserFinalRating, string appraiserComment)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "update employeeappraisalmaster set AppraiserFinalRating=@appraiserFinalRating, UpdatedBy=@updatedBy, UpdatedDate=CURDATE(), Active=1, AppraiserComment=@appraiserComment where EmployeeAppraisalMasterId=@apprMaster";
+                    command.CommandType = CommandType.Text;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@appraiserFinalRating", MySqlDbType.Double).Value = appraiserFinalRating;
+                    command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                    command.Parameters.Add("@apprMaster", MySqlDbType.Int32).Value = apprMasterId;
+                    command.Parameters.Add("@appraiserComment", MySqlDbType.String).Value = appraiserComment;
+                    // add createdby from session
+
+                    StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+
     }
 }

@@ -57,8 +57,8 @@ namespace OperationsManager.Areas.PMS.Controllers
             }
             empGoalLog.EmployeeAppraisalMaster.Employee = new OpMgr.Common.DTOs.EmployeeDetailsDTO();
             empGoalLog.EmployeeAppraisalMaster.Employee.EmployeeId = _sessionSvc.GetUserSession().UniqueEmployeeId;
-            empGoalLog.EmployeeAppraisalMaster.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
-            empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
+            //empGoalLog.EmployeeAppraisalMaster.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
+            //empGoalLog.EmployeeAppraisalMaster.Employee.Designation.DesignationId = 15;
             List<OpMgr.Common.DTOs.EmployeeGoalLogDTO> empGoalLogs = _pmsSvc.Select(empGoalLog).ReturnObj;
 
             if (empGoalLogs == null || empGoalLogs.Count == 0)
@@ -91,6 +91,13 @@ namespace OperationsManager.Areas.PMS.Controllers
                 pmsVM.ReviewerRatingLevel = _pmsSvc.getSelfRating(Convert.ToInt32(pmsVM.ReviewerRating)).ReturnObj.SelfRating;
             }
 
+            //get appraiser Final rating which will be after discussion with PMS head and will be displayed as Level to Appraise
+            pmsVM.AppraiserFinalRating = empGoalLogs[0].EmployeeAppraisalMaster.AppraiserFinalRating;
+            if (pmsVM.AppraiserFinalRating > 0)
+            {
+                pmsVM.AppraiserFinalRatingLevel = _pmsSvc.getSelfRating(Convert.ToInt32(pmsVM.AppraiserFinalRating)).ReturnObj.SelfRating;
+            }
+
             pmsVM.EmployeeAppraisalMasterId = empGoalLogs[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId;
             pmsVM = pmsVM.GetGoals(empGoalLogs);
 
@@ -98,6 +105,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             pmsVM.IndividualInitiative = empGoalLogs[0].EmployeeAppraisalMaster.IndividualInitiative;
             pmsVM.InstitutionalSupport = empGoalLogs[0].EmployeeAppraisalMaster.InstitutionalSupport;
 
+            pmsVM.AppraiserComment = empGoalLogs[0].EmployeeAppraisalMaster.AppraiserComment;
             pmsVM.ReviewerComment = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerComment;
 
             pmsVM.FullName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.FName + " " + empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.LName;
@@ -107,7 +115,9 @@ namespace OperationsManager.Areas.PMS.Controllers
             pmsVM.Employee.StaffEmployeeId = empGoalLogs[0].EmployeeAppraisalMaster.Employee.StaffEmployeeId;
             pmsVM.Employee.ApproverName = empGoalLogs[0].EmployeeAppraisalMaster.Employee.ApproverName;
             pmsVM.Employee.Designation = new OpMgr.Common.DTOs.DesignationDTO();
-            pmsVM.Employee.Designation.DesignationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.Designation.DesignationDescription;
+            //pmsVM.Employee.Designation.DesignationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.Designation.DesignationDescription;
+            pmsVM.PMSDesignation = new PMSDesignationDTO();
+            pmsVM.PMSDesignation.PmsDesignationDescription = empGoalLogs[0].EmployeeAppraisalMaster.PMSDesignation.PmsDesignationDescription;
             pmsVM.Employee.UserDetails = new OpMgr.Common.DTOs.UserMasterDTO();
             pmsVM.Employee.UserDetails.Location = new OpMgr.Common.DTOs.LocationDTO();
             pmsVM.Employee.UserDetails.Location.LocationDescription = empGoalLogs[0].EmployeeAppraisalMaster.Employee.UserDetails.Location.LocationDescription;
@@ -132,6 +142,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             if (string.Equals(pmsVM.MODE, "COMPETENCY_CHECK"))
             {
                 pmsVM.CompetencyDDLSource = _uiddlRepo.getCompetencyDropDown();
+                pmsVM.RatingDropDown = _uiddlRepo.getAppraisalRatings();
             }
             if (string.Equals(pmsVM.MODE, "Rating_Acceptance"))
             {
@@ -242,6 +253,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     {
                         _pmsSvc.SaveCompetency(pmsVM.EmployeeAppraisalMasterId, pmsVM.ImprovementArea, pmsVM.Strengths);
                         _pmsSvc.UpdateInitiativeandSupport(pmsVM.EmployeeAppraisalMasterId, pmsVM.IndividualInitiative, pmsVM.InstitutionalSupport);
+                        _pmsSvc.UpdateAppraiserFinalRating(pmsVM.EmployeeAppraisalMasterId, pmsVM.AppraiserFinalRating, pmsVM.AppraiserComment);
                     }
                 }
                 else if(string.Equals(pmsVM.MODE, "Rating_Acceptance") && (string.Equals(pmsVM.SAVE_MODE, "AcceptRating")))

@@ -626,6 +626,10 @@
     <Content Include="admin\vector-map.html" />
     <Content Include="admin\widgets.html" />
     <Content Include="Areas\Login\Views\Login\schoolbuilding.jpg" />
+    <Content Include="bin\OpMgr.Common.dll" />
+    <Content Include="bin\OpMgr.Logger.dll" />
+    <Content Include="bin\OpMgr.Resources.dll" />
+    <Content Include="bin\OpMgr.Utilities.dll" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput-angular.js" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput-angular.min.js" />
     <Content Include="Content\bootstrap-tags-input\bootstrap-tagsinput.css" />

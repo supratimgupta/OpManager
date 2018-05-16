@@ -279,4 +279,10 @@
   <data name="GoalSheetBasedOnDesignation" xml:space="preserve">
     <value>Goal Sheet List</value>
   </data>
+  <data name="AppraiserFinalRating" xml:space="preserve">
+    <value>Appraiser Final Rating</value>
+  </data>
+  <data name="AppriserFinalComment" xml:space="preserve">
+    <value>Appraiser Comment</value>
+  </data>
 </root>
