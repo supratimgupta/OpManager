@@ -44,6 +44,12 @@
             });
         });
 
+        function setSaveMode(mode) {
+            document.getElementById("hdnPostMode").value = mode;
+            
+            return false;
+        }
+        
     </script>
 
 }
@@ -94,10 +100,23 @@
                                 <div class="col-lg-2">
                                     @Html.OpMgrDropDownListFor(m => m.Employee.UserDetails.Gender, Model.GenderList, GoalSheetResource.Gender, new { @class = "form-control" })
                                 </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m =>m.PMSDesignation, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control" })
+                                </div>
                             </div>
                             <div class="row col-lg-12">
                                 <div class="col-lg-2">
-                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block", onclick = "setSaveMode('Search');" }, "fa fa-search")
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrButtonWithIcon("btnSubmitRating", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "setSaveMode('PMSHeadApprove');",id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrButtonWithIcon("btnPMSHead", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "setSaveMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)
+
+                                </div>
+                                <div style="display:none;" id="divContainerHddnFlds">                                    
+                                    @Html.HiddenFor(m => m.MODE, new { id = "hdnPostMode" })
                                 </div>
                             </div>
                         </fieldset>
@@ -108,7 +127,7 @@
                 <div class="panel-heading"><b>@GoalSheetResource.AppraiseeResult</b></div>
                 <div class="panel-body">
                     <div style="overflow:scroll;">
-                        <table id="searchAppraisee" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                        <table id="searchAppraisee" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="false" data-select-item-name="toolbar1" data-pagination="false" data-sort-name="name" data-sort-order="desc">
                             <thead>
                                 <tr>
                                     <th></th>

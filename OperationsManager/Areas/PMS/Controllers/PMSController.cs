@@ -74,15 +74,15 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 int percentAchievement = Convert.ToInt32(Math.Ceiling(((pmsVM.SumOfAcheivement / Convert.ToDecimal(pmsVM.SumOfWeitage)) * 100)));
                 int percentAppraiser = Convert.ToInt32(Math.Ceiling(((pmsVM.SumOfAppraiserRating / Convert.ToDecimal(pmsVM.SumOfWeitage)) * 100)));
-                if(Convert.ToInt32(percentAchievement) > 0)
+                if (Convert.ToInt32(percentAchievement) > 0)
                 {
                     pmsVM.SummaryOfAcheivement = _pmsSvc.getSelfRating(Convert.ToInt32(percentAchievement)).ReturnObj.SelfRating;
                 }
-                if(Convert.ToInt32(percentAppraiser) > 0)
+                if (Convert.ToInt32(percentAppraiser) > 0)
                 {
                     pmsVM.SummaryOfAppraisal = _pmsSvc.getSelfRating(Convert.ToInt32(percentAppraiser)).ReturnObj.SelfRating;
                 }
-                
+
             }
 
             pmsVM.ReviewerRating = empGoalLogs[0].EmployeeAppraisalMaster.ReviewerFinalRating;
@@ -256,9 +256,9 @@ namespace OperationsManager.Areas.PMS.Controllers
                         _pmsSvc.UpdateAppraiserFinalRating(pmsVM.EmployeeAppraisalMasterId, pmsVM.AppraiserFinalRating, pmsVM.AppraiserComment);
                     }
                 }
-                else if(string.Equals(pmsVM.MODE, "Rating_Acceptance") && (string.Equals(pmsVM.SAVE_MODE, "AcceptRating")))
+                else if (string.Equals(pmsVM.MODE, "Rating_Acceptance") && (string.Equals(pmsVM.SAVE_MODE, "AcceptRating")))
                 {
-                    
+
                 }
                 else
                 {
@@ -362,6 +362,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                 //pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
                 if (status.IsSuccess && !status.IsException)
                 {
@@ -398,7 +399,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                             searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
                             //searchItem.Employee.Designation = new DesignationDTO();
                             //searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
-                            
+
                             //Add into PMSView vIew Model List
                             pmsview.PMSVMList.Add(searchItem);
                             pmsview.IsSearchSuccessful = true;
@@ -419,6 +420,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                 pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
                 pmsview.IsSearchSuccessful = true;
                 //pmsview.MsgColor = "green";
@@ -435,9 +437,9 @@ namespace OperationsManager.Areas.PMS.Controllers
 
             PmsMasterVM pmsView = new PmsMasterVM();//main model to be passed to View
             StatusDTO<List<PMSMasterDTO>> statusPms = _pmsSvc.GetAppraisalDetails(pmsId);
-            if (statusPms != null && statusPms.ReturnObj!=null && statusPms.IsSuccess && !statusPms.IsException)
+            if (statusPms != null && statusPms.ReturnObj != null && statusPms.IsSuccess && !statusPms.IsException)
             {
-                if(statusPms.ReturnObj.Count>0)
+                if (statusPms.ReturnObj.Count > 0)
                 {
                     pmsView.pmsViewList = new List<PmsMasterVM>();//List in View Model
                     foreach (PMSMasterDTO pms in statusPms.ReturnObj)
@@ -459,7 +461,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                         pmsViewSearchItem.Employee.Designation.DesignationDescription = pms.Employee.Designation.DesignationDescription;
 
                         pmsView.pmsViewList.Add(pmsViewSearchItem);
-                        if(pmsView.pmsViewList!=null && pmsView.pmsViewList.Count>0)
+                        if (pmsView.pmsViewList != null && pmsView.pmsViewList.Count > 0)
                         {
                             pmsView.IsSearchSuccessful = true;
                         }
@@ -487,72 +489,84 @@ namespace OperationsManager.Areas.PMS.Controllers
 
             if (pmsvm != null)
             {
-                empappraisalmasterdto = new EmployeeAppraisalMasterDTO();
-                empappraisalmasterdto.Employee = new EmployeeDetailsDTO();
-                empappraisalmasterdto.Employee.UserDetails = new UserMasterDTO();
-
-                empappraisalmasterdto.Employee.UserDetails.FName = pmsvm.Employee.UserDetails.FName;
-                empappraisalmasterdto.Employee.UserDetails.LName = pmsvm.Employee.UserDetails.LName;
-                empappraisalmasterdto.Employee.StaffEmployeeId = pmsvm.Employee.StaffEmployeeId;
-                empappraisalmasterdto.AppraisalType = pmsvm.AppraisalType;
-                empappraisalmasterdto.AppraisalStatus = pmsvm.AppraisalStatus;
-                empappraisalmasterdto.Employee.UserDetails.Gender = pmsvm.Employee.UserDetails.Gender;
-
-                StatusDTO<List<EmployeeAppraisalMasterDTO>> status = _pmsSvc.SearchAppraisee(pmsvm);
-                if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+                if (string.Equals(pmsvm.MODE, "Search"))
                 {
-                    pmsview = new PMSVM(); // Instantiating PMS View model
-                    pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
+                    empappraisalmasterdto = new EmployeeAppraisalMasterDTO();
+                    empappraisalmasterdto.Employee = new EmployeeDetailsDTO();
+                    empappraisalmasterdto.Employee.UserDetails = new UserMasterDTO();
 
-                    //Fetch the StandardSection List
-                    pmsview.GenderList = _uiddlRepo.getGenderDropDown();
-                    // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
-                    pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
-                    pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                    empappraisalmasterdto.Employee.UserDetails.FName = pmsvm.Employee.UserDetails.FName;
+                    empappraisalmasterdto.Employee.UserDetails.LName = pmsvm.Employee.UserDetails.LName;
+                    empappraisalmasterdto.Employee.StaffEmployeeId = pmsvm.Employee.StaffEmployeeId;
+                    empappraisalmasterdto.AppraisalType = pmsvm.AppraisalType;
+                    empappraisalmasterdto.AppraisalStatus = pmsvm.AppraisalStatus;
+                    empappraisalmasterdto.Employee.UserDetails.Gender = pmsvm.Employee.UserDetails.Gender;
 
-                    if (status.IsSuccess && !status.IsException)
+                    StatusDTO<List<EmployeeAppraisalMasterDTO>> status = _pmsSvc.SearchAppraisee(pmsvm);
+                    if (status.ReturnObj != null && status.ReturnObj.Count > 0)
                     {
-                        //studView = new List<StudentVM>();
-                        PMSVM searchItem = null;
-                        foreach (EmployeeAppraisalMasterDTO appraisalmaster in status.ReturnObj)
+                        pmsview = new PMSVM(); // Instantiating PMS View model
+                        pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
+
+                        //Fetch the StandardSection List
+                        pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+                        // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                        pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                        pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                        pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
+
+                        if (status.IsSuccess && !status.IsException)
                         {
-                            if (appraisalmaster != null)
+                            //studView = new List<StudentVM>();
+                            PMSVM searchItem = null;
+                            foreach (EmployeeAppraisalMasterDTO appraisalmaster in status.ReturnObj)
                             {
-                                searchItem = new PMSVM(); // instantiating each PMVM                            
-                                searchItem.UserDetails = new UserMasterDTO();
-                                searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
-                                searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
-                                searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
-
-                                searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
-                                if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
+                                if (appraisalmaster != null)
                                 {
-                                    searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.MName;
+                                    searchItem = new PMSVM(); // instantiating each PMVM                            
+                                    searchItem.UserDetails = new UserMasterDTO();
+                                    searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
+                                    searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
+                                    searchItem.UserDetails.LName = appraisalmaster.Employee.UserDetails.LName;
+
+                                    searchItem.FullName = appraisalmaster.Employee.UserDetails.FName;
+                                    if (!string.IsNullOrEmpty(appraisalmaster.Employee.UserDetails.FName))
+                                    {
+                                        searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.MName;
+                                    }
+
+                                    searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
+                                    searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
+                                    searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
+                                    searchItem.AppraisalType = appraisalmaster.AppraisalType;
+                                    searchItem.AppraisalStatus = new AppraisalStatusDTO();
+                                    searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
+
+                                    searchItem.UserDetails.Location = new LocationDTO();
+                                    searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                                    searchItem.Employee = new EmployeeDetailsDTO();
+                                    searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
+                                    searchItem.Employee.Designation = new DesignationDTO();
+                                    searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
+                                    //Add into PMSView vIew Model List
+                                    pmsview.PMSVMList.Add(searchItem);
+                                    pmsview.IsSearchSuccessful = true;
+
                                 }
-
-                                searchItem.FullName = searchItem.FullName + " " + searchItem.UserDetails.LName;
-                                searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
-                                searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
-                                searchItem.AppraisalType = appraisalmaster.AppraisalType;
-                                searchItem.AppraisalStatus = new AppraisalStatusDTO();
-                                searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
-
-                                searchItem.UserDetails.Location = new LocationDTO();
-                                searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
-                                searchItem.Employee = new EmployeeDetailsDTO();
-                                searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
-                                searchItem.Employee.Designation = new DesignationDTO();
-                                searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
-                                //Add into PMSView vIew Model List
-                                pmsview.PMSVMList.Add(searchItem);
-                                pmsview.IsSearchSuccessful = true;
-
                             }
                         }
+                        if (status.IsException)
+                        {
+                            throw new Exception(status.ExceptionMessage);
+                        }
                     }
-                    if (status.IsException)
+                    else if (string.Equals(pmsvm.MODE, "PMSHeadApprove"))
                     {
-                        throw new Exception(status.ExceptionMessage);
+                        _pmsSvc.UpdatePMSHeadApproval(pmsvm);
+                    }
+                    else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
+                    {
+                        _pmsSvc.ExcelDataForPMSHead(pmsvm);
                     }
                 }
                 else
@@ -563,6 +577,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
                     pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                     pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                    pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
                     pmsview.IsSearchSuccessful = true;
                     //pmsview.MsgColor = "green";
@@ -584,8 +599,8 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 pmsview = new PMSVM(); // Instantiating PMS View model
                 pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
-                
-                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();                
+
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
 
                 if (status.IsSuccess && !status.IsException)
                 {
@@ -623,7 +638,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                             searchItem.Employee = new EmployeeDetailsDTO();
                             searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
                             searchItem.Employee.Designation = new DesignationDTO();
-                            searchItem.Employee.Designation.DesignationId = Convert.ToInt32(appraisalmaster.Employee.Designation.DesignationId); 
+                            searchItem.Employee.Designation.DesignationId = Convert.ToInt32(appraisalmaster.Employee.Designation.DesignationId);
                             searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
                             //Add into PMSView vIew Model List
                             pmsview.PMSVMList.Add(searchItem);
@@ -638,8 +653,8 @@ namespace OperationsManager.Areas.PMS.Controllers
             }
             else
             {
-                pmsview = new PMSVM();                
-                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();                
+                pmsview = new PMSVM();
+                pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                 pmsview.IsSearchSuccessful = false;
                 //pmsview.MsgColor = "green";
                 //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";

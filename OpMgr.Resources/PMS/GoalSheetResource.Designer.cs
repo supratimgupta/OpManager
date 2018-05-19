@@ -259,6 +259,15 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel For PMS Head.
+        /// </summary>
+        public static string ExcelPMSHead {
+            get {
+                return ResourceManager.GetString("ExcelPMSHead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Years Of Experience.
         /// </summary>
         public static string ExpYr {
@@ -426,6 +435,15 @@ namespace OpMgr.Resources.PMS {
         public static string Qualification {
             get {
                 return ResourceManager.GetString("Qualification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release Final Rating.
+        /// </summary>
+        public static string ReleaseFinalRating {
+            get {
+                return ResourceManager.GetString("ReleaseFinalRating", resourceCulture);
             }
         }
         

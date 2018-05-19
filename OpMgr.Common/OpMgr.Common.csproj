@@ -103,6 +103,7 @@
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
     <Compile Include="DTOs\GoalAttributeDTO.cs" />
     <Compile Include="DTOs\GoalDTO.cs" />
+    <Compile Include="DTOs\GoalLogExcelDTO.cs" />
     <Compile Include="DTOs\GradeConfigDTO.cs" />
     <Compile Include="DTOs\HouseTypeDTO.cs" />
     <Compile Include="DTOs\KeyValueDTO.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="DTOs\PMSDesignationDTO.cs" />
     <Compile Include="DTOs\PMSEmpDesignationMap.cs" />
     <Compile Include="DTOs\PMSMasterDTO.cs" />
+    <Compile Include="DTOs\PMSMasterExcelDTO.cs" />
     <Compile Include="DTOs\RatingDTO.cs" />
     <Compile Include="DTOs\ResultCardDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
