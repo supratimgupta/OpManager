@@ -987,7 +987,10 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         return true;
                     }
-                    return false;
+                    else
+                    {
+                        return false;
+                    }
                 }
                 catch (Exception exp)
                 {

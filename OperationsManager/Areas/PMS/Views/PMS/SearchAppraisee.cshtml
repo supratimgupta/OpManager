@@ -44,9 +44,28 @@
             });
         });
 
-        function setSaveMode(mode) {
+        function setMode(mode) {
+            debugger;
+            alert(mode);
             document.getElementById("hdnPostMode").value = mode;
-            
+            if (mode = "PMSHeadApprove")
+            {
+                var answer = confirm("Do You Want to allow All Appraiser to Release Final Rating for PMS?");
+                if (answer) {
+                    return true;
+                }
+                else {
+                    return false;
+                }                
+            }
+            else if (mode = "ExcelForPMSHead") {
+                var designation = $('#PMSDesignation option:selected').text();
+                alert(designation);
+                return false;
+            }
+            else {
+                return false;
+            }
             return false;
         }
         
@@ -106,13 +125,15 @@
                             </div>
                             <div class="row col-lg-12">
                                 <div class="col-lg-2">
-                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block", onclick = "setSaveMode('Search');" }, "fa fa-search")
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block", onclick = "setMode('Search');" }, "fa fa-search")
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrButtonWithIcon("btnSubmitRating", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "setSaveMode('PMSHeadApprove');",id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)                                    
+                                    <button type="submit" class="btn btn-primary" onclick="setMode('PMSHeadApprove');">Release Final Rating</button>
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "setMode('PMSHeadApprove');", id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)*@                                    
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrButtonWithIcon("btnPMSHead", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "setSaveMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)
+                                    <button type="submit" class="btn btn-primary" onclick="setMode('ExcelForPMSHead');">Excel For PMS Head</button>
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "setMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)*@
 
                                 </div>
                                 <div style="display:none;" id="divContainerHddnFlds">                                    

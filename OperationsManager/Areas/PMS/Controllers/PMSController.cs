@@ -559,15 +559,15 @@ namespace OperationsManager.Areas.PMS.Controllers
                         {
                             throw new Exception(status.ExceptionMessage);
                         }
-                    }
-                    else if (string.Equals(pmsvm.MODE, "PMSHeadApprove"))
-                    {
-                        _pmsSvc.UpdatePMSHeadApproval(pmsvm);
-                    }
-                    else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
-                    {
-                        _pmsSvc.ExcelDataForPMSHead(pmsvm);
-                    }
+                    }                    
+                }
+                else if (string.Equals(pmsvm.MODE, "PMSHeadApprove"))
+                {
+                    _pmsSvc.UpdatePMSHeadApproval(pmsvm);
+                }
+                else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
+                {
+                    _pmsSvc.ExcelDataForPMSHead(pmsvm);
                 }
                 else
                 {
@@ -579,7 +579,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
                     pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
-                    pmsview.IsSearchSuccessful = true;
+                    pmsview.IsSearchSuccessful = false;
                     //pmsview.MsgColor = "green";
                     //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
                 }
@@ -601,6 +601,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 pmsview.PMSVMList = new List<PMSVM>(); // instantiating list of PMSVM
 
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                pmsview.MODE = "Initiated";
 
                 if (status.IsSuccess && !status.IsException)
                 {
@@ -656,6 +657,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 pmsview = new PMSVM();
                 pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                 pmsview.IsSearchSuccessful = false;
+                pmsview.MODE = "NotInitiated";
                 //pmsview.MsgColor = "green";
                 //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
             }

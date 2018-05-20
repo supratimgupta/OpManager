@@ -291,4 +291,7 @@
   <data name="ReleaseFinalRating" xml:space="preserve">
     <value>Release Final Rating</value>
   </data>
+  <data name="InitiateAppraisal" xml:space="preserve">
+    <value>Initiate Appraisal</value>
+  </data>
 </root>

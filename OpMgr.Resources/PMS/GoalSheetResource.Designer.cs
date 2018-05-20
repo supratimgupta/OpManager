@@ -376,6 +376,15 @@ namespace OpMgr.Resources.PMS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initiate Appraisal.
+        /// </summary>
+        public static string InitiateAppraisal {
+            get {
+                return ResourceManager.GetString("InitiateAppraisal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Institutional Support.
         /// </summary>
         public static string InstitutionalSupport {
