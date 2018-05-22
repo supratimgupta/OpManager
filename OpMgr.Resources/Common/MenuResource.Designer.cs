@@ -241,6 +241,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ENTER REMARKS.
+        /// </summary>
+        public static string RemarksEntry {
+            get {
+                return ResourceManager.GetString("RemarksEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RESULTS.
         /// </summary>
         public static string Results {
