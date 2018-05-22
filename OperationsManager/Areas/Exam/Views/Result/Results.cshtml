@@ -65,6 +65,7 @@
                 var intPart = idCanvas.split('_')[1];
                 document.getElementById("imgGraph_"+intPart).src = arrCanvases[i].toDataURL();
             }
+            $("#btnPrint").removeAttr('disabled');
         });
     </script>
 }
@@ -95,7 +96,7 @@
                             @Html.OpMgrSubmitButtonWithIcon("btnSearch", "Search", new { @class = "btn btn-primary btn-block" }, "fa fa-search")
                         </div>
                         <div class="col-lg-3">
-                            @Html.OpMgrButtonWithIcon("btnSearch", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();" }, "fa fa-print")
+                            @Html.OpMgrButtonWithIcon("btnPrint", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();", disabled="disabled" }, "fa fa-print")
                         </div>
                     </fieldset>
                 </div>
@@ -244,6 +245,7 @@
 
                                                                             var chartOptions = {
                                                                                 barValueSpacing: 5,
+                                                                                animation: false,
                                                                                 scales: {
                                                                                     xAxes: [{
                                                                                         ticks: {
