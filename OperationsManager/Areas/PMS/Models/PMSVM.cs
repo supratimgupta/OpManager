@@ -116,5 +116,9 @@ namespace OperationsManager.Areas.PMS.Models
         public string InstitutionalSupport { get; set; }
 
         public string ReviewerRatingLevel { get; set; }
+        
+        public string AppraiserFinalRatingLevel { get; set; }
+
+        public SelectList PMSDesignationList { get; set; }
     }
 }

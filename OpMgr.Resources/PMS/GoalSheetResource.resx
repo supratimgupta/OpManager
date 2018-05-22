@@ -279,4 +279,19 @@
   <data name="GoalSheetBasedOnDesignation" xml:space="preserve">
     <value>Goal Sheet List</value>
   </data>
+  <data name="AppraiserFinalRating" xml:space="preserve">
+    <value>Appraiser Final Rating</value>
+  </data>
+  <data name="AppriserFinalComment" xml:space="preserve">
+    <value>Appraiser Comment</value>
+  </data>
+  <data name="ExcelPMSHead" xml:space="preserve">
+    <value>Excel For PMS Head</value>
+  </data>
+  <data name="ReleaseFinalRating" xml:space="preserve">
+    <value>Release Final Rating</value>
+  </data>
+  <data name="InitiateAppraisal" xml:space="preserve">
+    <value>Initiate Appraisal</value>
+  </data>
 </root>

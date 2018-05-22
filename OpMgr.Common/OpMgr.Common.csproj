@@ -104,6 +104,7 @@
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
     <Compile Include="DTOs\GoalAttributeDTO.cs" />
     <Compile Include="DTOs\GoalDTO.cs" />
+    <Compile Include="DTOs\GoalLogExcelDTO.cs" />
     <Compile Include="DTOs\GradeConfigDTO.cs" />
     <Compile Include="DTOs\HouseTypeDTO.cs" />
     <Compile Include="DTOs\KeyValueDTO.cs" />
@@ -112,7 +113,10 @@
     <Compile Include="DTOs\MailDTO.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\PasswordDTO.cs" />
+    <Compile Include="DTOs\PMSDesignationDTO.cs" />
+    <Compile Include="DTOs\PMSEmpDesignationMap.cs" />
     <Compile Include="DTOs\PMSMasterDTO.cs" />
+    <Compile Include="DTOs\PMSMasterExcelDTO.cs" />
     <Compile Include="DTOs\RatingDTO.cs" />
     <Compile Include="DTOs\ResultCardDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
@@ -142,6 +146,15 @@
       <Project>{1597930e-b3b4-42d3-b17d-cd4ebb0cd396}</Project>
       <Name>OpMgr.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\OpMgr.Common.dll" />
+    <Content Include="bin\Debug\OpMgr.Common.pdb" />
+    <Content Include="bin\Debug\OpMgr.Resources.dll" />
+    <Content Include="bin\Debug\OpMgr.Resources.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -44,6 +44,31 @@
             });
         });
 
+        function setMode(mode) {
+            debugger;
+            alert(mode);
+            document.getElementById("hdnPostMode").value = mode;
+            if (mode = "PMSHeadApprove")
+            {
+                var answer = confirm("Do You Want to allow All Appraiser to Release Final Rating for PMS?");
+                if (answer) {
+                    return true;
+                }
+                else {
+                    return false;
+                }                
+            }
+            else if (mode = "ExcelForPMSHead") {
+                var designation = $('#PMSDesignation option:selected').text();
+                alert(designation);
+                return false;
+            }
+            else {
+                return false;
+            }
+            return false;
+        }
+        
     </script>
 
 }
@@ -94,10 +119,25 @@
                                 <div class="col-lg-2">
                                     @Html.OpMgrDropDownListFor(m => m.Employee.UserDetails.Gender, Model.GenderList, GoalSheetResource.Gender, new { @class = "form-control" })
                                 </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m =>m.PMSDesignation, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control" })
+                                </div>
                             </div>
                             <div class="row col-lg-12">
                                 <div class="col-lg-2">
-                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block", onclick = "setMode('Search');" }, "fa fa-search")
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="submit" class="btn btn-primary" onclick="setMode('PMSHeadApprove');">Release Final Rating</button>
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "setMode('PMSHeadApprove');", id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)*@                                    
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="submit" class="btn btn-primary" onclick="setMode('ExcelForPMSHead');">Excel For PMS Head</button>
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "setMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)*@
+
+                                </div>
+                                <div style="display:none;" id="divContainerHddnFlds">                                    
+                                    @Html.HiddenFor(m => m.MODE, new { id = "hdnPostMode" })
                                 </div>
                             </div>
                         </fieldset>
@@ -108,7 +148,7 @@
                 <div class="panel-heading"><b>@GoalSheetResource.AppraiseeResult</b></div>
                 <div class="panel-body">
                     <div style="overflow:scroll;">
-                        <table id="searchAppraisee" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                        <table id="searchAppraisee" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="false" data-select-item-name="toolbar1" data-pagination="false" data-sort-name="name" data-sort-order="desc">
                             <thead>
                                 <tr>
                                     <th></th>

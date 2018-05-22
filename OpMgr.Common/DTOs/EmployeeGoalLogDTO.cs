@@ -41,5 +41,7 @@ namespace OpMgr.Common.DTOs
         public string NeedsUpdate { get; set; }
 
         public string NeedsAppraiserUpdate { get; set; }
+
+        public PMSDesignationDTO PMSDesignation { get; set; }
     }
 }

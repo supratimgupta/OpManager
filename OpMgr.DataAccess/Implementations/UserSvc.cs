@@ -13,17 +13,19 @@ using OpMgr.Common.Contracts.Modules;
 
 namespace OpMgr.DataAccess.Implementations
 {
-    public class UserSvc : IUserSvc, IDisposable
+    public class UserSvc : IUserSvc, IDisposable 
     {
         private IConfigSvc _configSvc;
         private DataTable _dtData;
         private DataSet _dsData;
         private ILogSvc _logger;
-
+        
+        
         public UserSvc(IConfigSvc configSvc, ILogSvc logger)
         {
             _configSvc = configSvc;
             _logger = logger;
+            
         }
 
         //public StatusDTO<UserMasterDTO> Delete(UserMasterDTO data)
@@ -915,6 +917,145 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
             return returnValue;
+        }
+
+        //to get PMS designation mAp
+        public List<PMSEmpDesignationMapDTO> GetPMSDesignationMap(int empId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "SELECT PmsEmpdesmapId, EmployeeId, PmsDesignationId FROM pmsempdesignationmap WHERE Active=1 and EmployeeId=@empId";
+                    command.Parameters.Add("@empId", MySqlDbType.Int32).Value = empId;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    MySqlDataAdapter mDa = new MySqlDataAdapter(command);
+                    _dtData = new DataTable();
+                    mDa.Fill(_dtData);
+                    List<PMSEmpDesignationMapDTO> lstUEnt = null;
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        lstUEnt = new List<PMSEmpDesignationMapDTO>();
+                        PMSEmpDesignationMapDTO uEntDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            uEntDTO = new PMSEmpDesignationMapDTO();
+                            uEntDTO.Employee = new EmployeeDetailsDTO();
+                            uEntDTO.PmsDesignation = new PMSDesignationDTO();
+
+                            uEntDTO.PmsEmpDesmapId = (int)dr["PmsEmpdesmapId"];
+                            uEntDTO.Employee.EmployeeId = (int)dr["EmployeeId"];
+                            uEntDTO.PmsDesignation.PmsDesignationId = (int)dr["PmsDesignationId"];
+
+                            lstUEnt.Add(uEntDTO);
+                        }
+                    }
+                    return lstUEnt;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        //insert and delete of PMS designation map for Employee
+
+        public StatusDTO<PMSEmpDesignationMapDTO> InsertPMSDesignationMap(PMSEmpDesignationMapDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "InsertPMSDesignationMap";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@EmployeeId1", MySqlDbType.String).Value = data.Employee.EmployeeId;
+                    command.Parameters.Add("@PmsDesignationId1", MySqlDbType.String).Value = data.PmsDesignation.PmsDesignationId;
+                    command.Parameters.Add("UserMasterId1", MySqlDbType.Int32).Value = data.CreatedBy.UserMasterId;
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<PMSEmpDesignationMapDTO> status = new StatusDTO<PMSEmpDesignationMapDTO>();
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        public StatusDTO<PMSEmpDesignationMapDTO> DeletePMSDesignationMap(PMSEmpDesignationMapDTO data)
+        {
+            StatusDTO<PMSEmpDesignationMapDTO> status = new StatusDTO<PMSEmpDesignationMapDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "update  pmsempdesignationmap set Active=0,UpdatedBy=@UserMasterId1,UpdatedDate=@UpdatedDate WHERE PmsEmpDesmapId=@PmsEmpdesmapId";
+                    command.Parameters.Add("@PmsEmpdesmapId", MySqlDbType.Int32).Value = data.PmsEmpDesmapId;
+                    command.Parameters.Add("@UserMasterId1", MySqlDbType.Int32).Value = data.UpdatedBy.UserMasterId;
+                    command.Parameters.Add("@UpdatedDate", MySqlDbType.Datetime).Value = DateTime.Now ;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
+        }
+
+        //update PMS designation Map
+        public StatusDTO<PMSEmpDesignationMapDTO> UpdatePMSDesignationMap(PMSEmpDesignationMapDTO data)
+        {
+            StatusDTO<PMSEmpDesignationMapDTO> status = new StatusDTO<PMSEmpDesignationMapDTO>();
+            status.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "UPDATE pmsempdesignationmap set PmsDesignationId=@PmsDesignationId,UpdatedBy=@UserMasterId1,UpdatedDate=@UpdatedDate WHERE PmsEmpdesmapId=@PMSEmpDesMapId";
+                    command.Parameters.Add("@PMSEmpDesMapId", MySqlDbType.Int32).Value = data.PmsEmpDesmapId;
+                    command.Parameters.Add("@PmsDesignationId", MySqlDbType.Int32).Value = data.PmsDesignation.PmsDesignationId;
+                    command.Parameters.Add("@UpdatedDate", MySqlDbType.Datetime).Value = DateTime.Now;
+                    command.Parameters.Add("@UserMasterId1", MySqlDbType.Int32).Value = data.UpdatedBy.UserMasterId;
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    _logger.Log(exp);
+                    throw exp;
+                }
+            }
         }
     }
 }

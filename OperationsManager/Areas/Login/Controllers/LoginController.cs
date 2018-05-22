@@ -232,6 +232,8 @@ namespace OperationsManager.Areas.Login.Controllers
                     uvModel.Employee.Designation = dto.ReturnObj.Employee.Designation;
 
                     uvModel.FacultyCourseList = _userSvc.GetFacultyCourseMap(dto.ReturnObj.Employee.EmployeeId);
+                    //get PMS designation Map
+                    uvModel.PMSEmpDesignationMapList = _userSvc.GetPMSDesignationMap(dto.ReturnObj.Employee.EmployeeId);
                     if (dto.ReturnObj.Employee.ClassType != null)
                     {
                         uvModel.Employee.ClassType = dto.ReturnObj.Employee.ClassType;
@@ -252,6 +254,7 @@ namespace OperationsManager.Areas.Login.Controllers
             uvModel.RoleList = _uiddlRepo.getRoleDropDown();
             uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
+            uvModel.PmsDesignationList = _ddlRepo.PmsDesignation();
             uvModel.SelectUserEntitlement = _ddlRepo.GetUserRole();
             uvModel.ClassTypeList = _uiddlRepo.getClassTypeDropDown();
             //uvModel.SubjectList = _uiddlRepo.getSubjectDropDown();
@@ -372,6 +375,28 @@ namespace OperationsManager.Areas.Login.Controllers
                         }
                     }
 
+                    // update PMS Emp Designation
+                    if (uvModel.PMSEmpDesignationMapList != null && uvModel.PMSEmpDesignationMapList.Count > 0)
+                    {
+                        for (int i = 0; i < uvModel.PMSEmpDesignationMapList.Count; i++)
+                        {
+                            if (uvModel.PMSEmpDesignationMapList[i].PmsEmpDesmapId > 0)
+                            {
+                                uvModel.PMSEmpDesignationMapList[i].UpdatedBy = new UserMasterDTO();
+                                uvModel.PMSEmpDesignationMapList[i].UpdatedBy.UserMasterId = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
+                                _userSvc.UpdatePMSDesignationMap(uvModel.PMSEmpDesignationMapList[i]);
+                            }
+                            else
+                            {
+                                uvModel.PMSEmpDesignationMapList[i].CreatedBy = new UserMasterDTO();
+                                uvModel.PMSEmpDesignationMapList[i].CreatedBy.UserMasterId = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
+                                uvModel.PMSEmpDesignationMapList[i].Employee = new EmployeeDetailsDTO();
+                                uvModel.PMSEmpDesignationMapList[i].Employee.EmployeeId = uvModel.hdnEmployeeId;
+                                _userSvc.InsertPMSDesignationMap(uvModel.PMSEmpDesignationMapList[i]);
+                            }
+                        }
+                    }
+
                     if (uvModel.FacultyCourseList != null && uvModel.FacultyCourseList.Count > 0)
                     {
                         for (int i = 0; i < uvModel.FacultyCourseList.Count; i++)
@@ -423,12 +448,27 @@ namespace OperationsManager.Areas.Login.Controllers
                             _userSvc.InsertFacultyCourse(uvModel.FacultyCourseList[i]);
                         }
                     }
+
+                    //Assign Multiple PMS Designation
+                    if (uvModel.PMSEmpDesignationMapList != null && uvModel.PMSEmpDesignationMapList.Count > 0)
+                    {
+                        for (int i = 0; i < uvModel.PMSEmpDesignationMapList.Count; i++)
+                        {
+                            uvModel.PMSEmpDesignationMapList[i].CreatedBy = new UserMasterDTO();
+                            uvModel.PMSEmpDesignationMapList[i].CreatedBy.UserMasterId = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
+                            uvModel.PMSEmpDesignationMapList[i].Employee = new EmployeeDetailsDTO();
+                            
+                            uvModel.PMSEmpDesignationMapList[i].Employee.EmployeeId = status.ReturnObj.Employee.EmployeeId;
+                            _userSvc.InsertPMSDesignationMap(uvModel.PMSEmpDesignationMapList[i]);
+                        }
+                    }
                 }
                 uvModel.GenderList = _uiddlRepo.getGenderDropDown();
                 uvModel.LocationList = _uiddlRepo.getLocationDropDown();
                 uvModel.RoleList = _uiddlRepo.getRoleDropDown();
                 uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
                 uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
+                //uvModel.PmsDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
                 //return View(uvModel);           
                 return RedirectToAction("Search", "User", new { area = "User" });
@@ -598,6 +638,26 @@ namespace OperationsManager.Areas.Login.Controllers
         public JsonResult GetUserEntitlementDDL()
         {
             return Json(_ddlRepo.GetUserRole(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetPMSDesignation()
+        {
+            return Json(_ddlRepo.PmsDesignation(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeletePmsDesignationMap(PMSEmpDesignationMapDTO pmsdes)
+        {
+            pmsdes.UpdatedBy = new UserMasterDTO();
+            pmsdes.UpdatedBy.UserMasterId = _sessionSvc.GetUserSession().UserMasterId;
+            if (_userSvc.DeletePMSDesignationMap(pmsdes).IsSuccess)
+            {
+                return Json(new { status = true, message = "Deleted successfully." }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { status = false, message = "Delete failed." }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
