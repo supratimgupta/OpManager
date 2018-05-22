@@ -1,0 +1,105 @@
+﻿@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Exam.Models.StudentRemarksVM
+
+@{
+    ViewBag.Title = "Remarks";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+@section PageScripts{
+    <script language="javascript" type="text/javascript">
+        function setMode(mode) {
+            document.getElementById("hfMode").value = mode;
+        }
+    </script>
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <b>Enter Remarks</b>
+                </div>
+                <div class="panel-body">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedLocation, Model.LocationList, "Location", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedStandardSection, Model.StandardSectionList, "Standard & Section", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedResultType, Model.ResultTypes, "Exam Type", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrSubmitButtonWithIcon("btnSearch", "Search", new { @class = "btn btn-primary btn-block", onclick="setMode('SEARCH');" }, "fa fa-search")
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.HiddenFor(m => m.MODE, new { id="hfMode" })
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <b>Student Results</b>
+                </div>
+                <div id="printSection">
+                    <div class="panel-body printPanel">
+                        @if (Model.SearchResult == null || Model.SearchResult.Count == 0)
+                        {
+                            <span class="danger" style="color:red">NO RESULTS IS FOUND FOR THIS SEARCH</span>
+                        }
+                        else
+                        {
+                            <table class="table table-bordered table-hover table-responsive table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.OpMgrSubmitButtonWithIcon("btnSave", "Save", new { @class = "btn btn-primary btn-block", onclick = "setMode('SAVE');" }, "fa fa-file-archive-o")
+                                        </th>
+                                        <th colspan="2"></th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Registration
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th style="width:50%">
+                                            Remarks
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.SearchResult.Count; i++ )
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.HiddenFor(m=>m.SearchResult[i].StudentRemarksId)
+                                                @Html.HiddenFor(m=>m.SearchResult[i].Student.StudentInfoId)
+                                                @Model.SearchResult[i].Student.RegistrationNumber
+                                            </td>
+                                            <td>
+                                                @(Model.SearchResult[i].Student.UserDetails.FName + " " + Model.SearchResult[i].Student.UserDetails.LName)
+                                            </td>
+                                            <td>
+                                                @Html.OpMgrTextAreaFor(m => m.SearchResult[i].Remarks, "", new { @class = "form-control requiredField" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
