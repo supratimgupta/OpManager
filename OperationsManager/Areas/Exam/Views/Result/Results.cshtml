@@ -31,7 +31,7 @@
 
             mywindow.document.write('<html><head><title></title>');
             //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
-            mywindow.document.write('<style>@@media print{.resultCard{page-break-after: always; margin-top: 200px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}}</style>');
+            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .resultCard{page-break-after: always; margin-top: 150px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}}</style>');
             mywindow.document.write('<style> body {font-size: 12px;} .headerSummary{font-weight:bold;} .printInnerTable{border-collapse: collapse; text-align:left;} .graphImage{display:inline;} .graphCanvas{display:none;}</style>');
             mywindow.document.write('</head><body>');
             mywindow.document.write(document.getElementById("printSection").innerHTML);
@@ -345,7 +345,7 @@
 
                                                     </td>
                                                     <td>
-
+                                                        <img width="70" height="60" src="~/Images/principalsSign.jpg" />
                                                     </td>
                                                 </tr>
                                                 <tr>
