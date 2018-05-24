@@ -1149,6 +1149,46 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        //below method will initiate appraisal and insert data in employeeappraisalmaster table by appraisee
+        public StatusDTO<EmployeeAppraisalMasterDTO> InitiateAppraisal(string AppraisalType)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "InitiateAppraisal";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
+                    command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = AppraisalType;
+                    command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                    // add createdby from session
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<EmployeeAppraisalMasterDTO> status = new StatusDTO<EmployeeAppraisalMasterDTO>();
+                    status.ReturnObj = new EmployeeAppraisalMasterDTO();
+                    if (_dtData.Rows.Count > 0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj.EmpAppPmsMasterId = Convert.ToInt32(_dtData.Rows[0][0].ToString());
+                        status.IsException = false;
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "Appraisal Initiation Failed";
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

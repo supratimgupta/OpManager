@@ -559,7 +559,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                         {
                             throw new Exception(status.ExceptionMessage);
                         }
-                    }                    
+                    }
                 }
                 else if (string.Equals(pmsvm.MODE, "PMSHeadApprove"))
                 {
@@ -663,6 +663,41 @@ namespace OperationsManager.Areas.PMS.Controllers
             }
 
             return View(pmsview);
+        }
+
+        //below method will call while initiate the the goalsheet
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult PMSMUltipleGoalSheet(PMSVM pmsvm)
+        {
+            PMSVM pmsview = null;
+            
+            if (pmsvm != null)
+            {
+                if (string.Equals(pmsvm.MODE, "NotInitiated"))
+                {
+                    StatusDTO<EmployeeAppraisalMasterDTO> status = _pmsSvc.InitiateAppraisal(pmsvm.AppraisalType);
+                    
+
+                    if (status.IsSuccess)
+                    {
+                        pmsview = new PMSVM(); // Instantiating PMS View model
+                        
+                        //pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                        pmsview.MODE = "Initiated";
+                        //pmsview.IsSearchSuccessful = true;
+                    }
+                    else
+                    {
+                        pmsview = new PMSVM();
+                        //pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                        //pmsview.IsSearchSuccessful = false;
+                        pmsview.MODE = "NotInitiated";
+                    }
+                }
+            }
+
+            return RedirectToAction("PMSMUltipleGoalSheet");
         }
     }
 }

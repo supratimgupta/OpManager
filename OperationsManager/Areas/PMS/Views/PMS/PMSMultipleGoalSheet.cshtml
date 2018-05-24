@@ -6,6 +6,27 @@
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
+@section PageScripts
+{
+    <script type="text/javascript">
+
+        function validateAppraisal()
+        {            
+            var appraisalType = $("#AppraisalType").val();
+            
+            if (appraisalType == 'Annual' || appraisalType == 'MidYear')
+            {
+                return true;
+            }
+            else
+            {
+                alert("Please Select Appraisal Type");
+                return false;
+            }
+            return false;
+        }
+    </script>
+}
 
 <!DOCTYPE html>
 
@@ -21,26 +42,32 @@
             <div class="panel panel-color panel-primary">
                 <div class="panel-heading"><b>Initiate Appraisal</b></div>
                 <div class="panel-body">
-                    <div class="col-lg-3">
-                        @Html.OpMgrDropDownListFor(m => m.AppraisalType, Model.AppraisalTypeList, GoalSheetResource.AppraisalType, new { @class = "form-control" })
-                    </div>
-                    <div class="col-lg-3" style="padding-top:30px;">
-                        @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
-                        @if (string.Equals(Model.MODE, "NotInitiated"))
-                        {
-                            @Html.OpMgrButtonWithIcon("initite", GoalSheetResource.InitiateAppraisal, new { @class = "btn btn-primary btn-block" }, "ion-paper-airplane", true)
-                        }
-                        else if (string.Equals(Model.MODE, "Initiated"))
-                        {
-                            <span>Appraisal Already Initiated</span>
-                        }
-                    </div>
-                    <div class="col-lg-3">
-                        
-                    </div>
-                    <div class="col-lg-3">
+                    @using (Html.BeginForm("PMSMultipleGoalSheet", "PMS", FormMethod.Post, new { id = "initiatePMS", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <div class="col-lg-3">
+                                @Html.OpMgrDropDownListFor(m => m.AppraisalType, Model.AppraisalTypeList, GoalSheetResource.AppraisalType, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-3" style="padding-top:30px;">
+                                @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
+                                @if (string.Equals(Model.MODE, "NotInitiated"))
+                                {
+                                    @*@Html.OpMgrButtonWithIcon("initite", GoalSheetResource.InitiateAppraisal, new { @class = "btn btn-primary btn-block", id = "btnAppraisalInitiate", onclick = "validateAppraisal();" }, "ion -paper-airplane", true)*@
 
-                    </div>
+                                    <button type="submit" class="btn btn-primary" onclick="validateAppraisal();">Initiate Appraisal</button>
+                                }
+                                else if (string.Equals(Model.MODE, "Initiated"))
+                                {
+                                    <span style="padding-top:10px;"><b>Appraisal Already Initiated</b></span>
+                                }
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                        </fieldset>
+                    }
                 </div>
             </div>
             <div class="panel panel-color panel-primary">
