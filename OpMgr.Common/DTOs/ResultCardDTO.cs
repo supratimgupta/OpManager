@@ -29,13 +29,21 @@ namespace OpMgr.Common.DTOs
         public List<ResultCardRows> GradeResultRows { get; set; }
 
         public double TotalMarks { get; set; }
+
+        public string CurrentRemarks { get; set; }
+
+        public List<GraphRecords> GraphRecords { get; set; }
     }
 
     public class ResultCardRows
     {
         public string SubjectName { get; set; }
 
+        public string SubjectId { get; set; }
+
         public List<ResultCardColumns> ResultColumns { get; set; }
+
+        public double GraphValue { get; set; }
     }
 
     public class ResultCardColumns
@@ -49,5 +57,16 @@ namespace OpMgr.Common.DTOs
         public bool IsAllowedForGrade { get; set; }
 
         public bool IsUsedForTotal { get; set; }
+    }
+
+    public class GraphRecords
+    {
+        public string SubjectName { get; set; }
+
+        public double ClassHighest { get; set; }
+
+        public double ClassAverage { get; set; }
+
+        public double CurrentMarks { get; set; }
     }
 }

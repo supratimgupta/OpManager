@@ -1,0 +1,32 @@
+﻿using OpMgr.Common.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace OperationsManager.Areas.Exam.Models
+{
+    public class StudentRemarksVM : StudentRemarksDTO
+    {
+        public SelectList StandardSectionList { get; set; }
+
+        public SelectList LocationList { get; set; }
+
+        public SelectList AcademicSessions { get; set; }
+
+        public SelectList ResultTypes { get; set; }
+
+        public int SelectedLocation { get; set; }
+
+        public int SelectedStandardSection { get; set; }
+
+        public string SelectedAcademicSession { get; set; }
+
+        public string SelectedResultType { get; set; }
+
+        public List<StudentRemarksDTO> SearchResult { get; set; }
+
+        public string MODE { get; set; }
+    }
+}

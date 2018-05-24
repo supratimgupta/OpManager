@@ -17,6 +17,7 @@ namespace OpMgr.DataAccess.Implementations
 
         private IConfigSvc _configSvc;
         private DataTable _dtData;
+        private IStudentRemarksSvc _remarksSvc;
         //private DataSet _dsData;
         //private IExamMarksSvc _examMarksSvc;
 
@@ -25,9 +26,10 @@ namespace OpMgr.DataAccess.Implementations
         /// </summary>
         //private ILogSvc _logger;
 
-        public ResultSvc(IConfigSvc configSvc)
+        public ResultSvc(IConfigSvc configSvc, IStudentRemarksSvc remarksSvc)
         {
             _configSvc = configSvc;
+            _remarksSvc = remarksSvc;
             //_logger = logger;
             //_examMarksSvc = examMarksSvc;
         }
@@ -81,8 +83,11 @@ namespace OpMgr.DataAccess.Implementations
             DataTable dtResults = this.GetStudentResults(locationId, standardSectionId, academicSessionStartDate, academicSessionEndDate);
             DataTable dtResultFormat = this.GetResultFormat(standardSectionId, resultType, locationId);
             DataTable dtGrades = this.GetGradeConfig(locationId);
+            List<StudentRemarksDTO> remarks = _remarksSvc.GetStudentRemarks(standardSectionId, resultType, academicSessionStartDate, academicSessionEndDate, locationId);
             ResultCardDTO rsCard = null;
             List<string> lstDoneWithStudents = new List<string>();
+            Dictionary<string, double> dicSubjectHeighest = new Dictionary<string, double>();
+            Dictionary<string, double> dicSubjectTotal = new Dictionary<string, double>();
             if(dtResults!=null && dtResults.Rows.Count>0 && dtResultFormat!=null && dtResultFormat.Rows.Count>0)
             {
                 for (int st = 0; st < dtResults.Rows.Count; st++)
@@ -182,6 +187,33 @@ namespace OpMgr.DataAccess.Implementations
                                         if(resultCol.IsUsedForTotal)
                                         {
                                             rsCard.TotalMarks = rsCard.TotalMarks + double.Parse(Regex.Match(marks, @"\d+").Value);
+
+                                            //======= FOR GRAPH ENTRY =========//
+                                            //============HEIGHEST=============//
+                                            double currentValue = double.Parse(Regex.Match(marks, @"\d+").Value);
+                                            rsRows.GraphValue = Math.Ceiling(currentValue);
+                                            if(dicSubjectHeighest.ContainsKey(subjectId))
+                                            {
+                                                double highestValue = dicSubjectHeighest[subjectId];
+                                                if (Math.Ceiling(currentValue) > highestValue)
+                                                {
+                                                    dicSubjectHeighest[subjectId] = Math.Ceiling(currentValue);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                dicSubjectHeighest.Add(subjectId, Math.Ceiling(currentValue));
+                                            }
+                                            //============HEIGHEST============//
+                                            //==============TOTAL=============//
+                                            if(dicSubjectTotal.ContainsKey(subjectId))
+                                            {
+                                                dicSubjectTotal[subjectId] = dicSubjectTotal[subjectId] + Math.Ceiling(currentValue);
+                                            }
+                                            else
+                                            {
+                                                dicSubjectTotal.Add(subjectId, Math.Ceiling(currentValue));
+                                            }
                                         }
                                     }
                                 }
@@ -196,16 +228,43 @@ namespace OpMgr.DataAccess.Implementations
                             {
                                 rsCard.ResultRows.Add(rsRows);
                             }
+                            rsRows.SubjectId = subjectId;
                             lstDoneWithSubjects.Add(subjectId);
                         }
                     }
+
+                    StudentRemarksDTO remark = remarks.FirstOrDefault(r => string.Equals(r.Student.StudentInfoId.ToString(), rsCard.StudentInfoId));
+                    if (remark != null)
+                    {
+                        rsCard.CurrentRemarks = remark.Remarks;
+                    }
+
                     lstResultCards.Add(rsCard);
                     lstDoneWithStudents.Add(rsCard.StudentInfoId);
                 }
             }
+            lstResultCards = this.CreateGraphRecords(lstResultCards, dicSubjectHeighest, dicSubjectTotal);
             return lstResultCards;
         }
 
+        private List<ResultCardDTO> CreateGraphRecords(List<ResultCardDTO> currentCards, Dictionary<string, double> dicHighests, Dictionary<string, double> dicTotals)
+        {
+            for (int i = 0; i < currentCards.Count; i++)
+            {
+                currentCards[i].GraphRecords = new List<GraphRecords>();
+                GraphRecords graphRecord = null;
+                for (int j = 0; j < currentCards[i].ResultRows.Count; j++)
+                {
+                    graphRecord = new GraphRecords();
+                    graphRecord.ClassHighest = dicHighests[currentCards[i].ResultRows[j].SubjectId];
+                    graphRecord.SubjectName = currentCards[i].ResultRows[j].SubjectName;
+                    graphRecord.ClassAverage = Math.Ceiling(dicTotals[currentCards[i].ResultRows[j].SubjectId] / currentCards.Count);
+                    graphRecord.CurrentMarks = currentCards[i].ResultRows[j].GraphValue;
+                    currentCards[i].GraphRecords.Add(graphRecord);
+                }
+            }
+            return currentCards;
+        }
 
         private string CreateGradeWithExpression(string expression, DataRow[] arrValues, DataTable dtGrade)
         {

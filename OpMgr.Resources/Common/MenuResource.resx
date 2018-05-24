@@ -177,6 +177,9 @@
   <data name="PromotionBatch" xml:space="preserve">
     <value>CONFIRM PROMOTION</value>
   </data>
+  <data name="RemarksEntry" xml:space="preserve">
+    <value>ENTER REMARKS</value>
+  </data>
   <data name="Results" xml:space="preserve">
     <value>RESULTS</value>
   </data>
