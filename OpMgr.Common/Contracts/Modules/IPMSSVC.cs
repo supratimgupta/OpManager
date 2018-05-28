@@ -27,5 +27,7 @@ namespace OpMgr.Common.Contracts.Modules
         bool UpdatePMSHeadApproval(EmployeeAppraisalMasterDTO employeemasterDTO);
 
         StatusDTO<List<EmployeeGoalLogDTO>> ExcelDataForPMSHead(EmployeeAppraisalMasterDTO employeemasterDTO);
+
+        StatusDTO<EmployeeAppraisalMasterDTO> InitiateAppraisal(string AppraisalType);
     }
 }
