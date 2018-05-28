@@ -124,6 +124,25 @@
             }
             return true;
         }
+
+        function printResult() {
+
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title></title>');
+            //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
+            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .printInnerTable{border:1px solid black; text-align:left; border-collapse: collapse;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .btn{display:none;} input {border:none;}}</style>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write(document.getElementById("printSection").innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+            return true;
+        }
     </script>
 }
 
@@ -158,7 +177,7 @@
                         <div class="col-lg-4">
                             @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-4">
                             <input type="hidden" value="@Model.CourseExamId" name="CourseExamId" />
                             <input type="hidden" value="@Model.RuleId" name="RuleId" />
                             @Html.HiddenFor(m => m.Mode, new { id = "hfMode" })
@@ -167,6 +186,9 @@
                         <div class="col-lg-4">
                             @Html.OpMgrSubmitButtonWithIcon("btnSearch", ExamMarks.Submit, new { @class = "btn btn-primary btn-block", onclick = "return changeMode('SEARCH');" }, "fa fa-search")
                             @*<button type="submit" class="btn btn-primary" onclick="return changeMode('SEARCH');" id="btnSearch">@ExamMarks.Submit</button>*@
+                        </div>
+                        <div class="col-lg-4">
+                            @Html.OpMgrButtonWithIcon("btnPrint", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();" }, "fa fa-print")
                         </div>
                     </fieldset>
                 </div>
@@ -244,8 +266,8 @@
                                     @*<button type="submit" id="btnsavemarks" class="btn btn-primary" onclick="return changeMode('SAVE');">@ExamMarks.Submitmarks</button>*@
                                 </div>
                             </div>
-                            <div class="col-lg-12" style="padding-top:20px;">
-                                <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <div class="col-lg-12" style="padding-top:20px;" id="printSection">
+                                <table id="tablePayment" class="table table table-striped table-bordered table-responsive table-hover printInnerTable" border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                                     <thead>
                                         <tr>
                                             <th colspan="2">
@@ -284,7 +306,7 @@
                                                     @ExamMarks.CalculatedMarks
                                                 </th>
                                             }
-                                            
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -298,7 +320,7 @@
                                                         <td>
                                                             @Model.ExamMarksList[i].FullName
                                                             @Html.HiddenFor(m => m.ExamMarksList[i].ExamMarksId)
-                                                            @Html.HiddenFor(m=> m.ExamMarksList[i].SubjectExamType)
+                                                            @Html.HiddenFor(m => m.ExamMarksList[i].SubjectExamType)
                                                         </td>
                                                         <td>
                                                             @Model.ExamMarksList[i].Student.UserDetails.Location.LocationDescription
@@ -313,7 +335,7 @@
                                                         <td>
                                                             @Model.ExamMarksList[i].Class
                                                         </td>
-                                                        @if(Model.ExamMarksList[i].SubjectExamType=="G")
+                                                        @if (Model.ExamMarksList[i].SubjectExamType == "G")
                                                         {
                                                             <td>@Html.OpMgrDropDownListFor(m => m.ExamMarksList[i].DirectGrade, Model.Grades, "", new { @class = "form-control requiredField reqSearch" })</td>
                                                         }

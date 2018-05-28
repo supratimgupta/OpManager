@@ -53,6 +53,7 @@
             var currentDate = new Date();
             var strDate = currentDate.getDate() + "-" + (currentDate.getMonth()+1) + "-" + currentDate.getFullYear();
             $(".spnDate").html(strDate);
+            $(".resultHeader").html($("#ddlResultType").find("option:selected").text());
         });
     </script>
     <script language="javascript" type="text/javascript">
@@ -87,7 +88,7 @@
                             @Html.OpMgrDropDownListFor(m => m.SelectedStandardSection, Model.StandardSectionList, "Standard & Section", new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-3">
-                            @Html.OpMgrDropDownListFor(m => m.SelectedResultType, Model.ResultTypes, "Exam Type", new { @class = "form-control requiredField reqSearch" })
+                            @Html.OpMgrDropDownListFor(m => m.SelectedResultType, Model.ResultTypes, "Exam Type", new { @class = "form-control requiredField reqSearch", id="ddlResultType" })
                         </div>
                         <div class="col-lg-3">
                             @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
@@ -118,6 +119,11 @@
                             {
                                 gId++;
                                 <table class="table table-bordered resultCard" style="width:100%">
+                                    <tr>
+                                        <td colspan="4" style="text-align:center; color:olive;">
+                                            <b><span class="resultHeader"></span></b>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td align="left" width="150px;" class="headerSummary">NAME &amp; REG. NO: </td>
                                         <td align="left">@rcDTO.StudentName &nbsp;(@rcDTO.StudentRegNo)</td>
@@ -347,7 +353,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <img width="70" height="60" src="~/Images/principalsSign.jpg" />
+                                                        <img width="70" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -368,27 +374,23 @@
                                         <td colspan="4">
                                             <table style="width:100%">
                                                 <tr>
-                                                    <th width="120px;" style="border:none;">
+                                                    <th width="120px;" style="border:none; font-size:12px;">
                                                         Marks Range:
                                                     </th>
-                                                    <td align="left" style="padding-left:5px;">
-                                                        A(90-100) / B(70-89) / C(55-69) / D(40-54) / E(30-39) / F(Below 30
+                                                    <td align="left" style="padding-left:5px; font-size:12px;">
+                                                        A(90-100) / B(70-89) / C(55-69) / D(40-54) / E(30-39) / F(Below 30)
                                                     </td>
-                                                    <th width="100px" style="border:none;">
+                                                    <th width="100px" style="border:none; font-size:12px;">
                                                         Pass Marks:
                                                     </th>
-                                                    <td align="left" width="30px">40</td>
+                                                    <td align="left" width="30px" style="font-size:12px;">40</td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4">
-                                                        <table style="width:100%">
-                                                            <tr>
-                                                                <th style="border:none;" align="left">Grades:</th>
-                                                                <td>
-                                                                    A(Very Good) / B(Good) / C(Fair) / D(Satisfactory) / E(Need Improvement) / U(Unsatisfactory)
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                    <th style="width:120px; border:none; font-size:12px;">
+                                                        Grades:
+                                                    </th>
+                                                    <td colspan="3" style="font-size:12px;" align="left">
+                                                        A(Very Good) / B(Good) / C(Fair) / D(Satisfactory) / E(Need Improvement) / U(Unsatisfactory)
                                                     </td>
                                                 </tr>
                                             </table>

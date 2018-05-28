@@ -8,6 +8,8 @@ namespace OpMgr.Common.DTOs
 {
     public class ResultCardDTO
     {
+        public string ResultType { get; set; }
+
         public string StudentName { get; set; }
 
         public string StudentRegNo { get; set; }
