@@ -27,6 +27,7 @@ namespace OpMgr.FileWatcher
             // TODO: Add code here to start your service.
             InitiateStudentFileSystemWatcher();
             InitiateStaffFileSystemWatcher();
+            InitiateApprFileSystemWatcher();
         }
 
         protected override void OnStop()
@@ -34,6 +35,7 @@ namespace OpMgr.FileWatcher
             // TODO: Add code here to perform any tear-down necessary to stop your service.
             _stuFileSystemWatcher = null;
             _staFileSystemWatcher = null;
+            _apprFileSystemWatcher = null;
         }
 
         private void InitiateStudentFileSystemWatcher()
@@ -86,8 +88,9 @@ namespace OpMgr.FileWatcher
         void _apprFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             //Need to change the following from Staff upload to appraisal upload
-            AbsFileUpload staUpload = new AppraisalUpload(new DataAccess.MySqlDataAccess());
-            staUpload.ImportFileToSQL(e.FullPath);
+            AbsFileUpload appraisalupload = new AppraisalUpload(new DataAccess.MySqlDataAccess());
+            //AbsFileUpload appraisalupload = new AppraisalUpload();
+            appraisalupload.ImportFileToSQL(e.FullPath);
             //Move the same to archive
             File.Move(e.FullPath, ConfigurationManager.AppSettings["AppraisalFileArchive"] + "\\" + DateTime.Now.ToString("dd.MM.yyyy.hh.mm.ss") + ".arc");
         }

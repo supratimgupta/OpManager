@@ -59,13 +59,13 @@ namespace OpMgr.FileWatcher.DataAccess
 
         public override DataTable GetGoalAttributes()
         {
-            string query = "select GoalAttributeId, GoalId, Target, KRA, KPI, Weightage, Active from dbo.Goal";
+            string query = "select GoalAttributeId, GoalId, Target, KRA, KPI, Weightage, Active from dbo.goalattribute";
             return this.GetData(query);
         }
 
         public override DataTable GetEmployeeGoals()
         {
-            string query = "select EmployeeGoalId, Active, EmployeeId, RoleId, GoalAttributeId from dbo.EmployeeGoal";
+            string query = "select EmployeeGoalId, Active, EmployeeId, RoleId, GoalAttributeId from dbo.employeegoal";
             return this.GetData(query);
         }
 
@@ -83,7 +83,7 @@ namespace OpMgr.FileWatcher.DataAccess
 
         public override string InsertEmployeeGoals(Common.DTOs.EmployeeGoalDTO employeeGoal)
         {
-            string query = "insert into dbo.EmployeeGoal(Active, RoleId, GoalAttributeId) values (1, '"+employeeGoal.Role.DesignationId+"', '"+employeeGoal.GoalAttribute.GoalAttributeId+"')";
+            string query = "insert into dbo.EmployeeGoal(Active, DesignationId, GoalAttributeId) values (1, '"+employeeGoal.Role.DesignationId+"', '"+employeeGoal.GoalAttribute.GoalAttributeId+"')";
             return this.InsertUpdateData(query);
         }
 
