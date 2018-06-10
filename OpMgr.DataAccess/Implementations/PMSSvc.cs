@@ -272,19 +272,19 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     empgoallog.EmployeeAppraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
                                 }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString()))
-                                {
-                                    empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString();
-                                }
+                                //if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString()))
+                                //{
+                                //    empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString();
+                                //}
 
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"].ToString()))
-                                {
-                                    empgoallog.EmployeeAppraisalMaster.AppraiserFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"]);
-                                }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString()))
-                                {
-                                    empgoallog.EmployeeAppraisalMaster.AppraiserComment = dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString();
-                                }
+                                //if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"].ToString()))
+                                //{
+                                //    empgoallog.EmployeeAppraisalMaster.AppraiserFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"]);
+                                //}
+                                //if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString()))
+                                //{
+                                //    empgoallog.EmployeeAppraisalMaster.AppraiserComment = dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString();
+                                //}
                                 goalList.ReturnObj.Add(empgoallog);
                             }
                         }
@@ -677,6 +677,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
+                    command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UniqueEmployeeId;
                     //data.Employee = new EmployeeDetailsDTO();
                     //data.Employee.UserDetails = new UserMasterDTO();
                     //if (!string.IsNullOrEmpty(data.Employee.UserDetails.FName))
