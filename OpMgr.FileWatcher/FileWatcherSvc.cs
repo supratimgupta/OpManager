@@ -9,6 +9,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using OpMgr.FileWatcher.DataAccess;
 
 namespace OpMgr.FileWatcher
 {
@@ -88,7 +89,8 @@ namespace OpMgr.FileWatcher
         void _apprFileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             //Need to change the following from Staff upload to appraisal upload
-            AbsFileUpload appraisalupload = new AppraisalUpload(new DataAccess.MySqlDataAccess());
+            MySqlDataAccess pmsdataaccess = new MySqlDataAccess();
+            AbsFileUpload appraisalupload = new AppraisalUpload(pmsdataaccess);
             //AbsFileUpload appraisalupload = new AppraisalUpload();
             appraisalupload.ImportFileToSQL(e.FullPath);
             //Move the same to archive
