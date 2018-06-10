@@ -13,7 +13,7 @@
 
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
-            debugger;
+            
 
             $("#searchAppraisee tbody tr td img").attr('title', 'View Appraisal Details');
             $("#searchAppraisee tbody tr td img").click(function () {
@@ -47,7 +47,7 @@
         function setMode(mode) {
             
             document.getElementById("hdnPostMode").value = mode;
-            if (mode = "PMSHeadApprove")
+            if (mode == "PMSHeadApprove")
             {
                 var answer = confirm("Do You Want to allow All Appraiser to Release Final Rating for PMS?");
                 if (answer) {
@@ -57,10 +57,18 @@
                     return false;
                 }                
             }
-            else if (mode = "ExcelForPMSHead") {
+            else if (mode == "ExcelForPMSHead") {
                 var designation = $('#PMSDesignation option:selected').text();
-                alert(designation);
-                return false;
+                if (designation == "")
+                {
+                    alert("Please Select at least a designation to fetch Excel for PMS Review");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }               
+                
             }
             else {
                 return false;
@@ -127,12 +135,14 @@
                                     @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block", onclick = "setMode('Search');" }, "fa fa-search")
                                 </div>
                                 <div class="col-lg-2">
-                                    <button type="submit" class="btn btn-primary" onclick="setMode('PMSHeadApprove');">Release Final Rating</button>
-                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "setMode('PMSHeadApprove');", id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)*@                                    
+                                    @Html.OpMgrSubmitButtonWithIcon("btnrating", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", id = "btnPmsQueueRating", onclick = "return setMode('PMSHeadApprove');" }, "ion-person-add")
+                                    @*<button type="submit" class="btn btn-primary" id = "btnPmsQueueRating" onclick="return setMode('PMSHeadApprove');">Release Final Rating</button>*@
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "return setMode('PMSHeadApprove');", id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)*@                                    
                                 </div>
                                 <div class="col-lg-2">
-                                    <button type="submit" class="btn btn-primary" onclick="setMode('ExcelForPMSHead');">Excel For PMS Head</button>
-                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "setMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)*@
+                                    @Html.OpMgrSubmitButtonWithIcon("btnExcel", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", id = "btnExcelPMSHead", onclick = "return setMode('ExcelForPMSHead');" }, "ion-person-add")
+                                    @*<button type="submit" class="btn btn-primary" id = "btnExcelPMSHead" onclick="return setMode('ExcelForPMSHead');">Excel For PMS Head</button>*@
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "return setMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)*@
 
                                 </div>
                                 <div style="display:none;" id="divContainerHddnFlds">                                    
@@ -230,7 +240,7 @@
                                     else
                                     {
                                         <tr>
-                                            <td colspan="8" align="center" style="font-style:oblique">
+                                            <td colspan="8" align="center" style="font-style:oblique; color:Highlight" >
                                                 No Data Found
                                             </td>
                                         </tr>

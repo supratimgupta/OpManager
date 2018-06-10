@@ -422,7 +422,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
                 pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
-                pmsview.IsSearchSuccessful = true;
+                pmsview.IsSearchSuccessful = false;
                 //pmsview.MsgColor = "green";
                 //pmsview.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
             }
@@ -563,6 +563,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 }
                 else if (string.Equals(pmsvm.MODE, "PMSHeadApprove"))
                 {
+                    
                     _pmsSvc.UpdatePMSHeadApproval(pmsvm);
                 }
                 else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
