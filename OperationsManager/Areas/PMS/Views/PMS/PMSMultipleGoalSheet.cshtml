@@ -16,6 +16,7 @@
             
             if (appraisalType == 'Annual' || appraisalType == 'MidYear')
             {
+                
                 return true;
             }
             else
@@ -53,9 +54,9 @@
                                 @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
                                 @if (string.Equals(Model.MODE, "NotInitiated"))
                                 {
-                                    @*@Html.OpMgrButtonWithIcon("initite", GoalSheetResource.InitiateAppraisal, new { @class = "btn btn-primary btn-block", id = "btnAppraisalInitiate", onclick = "validateAppraisal();" }, "ion -paper-airplane", true)*@
+                                    @Html.OpMgrSubmitButtonWithIcon("initite", GoalSheetResource.InitiateAppraisal, new { @class = "btn btn-primary btn-block", id = "btnAppraisalInitiate", onclick = "return validateAppraisal();" }, "ion -paper-airplane", true)
 
-                                    <button type="submit" class="btn btn-primary" onclick="validateAppraisal();">Initiate Appraisal</button>
+                                    @*<button type="submit" class="btn btn-primary" onclick="validateAppraisal();">Initiate Appraisal</button>*@
                                 }
                                 else if (string.Equals(Model.MODE, "Initiated"))
                                 {

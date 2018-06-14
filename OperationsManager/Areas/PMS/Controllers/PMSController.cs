@@ -491,6 +491,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 if (string.Equals(pmsvm.MODE, "Search"))
                 {
+                    
                     empappraisalmasterdto = new EmployeeAppraisalMasterDTO();
                     empappraisalmasterdto.Employee = new EmployeeDetailsDTO();
                     empappraisalmasterdto.Employee.UserDetails = new UserMasterDTO();
@@ -523,7 +524,9 @@ namespace OperationsManager.Areas.PMS.Controllers
                             {
                                 if (appraisalmaster != null)
                                 {
-                                    searchItem = new PMSVM(); // instantiating each PMVM                            
+                                    searchItem = new PMSVM(); // instantiating each PMVM         
+
+                                    searchItem.EmpAppPmsMasterId = appraisalmaster.EmpAppPmsMasterId;
                                     searchItem.UserDetails = new UserMasterDTO();
                                     searchItem.UserDetails.FName = appraisalmaster.Employee.UserDetails.FName;
                                     searchItem.UserDetails.MName = appraisalmaster.Employee.UserDetails.MName;
@@ -539,15 +542,14 @@ namespace OperationsManager.Areas.PMS.Controllers
                                     searchItem.UserDetails.Gender = appraisalmaster.Employee.UserDetails.Gender;
                                     searchItem.EmployeeAppraisalMasterId = appraisalmaster.EmployeeAppraisalMasterId;
                                     searchItem.AppraisalType = appraisalmaster.AppraisalType;
-                                    searchItem.AppraisalStatus = new AppraisalStatusDTO();
-                                    searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
+                                    //searchItem.AppraisalStatus = new AppraisalStatusDTO();
+                                    //searchItem.AppraisalStatus.AppraisalStatusDescription = appraisalmaster.AppraisalStatus.AppraisalStatusDescription;
 
-                                    searchItem.UserDetails.Location = new LocationDTO();
-                                    searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
+                                    //searchItem.UserDetails.Location = new LocationDTO();
+                                    //searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
                                     searchItem.Employee = new EmployeeDetailsDTO();
                                     searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
-                                    searchItem.Employee.Designation = new DesignationDTO();
-                                    searchItem.Employee.Designation.DesignationDescription = appraisalmaster.Employee.Designation.DesignationDescription;
+                                    
                                     //Add into PMSView vIew Model List
                                     pmsview.PMSVMList.Add(searchItem);
                                     pmsview.IsSearchSuccessful = true;
@@ -565,6 +567,15 @@ namespace OperationsManager.Areas.PMS.Controllers
                 {
                     
                     _pmsSvc.UpdatePMSHeadApproval(pmsvm);
+
+                    pmsview = new PMSVM();
+
+                    pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+                    // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                    pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                    pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                    pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
+
                 }
                 else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
                 {

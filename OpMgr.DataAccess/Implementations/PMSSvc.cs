@@ -979,11 +979,11 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "UpdatePMSHeadApproval";
-                    command.CommandType = CommandType.Text;
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
-
+                    command.Parameters.Add("@updatedBy1", MySqlDbType.Int32).Value = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
+                    
                     if (command.ExecuteNonQuery() > 0)
                     {
                         return true;
@@ -1164,7 +1164,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     command.Parameters.Add("@AppraisalType", MySqlDbType.String).Value = AppraisalType;
-                    command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                    command.Parameters.Add("@EmployeeId1", MySqlDbType.Int32).Value = Convert.ToInt32(_sessionSvc.GetUserSession().UniqueEmployeeId);
                     // add createdby from session
 
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
