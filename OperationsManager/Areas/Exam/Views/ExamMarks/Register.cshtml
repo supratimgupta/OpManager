@@ -13,7 +13,77 @@
             $('.CourseFrom').datepicker({ dateFormat: 'dd-M-yy' });
             $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
 
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_Location_LocationId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                
+                if (locationId > 0 && StandardSectionId > 0 ) {
+
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (StandardSectionId < 0) {
+                    alert("Please Select Standard Section");
+                }
+                
+                return false;
+            });
+
+
+            // If Selected Location , StandardSection and Subject Below Code will populate
+            $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").change(function () {
+                var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+                var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+                
+                if (locationId > 0 && StandardSectionId > 0) {
+                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                }
+                else if (locationId < 0) {
+                    alert("Please Select Location");
+                }
+                
+                return false;
+            });
+
+
         });
+        //End of document.ready()
+
+        function GetSubject(locationId, StandardSectionId) {
+
+            var coursemap = new Object();
+            coursemap.Location = new Object();
+            coursemap.StandardSection = new Object();
+            coursemap.Location.LocationId = locationId;
+            coursemap.StandardSection.StandardSectionId = StandardSectionId;
+            
+            $.ajax({
+
+                type: 'POST',
+                url: 'GetSubjectDropdownData',
+                dataType: "json",
+                data: coursemap,
+                success: function (resultData) { getSubjectDetails_callback(resultData); },
+                error: function (error) { }
+            });
+        }
+
+
+        function getSubjectDetails_callback(result) {
+            if (result.status) {
+                                
+                var data = result.data;
+
+                //document.getElementById("hdncoursemapid").value = data.CourseMappingId;
+                //document.getElementById("FromDateString").value = FromDate;
+                //document.getElementById("ToDateString").value = ToDate;
+
+                //document.getElementById("hdnFromDate").value = FromDate;
+                //document.getElementById("hdnToDate").value = ToDate;
+            }
+        }
+
+
         function calcMarks(txtActualMarks, txtCalcMarksId, hfCalcMarksId) {
             var actualMarks = txtActualMarks.value;
             var assesmentMarks = document.getElementById("spnAssesmentMarks").innerHTML;

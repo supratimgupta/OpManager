@@ -372,5 +372,59 @@ namespace OpMgr.DataAccess.Implementations
 
             }
         }
+
+        //get subject list based on Location and StandardSection dropdown
+        public StatusDTO<List<SubjectDTO>> GetSubjectDropdownData(int LocationId, int StandardSectionId)
+        {
+            StatusDTO<List<SubjectDTO>> subjectList = new StatusDTO<List<SubjectDTO>>();
+            subjectList.IsException = false;
+            subjectList.IsSuccess = false;
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "getSubjectDropdownForMarks";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@LocationId1", MySqlDbType.Int32).Value = LocationId;
+                    command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
+
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+
+                    if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0] != null && _dsData.Tables[0].Rows.Count > 0)
+                    {
+                        if (_dsData.Tables[0].Columns.Count > 3)
+                        {
+                            subjectList.ReturnObj = new List<SubjectDTO>();
+                            for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
+                            {
+                                SubjectDTO subjectDTO = new SubjectDTO();
+                                subjectDTO.SubjectId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["SubjectId"]);
+                                subjectDTO.SubjectName = _dsData.Tables[0].Rows[i]["SubjectName"].ToString();
+
+                                subjectList.ReturnObj.Add(subjectDTO);
+                            }
+                            subjectList.IsSuccess = true;
+                        }
+                        else
+                        {
+                            subjectList.IsSuccess = false;
+                            subjectList.FailureReason = "Subject Doesn't Mapped for this location and standard Section";
+                        }
+                    }
+
+                    return subjectList;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+
+        }
     }
 }

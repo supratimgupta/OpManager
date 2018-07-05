@@ -245,5 +245,21 @@ namespace OperationsManager.Areas.Exam.Controllers
                 return View(examMarksVM);
             }
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult GetSubjectDropdownData(CourseMappingDTO coursemap)
+        {
+            StatusDTO<List<SubjectDTO>> status = _examMarksSvc.GetSubjectDropdownData(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId);
+            if (status.IsSuccess)
+            {               
+                return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
+            }
+            if (status.IsException)
+            {
+                return Json(new { data = new SubjectDTO(), message = "Exception: " + status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { data = new SubjectDTO(), message = "Subject is not mapped for Location and StandardSection", status = true }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

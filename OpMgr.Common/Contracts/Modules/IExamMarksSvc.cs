@@ -15,5 +15,6 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data, int CourseExamId, int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate, string directGrade);
         string GetCourseExamId(int location, int standardSection, int subject, DateTime courseFrom, DateTime courseTo);
         //StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntry(CourseExam courseexamdto);
+        StatusDTO<List<SubjectDTO>> GetSubjectDropdownData(int LocationId, int StandardSectionId);
     }
 }
