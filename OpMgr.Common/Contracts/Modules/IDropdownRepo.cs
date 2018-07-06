@@ -68,5 +68,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<AcademicSessionDTO> GetAcademicSessions();
 
         List<GradeConfigDTO> getGrades(int location);
+
+        List<SubjectDTO> getSubjectDropdown(int? locationId = null, int? satndardsectionid=null);
     }
 }

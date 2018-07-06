@@ -14,18 +14,25 @@
             $('.CourseTo').datepicker({ dateFormat: 'dd-M-yy' });
 
             // If Selected Location , StandardSection and Subject Below Code will populate
+            var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
+            var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
+            if (locationId > 0 && StandardSectionId > 0) {
+                GetSubject(locationId, StandardSectionId);
+            }
+
+            // If Selected (dropdown change) Location , StandardSection and Subject Below Code will populate
             $("#CourseExam_CourseMapping_Location_LocationId").change(function () {
                 var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
                 var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                
-                if (locationId > 0 && StandardSectionId > 0 ) {
 
-                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                if (locationId > 0 && StandardSectionId > 0) {
+
+                    GetSubject(locationId, StandardSectionId);
                 }
-                else if (StandardSectionId < 0) {
-                    alert("Please Select Standard Section");
-                }
-                
+                //else if (StandardSectionId < 0) {
+                //    alert("Please Select Class");
+                //}
+
                 return false;
             });
 
@@ -34,14 +41,14 @@
             $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").change(function () {
                 var locationId = $("#CourseExam_CourseMapping_Location_LocationId").val();
                 var StandardSectionId = $("#CourseExam_CourseMapping_StandardSection_StandardSectionId").val();
-                
+
                 if (locationId > 0 && StandardSectionId > 0) {
-                    GetCourseMappingDetails(locationId, StandardSectionId, SubjectId);
+                    GetSubject(locationId, StandardSectionId);
                 }
-                else if (locationId < 0) {
-                    alert("Please Select Location");
-                }
-                
+                //else if (locationId < 0) {
+                //    alert("Please Select Location");
+                //}
+
                 return false;
             });
 
@@ -51,35 +58,57 @@
 
         function GetSubject(locationId, StandardSectionId) {
 
-            var coursemap = new Object();
-            coursemap.Location = new Object();
-            coursemap.StandardSection = new Object();
-            coursemap.Location.LocationId = locationId;
-            coursemap.StandardSection.StandardSectionId = StandardSectionId;
-            
             $.ajax({
-
-                type: 'POST',
-                url: 'GetSubjectDropdownData',
-                dataType: "json",
-                data: coursemap,
-                success: function (resultData) { getSubjectDetails_callback(resultData); },
-                error: function (error) { }
+                dataType: 'JSON',
+                url: "GetSubjectDropdownData?locationId=" + locationId + "&StandardSectionId=" + StandardSectionId,
+                type: "GET",
+                success: function (returnData) {
+                    if (returnData.Status) {
+                        getSubjectDetails_callback(returnData.Data);
+                    }
+                },
+                error: function (error) {
+                    alert(error.statusText);
+                }
             });
         }
 
+        //function GetSubject(locationId, StandardSectionId) {
+
+        //    var coursemap = new Object();
+        //    coursemap.Location = new Object();
+        //    coursemap.StandardSection = new Object();
+        //    coursemap.Location.LocationId = locationId;
+        //    coursemap.StandardSection.StandardSectionId = StandardSectionId;
+
+        //    $.ajax({
+
+        //        type: 'POST',
+        //        url: 'GetSubjectDropdownData',
+        //        dataType: "json",
+        //        data: coursemap,
+        //        success: function (resultData) { getSubjectDetails_callback(resultData); },
+        //        error: function (error) { }
+        //    });
+        //}
+
 
         function getSubjectDetails_callback(result) {
-            if (result.status) {
-                                
-                var data = result.data;
-
-                //document.getElementById("hdncoursemapid").value = data.CourseMappingId;
-                //document.getElementById("FromDateString").value = FromDate;
-                //document.getElementById("ToDateString").value = ToDate;
-
-                //document.getElementById("hdnFromDate").value = FromDate;
-                //document.getElementById("hdnToDate").value = ToDate;
+            
+            if (result.length > 0) {
+                var data = result;
+                var ddlSubject = document.getElementById("SubjectId");
+                ddlSubject.innerHTML = "";
+                var blankOpt = document.createElement("option");
+                blankOpt.innerHTML = "";
+                blankOpt.value = "";
+                ddlSubject.appendChild(blankOpt);
+                for (i = 0; i < data.length; i++) {
+                    var newOpt = document.createElement("option");
+                    newOpt.innerHTML = data[i].SubjectName;
+                    newOpt.value = data[i].SubjectId;
+                    ddlSubject.appendChild(newOpt);
+                }
             }
         }
 
@@ -114,9 +143,9 @@
 
 
         function getAndPopulateExamSubType(ddlExamType) {
-            debugger;
+
             var selectedExamType = ddlExamType.options[ddlExamType.selectedIndex].value;
-            if(selectedExamType!=""){
+            if (selectedExamType != "") {
                 $.ajax({
                     dataType: 'JSON',
                     url: "GetExamSubType?examType=" + selectedExamType,
@@ -130,7 +159,7 @@
                         alert(error.statusText);
                     }
                 });
-            }            
+            }
         }
 
         function populateExamSubTypeDropDown(data) {
@@ -154,7 +183,7 @@
         }
 
         function changeMode(mode) {
-            debugger;
+
             document.getElementById("hfMode").value = mode;
             if (mode === "SEARCH") {
                 return validate('reqSearch');
@@ -167,7 +196,7 @@
         }
 
         function validate(className) {
-            debugger;
+
             var arrRequired = document.getElementsByClassName(className);
             var retValue = true;
             for (i = 0; i < arrRequired.length; i++) {
@@ -181,7 +210,7 @@
         }
 
         function validateDates() {
-            debugger;
+
             var fromDate = document.getElementById("txtFromDate").value;
             var toDate = document.getElementById("txtToDate").value;
 
@@ -236,13 +265,13 @@
                             @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.StandardSection.StandardSectionId, Model.StandardSectionList, ExamMarks.StandardSectionId, new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-4">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control requiredField reqSearch" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.CourseMapping.Subject.SubjectId, Model.SubjectList, ExamMarks.Subject, new { @class = "form-control requiredField reqSearch", id = "SubjectId" })
                         </div>
                         <div class="col-lg-4">
                             @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamType.ExamTypeId, Model.ExamTypeList, ExamMarks.ExamType, new { @class = "form-control requiredField reqSearch", onchange = "getAndPopulateExamSubType(this);" })
                         </div>
                         <div class="col-lg-4">
-                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control requiredField reqSearch", id="ddlExamSubType" })
+                            @Html.OpMgrDropDownListFor(m => m.CourseExam.ExamSubType.ExamSubTypeId, Model.ExamSubTypeList, ExamMarks.ExamSubType, new { @class = "form-control requiredField reqSearch", id = "ddlExamSubType" })
                         </div>
                         <div class="col-lg-4">
                             @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
@@ -250,6 +279,7 @@
                         <div class="col-lg-4">
                             <input type="hidden" value="@Model.CourseExamId" name="CourseExamId" />
                             <input type="hidden" value="@Model.RuleId" name="RuleId" />
+                            
                             @Html.HiddenFor(m => m.Mode, new { id = "hfMode" })
                         </div>
 
@@ -445,5 +475,5 @@
 
     </div>
 }
- 
+
 

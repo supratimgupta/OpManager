@@ -1049,5 +1049,47 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        // Get Subject dropdown based on Location and StandardSectionId or without this
+
+        public List<SubjectDTO> getSubjectDropdown(int? locationId = null, int? standardsectionId = null)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select distinct SubjectId, SubjectName from subjectfromexcel";
+                    if (locationId != null && standardsectionId !=null && locationId.HasValue && locationId.Value > 0 && standardsectionId.HasValue && standardsectionId.Value > 0)
+                    {
+                        command.CommandText = command.CommandText + " where LocationId=@locationId and StandardSectionId=@standardsectionId";
+                        command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = locationId.Value;
+                        command.Parameters.Add("@standardsectionId", MySqlDbType.Int32).Value = standardsectionId.Value;
+                    }
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<SubjectDTO> lstSubject = new List<SubjectDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        SubjectDTO subjectdto = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            subjectdto = new SubjectDTO();
+                            subjectdto.SubjectId = (int)dr["SubjectId"];
+                            subjectdto.SubjectName = dr["SubjectName"].ToString();
+                            lstSubject.Add(subjectdto);
+                        }
+                    }
+                    return lstSubject;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

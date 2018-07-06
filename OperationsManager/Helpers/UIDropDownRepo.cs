@@ -59,9 +59,10 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "HouseTypeId", "HouseTypeDescription");
         }
 
-        public SelectList getSubjectDropDown()
+        public SelectList getSubjectDropDown(int? locationId = null, int? standardsectionid=null)
         {
-            List<SubjectDTO> rDto = _ddlRepo.Subject();
+            List<SubjectDTO> rDto = _ddlRepo.getSubjectDropdown(locationId,standardsectionid);
+            //List<SubjectDTO> rDto = new List<SubjectDTO>();
             SubjectDTO subjectDTO = new SubjectDTO();
             subjectDTO.SubjectId = -1;
             subjectDTO.SubjectName = "";

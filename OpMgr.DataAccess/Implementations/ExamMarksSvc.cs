@@ -67,7 +67,7 @@ namespace OpMgr.DataAccess.Implementations
                             status.IsSuccess = true;
                             courseDTO.CourseMappingId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CourseMappingId"]);
                             courseDTO.CourseFrom = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["CourseFrom"]);
-                            courseDTO.CourseTo = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["CourseTo"]);                            
+                            courseDTO.CourseTo = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["CourseTo"]);
                         }
                     }
                     status.ReturnObj = courseDTO;
@@ -149,10 +149,10 @@ namespace OpMgr.DataAccess.Implementations
                     MySqlDataAdapter rdr = new MySqlDataAdapter(command);
                     _dsData = new DataSet();
                     rdr.Fill(_dsData);
-                    
-                    if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0]!=null && _dsData.Tables[0].Rows.Count>0)
+
+                    if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0] != null && _dsData.Tables[0].Rows.Count > 0)
                     {
-                        if(_dsData.Tables[0].Columns.Count>3)
+                        if (_dsData.Tables[0].Columns.Count > 3)
                         {
                             examMarksList.ReturnObj = new List<ExamMarksDTO>();
                             for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
@@ -205,10 +205,10 @@ namespace OpMgr.DataAccess.Implementations
                         else
                         {
                             examMarksList.IsSuccess = false;
-                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString()+"^"+_dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
+                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString() + "^" + _dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
                         }
                     }
-                    
+
                     return examMarksList;
                 }
                 catch (Exception exp)
@@ -219,7 +219,7 @@ namespace OpMgr.DataAccess.Implementations
 
         }
 
-        public StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data,int CourseExamId,int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate, string directGrade)
+        public StatusDTO<ExamMarksDTO> InsertMarks(ExamMarksDTO data, int CourseExamId, int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate, string directGrade)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -231,7 +231,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    command.Parameters.Add("@createdBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId; 
+                    command.Parameters.Add("@createdBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
                     command.Parameters.Add("@RollNumber1", MySqlDbType.String).Value = data.Student.RollNumber;
                     command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
                     command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
@@ -249,11 +249,11 @@ namespace OpMgr.DataAccess.Implementations
                     _dtData.Load(rdr);
                     StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
 
-                    if (_dtData.Rows.Count > 0 )
+                    if (_dtData.Rows.Count > 0)
                     {
                         status.IsSuccess = true;
                         status.ReturnObj = new ExamMarksDTO();
-                        status.ReturnObj.ExamMarksId = (int)_dtData.Rows[0]["ExamMarksId"];                        
+                        status.ReturnObj.ExamMarksId = (int)_dtData.Rows[0]["ExamMarksId"];
                     }
                     else
                     {
@@ -287,7 +287,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE exammarks SET UpdatedBy=@updatedBy, UpdatedDate=@updatedDate, MarksObtained=@marksObtained, CalculatedMarks=@calcMarks, "+
+                    command.CommandText = "UPDATE exammarks SET UpdatedBy=@updatedBy, UpdatedDate=@updatedDate, MarksObtained=@marksObtained, CalculatedMarks=@calcMarks, " +
                                           "DirectGrade=@directGrade WHERE ExamMarksId=@examMarksId";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
@@ -306,8 +306,8 @@ namespace OpMgr.DataAccess.Implementations
                     }
 
                     command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
-                    
-                    
+
+
                     StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
 
                     if (command.ExecuteNonQuery() > 0)
@@ -317,8 +317,8 @@ namespace OpMgr.DataAccess.Implementations
                     }
                     else
                     {
-                       status.IsSuccess = false;
-                       status.FailureReason = "User Insertion Failed";
+                        status.IsSuccess = false;
+                        status.FailureReason = "User Insertion Failed";
                     }
                     return status;
                 }
@@ -356,7 +356,7 @@ namespace OpMgr.DataAccess.Implementations
                     MySqlDataAdapter mDA = new MySqlDataAdapter(command);
                     DataTable dtData = new DataTable("TR_DATA");
                     mDA.Fill(dtData);
-                    
+
                     if (dtData != null && dtData.Rows.Count > 0)
                     {
                         return dtData.Rows[0]["CourseExamId"].ToString();
@@ -397,24 +397,21 @@ namespace OpMgr.DataAccess.Implementations
 
                     if (_dsData != null && _dsData.Tables.Count > 0 && _dsData.Tables[0] != null && _dsData.Tables[0].Rows.Count > 0)
                     {
-                        if (_dsData.Tables[0].Columns.Count > 3)
+                        subjectList.ReturnObj = new List<SubjectDTO>();
+                        for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
                         {
-                            subjectList.ReturnObj = new List<SubjectDTO>();
-                            for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
-                            {
-                                SubjectDTO subjectDTO = new SubjectDTO();
-                                subjectDTO.SubjectId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["SubjectId"]);
-                                subjectDTO.SubjectName = _dsData.Tables[0].Rows[i]["SubjectName"].ToString();
+                            SubjectDTO subjectDTO = new SubjectDTO();
+                            subjectDTO.SubjectId = Convert.ToInt32(_dsData.Tables[0].Rows[i]["SubjectId"]);
+                            subjectDTO.SubjectName = _dsData.Tables[0].Rows[i]["SubjectName"].ToString();
 
-                                subjectList.ReturnObj.Add(subjectDTO);
-                            }
-                            subjectList.IsSuccess = true;
+                            subjectList.ReturnObj.Add(subjectDTO);
                         }
-                        else
-                        {
-                            subjectList.IsSuccess = false;
-                            subjectList.FailureReason = "Subject Doesn't Mapped for this location and standard Section";
-                        }
+                        subjectList.IsSuccess = true;
+                    }
+                    else
+                    {
+                        subjectList.IsSuccess = false;
+                        subjectList.FailureReason = "Subject Doesn't Mapped for this location and standard Section";
                     }
 
                     return subjectList;

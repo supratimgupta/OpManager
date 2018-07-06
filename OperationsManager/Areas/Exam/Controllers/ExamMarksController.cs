@@ -60,6 +60,14 @@ namespace OperationsManager.Areas.Exam.Controllers
             return Json(new { Status = true, Data = lstSubTypes }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult GetSubjectDropdownData(int locationId, int StandardSectionId)
+        {
+            List<SubjectDTO> lstSubject = _dropDwnRepo.getSubjectDropdown(locationId, StandardSectionId);
+            return Json(new { Status = true, Data = lstSubject }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Register(Models.ExamMarksVM examMarksVM)
@@ -78,6 +86,7 @@ namespace OperationsManager.Areas.Exam.Controllers
 
                     examVM.StandardSectionId = examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId;
                     examVM.SubjectId = examMarksVM.CourseExam.CourseMapping.Subject.SubjectId;
+                    
 
                     StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.CourseExam.ExamType.ExamTypeId, examMarksVM.CourseExam.ExamSubType.ExamSubTypeId);
 
@@ -88,13 +97,14 @@ namespace OperationsManager.Areas.Exam.Controllers
                             examVM.ExamMarksList = new List<Models.ExamMarksVM>();
 
                             examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-                            examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
+                            examVM.SubjectList = _uiddlRepo.getSubjectDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId);
                             examVM.LocationList = _uiddlRepo.getLocationDropDown();
                             examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                             examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown(examMarksVM.CourseExam.ExamType.ExamTypeId);
                             examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
                             examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
                             examVM.Rule = null;
+                            //examVM.CourseExam.CourseMapping.Subject.SubjectId = examVM.SubjectId;
 
                             Models.ExamMarksVM exammarksvm = null;
                             ExamMarksDTO exammarksdto = null;
@@ -207,7 +217,8 @@ namespace OperationsManager.Areas.Exam.Controllers
                         }
                         examVM.CourseExamId = int.Parse(status.FailureReason.Split('^')[1]);
                         examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-                        examVM.SubjectList = _uiddlRepo.getSubjectDropDown();
+                        examVM.SubjectList = _uiddlRepo.getSubjectDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId);
+                        
                         examVM.LocationList = _uiddlRepo.getLocationDropDown();
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                         examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown(examMarksVM.CourseExam.ExamType.ExamTypeId);
@@ -246,20 +257,20 @@ namespace OperationsManager.Areas.Exam.Controllers
             }
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public JsonResult GetSubjectDropdownData(CourseMappingDTO coursemap)
-        {
-            StatusDTO<List<SubjectDTO>> status = _examMarksSvc.GetSubjectDropdownData(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId);
-            if (status.IsSuccess)
-            {               
-                return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
-            }
-            if (status.IsException)
-            {
-                return Json(new { data = new SubjectDTO(), message = "Exception: " + status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { data = new SubjectDTO(), message = "Subject is not mapped for Location and StandardSection", status = true }, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public JsonResult GetSubjectDropdownData(CourseMappingDTO coursemap)
+        //{
+        //    StatusDTO<List<SubjectDTO>> status = _examMarksSvc.GetSubjectDropdownData(coursemap.Location.LocationId, coursemap.StandardSection.StandardSectionId);
+        //    if (status.IsSuccess)
+        //    {               
+        //        return Json(new { data = status.ReturnObj, message = "", status = true }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    if (status.IsException)
+        //    {
+        //        return Json(new { data = new SubjectDTO(), message = "Exception: " + status.ExceptionMessage, status = true }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return Json(new { data = new SubjectDTO(), message = "Subject is not mapped for Location and StandardSection", status = true }, JsonRequestBehavior.AllowGet);
+        //}
     }
 }
