@@ -404,7 +404,7 @@ namespace OpMgr.DataAccess.Implementations
                                       "LEFT JOIN courseexam cexm ON exm.CourseExamId=cexm.CourseExamId LEFT JOIN coursemapping cmpng ON cexm.CourseMappingId=cmpng.CourseMappingId " +
                                       "LEFT JOIN ExamTypes et ON cexm.ExamTypeId=et.ExamTypeId LEFT JOIN ExamSubTypes est ON cexm.ExamSubTypeId=est.ExamSubTypeId " +
                                       "LEFT JOIN result_subject_map rsm ON exm.SubjectId=rsm.subject_id " +
-                                      "WHERE rsm.standard_id = std.StandardId AND cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,rsm.subject_order asc";
+                                      "WHERE rsm.standard_id = scm.StandardSectionId AND cmpng.LocationId=@locId AND exm.StandardSectionId=@stdSecId AND exm.CourseFrom=@courseFrom AND exm.CourseTo=@courseTo ORDER BY st.StudentInfoId,rsm.subject_order asc";
                 command.Parameters.Add("@locId", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@stdSecId", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@courseFrom", MySqlDbType.DateTime).Value = academicStartDate;
