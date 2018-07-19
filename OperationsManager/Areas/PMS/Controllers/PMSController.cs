@@ -580,6 +580,37 @@ namespace OperationsManager.Areas.PMS.Controllers
                 else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
                 {
                     _pmsSvc.ExcelDataForPMSHead(pmsvm);
+                    pmsview = new PMSVM();
+
+                    pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+                    // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                    pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                    pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                    pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
+
+                    /* string path = Server.MapPath("Sample2.xlsx");
+                     System.IO.FileInfo file = new System.IO.FileInfo(path);
+                     string Outgoingfile = "Designation.xlsx";
+                     if (file.Exists)
+                     {
+                         Response.Clear();
+                         Response.ClearContent();
+                         Response.ClearHeaders();
+                         Response.AddHeader("Content-Disposition", "attachment; filename=" + Outgoingfile);
+                         Response.AddHeader("Content-Length", file.Length.ToString());
+                         Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                         Response.WriteFile(file.FullName);
+                         Response.Flush();
+                         file.Delete();
+                         Response.Close();
+
+                     }
+                     else
+                     {
+                         Response.Write("This file does not exist.");
+                     }*/
+
+
                 }
                 else
                 {
@@ -590,6 +621,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                     pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
                     pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
+                    
 
                     pmsview.IsSearchSuccessful = false;
                     //pmsview.MsgColor = "green";
