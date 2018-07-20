@@ -580,6 +580,14 @@ namespace OperationsManager.Areas.PMS.Controllers
                 else if (string.Equals(pmsvm.MODE, "ExcelForPMSHead"))
                 {
                     _pmsSvc.ExcelDataForPMSHead(pmsvm);
+                    pmsview = new PMSVM();
+
+                    pmsview.GenderList = _uiddlRepo.getGenderDropDown();
+                    // pmsview.LocationList = _uiddlRepo.getLocationDropDown();
+                    pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
+                    pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
+                    pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
+
                 }
                 else
                 {

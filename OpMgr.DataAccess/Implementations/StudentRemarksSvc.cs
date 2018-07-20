@@ -39,16 +39,17 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "INSERT INTO student_remarks(student_id, course_from, course_to, remarks_text, exam_result_type)" +
-                                          " VALUES (@student_id, @course_from, @course_to, @remarks_text, @exam_result_type)";
+                    command.CommandText = "INSERT INTO student_remarks(student_id, course_from, course_to, remarks_text, exam_result_type, Attendance)" +
+                                          " VALUES (@student_id, @course_from, @course_to, @remarks_text, @exam_result_type, @Attendance)";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     //data.UserDetails = new UserMasterDTO();
                     command.Parameters.Add("@student_id", MySqlDbType.Int32).Value = studentRemarks.Student.StudentInfoId;
                     command.Parameters.Add("@course_from", MySqlDbType.Date).Value = studentRemarks.CourseFromDate.Value.Date;
                     command.Parameters.Add("@course_to", MySqlDbType.Date).Value = studentRemarks.CourseToDate.Value.Date;
-                    command.Parameters.Add("@remarks_text", MySqlDbType.String).Value = studentRemarks.Remarks;
+                    command.Parameters.Add("@remarks_text", MySqlDbType.String).Value = studentRemarks.Remarks;                    
                     command.Parameters.Add("@exam_result_type", MySqlDbType.String).Value = studentRemarks.ExamResultType;
+                    command.Parameters.Add("@Attendance", MySqlDbType.String).Value = studentRemarks.AttendancePercent;
 
                     command.ExecuteNonQuery();
                 }
@@ -67,12 +68,13 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE student_remarks SET remarks_text=@remarks_text " +
+                    command.CommandText = "UPDATE student_remarks SET remarks_text=@remarks_text, Attendance=@Attendance " +
                                           "WHERE student_remarks_id=@student_remarks_id";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     //data.UserDetails = new UserMasterDTO();
                     command.Parameters.Add("@remarks_text", MySqlDbType.String).Value = studentRemarks.Remarks;
+                    command.Parameters.Add("@Attendance", MySqlDbType.String).Value = studentRemarks.AttendancePercent;
                     command.Parameters.Add("@student_remarks_id", MySqlDbType.Int32).Value = studentRemarks.StudentRemarksId;
 
                     command.ExecuteNonQuery();
@@ -94,7 +96,7 @@ namespace OpMgr.DataAccess.Implementations
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
                 string examTypeWhereClause = string.Empty;
 
-                command.CommandText = "SELECT sr.student_remarks_id, st.StudentInfoId, st.RegistrationNumber, u.FName, u.LName, u.MName, sr.remarks_text FROM studentinfo st " +
+                command.CommandText = "SELECT sr.student_remarks_id, st.StudentInfoId, st.RegistrationNumber, u.FName, u.LName, u.MName, sr.remarks_text, sr.Attendance FROM studentinfo st " +
                                       "INNER JOIN usermaster u ON (st.UserMasterId = u.UserMasterId AND u.LocationId=@location_id) " +
                                       "LEFT OUTER JOIN student_remarks sr ON (st.StudentInfoId=sr.student_id AND sr.exam_result_type = @exam_result_type AND sr.course_from = @course_from AND sr.course_to = @course_to)" +
                                       "WHERE st.StandardSectionId=@standard_sec_id";
@@ -130,6 +132,7 @@ namespace OpMgr.DataAccess.Implementations
                             remarks.Student.UserDetails.MName = dr["MName"].ToString();
                             remarks.Student.UserDetails.LName = dr["LName"].ToString();
                             remarks.Remarks = dr["remarks_text"].ToString();
+                            remarks.AttendancePercent = dr["Attendance"].ToString();
                             lstRemarks.Add(remarks);
                         }
                     }

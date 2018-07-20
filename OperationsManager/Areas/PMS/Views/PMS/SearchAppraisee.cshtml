@@ -58,7 +58,8 @@
                 }                
             }
             else if (mode == "ExcelForPMSHead") {
-                var designation = $('#PMSDesignation option:selected').text();
+                var designation = $('#ddlpmsdesignation option:selected').text();
+                alert(designation);
                 if (designation == "")
                 {
                     alert("Please Select at least a designation to fetch Excel for PMS Review");
@@ -127,7 +128,7 @@
                                     @Html.OpMgrDropDownListFor(m => m.Employee.UserDetails.Gender, Model.GenderList, GoalSheetResource.Gender, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrDropDownListFor(m =>m.PMSDesignation, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control" })
+                                    @Html.OpMgrDropDownListFor(m =>m.PMSDesignation.PmsDesignationId, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control", id = "ddlpmsdesignation" })
                                 </div>
                             </div>
                             <div class="row col-lg-12">
