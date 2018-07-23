@@ -13,7 +13,7 @@
 
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
-            
+
 
             $("#searchAppraisee tbody tr td img").attr('title', 'View Appraisal Details');
             $("#searchAppraisee tbody tr td img").click(function () {
@@ -45,7 +45,7 @@
         });
 
         function setMode(mode) {
-            
+
             document.getElementById("hdnPostMode").value = mode;
             if (mode == "PMSHeadApprove")
             {
@@ -55,11 +55,10 @@
                 }
                 else {
                     return false;
-                }                
+                }
             }
             else if (mode == "ExcelForPMSHead") {
-                var designation = $('#ddlpmsdesignation option:selected').text();
-                alert(designation);
+                var designation = $('#pmsdesignation option:selected').text();
                 if (designation == "")
                 {
                     alert("Please Select at least a designation to fetch Excel for PMS Review");
@@ -68,15 +67,15 @@
                 else
                 {
                     return true;
-                }               
-                
+                }
+
             }
             else {
                 return false;
             }
             return false;
         }
-        
+
     </script>
 
 }
@@ -122,13 +121,13 @@
                                     @Html.OpMgrDropDownListFor(m => m.AppraisalType, Model.AppraisalTypeList, GoalSheetResource.AppraisalType, new { @class = "form-control" })
                                 </div>
                                 @*<div class="col-lg-2">
-                                    @Html.OpMgrDropDownListFor(m => m.AppraisalStatus, Model.AppraisalStatusList, GoalSheetResource.AppraisalStatus, new { @class = "form-control" })
-                                </div>*@
+                                        @Html.OpMgrDropDownListFor(m => m.AppraisalStatus, Model.AppraisalStatusList, GoalSheetResource.AppraisalStatus, new { @class = "form-control" })
+                                    </div>*@
                                 <div class="col-lg-2">
                                     @Html.OpMgrDropDownListFor(m => m.Employee.UserDetails.Gender, Model.GenderList, GoalSheetResource.Gender, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrDropDownListFor(m =>m.PMSDesignation.PmsDesignationId, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control", id = "ddlpmsdesignation" })
+                                    @Html.OpMgrDropDownListFor(m => m.PMSDesignation.PmsDesignationId, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control", id = "pmsdesignation" })
                                 </div>
                             </div>
                             <div class="row col-lg-12">
@@ -138,7 +137,7 @@
                                 <div class="col-lg-2">
                                     @Html.OpMgrSubmitButtonWithIcon("btnrating", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", id = "btnPmsQueueRating", onclick = "return setMode('PMSHeadApprove');" }, "ion-person-add")
                                     @*<button type="submit" class="btn btn-primary" id = "btnPmsQueueRating" onclick="return setMode('PMSHeadApprove');">Release Final Rating</button>*@
-                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "return setMode('PMSHeadApprove');", id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)*@                                    
+                                    @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ReleaseFinalRating, new { @class = "btn btn-primary btn-block", onclick = "return setMode('PMSHeadApprove');", id = "btnPmsQueueRating", style = ""}, "ion-person-add", true)*@
                                 </div>
                                 <div class="col-lg-2">
                                     @Html.OpMgrSubmitButtonWithIcon("btnExcel", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", id = "btnExcelPMSHead", onclick = "return setMode('ExcelForPMSHead');" }, "ion-person-add")
@@ -146,7 +145,7 @@
                                     @*@Html.OpMgrButtonWithIcon("Command", GoalSheetResource.ExcelPMSHead, new { @class = "btn btn-primary btn-block", onclick = "return setMode('ExcelForPMSHead');", id = "btnExcelPMSHead", style = ""}, "ion-person-add", true)*@
 
                                 </div>
-                                <div style="display:none;" id="divContainerHddnFlds">                                    
+                                <div style="display:none;" id="divContainerHddnFlds">
                                     @Html.HiddenFor(m => m.MODE, new { id = "hdnPostMode" })
                                 </div>
                             </div>
@@ -172,20 +171,20 @@
                                         @GoalSheetResource.StaffEmployeeId
                                     </th>
                                     @*<th th data-field="contact" data-sortable="true">
-                                        @GoalSheetResource.Location
-                                    </th>*@
+                                            @GoalSheetResource.Location
+                                        </th>*@
                                     <th th data-field="location" data-sortable="true">
                                         @GoalSheetResource.AppraisalType
                                     </th>
                                     @*<th th data-field="role" data-sortable="true">
-                                        @GoalSheetResource.AppraisalStatus
-                                    </th>
-                                    <th>
-                                        @GoalSheetResource.Designation
-                                    </th>*@
+                                            @GoalSheetResource.AppraisalStatus
+                                        </th>
+                                        <th>
+                                            @GoalSheetResource.Designation
+                                        </th>*@
                                     @*<th>
-                                        @GoalSheetResource.Action
-                                    </th>*@
+                                            @GoalSheetResource.Action
+                                        </th>*@
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,29 +218,29 @@
                                                     @pms.Employee.StaffEmployeeId
                                                 </td>
                                                 @*<td>
-                                                    @pms.UserDetails.Location.LocationDescription
-                                                </td>*@
+                                                        @pms.UserDetails.Location.LocationDescription
+                                                    </td>*@
                                                 <td>
                                                     @pms.AppraisalType
                                                 </td>
                                                 @*<td>
-                                                    @pms.AppraisalStatus.AppraisalStatusDescription
+                                                        @pms.AppraisalStatus.AppraisalStatusDescription
 
-                                                </td>
-                                                <td>
-                                                    @pms.Employee.Designation.DesignationDescription
+                                                    </td>
+                                                    <td>
+                                                        @pms.Employee.Designation.DesignationDescription
 
-                                                </td>*@
+                                                    </td>*@
                                                 @*<td>
-                                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId, new { name = "editPMS" })
-                                                </td>*@
+                                                        @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId, new { name = "editPMS" })
+                                                    </td>*@
                                             </tr>
                                         }
                                     }
                                     else
                                     {
                                         <tr>
-                                            <td colspan="8" align="center" style="font-style:oblique; color:Highlight" >
+                                            <td colspan="8" align="center" style="font-style:oblique; color:Highlight">
                                                 No Data Found
                                             </td>
                                         </tr>

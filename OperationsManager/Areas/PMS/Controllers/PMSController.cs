@@ -491,7 +491,7 @@ namespace OperationsManager.Areas.PMS.Controllers
             {
                 if (string.Equals(pmsvm.MODE, "Search"))
                 {
-                    
+
                     empappraisalmasterdto = new EmployeeAppraisalMasterDTO();
                     empappraisalmasterdto.Employee = new EmployeeDetailsDTO();
                     empappraisalmasterdto.Employee.UserDetails = new UserMasterDTO();
@@ -549,7 +549,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                                     //searchItem.UserDetails.Location.LocationDescription = appraisalmaster.Employee.UserDetails.Location.LocationDescription;
                                     searchItem.Employee = new EmployeeDetailsDTO();
                                     searchItem.Employee.StaffEmployeeId = appraisalmaster.Employee.StaffEmployeeId;
-                                    
+
                                     //Add into PMSView vIew Model List
                                     pmsview.PMSVMList.Add(searchItem);
                                     pmsview.IsSearchSuccessful = true;
@@ -565,7 +565,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                 }
                 else if (string.Equals(pmsvm.MODE, "PMSHeadApprove"))
                 {
-                    
+
                     _pmsSvc.UpdatePMSHeadApproval(pmsvm);
 
                     pmsview = new PMSVM();
@@ -588,6 +588,29 @@ namespace OperationsManager.Areas.PMS.Controllers
                     pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
                     pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
 
+                    /* string path = Server.MapPath("Sample2.xlsx");
+                     System.IO.FileInfo file = new System.IO.FileInfo(path);
+                     string Outgoingfile = "Designation.xlsx";
+                     if (file.Exists)
+                     {
+                         Response.Clear();
+                         Response.ClearContent();
+                         Response.ClearHeaders();
+                         Response.AddHeader("Content-Disposition", "attachment; filename=" + Outgoingfile);
+                         Response.AddHeader("Content-Length", file.Length.ToString());
+                         Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                         Response.WriteFile(file.FullName);
+                         Response.Flush();
+                         file.Delete();
+                         Response.Close();
+
+                     }
+                     else
+                     {
+                         Response.Write("This file does not exist.");
+                     }*/
+
+
                 }
                 else
                 {
@@ -598,6 +621,7 @@ namespace OperationsManager.Areas.PMS.Controllers
                     pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                     pmsview.AppraisalStatusList = _uiddlRepo.getAppraisalStatus();
                     pmsview.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
+
 
                     pmsview.IsSearchSuccessful = false;
                     //pmsview.MsgColor = "green";
@@ -691,18 +715,18 @@ namespace OperationsManager.Areas.PMS.Controllers
         public ActionResult PMSMUltipleGoalSheet(PMSVM pmsvm)
         {
             PMSVM pmsview = null;
-            
+
             if (pmsvm != null)
             {
                 if (string.Equals(pmsvm.MODE, "NotInitiated"))
                 {
                     StatusDTO<EmployeeAppraisalMasterDTO> status = _pmsSvc.InitiateAppraisal(pmsvm.AppraisalType);
-                    
+
 
                     if (status.IsSuccess)
                     {
                         pmsview = new PMSVM(); // Instantiating PMS View model
-                        
+
                         //pmsview.AppraisalTypeList = _uiddlRepo.getAppraisalType();
                         pmsview.MODE = "Initiated";
                         //pmsview.IsSearchSuccessful = true;
