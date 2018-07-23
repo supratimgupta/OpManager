@@ -239,6 +239,7 @@ namespace OpMgr.DataAccess.Implementations
                         rsCard.CurrentRemarks = remark.Remarks;
                     }
 
+                    rsCard.AttendancePercent = remark.AttendancePercent;
                     rsCard.ResultType = resultType;
                     lstResultCards.Add(rsCard);
                     lstDoneWithStudents.Add(rsCard.StudentInfoId);

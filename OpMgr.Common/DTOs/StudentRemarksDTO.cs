@@ -19,5 +19,7 @@ namespace OpMgr.Common.DTOs
         public string ExamResultType { get; set; }
 
         public string Remarks { get; set; }
+
+        public string AttendancePercent { get; set; }
     }
 }
