@@ -990,7 +990,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     command.Parameters.Add("@updatedBy1", MySqlDbType.Int32).Value = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
-                    
+
                     if (command.ExecuteNonQuery() > 0)
                     {
                         return true;
@@ -1010,16 +1010,10 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<List<EmployeeGoalLogDTO>> ExcelDataForPMSHead(EmployeeAppraisalMasterDTO data)
         {
-            //Workbook wb = excel.Workbooks.Add(System.Reflection.Missing.Value);
-
             int e = 1;
             Excel.Application xlApp = new Excel.Application();
             Excel.Workbook WorkBook = xlApp.Workbooks.Add(System.Reflection.Missing.Value);
             var worksheet = new Excel.Worksheet[50];
-            //worksheet[e] = WorkBook.Worksheets.Add();
-
-
-
 
             StatusDTO<List<EmployeeGoalLogDTO>> goalList = new StatusDTO<List<EmployeeGoalLogDTO>>();
             StatusDTO<List<EmployeeAppraisalMasterDTO>> empMasterList = new StatusDTO<List<EmployeeAppraisalMasterDTO>>();
@@ -1035,19 +1029,17 @@ namespace OpMgr.DataAccess.Implementations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    command.Parameters.Add("@PMSDesignationId1", MySqlDbType.Int32).Value = data.PMSDesignation.PmsDesignationId; ;
+                    command.Parameters.Add("@PMSDesignationId1", MySqlDbType.Int32).Value = data.PMSDesignation.PmsDesignationId;
 
                     MySqlDataAdapter da = new MySqlDataAdapter(command);
                     dsGoalLst = new DataSet();
                     da.Fill(dsGoalLst);
 
-                                      
-
                     StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
                     EmployeeGoalLogDTO empGoalLogDTO = new EmployeeGoalLogDTO();
                     PMSMasterModel pmsMaster = new PMSMasterModel();
                     List<GoalView> lstGoalView = new List<GoalView>();
-                    string wsname="sample";
+                    string wsname = "sample";
                     if (dsGoalLst != null && dsGoalLst.Tables.Count == 2)
                     {
                         goalList.ReturnObj = new List<EmployeeGoalLogDTO>();
@@ -1059,74 +1051,46 @@ namespace OpMgr.DataAccess.Implementations
                                 if (!String.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["EmployeeAppraisalMasterId"].ToString()))
                                 {
                                     empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["EmployeeAppraisalMasterId"]);
-                                    wsname = Convert.ToString(dsGoalLst.Tables[0].Rows[i]["Fname"]) +"_" + Convert.ToString(dsGoalLst.Tables[0].Rows[i]["StaffEmployeeId"]);
+                                    wsname = Convert.ToString(dsGoalLst.Tables[0].Rows[i]["Fname"]) + "_" + Convert.ToString(dsGoalLst.Tables[0].Rows[i]["StaffEmployeeId"]);
                                 }
                                 DataTable tblFiltered = (dsGoalLst.Tables[1].AsEnumerable()
                .Where(row => row.Field<int>("EmployeeAppraisalMasterId") == empAppraisalMasterId))
                .CopyToDataTable();
-                               
 
-                                //range.Value = "hello world!";
                                 worksheet[e].Name = Convert.ToString(wsname);
-                               for (int k = 2; k < dsGoalLst.Tables[0].Columns.Count; k++)
+                                for (int k = 2; k < dsGoalLst.Tables[0].Columns.Count; k++)
                                 {
-                                    worksheet[e].Cells[1,k-1] = dsGoalLst.Tables[0].Columns[k].ColumnName;
-                                    // Excel.Range rangec = worksheet[e].get_Range(1);
-                                    // Add column header
-                                    // rangec.Value = dsGoalLst.Tables[0].Columns[k].ColumnName;
-
-                                    // Populate row data
+                                    worksheet[e].Cells[1, k - 1] = dsGoalLst.Tables[0].Columns[k].ColumnName;                                   
                                     worksheet[e].Cells[2, k - 1] = dsGoalLst.Tables[0].Rows[i][k];
-                                    
                                 }
 
                                 worksheet[e].Cells[1, 1].EntireRow.Font.Bold = true;
-                                int c=3;
-                                for (int j=3; j < tblFiltered.Columns.Count; j++)
+                                int c = 3;
+                                for (int j = 3; j < tblFiltered.Columns.Count; j++)
                                 {
-                                   
-                                    if ((tblFiltered.Columns[j].ColumnName == "Active")||(tblFiltered.Columns[j].ColumnName== "EmployeeGoalLogId"))
+                                    if ((tblFiltered.Columns[j].ColumnName == "Active") || (tblFiltered.Columns[j].ColumnName == "EmployeeGoalLogId"))
                                     {
-                                        
+
                                     }
                                     else
                                     {
-                                        
                                         worksheet[e].Cells[5, c - 2] = tblFiltered.Columns[j].ColumnName;
-
                                         for (int k = 0; k < tblFiltered.Rows.Count; k++)
-                                        {
-                                            // Excel.Range ranger = worksheet[e].get_Range(j + (5+k));
-                                            //ranger.Value = tblFiltered.Rows[k][j];
+                                        {                                            
                                             worksheet[e].Cells[6 + k, c - 2] = tblFiltered.Rows[k][j];
                                         }
                                         c++;
                                     }
-                                    
+
                                 }
                                 worksheet[e].Cells[5, 1].EntireRow.Font.Bold = true;
-                                e++;
-                                
-                                
-
-
-
-
+                                e++;                                
                             }
-                        }                                                                      
-
+                        }
                     }
-
-                   
                     xlApp.DisplayAlerts = false;
-
-                    WorkBook.SaveAs("Designation"+DateTime.Now.Year.ToString()+".xlsx", Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
-
-                    xlApp.Visible = true;
-
-
-
-
+                    WorkBook.SaveAs("Designation" + DateTime.Now.Year.ToString() + ".xlsx", Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                    xlApp.Visible = true;                    
                     return goalList;
                 }
                 catch (Exception exp)
