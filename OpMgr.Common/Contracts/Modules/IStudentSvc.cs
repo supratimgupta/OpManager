@@ -16,5 +16,8 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<StudentDTO> GetStudentDetails(string registrationNo);
 
         StatusDTO<StudentDTO> GetStudentTransactionInfo(int studentInfoId);
+
+        StatusDTO<StudentDTO> InsertHealthReport(StudentDTO student);
+        StatusDTO<StudentDTO> UpdateHealthReport(StudentDTO student);
     }
 }

@@ -86,5 +86,26 @@ namespace OperationsManager.Areas.Student.Models
         public string DisabledClass { get; set; }
 
         public string DOBString { get; set; }
+        public string FName { get; set; }
+
+        public string MName { get; set; }
+
+        public string LName { get; set; }
+
+
+        public string Height { get; set; }
+
+
+        public string Weight { get; set; }
+
+        public string BMI { get; set; }
+
+        public string DV { get; set; }
+        public string NV { get; set; }
+        public string GenHealth { get; set; }
+        public string Majorillness { get; set; }
+        public string Pulserate { get; set; }
+        public string DrRemarks { get; set; }
+        public string DrSugg { get; set; }
     }
 }

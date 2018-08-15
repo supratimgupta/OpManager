@@ -153,6 +153,9 @@
   <data name="EntitlementAction" xml:space="preserve">
     <value>Entitlement Action</value>
   </data>
+  <data name="HealthReport" xml:space="preserve">
+    <value>Health Report</value>
+  </data>
   <data name="Library" xml:space="preserve">
     <value>Library</value>
   </data>

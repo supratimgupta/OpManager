@@ -1146,6 +1146,8 @@
     <Content Include="Areas\PMS\Views\PMS\PMSMultipleGoalSheet.cshtml" />
     <Content Include="Areas\Exam\Views\Result\Results.cshtml" />
     <Content Include="Areas\Exam\Views\Remarks\Remarks.cshtml" />
+    <Content Include="Areas\Student\Views\Student\HealthReport.cshtml" />
+    <Content Include="Areas\Student\Views\Student\PrintHealthReport.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
