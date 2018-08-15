@@ -1,5 +1,6 @@
 ﻿using OpMgr.Common.Contracts.Modules;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,12 @@ using OpMgr.Common.Contracts;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Transactions;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
+
+
+
+
 
 namespace OpMgr.DataAccess.Implementations
 {
@@ -983,7 +990,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
                     command.Parameters.Add("@updatedBy1", MySqlDbType.Int32).Value = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
-                    
+
                     if (command.ExecuteNonQuery() > 0)
                     {
                         return true;
@@ -1003,6 +1010,11 @@ namespace OpMgr.DataAccess.Implementations
 
         public StatusDTO<List<EmployeeGoalLogDTO>> ExcelDataForPMSHead(EmployeeAppraisalMasterDTO data)
         {
+            int e = 1;
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook WorkBook = xlApp.Workbooks.Add(System.Reflection.Missing.Value);
+            var worksheet = new Excel.Worksheet[50];
+
             StatusDTO<List<EmployeeGoalLogDTO>> goalList = new StatusDTO<List<EmployeeGoalLogDTO>>();
             StatusDTO<List<EmployeeAppraisalMasterDTO>> empMasterList = new StatusDTO<List<EmployeeAppraisalMasterDTO>>();
             DataSet dsGoalLst = null;
@@ -1022,22 +1034,12 @@ namespace OpMgr.DataAccess.Implementations
                     MySqlDataAdapter da = new MySqlDataAdapter(command);
                     dsGoalLst = new DataSet();
                     da.Fill(dsGoalLst);
-                    
-                    //if (dsGoalLst != null && dsGoalLst.Tables.Count == 2)
-                    //{
-                    //    empMasterList.ReturnObj = new List<EmployeeAppraisalMasterDTO>();
-                    //    if (dsGoalLst.Tables[0].Rows.Count > 0)
-                    //    {
-                    //        for (int i = 0; i < dsGoalLst.Tables[0].Rows.Count; i++)
-                    //        {
-                    //            EmployeeAppraisalMasterDTO empappraisalMaster = new EmployeeAppraisalMasterDTO();
-
-                    //        }
-                    //    }
-                    //}
 
                     StatusDTO<EmployeeGoalLogDTO> status = new StatusDTO<EmployeeGoalLogDTO>();
                     EmployeeGoalLogDTO empGoalLogDTO = new EmployeeGoalLogDTO();
+                    PMSMasterModel pmsMaster = new PMSMasterModel();
+                    List<GoalView> lstGoalView = new List<GoalView>();
+                    string wsname = "sample";
                     if (dsGoalLst != null && dsGoalLst.Tables.Count == 2)
                     {
                         goalList.ReturnObj = new List<EmployeeGoalLogDTO>();
@@ -1045,102 +1047,50 @@ namespace OpMgr.DataAccess.Implementations
                         {
                             for (int i = 0; i < dsGoalLst.Tables[0].Rows.Count; i++)
                             {
-                                EmployeeGoalLogDTO empgoallog = new EmployeeGoalLogDTO();
-                                empgoallog.EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-                                if (!String.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"].ToString()))
+                                worksheet[e] = WorkBook.Worksheets.Add();
+                                if (!String.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["EmployeeAppraisalMasterId"].ToString()))
                                 {
-                                    empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["employeeappraisalmasterid"]);
+                                    empAppraisalMasterId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["EmployeeAppraisalMasterId"]);
+                                    wsname = Convert.ToString(dsGoalLst.Tables[0].Rows[i]["Fname"]) + "_" + Convert.ToString(dsGoalLst.Tables[0].Rows[i]["StaffEmployeeId"]);
                                 }
-                                empgoallog.GoalAttribute = new GoalAttributeDTO();
-                                empgoallog.GoalAttribute.Goal = new GoalDTO();
-                                empgoallog.GoalAttribute.GoalAttributeId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["goalattributeid"]);
-                                empgoallog.GoalAttribute.Goal.GoalId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["GoalId"]);
-                                empgoallog.GoalAttribute.Goal.GoalDescription = dsGoalLst.Tables[0].Rows[i]["GoalDescription"].ToString();
-                                empgoallog.GoalAttribute.Target = dsGoalLst.Tables[0].Rows[i]["Target"].ToString();
-                                empgoallog.GoalAttribute.KRA = dsGoalLst.Tables[0].Rows[i]["KRA"].ToString();
-                                empgoallog.GoalAttribute.KPI = dsGoalLst.Tables[0].Rows[i]["KPI"].ToString();
-                                empgoallog.GoalAttribute.WeightAge = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["WeightAge"]);
-                                empgoallog.NeedsUpdate = "Y";
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["EmployeeGoalLogId"].ToString()))
-                                {
-                                    empgoallog.EmployeeGoalLogId = Convert.ToInt32(dsGoalLst.Tables[0].Rows[i]["EmployeeGoalLogId"]);
-                                    empgoallog.NeedsUpdate = "N";
-                                }
-                                else
-                                {
-                                    empgoallog.EmployeeGoalLogId = -1;
-                                }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["Achievement"].ToString()))
-                                {
-                                    empgoallog.Achievement = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["Achievement"]);
-                                    empgoallog.AchivementPercent = Convert.ToInt32((empgoallog.Achievement / empgoallog.GoalAttribute.WeightAge) * 100);
-                                    empgoallog.SelfRating = this.getRatingLevel(empgoallog.AchivementPercent);
+                                DataTable tblFiltered = (dsGoalLst.Tables[1].AsEnumerable()
+               .Where(row => row.Field<int>("EmployeeAppraisalMasterId") == empAppraisalMasterId))
+               .CopyToDataTable();
 
-                                }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"].ToString()))
+                                worksheet[e].Name = Convert.ToString(wsname);
+                                for (int k = 2; k < dsGoalLst.Tables[0].Columns.Count; k++)
                                 {
-                                    empgoallog.AppraiserRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppriaserRating"]);
-                                    empgoallog.AppraiserRatingPercent = Convert.ToInt32((empgoallog.AppraiserRating / empgoallog.GoalAttribute.WeightAge) * 100);
-                                    empgoallog.AppraiserRatingLevel = this.getRatingLevel(empgoallog.AppraiserRatingPercent);
-                                    empgoallog.NeedsAppraiserUpdate = "N";
-                                }
-                                else
-                                {
-                                    empgoallog.NeedsAppraiserUpdate = "Y";
+                                    worksheet[e].Cells[1, k - 1] = dsGoalLst.Tables[0].Columns[k].ColumnName;                                   
+                                    worksheet[e].Cells[2, k - 1] = dsGoalLst.Tables[0].Rows[i][k];
                                 }
 
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["FinalRating"].ToString()))
+                                worksheet[e].Cells[1, 1].EntireRow.Font.Bold = true;
+                                int c = 3;
+                                for (int j = 3; j < tblFiltered.Columns.Count; j++)
                                 {
-                                    empgoallog.EmployeeAppraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
+                                    if ((tblFiltered.Columns[j].ColumnName == "Active") || (tblFiltered.Columns[j].ColumnName == "EmployeeGoalLogId"))
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        worksheet[e].Cells[5, c - 2] = tblFiltered.Columns[j].ColumnName;
+                                        for (int k = 0; k < tblFiltered.Rows.Count; k++)
+                                        {                                            
+                                            worksheet[e].Cells[6 + k, c - 2] = tblFiltered.Rows[k][j];
+                                        }
+                                        c++;
+                                    }
+
                                 }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString()))
-                                {
-                                    empgoallog.EmployeeAppraisalMaster.ReviewerComment = dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString();
-                                }
-
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"].ToString()))
-                                {
-                                    empgoallog.EmployeeAppraisalMaster.AppraiserFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalRating"]);
-                                }
-                                if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString()))
-                                {
-                                    empgoallog.EmployeeAppraisalMaster.AppraiserComment = dsGoalLst.Tables[0].Rows[i]["AppraiserFinalComment"].ToString();
-                                }
-                                goalList.ReturnObj.Add(empgoallog);
-                            }
-                        }
-
-                        if (dsGoalLst.Tables[1].Rows.Count > 0)
-                        {
-                            if (goalList.ReturnObj != null && goalList.ReturnObj.Count > 0)
-                            {
-                                //goalList.ReturnObj[0].EmployeeAppraisalMaster = new EmployeeAppraisalMasterDTO();
-
-                                goalList.ReturnObj[0].EmployeeAppraisalMaster.EmployeeAppraisalMasterId = empAppraisalMasterId;
-                                goalList.ReturnObj[0].EmployeeAppraisalMaster.PMSDesignation = new PMSDesignationDTO();
-                                goalList.ReturnObj[0].EmployeeAppraisalMaster.PMSDesignation.PmsDesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
-                                EmployeeDetailsDTO empdetails = new EmployeeDetailsDTO();
-                                empdetails.UserDetails = new UserMasterDTO();
-                                empdetails.UserDetails.Location = new LocationDTO();
-                                empdetails.Designation = new DesignationDTO();
-                                empdetails.UserDetails.FName = dsGoalLst.Tables[1].Rows[0]["FName"].ToString();
-                                empdetails.UserDetails.MName = dsGoalLst.Tables[1].Rows[0]["MName"].ToString();
-                                empdetails.UserDetails.LName = dsGoalLst.Tables[1].Rows[0]["LName"].ToString();
-                                //empdetails.Designation.DesignationDescription = dsGoalLst.Tables[1].Rows[0]["DesignationDescription"].ToString();
-                                empdetails.UserDetails.Location.LocationDescription = dsGoalLst.Tables[1].Rows[0]["LocationDescription"].ToString();
-                                empdetails.EducationalQualification = dsGoalLst.Tables[1].Rows[0]["EducationQualification"].ToString();
-                                empdetails.DateOfJoining = Convert.ToDateTime(dsGoalLst.Tables[1].Rows[0]["DateOfJoining"]);
-                                empdetails.StaffEmployeeId = dsGoalLst.Tables[1].Rows[0]["staffemployeeid"].ToString();
-                                empdetails.ApproverName = dsGoalLst.Tables[1].Rows[0]["ApproverName"].ToString();
-                                
-                                empdetails.UserDetails.UserMasterId = (int)dsGoalLst.Tables[1].Rows[0]["UserMasterId"];
-
-                                goalList.ReturnObj[0].EmployeeAppraisalMaster.Employee = empdetails;
-
+                                worksheet[e].Cells[5, 1].EntireRow.Font.Bold = true;
+                                e++;                                
                             }
                         }
                     }
-
+                    xlApp.DisplayAlerts = false;
+                    WorkBook.SaveAs("Designation" + DateTime.Now.Year.ToString() + ".xlsx", Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                    xlApp.Visible = true;                    
                     return goalList;
                 }
                 catch (Exception exp)

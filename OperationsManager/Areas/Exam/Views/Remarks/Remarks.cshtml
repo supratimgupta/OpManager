@@ -10,6 +10,30 @@
         function setMode(mode) {
             document.getElementById("hfMode").value = mode;
         }
+
+        $(function () {
+            $("input[id*='txtAttendance']").keydown(function (event) {
+
+
+                if (event.shiftKey == true) {
+                    event.preventDefault();
+                }
+
+                if ((event.keyCode >= 48 && event.keyCode <= 57) ||
+                    (event.keyCode >= 96 && event.keyCode <= 105) ||
+                    event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 ||
+                    event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190) {
+
+                } else {
+                    event.preventDefault();
+                }
+
+                if($(this).val().indexOf('.') !== -1 && event.keyCode == 190)
+                    event.preventDefault();
+                //if a decimal has been added, disable the "."-button
+
+            });
+        });
     </script>
 }
 @using (Html.BeginForm())
@@ -36,10 +60,10 @@
                             @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
                         </div>
                         <div class="col-lg-3">
-                            @Html.OpMgrSubmitButtonWithIcon("btnSearch", "Search", new { @class = "btn btn-primary btn-block", onclick="setMode('SEARCH');" }, "fa fa-search")
+                            @Html.OpMgrSubmitButtonWithIcon("btnSearch", "Search", new { @class = "btn btn-primary btn-block", onclick = "setMode('SEARCH');" }, "fa fa-search")
                         </div>
                         <div class="col-lg-3">
-                            @Html.HiddenFor(m => m.MODE, new { id="hfMode" })
+                            @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
                         </div>
                     </fieldset>
                 </div>
@@ -62,7 +86,7 @@
                                         <th>
                                             @Html.OpMgrSubmitButtonWithIcon("btnSave", "Save", new { @class = "btn btn-primary btn-block", onclick = "setMode('SAVE');" }, "fa fa-file-archive-o")
                                         </th>
-                                        <th colspan="2"></th>
+                                        <th colspan="3"></th>
                                     </tr>
                                     <tr>
                                         <th>
@@ -71,18 +95,21 @@
                                         <th>
                                             Name
                                         </th>
-                                        <th style="width:50%">
+                                        <th style="width:30%">
                                             Remarks
+                                        </th>
+                                        <th style="width:20%">
+                                            Attendance(%)
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for (int i = 0; i < Model.SearchResult.Count; i++ )
+                                    @for (int i = 0; i < Model.SearchResult.Count; i++)
                                     {
                                         <tr>
                                             <td>
-                                                @Html.HiddenFor(m=>m.SearchResult[i].StudentRemarksId)
-                                                @Html.HiddenFor(m=>m.SearchResult[i].Student.StudentInfoId)
+                                                @Html.HiddenFor(m => m.SearchResult[i].StudentRemarksId)
+                                                @Html.HiddenFor(m => m.SearchResult[i].Student.StudentInfoId)
                                                 @Model.SearchResult[i].Student.RegistrationNumber
                                             </td>
                                             <td>
@@ -90,6 +117,9 @@
                                             </td>
                                             <td>
                                                 @Html.OpMgrTextAreaFor(m => m.SearchResult[i].Remarks, "", new { @class = "form-control requiredField" })
+                                            </td>
+                                            <td>
+                                                @Html.OpMgrTextAreaFor(m => m.SearchResult[i].AttendancePercent, "", new { @class = "form-control requiredField", maxlength=5, id="txtAttendance" })
                                             </td>
                                         </tr>
                                     }

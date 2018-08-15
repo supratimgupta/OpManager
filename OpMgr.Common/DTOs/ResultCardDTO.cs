@@ -34,6 +34,8 @@ namespace OpMgr.Common.DTOs
 
         public string CurrentRemarks { get; set; }
 
+        public string AttendancePercent { get; set; }
+
         public List<GraphRecords> GraphRecords { get; set; }
     }
 
