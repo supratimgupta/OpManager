@@ -55,5 +55,9 @@ namespace OperationsManager.Areas.Login.Models
         public string employeeimagepath { get; set; }
 
         public string DummyStaffEmployeeId { get; set; }
+
+        public string StudentOrStaffId { get; set; }
+
+        
     }
 }
