@@ -191,6 +191,94 @@
         }
 
         //End -- Assign Multiple role
+        
+        //start -- assign multiple designation for PMS
+        function assignPMSDesigation() {
+            var table = document.getElementById("tblPmsDes");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "PMSEmpDesignationMapList[" + nextRowId + "].PmsEmpDesmapId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlpmsdes = document.createElement("select");
+            ddlpmsdes.name = "PMSEmpDesignationMapList[" + nextRowId + "].PmsDesignation.PmsDesignationId";
+            ddlpmsdes.className = "form-control";
+            populateTrPMSDes(ddlpmsdes);
+            scndCell.appendChild(ddlpmsdes);
+
+            var thirdCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deletePmsRow(this);');
+            thirdCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+
+            tbody.appendChild(newRow);
+
+            return false;
+        }
+
+        function deletePmsRow(aDelete) {
+            var row = aDelete.parentNode.parentNode;
+            var table = document.getElementById("tblPmsDes");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            tbody.removeChild(row);
+        }
+
+        function populateTrPMSDes(ddlpmsdes) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetPMSDesignation',
+                dataType: "json",
+                success: function (resultData) { populateTrPMSDesDDL(resultData, ddlpmsdes); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrPMSDesDDL(trPmsDes, ddlpmsdes) {
+            debugger;
+            var ddlpmsdess = ddlpmsdes;
+            ddlpmsdess.innerHTML = "";
+            for (i = -1; i < trPmsDes.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trPmsDes[i].PmsDesignationId;
+                    option.innerHTML = trPmsDes[i].PmsDesignationDescription;
+                }
+                ddlpmsdess.appendChild(option);
+            }
+        }
+
+        function deletePMSDesignationMap(pmsdesmap) {
+            var pmsdes = new Object();
+            pmsdes.PmsEmpDesmapId = parseInt(pmsdesmap);
+            $.ajax({
+                type: 'POST',
+                url: 'DeletePmsDesignationMap',
+                data: pmsdes,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+
+        //End --Assign multiple designation for pms
 
         //Start -- Assign Multiple Specilization/subject to a faculty
 
@@ -494,6 +582,60 @@
                                 </table>
 
                             </div>
+
+                            <div class="row">
+                                <table id="tblPmsDes" class="table table table-striped table-bordered table-responsive table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5">
+                                                Assign PMS Designation
+                                            </th>
+                                        </tr>
+                                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <tr>
+                                                <th colspan="5">
+                                                    <input type="button" class="btn btn-primary" style="width:70px" onclick="assignPMSDesigation();" value="+Add" />
+                                                </th>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <th style="display:none;"></th>
+                                            <th>PMS Designation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.PMSEmpDesignationMapList != null && Model.PMSEmpDesignationMapList.Count > 0)
+                                        {
+                                            for (int i = 0; i < Model.PMSEmpDesignationMapList.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td style="display:none;">
+                                                        <input type="hidden" name="PMSEmpDesignationMapList[@i].PmsEmpDesmapId" value="@Model.PMSEmpDesignationMapList[i].PmsEmpDesmapId" />
+                                                    </td>
+                                                    <td>
+                                                        <select name="PMSEmpDesignationMapList[@i].PmsDesignation.PmsDesignationId" class="form-control">
+                                                            @foreach (OpMgr.Common.DTOs.PMSDesignationDTO trPmsDes in Model.PmsDesignationList)
+                                                            {
+                                                                <option value="@trPmsDes.PmsDesignationId" @(Model.PMSEmpDesignationMapList[i].PmsDesignation.PmsDesignationId == trPmsDes.PmsDesignationId ? "selected=\"selected\"" : "")>@trPmsDes.PmsDesignationDescription</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                                        {
+                                                            <a onclick="deletePMSDesignationMap('@Model.PMSEmpDesignationMapList[i].PmsEmpDesmapId');" style="cursor:pointer;">Delete</a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form-group">

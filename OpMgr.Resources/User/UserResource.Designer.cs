@@ -19,7 +19,7 @@ namespace OpMgr.Resources.User {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class UserResource {
@@ -79,6 +79,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AddHealthReport.
+        /// </summary>
+        public static string AddHealthReport {
+            get {
+                return ResourceManager.GetString("AddHealthReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Admission Date.
         /// </summary>
         public static string AdmissionDate {
@@ -129,6 +138,15 @@ namespace OpMgr.Resources.User {
         public static string BloodGrp {
             get {
                 return ResourceManager.GetString("BloodGrp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BMI.
+        /// </summary>
+        public static string BMI {
+            get {
+                return ResourceManager.GetString("BMI", resourceCulture);
             }
         }
         
@@ -228,6 +246,33 @@ namespace OpMgr.Resources.User {
         public static string DropPoint {
             get {
                 return ResourceManager.GetString("DropPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doctor Remarks.
+        /// </summary>
+        public static string DrRemarks {
+            get {
+                return ResourceManager.GetString("DrRemarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doctor Suggestion.
+        /// </summary>
+        public static string DrSugg {
+            get {
+                return ResourceManager.GetString("DrSugg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance Vision.
+        /// </summary>
+        public static string DV {
+            get {
+                return ResourceManager.GetString("DV", resourceCulture);
             }
         }
         
@@ -385,6 +430,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Health.
+        /// </summary>
+        public static string GenHealth {
+            get {
+                return ResourceManager.GetString("GenHealth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Guardian Contact No.
         /// </summary>
         public static string GuardianContactNo {
@@ -408,6 +462,15 @@ namespace OpMgr.Resources.User {
         public static string GuardianName {
             get {
                 return ResourceManager.GetString("GuardianName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string Height {
+            get {
+                return ResourceManager.GetString("Height", resourceCulture);
             }
         }
         
@@ -489,6 +552,15 @@ namespace OpMgr.Resources.User {
         public static string Location {
             get {
                 return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Major Illness.
+        /// </summary>
+        public static string Majorillness {
+            get {
+                return ResourceManager.GetString("Majorillness", resourceCulture);
             }
         }
         
@@ -655,6 +727,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Near Vision.
+        /// </summary>
+        public static string NV {
+            get {
+                return ResourceManager.GetString("NV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register a User.
         /// </summary>
         public static string PageHeader {
@@ -696,6 +777,15 @@ namespace OpMgr.Resources.User {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pulse Rate.
+        /// </summary>
+        public static string Pulserate {
+            get {
+                return ResourceManager.GetString("Pulserate", resourceCulture);
             }
         }
         
@@ -930,6 +1020,15 @@ namespace OpMgr.Resources.User {
         public static string UserTableName {
             get {
                 return ResourceManager.GetString("UserTableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight.
+        /// </summary>
+        public static string Weight {
+            get {
+                return ResourceManager.GetString("Weight", resourceCulture);
             }
         }
     }

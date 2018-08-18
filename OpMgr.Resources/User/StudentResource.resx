@@ -153,6 +153,9 @@
   <data name="GuardianContactNo" xml:space="preserve">
     <value>Contact Number</value>
   </data>
+  <data name="HealthReport" xml:space="preserve">
+    <value>Health Report</value>
+  </data>
   <data name="LName" xml:space="preserve">
     <value>Last Name</value>
   </data>

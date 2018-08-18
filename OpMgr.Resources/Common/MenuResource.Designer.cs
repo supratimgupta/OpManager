@@ -19,7 +19,7 @@ namespace OpMgr.Resources.Common {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MenuResource {
@@ -57,6 +57,15 @@ namespace OpMgr.Resources.Common {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACADEMICS.
+        /// </summary>
+        public static string Academics {
+            get {
+                return ResourceManager.GetString("Academics", resourceCulture);
             }
         }
         
@@ -160,11 +169,29 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Health Report.
+        /// </summary>
+        public static string HealthReport {
+            get {
+                return ResourceManager.GetString("HealthReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Library.
         /// </summary>
         public static string Library {
             get {
                 return ResourceManager.GetString("Library", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MARKS ENTRY.
+        /// </summary>
+        public static string MarksEntry {
+            get {
+                return ResourceManager.GetString("MarksEntry", resourceCulture);
             }
         }
         
@@ -219,6 +246,24 @@ namespace OpMgr.Resources.Common {
         public static string PromotionBatch {
             get {
                 return ResourceManager.GetString("PromotionBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ENTER REMARKS.
+        /// </summary>
+        public static string RemarksEntry {
+            get {
+                return ResourceManager.GetString("RemarksEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RESULTS.
+        /// </summary>
+        public static string Results {
+            get {
+                return ResourceManager.GetString("Results", resourceCulture);
             }
         }
         

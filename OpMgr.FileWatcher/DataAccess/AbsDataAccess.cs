@@ -12,6 +12,8 @@ namespace OpMgr.FileWatcher.DataAccess
     {
         public abstract string GetDeptId(string deptName);
 
+        public abstract string GetDesignationId(string designationName);
+
         public abstract DataTable GetGoals();
 
         public abstract DataTable GetGoalAttributes();

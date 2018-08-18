@@ -28,6 +28,8 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<DesignationDTO> Designation();
 
+        List<PMSDesignationDTO> PmsDesignation();
+
         List<StandardDTO> Standard(ClassTypeDTO classTypeDTO);
 
         // below code will return only list of standard not based on classtype
@@ -61,6 +63,12 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<ExamTypeDTO> getExamType();
 
-        List<ExamSubTypeDTO> getExamSubType();
+        List<ExamSubTypeDTO> getExamSubType(int? examTypeId = null);
+
+        List<AcademicSessionDTO> GetAcademicSessions();
+
+        List<GradeConfigDTO> getGrades(int location);
+
+        List<SubjectDTO> getSubjectDropdown(int? locationId = null, int? satndardsectionid=null);
     }
 }

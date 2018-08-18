@@ -6,6 +6,28 @@
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
+@section PageScripts
+{
+    <script type="text/javascript">
+
+        function validateAppraisal()
+        {            
+            var appraisalType = $("#AppraisalType").val();
+            
+            if (appraisalType == 'Annual' || appraisalType == 'MidYear')
+            {
+                
+                return true;
+            }
+            else
+            {
+                alert("Please Select Appraisal Type");
+                return false;
+            }
+            return false;
+        }
+    </script>
+}
 
 <!DOCTYPE html>
 
@@ -19,7 +41,56 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-color panel-primary">
+                <div class="panel-heading"><b>Initiate Appraisal</b></div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("PMSMultipleGoalSheet", "PMS", FormMethod.Post, new { id = "initiatePMS", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <div class="col-lg-3">
+                                @Html.OpMgrDropDownListFor(m => m.AppraisalType, Model.AppraisalTypeList, GoalSheetResource.AppraisalType, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-3" style="padding-top:30px;">
+                                @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
+                                @if (string.Equals(Model.MODE, "NotInitiated"))
+                                {
+                                    @Html.OpMgrSubmitButtonWithIcon("initite", GoalSheetResource.InitiateAppraisal, new { @class = "btn btn-primary btn-block", id = "btnAppraisalInitiate", onclick = "return validateAppraisal();" }, "ion -paper-airplane", true)
+
+                                    @*<button type="submit" class="btn btn-primary" onclick="validateAppraisal();">Initiate Appraisal</button>*@
+                                }
+                                else if (string.Equals(Model.MODE, "Initiated"))
+                                {
+                                    <span style="padding-top:10px;"><b>Appraisal Already Initiated</b></span>
+                                }
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+            <div class="panel panel-color panel-primary">
                 <div class="panel-heading"><b>@GoalSheetResource.GoalSheetBasedOnDesignation</b></div>
+                @if (Model != null)
+                {
+                    if (Model.IsSearchSuccessful)
+                    {
+                        foreach (var pms in Model.PMSVMList)
+                        {
+                            if (!String.IsNullOrEmpty(pms.AvgFinalLevel))
+                            {
+                                <div style="font-weight:bold; padding-top:10px;">
+                                    <div class="col-lg-2">Avg Final Rating - </div>
+                                    @Html.DisplayFor(m => pms.AvgFinalLevel)
+                                </div>
+                            }
+                        }
+                    }
+                }
+
+
                 <div class="panel-body">
                     <div style="overflow:scroll;">
                         <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
@@ -93,7 +164,8 @@
 
                                                 </td>
                                                 <td>
-                                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId, new { name = "editPMS" })
+                                                    @Html.HiddenFor(m => m.MODE, new { id = "hfMode" })
+                                                    @Html.OpMgrActionLinkMultiple("EDIT", "../../PMS/PMS/GoalSheetForAll?apprMasterId=" + pms.EmployeeAppraisalMasterId + "&designationId" + pms.Employee.Designation.DesignationId, new { name = "editPMS" })
                                                 </td>
                                             </tr>
                                         }
@@ -114,6 +186,6 @@
             </div>
 
         </div>
-        </div>
+    </div>
 </body>
 </html>

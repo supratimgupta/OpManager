@@ -24,6 +24,7 @@
                             <div class="row">
                                 @Html.HiddenFor(m => m.ExamRuleId)
                                 @Html.HiddenFor(m => m.Mode)
+                                @Html.HiddenFor(m=>m.CourseExam.CourseExamId)
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -61,8 +62,8 @@
 {
     <script language="javascript" type="text/javascript">
         function refreshParentPage() {
-            var registerform = window.opener.document.getElementById("exammarksform");
-            registerform.submit();
+            var searchBtn = window.opener.document.getElementById("btnSearch");
+            searchBtn.click();
             window.focus();
             window.close();
         }

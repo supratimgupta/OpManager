@@ -48,7 +48,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@assesmentMarks", MySqlDbType.Double).Value = data.AssesmentMarks.Value;
                     command.Parameters.Add("@actualFullMarks", MySqlDbType.Double).Value = data.ActualFullMarks.Value;
                     command.Parameters.Add("@passMarks", MySqlDbType.Double).Value = data.PassMarks.Value;
-                    command.Parameters.Add("@dateTimeLog", MySqlDbType.DateTime).Value = data.DateTimeLog.Value;
+                    command.Parameters.Add("@dateTimeLog", MySqlDbType.DateTime).Value = DateTime.Now;
                     command.Parameters.Add("@courseExamId", MySqlDbType.Int32).Value = data.CourseExam.CourseExamId;
                     command.Parameters.Add("@createdBy", MySqlDbType.Int32).Value = data.CreatedBy.UserMasterId;
                     command.Parameters.Add("@createdDate", MySqlDbType.DateTime).Value = DateTime.Today.Date;
@@ -78,7 +78,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "UPDATE ExamRule SET AssesmentMarks = @assesmentMarks, ActualFullMarks = @actualFullMarks, PassMarks = @passMarks, "+
-                                          "DateTimeLog = @dateTimeLog, CourseExamId = @courseExamId, Active = @active, UpdatedBy = @updatedBy, UpdatedDate = @updatedDate WHERE ExamRuleId=@examRuleId";
+                                          "DateTimeLog = @dateTimeLog, UpdatedBy = @updatedBy, UpdatedDate = @updatedDate WHERE ExamRuleId=@examRuleId";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     //data.UserDetails = new UserMasterDTO();
@@ -86,11 +86,9 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@actualFullMarks", MySqlDbType.Double).Value = data.ActualFullMarks.Value;
                     command.Parameters.Add("@passMarks", MySqlDbType.Double).Value = data.PassMarks.Value;
                     command.Parameters.Add("@dateTimeLog", MySqlDbType.DateTime).Value = DateTime.Now;
-                    command.Parameters.Add("@courseExamId", MySqlDbType.Int32).Value = data.CourseExam.CourseExamId;
-                    command.Parameters.Add("@active", MySqlDbType.Bit).Value = data.Active;
-                    command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = data.CreatedBy.UserMasterId;
+                    command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = data.UpdatedBy.UserMasterId;
                     command.Parameters.Add("@updatedDate", MySqlDbType.DateTime).Value = DateTime.Today.Date;
-
+                    command.Parameters.Add("@examRuleId", MySqlDbType.Int32).Value = data.ExamRuleId;
                     StatusDTO<ExamRuleDTO> status = new StatusDTO<ExamRuleDTO>();
 
                     if (command.ExecuteNonQuery() > 0)

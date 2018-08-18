@@ -28,6 +28,26 @@ namespace OpMgr.Common.DTOs
 
         public string LName { get; set; }
 
+      
+        public string Height { get; set; }
+
+      
+        public string Weight { get; set; }
+
+        public string BMI { get; set; }
+
+        public string DV { get; set; }
+        public string NV { get; set; }
+        public string GenHealth { get; set; }
+        public string Majorillness { get; set; }
+        public string Pulserate { get; set; }
+        public string DrRemarks { get; set; }
+        public string DrSugg { get; set; }
+       
+
+
+
+
 
         public string Gender { get; set; }
 

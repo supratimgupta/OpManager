@@ -1,0 +1,26 @@
+﻿@media print{
+    .printPanel{
+        page-break-after: always;
+        color:black;
+        background-color:white;
+        font-family:Tahoma;
+        font-size:medium;
+        display: block;
+        width: auto;
+        height: auto;
+        overflow: visible;
+    }
+
+    .printPanel table{
+        border:hidden;
+    }
+
+  .resultCard {
+    left: 0;
+    top: 100px;
+    display: block;
+    width: auto;
+    height: auto;
+    overflow: visible;
+  }
+}

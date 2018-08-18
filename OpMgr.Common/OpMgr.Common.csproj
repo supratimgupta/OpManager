@@ -59,7 +59,9 @@
     <Compile Include="Contracts\Modules\ILibraryTransactionSvc.cs" />
     <Compile Include="Contracts\Modules\INotificationSvc.cs" />
     <Compile Include="Contracts\Modules\IPMSSvc.cs" />
+    <Compile Include="Contracts\Modules\IResultSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
+    <Compile Include="Contracts\Modules\IStudentRemarksSvc.cs" />
     <Compile Include="Contracts\Modules\IStudentSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionBacklog.cs" />
     <Compile Include="Contracts\Modules\ITransactionLogPaymentSvc.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Contracts\Modules\IUserSvc.cs" />
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
     <Compile Include="Contracts\IResetPasswordSvc.cs" />
+    <Compile Include="DTOs\AcademicSessionDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusLogDTO.cs" />
     <Compile Include="DTOs\ApprovalMappingDTO.cs" />
@@ -101,6 +104,9 @@
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
     <Compile Include="DTOs\GoalAttributeDTO.cs" />
     <Compile Include="DTOs\GoalDTO.cs" />
+    <Compile Include="DTOs\GoalLogExcelDTO.cs" />
+    <Compile Include="DTOs\GoalView.cs" />
+    <Compile Include="DTOs\GradeConfigDTO.cs" />
     <Compile Include="DTOs\HouseTypeDTO.cs" />
     <Compile Include="DTOs\KeyValueDTO.cs" />
     <Compile Include="DTOs\LibraryTransactionDTO.cs" />
@@ -108,8 +114,13 @@
     <Compile Include="DTOs\MailDTO.cs" />
     <Compile Include="DTOs\NotificationDTO.cs" />
     <Compile Include="DTOs\PasswordDTO.cs" />
+    <Compile Include="DTOs\PMSDesignationDTO.cs" />
+    <Compile Include="DTOs\PMSEmpDesignationMap.cs" />
     <Compile Include="DTOs\PMSMasterDTO.cs" />
+    <Compile Include="DTOs\PMSMasterExcelDTO.cs" />
+    <Compile Include="DTOs\PMSMasterModel.cs" />
     <Compile Include="DTOs\RatingDTO.cs" />
+    <Compile Include="DTOs\ResultCardDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />
@@ -118,6 +129,7 @@
     <Compile Include="DTOs\StatusDTO.cs" />
     <Compile Include="DTOs\StudentClassMapDTO.cs" />
     <Compile Include="DTOs\StudentDTO.cs" />
+    <Compile Include="DTOs\StudentRemarksDTO.cs" />
     <Compile Include="DTOs\SubjectDTO.cs" />
     <Compile Include="DTOs\TransactionLogDTO.cs" />
     <Compile Include="DTOs\TransactionLogPaymentsDTO.cs" />
@@ -136,6 +148,15 @@
       <Project>{1597930e-b3b4-42d3-b17d-cd4ebb0cd396}</Project>
       <Name>OpMgr.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\OpMgr.Common.dll" />
+    <Content Include="bin\Debug\OpMgr.Common.pdb" />
+    <Content Include="bin\Debug\OpMgr.Resources.dll" />
+    <Content Include="bin\Debug\OpMgr.Resources.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

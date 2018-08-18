@@ -19,7 +19,7 @@ namespace OpMgr.Resources.User {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StudentResource {
@@ -165,6 +165,15 @@ namespace OpMgr.Resources.User {
         public static string GuardianContactNo {
             get {
                 return ResourceManager.GetString("GuardianContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health Report.
+        /// </summary>
+        public static string HealthReport {
+            get {
+                return ResourceManager.GetString("HealthReport", resourceCulture);
             }
         }
         

@@ -15,9 +15,9 @@ namespace OpMgr.Common.Contracts.Modules
 
         StatusDTO<UserEntitlementDTO> InsertUserEntitlement(UserEntitlementDTO data);
 
-        StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data); 
+        StatusDTO<UserEntitlementDTO> DeleteUserEntitlement(UserEntitlementDTO data);
 
-         StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data);
+        StatusDTO<UserEntitlementDTO> UpdateUserEntitlement(UserEntitlementDTO data);
 
         StatusDTO<FacultyCourseMapDTO> DeleteFacultyCourseMap(FacultyCourseMapDTO data);
 
@@ -26,6 +26,14 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<FacultyCourseMapDTO> InsertFacultyCourse(FacultyCourseMapDTO data);
 
         StatusDTO<FacultyCourseMapDTO> UpdateFacultyCourseMap(FacultyCourseMapDTO data);
+
+        StatusDTO<PMSEmpDesignationMapDTO> DeletePMSDesignationMap(PMSEmpDesignationMapDTO data);
+
+        List<PMSEmpDesignationMapDTO> GetPMSDesignationMap(int pmsdesId);
+
+        StatusDTO<PMSEmpDesignationMapDTO> InsertPMSDesignationMap(PMSEmpDesignationMapDTO data);
+
+        StatusDTO<PMSEmpDesignationMapDTO> UpdatePMSDesignationMap(PMSEmpDesignationMapDTO data);
 
         int GetCurrentEmployeeCounter();
     }

@@ -20,6 +20,8 @@ namespace OperationsManager.Areas.Login.Models
 
         public SelectList DesignationList { get; set; }
 
+        public List<PMSDesignationDTO> PmsDesignationList { get; set; }
+
         public SelectList ClassTypeList { get; set; }
 
         public SelectList SubjectList { get; set; }
@@ -35,6 +37,8 @@ namespace OperationsManager.Areas.Login.Models
         public string SuccessorFailureMessage { get; set; }
         public string MessageColor { get; set; }
         public List<UserEntitlementDTO> UserEntitlementList { get; set; }
+
+        public List<PMSEmpDesignationMapDTO> PMSEmpDesignationMapList { get; set; }
 
         public List<EntitlementDTO> SelectUserEntitlement { get; set; }
 

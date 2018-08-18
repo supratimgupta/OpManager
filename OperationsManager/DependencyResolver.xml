@@ -75,5 +75,11 @@
 
   <bind service="OpMgr.Common.Contracts.Modules.IExamRuleSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.ExamRuleSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.IResultSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.ResultSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.IStudentRemarksSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.StudentRemarksSvc, OpMgr.DataAccess" />
 </module>
 

@@ -328,6 +328,41 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
+        public List<PMSDesignationDTO> PmsDesignation()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "getPMSDesignation";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<PMSDesignationDTO> lstPmsDesignation = new List<PMSDesignationDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        PMSDesignationDTO pmsdesignationDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            pmsdesignationDTO = new PMSDesignationDTO();
+                            pmsdesignationDTO.PmsDesignationId = (int)dr["PmsDesignationId"];
+                            pmsdesignationDTO.PmsDesignationDescription = dr["PmsDesignationDescription"].ToString();
+                            lstPmsDesignation.Add(pmsdesignationDTO);
+                        }
+                    }
+                    return lstPmsDesignation;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
         public List<StandardDTO> Standard(ClassTypeDTO classTypeDTO)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
@@ -766,7 +801,7 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
 
-        public List<ExamSubTypeDTO> getExamSubType()
+        public List<ExamSubTypeDTO> getExamSubType(int? examTypeId=null)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -775,6 +810,11 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "select ExamSubTypeId, ExamSubTypeDescription from examsubtypes where Active=1";
+                    if(examTypeId!=null && examTypeId.HasValue && examTypeId.Value>0)
+                    {
+                        command.CommandText = command.CommandText + " and ExamTypeId=@examType";
+                        command.Parameters.Add("@examType", MySqlDbType.Int32).Value = examTypeId.Value;
+                    }
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
                     _dtData = new DataTable();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);
@@ -931,6 +971,119 @@ namespace OpMgr.DataAccess.Implementations
                         }
                     }
                     return lstRatingDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+
+        public List<AcademicSessionDTO> GetAcademicSessions()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select distinct CourseFrom,CourseTo from coursemapping";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<AcademicSessionDTO> lstAcademicSessionDTO = new List<AcademicSessionDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        AcademicSessionDTO academicSessionDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            academicSessionDTO = new AcademicSessionDTO();
+                            academicSessionDTO.AcademicSessionFromTo = ((DateTime)dr["CourseFrom"]).ToString("dd-MMM-yyyy") + ";" + ((DateTime)dr["CourseTo"]).ToString("dd-MMM-yyyy");
+                            academicSessionDTO.AcademicSessionViewFromTo = ((DateTime)dr["CourseFrom"]).ToString("yyyy") + " - " + ((DateTime)dr["CourseTo"]).ToString("yyyy");
+                            lstAcademicSessionDTO.Add(academicSessionDTO);
+                        }
+                    }
+                    return lstAcademicSessionDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+
+        public List<GradeConfigDTO> getGrades(int location)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select  grade_config_id, grade_name from grade_config where location=@loc";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@loc", MySqlDbType.Int32).Value = location;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<GradeConfigDTO> lstGradeDTO = new List<GradeConfigDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        GradeConfigDTO gradeDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            gradeDTO = new GradeConfigDTO();
+                            gradeDTO.GradeConfigId = (int)dr["grade_config_id"];
+                            gradeDTO.GreadeName = dr["grade_name"].ToString();
+                            lstGradeDTO.Add(gradeDTO);
+                        }
+                    }
+                    return lstGradeDTO;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
+
+        // Get Subject dropdown based on Location and StandardSectionId or without this
+
+        public List<SubjectDTO> getSubjectDropdown(int? locationId = null, int? standardsectionId = null)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select distinct SubjectId, SubjectName from subjectfromexcel";
+                    if (locationId != null && standardsectionId !=null && locationId.HasValue && locationId.Value > 0 && standardsectionId.HasValue && standardsectionId.Value > 0)
+                    {
+                        command.CommandText = command.CommandText + " where LocationId=@locationId and StandardSectionId=@standardsectionId";
+                        command.Parameters.Add("@locationId", MySqlDbType.Int32).Value = locationId.Value;
+                        command.Parameters.Add("@standardsectionId", MySqlDbType.Int32).Value = standardsectionId.Value;
+                    }
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<SubjectDTO> lstSubject = new List<SubjectDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        SubjectDTO subjectdto = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            subjectdto = new SubjectDTO();
+                            subjectdto.SubjectId = (int)dr["SubjectId"];
+                            subjectdto.SubjectName = dr["SubjectName"].ToString();
+                            lstSubject.Add(subjectdto);
+                        }
+                    }
+                    return lstSubject;
                 }
                 catch (Exception exp)
                 {

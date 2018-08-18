@@ -1,0 +1,438 @@
+﻿@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Exam.Models.ResultVM
+
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+@section StyleBlocks
+{
+    <link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />
+    <style>
+        .graphImage{
+            display:none;
+        }
+        .graphCanvas{
+            display:block;
+        }
+
+        .signatureColumn
+        {
+            display:none;
+        }
+    </style>
+}
+@section PageScripts
+{
+    <script type="text/javascript">
+        function printResult() {
+
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title></title>');
+            //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
+            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .resultCard{page-break-after: always; margin-top: 150px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}}</style>');
+            mywindow.document.write('<style> body {font-size: 12px;} .headerSummary{font-weight:bold;} .printInnerTable{border-collapse: collapse; text-align:left;} .graphImage{display:inline;} .graphCanvas{display:none;}</style>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write(document.getElementById("printSection").innerHTML);
+            mywindow.document.write('<script type="text/javascript">');
+            mywindow.document.write('var arrCanvases = document.getElementsByClassName("graphCanvas");');
+            mywindow.document.write('for(i=0;i<arrCanvases.length;i++){ arrCanvases[i].style.display = "none"; }')
+            mywindow.document.write('<\/script>');
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+            return true;
+        }
+
+        $(document).ready(function () {
+            var currentDate = new Date();
+            var strDate = currentDate.getDate() + "-" + (currentDate.getMonth()+1) + "-" + currentDate.getFullYear();
+            $(".spnDate").html(strDate);
+            $(".resultHeader").html($("#ddlResultType").find("option:selected").text());
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            var arrCanvases = document.getElementsByClassName("graphCanvas");
+            for(i=0;i<arrCanvases.length;i++)
+            {
+                debugger;
+                var idCanvas = arrCanvases[i].id;
+                var intPart = idCanvas.split('_')[1];
+                document.getElementById("imgGraph_"+intPart).src = arrCanvases[i].toDataURL();
+            }
+            $("#btnPrint").removeAttr('disabled');
+        });
+    </script>
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <b>Result Cards</b>
+                </div>
+                <div class="panel-body">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedLocation, Model.LocationList, "Location", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedStandardSection, Model.StandardSectionList, "Standard & Section", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedResultType, Model.ResultTypes, "Exam Type", new { @class = "form-control requiredField reqSearch", id="ddlResultType" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrDropDownListFor(m => m.SelectedAcademicSession, Model.AcademicSessions, "Academic Session", new { @class = "form-control requiredField reqSearch" })
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrSubmitButtonWithIcon("btnSearch", "Search", new { @class = "btn btn-primary btn-block" }, "fa fa-search")
+                        </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrButtonWithIcon("btnPrint", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();", disabled="disabled" }, "fa fa-print")
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                    <b>Student Results</b>
+                </div>
+                <div id="printSection">
+                    <div class="panel-body printPanel">
+                        @if (Model.ResultCards == null || Model.ResultCards.Count == 0)
+                        {
+                            <span class="danger" style="color:red">NO RESULTS IS FOUND FOR THIS SEARCH</span>
+                        }
+                        else
+                        {
+                            int gId=0;
+                            foreach (OpMgr.Common.DTOs.ResultCardDTO rcDTO in Model.ResultCards)
+                            {
+                                gId++;
+                                <table class="table table-bordered resultCard" style="width:100%">
+                                    <tr>
+                                        <td colspan="4" style="text-align:center; color:olive;">
+                                            <b><span class="resultHeader"></span></b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" width="150px;" class="headerSummary">NAME &amp; REG. NO: </td>
+                                        <td align="left">@rcDTO.StudentName &nbsp;(@rcDTO.StudentRegNo)</td>
+                                        <td align="left" width="100px;" class="headerSummary">DATE: </td>
+                                        <td align="left" width="100px;"><span class="spnDate"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" width="100px;" class="headerSummary">CLASS &amp; SEC: </td>
+                                        <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) / @rcDTO.StudentRollNo</td>
+                                        <td align="left" width="100px;" class="headerSummary">SESSION: </td>
+                                        <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
+                                    </tr>
+                                    @if (rcDTO.ResultRows != null && rcDTO.ResultRows.Count > 0)
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td style="width:60%">
+                                                            <table class="table table-bordered printInnerTable" style="width:100%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th rowspan="2">Subject</th>
+                                                                        @for (int h = 0; h < rcDTO.ResultRows[0].ResultColumns.Count; h++)
+                                                                        {
+                                                                            <th>@rcDTO.ResultRows[0].ResultColumns[h].ColumnName</th>
+                                                                        }
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @for (int i = 0; i < rcDTO.ResultRows.Count; i++)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@rcDTO.ResultRows[i].SubjectName</td>
+                                                                            @for (int x = 0; x < rcDTO.ResultRows[i].ResultColumns.Count; x++)
+                                                                            {
+                                                                                <td>@rcDTO.ResultRows[i].ResultColumns[x].ColumnValue</td>
+                                                                            }
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th>Total: </th>
+                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        {
+                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            {
+                                                                                <th>@rcDTO.TotalMarks</th>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <th></th>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Class Heighest: </th>
+                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        {
+                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            {
+                                                                                <th>@Model.ClassHeighest</th>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <th></th>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Class Average: </th>
+                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        {
+                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            {
+                                                                                <th>@Model.ClassAverage</th>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <th></th>
+                                                                            }
+                                                                        }
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table class="table table-bordered printInnerTable" style="width:100%">
+                                                                <tr>
+                                                                    <td>
+                                                                        <img id="imgGraph_@gId" width="250" height="300" class="graphImage" />
+                                                                        <canvas id="marksGraph_@gId" width="250" height="300" class="graphCanvas"></canvas>
+                                                                        <script>
+                                                                            var marksGraph_@gId = document.getElementById("marksGraph_@gId");
+
+                                                                            Chart.defaults.global.defaultFontFamily = "Lato";
+                                                                            Chart.defaults.global.defaultFontSize = 12;
+
+                                                                            var maxData_@gId = {
+                                                                                label: 'Highest',
+                                                                                data: @OperationsManager.Helpers.GraphHelper.GetMaxMarksGraphData(rcDTO.GraphRecords),
+                                                                                backgroundColor: 'rgba(0, 99, 132, 0.6)',
+                                                                                borderWidth: 0
+                                                                            };
+
+                                                                            var avgData_@gId = {
+                                                                                label: 'Average',
+                                                                                data: @OperationsManager.Helpers.GraphHelper.GetAvgMarksGraphData(rcDTO.GraphRecords),
+                                                                                backgroundColor: 'rgba(99, 132, 0, 0.6)',
+                                                                                borderWidth: 0
+                                                                            };
+
+                                                                            var obtainedData_@gId = {
+                                                                                label: 'Obtained',
+                                                                                data: @OperationsManager.Helpers.GraphHelper.GetObtainedMarksGraphData(rcDTO.GraphRecords),
+                                                                                backgroundColor: 'rgba(0, 132, 99, 0.6)',
+                                                                                borderWidth: 0
+                                                                            };
+
+                                                                            var graphData_@gId = {
+                                                                                labels: @OperationsManager.Helpers.GraphHelper.GetSubjectLabels(rcDTO.GraphRecords),
+                                                                                datasets: [maxData_@gId, obtainedData_@gId, avgData_@gId]
+                                                                            };
+
+                                                                            var chartOptions = {
+                                                                                barValueSpacing: 5,
+                                                                                animation: false,
+                                                                                scales: {
+                                                                                    xAxes: [{
+                                                                                        ticks: {
+                                                                                            min: 0,
+                                                                                        }
+                                                                                    }]
+                                                                                }
+                                                                            };
+
+                                                                            var barChart = new Chart(marksGraph_@(gId).getContext("2d"), {
+                                                                                type: 'horizontalBar',
+                                                                                data: graphData_@gId,
+                                                                                options: chartOptions
+                                                                            });
+                                                                        </script>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>  
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if(rcDTO.GradeResultRows!=null && rcDTO.GradeResultRows.Count>0)
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                <table style="width:100%" class="table table-bordered printInnerTable">
+                                                    @for(int i=0;i<rcDTO.GradeResultRows.Count;i++)
+                                                    {
+                                                        <tr>
+                                                            <td style="width:30%">
+                                                                @rcDTO.GradeResultRows[i].SubjectName
+                                                            </td>
+                                                            @for (int x = 0; x < rcDTO.GradeResultRows[i].ResultColumns.Count; x++)
+                                                            {
+                                                                if (rcDTO.GradeResultRows[i].ResultColumns[x].IsAllowedForGrade)
+                                                                {
+                                                                    <td>@rcDTO.GradeResultRows[i].ResultColumns[x].ColumnValue</td>
+                                                                }
+                                                            }
+                                                            <td style="width:30%">
+                                                                @if(i+1<rcDTO.GradeResultRows.Count)
+                                                                {
+                                                                    @rcDTO.GradeResultRows[i+1].SubjectName
+                                                                }
+                                                            </td>
+                                                            @if(i+1<rcDTO.GradeResultRows.Count)
+                                                            {
+                                                                for (int x = 0; x < rcDTO.GradeResultRows[i + 1].ResultColumns.Count; x++)
+                                                                {
+                                                                    if (rcDTO.GradeResultRows[i + 1].ResultColumns[x].IsAllowedForGrade)
+                                                                    {
+                                                                        <td>@rcDTO.GradeResultRows[i + 1].ResultColumns[x].ColumnValue</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                for (int x = 0; x < rcDTO.GradeResultRows[i].ResultColumns.Count; x++)
+                                                                {
+                                                                    if (rcDTO.GradeResultRows[i].ResultColumns[x].IsAllowedForGrade)
+                                                                    {
+                                                                        <td></td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="4">
+                                            <table style="width:100%" class="table table-bordered printInnerTable">
+                                                <tr>
+                                                    <th style="text-align:left;">
+                                                        Remarks
+                                                    </th>
+                                                    <th style="text-align:left;">
+                                                        Attendance
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:50%">
+                                                        @rcDTO.CurrentRemarks
+                                                    </td>
+                                                    <td style="width:50%">
+                                                        @rcDTO.AttendancePercent
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <table style="width:100%" class="table table-bordered signatureColumn" cellspacing="20">
+                                                <tr>
+                                                    <td style="text-align:left; height:40px;">
+
+                                                    </td>
+                                                    <td>
+
+                                                    </td>
+                                                    <td>
+                                                        <img width="70" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align:center; border:none;">
+                                                        PARENT SIGNATURE
+                                                    </th>
+                                                    <th style="text-align:center; border:none;">
+                                                        CLASS TEACHER SIGNATURE
+                                                    </th>
+                                                    <th style="text-align:center; border:none;">
+                                                        PRINCIPAL SIGNATURE
+                                                    </th>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <th width="120px;" style="border:none; font-size:12px;">
+                                                        Marks Range:
+                                                    </th>
+                                                    <td align="left" style="padding-left:5px; font-size:12px;">
+                                                        A(90-100) / B(70-89) / C(55-69) / D(40-54) / E(30-39) / F(Below 30)
+                                                    </td>
+                                                    <th width="100px" style="border:none; font-size:12px;">
+                                                        Pass Marks:
+                                                    </th>
+                                                    <td align="left" width="30px" style="font-size:12px;">40</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width:120px; border:none; font-size:12px;">
+                                                        Grades:
+                                                    </th>
+                                                    <td colspan="3" style="font-size:12px;" align="left">
+                                                        A(Very Good) / B(Good) / C(Fair) / D(Satisfactory) / E(Need Improvement) / U(Unsatisfactory)
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <canvas id="countries" width="600" height="400"></canvas>
+    <script>
+        var pieData = [
+            {
+                value: 20,
+                color: "#878BB6"
+            },
+            {
+                value: 40,
+                color: "#4ACAB4"
+            },
+            {
+                value: 10,
+                color: "#FF8153"
+            },
+            {
+                value: 30,
+                color: "#FFEA88"
+            }
+        ];
+        // Get the context of the canvas element we want to select
+        var countries = document.getElementById("countries").getContext("2d");
+        new Chart(countries).Pie(pieData);
+    </script>
+}
+

@@ -59,9 +59,10 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "HouseTypeId", "HouseTypeDescription");
         }
 
-        public SelectList getSubjectDropDown()
+        public SelectList getSubjectDropDown(int? locationId = null, int? standardsectionid=null)
         {
-            List<SubjectDTO> rDto = _ddlRepo.Subject();
+            List<SubjectDTO> rDto = _ddlRepo.getSubjectDropdown(locationId,standardsectionid);
+            //List<SubjectDTO> rDto = new List<SubjectDTO>();
             SubjectDTO subjectDTO = new SubjectDTO();
             subjectDTO.SubjectId = -1;
             subjectDTO.SubjectName = "";
@@ -117,6 +118,16 @@ namespace OperationsManager.Helpers
             dDesg.DesignationDescription = "";
             rDto.Insert(0, dDesg);
             return new SelectList(rDto, "DesignationId", "DesignationDescription");
+        }
+
+        public SelectList getPMSDesignationDropDown()
+        {
+            List<PMSDesignationDTO> rDto = _ddlRepo.PmsDesignation();
+            PMSDesignationDTO dDesg = new PMSDesignationDTO();
+            dDesg.PmsDesignationId = -1;
+            dDesg.PmsDesignationDescription = "";
+            rDto.Insert(0, dDesg);
+            return new SelectList(rDto, "PmsDesignationId", "PmsDesignationDescription");
         }
 
         public SelectList getStandardDropDown(ClassTypeDTO classTypeDTO)
@@ -412,9 +423,9 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "ExamTypeId", "ExamTypeDescription");
         }
 
-        public SelectList getExamSubTypeDropDown()
+        public SelectList getExamSubTypeDropDown(int? examType=null)
         {
-            List<ExamSubTypeDTO> rDto = _ddlRepo.getExamSubType();
+            List<ExamSubTypeDTO> rDto = _ddlRepo.getExamSubType(examType);
             ExamSubTypeDTO examSubtypeDTO = new ExamSubTypeDTO();
             examSubtypeDTO.ExamSubTypeId = -1;
             examSubtypeDTO.ExamSubTypeDescription = "";
@@ -422,6 +433,28 @@ namespace OperationsManager.Helpers
             rDto.Insert(0, examSubtypeDTO);
 
             return new SelectList(rDto, "ExamSubTypeId", "ExamSubTypeDescription");
+        }
+
+        public SelectList getAcademicSessionDropDown()
+        {
+            List<AcademicSessionDTO> rDto = _ddlRepo.GetAcademicSessions();
+            return new SelectList(rDto, "AcademicSessionFromTo", "AcademicSessionViewFromTo");
+        }
+
+        public SelectList getGradesDropDown(int location)
+        {
+            List<GradeConfigDTO> gradeDTO = _ddlRepo.getGrades(location);
+            return new SelectList(gradeDTO, "GreadeName", "GreadeName");
+        }
+
+        public SelectList getResultTypeDropDown()
+        {
+            Dictionary<string, string> dicResultType = new Dictionary<string, string>();
+            dicResultType.Add("-1", "");
+            dicResultType.Add("HALF", "HALF YEARLY");
+            dicResultType.Add("FINAL", "FINAL");
+            //dicGender.Add("3", "Other");
+            return new SelectList(dicResultType, "key", "value");
         }
     }
 }
