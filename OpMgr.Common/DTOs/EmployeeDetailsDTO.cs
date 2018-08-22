@@ -43,5 +43,7 @@ namespace OpMgr.Common.DTOs
         //below propertiess added to get Direct Supervisor while PMS
         public string ApproverName { get; set; }
 
+        public List<EmployeeSubjectDTO> EmployeeSubjectMappings { get; set; }
+
     }
 }
