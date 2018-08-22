@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OpMgr.Common.DTOs;
+using System.Data;
 
 namespace OperationsManager.Areas.Exam.Controllers
 {
@@ -232,6 +233,7 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 if (examMarksVM.ExamMarksList != null && examMarksVM.ExamMarksList.Count > 0)
                 {
+                    List<IDbCommand> commandList = new List<IDbCommand>();
                     for (int i = 0; i < examMarksVM.ExamMarksList.Count; i++)
                     {
                         examMarksVM.ExamMarksList[i].ExamRule = new ExamRuleDTO();
@@ -240,12 +242,18 @@ namespace OperationsManager.Areas.Exam.Controllers
                         //examVm.ExamMarksList[i].CourseExam.CourseExamId = examVm.hd
                         if (examMarksVM.ExamMarksList[i].ExamMarksId > 0)
                         {
-                            _examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
+                            commandList.Add(_examMarksSvc.GetUpdateMarksCommand(examMarksVM.ExamMarksList[i]));
+                            //_examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
                         }
                         else
                         {
-                            _examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
+                            commandList.Add(_examMarksSvc.GetInsertMarksCommand(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade));
+                            //_examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
                         }
+                    }
+                    if(commandList!=null && commandList.Count > 0)
+                    {
+                        _examMarksSvc.BatchCommandProcess(commandList);
                     }
                 }
 

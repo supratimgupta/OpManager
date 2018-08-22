@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IBatchProcess.cs" />
     <Compile Include="Contracts\ICommonConfigSvc.cs" />
     <Compile Include="Contracts\IConfigSvc.cs" />
     <Compile Include="Contracts\ICRUDSvc.cs" />
