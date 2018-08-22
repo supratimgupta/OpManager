@@ -160,7 +160,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                                             else if (rules.Count > 1)
                                             {
                                                 examVM.IsRuleOk = false;
-                                                examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this.";
+                                                examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this. Please provide the Course Exam Id - "+ exammarksdto.CourseExam.CourseExamId+".";
                                                 examVM.IsRuleNeededToBeAdded = false;
                                                 break;
                                             }
