@@ -96,6 +96,7 @@
     <Compile Include="DTOs\EmployeeGoalDTO.cs" />
     <Compile Include="DTOs\EmployeeGoalLogDTO.cs" />
     <Compile Include="DTOs\EmployeeMappingDTO.cs" />
+    <Compile Include="DTOs\EmployeeSubjectDTO.cs" />
     <Compile Include="DTOs\ExamMarksDTO.cs" />
     <Compile Include="DTOs\ExamRuleDTO.cs" />
     <Compile Include="DTOs\ExamSubTypeDTO.cs" />
