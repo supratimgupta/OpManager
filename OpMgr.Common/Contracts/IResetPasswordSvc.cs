@@ -8,7 +8,7 @@ namespace OpMgr.Common.Contracts
 {
    public  interface IResetPasswordSvc
     {
-        bool ResetPassword(string newPassword,int UserMasterId);
+        bool ResetPassword(string newPassword,int UserMasterId, string studentOrStaffId=null,string roleDescription=null);
 
         string GetPasswordForUser(int UserMasterId);
     }

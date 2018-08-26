@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using OpMgr.Common.Contracts;
 using System.Data;
 using OpMgr.Common.Contracts.Modules;
+using System.Transactions;
 
 namespace OpMgr.DataAccess.Implementations
 {
@@ -422,6 +423,120 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
 
+        }
+
+        public StatusDTO<bool> BatchCommandProcess(List<IDbCommand> commands)
+        {
+            StatusDTO<bool> status = new StatusDTO<bool>();
+            using (TransactionScope ts = new TransactionScope())
+            {
+                using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                {
+                    dbSvc.OpenConnection();
+                    if(commands!=null && commands.Count>0)
+                    {
+                        IDataReader rdr = null;
+                        foreach (IDbCommand command in commands)
+                        {
+                            try
+                            {
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                                if(command.CommandType==CommandType.StoredProcedure)
+                                {
+                                    rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                                    _dtData = new DataTable();
+                                    _dtData.Load(rdr);
+                                }
+                                else
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                            catch(Exception exp)
+                            {
+                                throw exp;
+                            }
+                            finally
+                            {
+                                if (rdr != null && !rdr.IsClosed)
+                                {
+                                    rdr.Close();
+                                }
+                                if (rdr != null)
+                                {
+                                    rdr.Dispose();
+                                    rdr = null;
+                                }
+                            }
+                        }
+                        status.ReturnObj = true;
+                        ts.Complete();
+                    }
+                }
+            }
+
+            return status;
+        }
+
+        public IDbCommand GetInsertMarksCommand(ExamMarksDTO data, int CourseExamId, int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate, string directGrade)
+        {
+            try
+            {
+                MySqlCommand command = new MySqlCommand();
+                command.CommandText = "insertexammarks";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@createdBy1", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                command.Parameters.Add("@RollNumber1", MySqlDbType.String).Value = data.Student.RollNumber;
+                command.Parameters.Add("@MarksObtained1", MySqlDbType.Decimal).Value = data.MarksObtained;
+                command.Parameters.Add("@CalculatedMarks1", MySqlDbType.Decimal).Value = data.CalculatedMarks;
+                command.Parameters.Add("@SubjectId1", MySqlDbType.Int32).Value = SubjectId;
+                command.Parameters.Add("@ExamRuleId1", MySqlDbType.Int32).Value = data.ExamRule.ExamRuleId;
+                command.Parameters.Add("@CourseExamId1", MySqlDbType.Int32).Value = CourseExamId;
+                command.Parameters.Add("@StudentInfoId1", MySqlDbType.Int32).Value = data.Student.StudentInfoId;
+                command.Parameters.Add("@StandardSectionId1", MySqlDbType.Int32).Value = StandardSectionId;
+                command.Parameters.Add("@CourseFrom1", MySqlDbType.Date).Value = FromDate;
+                command.Parameters.Add("@CourseTo1", MySqlDbType.Date).Value = ToDate;
+                command.Parameters.Add("@DirectGrade1", MySqlDbType.String).Value = directGrade;
+
+                return command;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        public IDbCommand GetUpdateMarksCommand(ExamMarksDTO data)
+        {
+            try
+            {
+                MySqlCommand command = new MySqlCommand();
+                command.CommandText = "UPDATE exammarks SET UpdatedBy=@updatedBy, UpdatedDate=@updatedDate, MarksObtained=@marksObtained, CalculatedMarks=@calcMarks, " +
+                                      "DirectGrade=@directGrade WHERE ExamMarksId=@examMarksId";
+                command.CommandType = CommandType.Text;
+                command.Parameters.Add("@updatedBy", MySqlDbType.Int32).Value = _sessionSvc.GetUserSession().UserMasterId;
+                command.Parameters.Add("@updatedDate", MySqlDbType.DateTime).Value = DateTime.Today.Date;
+                command.Parameters.Add("@marksObtained", MySqlDbType.Double).Value = data.MarksObtained;
+                command.Parameters.Add("@calcMarks", MySqlDbType.Double).Value = data.CalculatedMarks;
+
+                if (!string.IsNullOrEmpty(data.DirectGrade))
+                {
+                    command.Parameters.Add("@directGrade", MySqlDbType.VarChar).Value = data.DirectGrade;
+                }
+                else
+                {
+                    command.Parameters.Add("@directGrade", MySqlDbType.VarChar).Value = DBNull.Value;
+                }
+
+                command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
+
+
+                return command;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
         }
     }
 }
