@@ -441,4 +441,40 @@
   <data name="AddHealthReport" xml:space="preserve">
     <value>AddHealthReport</value>
   </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="classAppld" xml:space="preserve">
+    <value>Class Applied For</value>
+  </data>
+  <data name="Currclass" xml:space="preserve">
+    <value>Current Class</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="Prevmedium" xml:space="preserve">
+    <value>Previous School's Medium</value>
+  </data>
+  <data name="Prevschool" xml:space="preserve">
+    <value>Previous School</value>
+  </data>
+  <data name="Prevstream" xml:space="preserve">
+    <value>Previous Stream</value>
+  </data>
+  <data name="Secondlang" xml:space="preserve">
+    <value>Second Language </value>
+  </data>
+  <data name="sibclass" xml:space="preserve">
+    <value>Sibling's Class</value>
+  </data>
+  <data name="sibGender" xml:space="preserve">
+    <value>Sibling's Gender</value>
+  </data>
+  <data name="sibName" xml:space="preserve">
+    <value>Sibling's Name</value>
+  </data>
+  <data name="AdmissionRegisterButton" xml:space="preserve">
+    <value>Submit</value>
+  </data>
 </root>

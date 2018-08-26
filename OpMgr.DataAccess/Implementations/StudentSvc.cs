@@ -194,7 +194,240 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+        public StatusDTO<StudentDTO> InsertAdmission(StudentDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                  
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "sp_insertStudentAdmission";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
+                    command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+                    command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                    command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.UserDetails.Gender;
+                    command.Parameters.Add("@DOB", MySqlDbType.DateTime).Value = data.UserDetails.DOB;
+                    command.Parameters.Add("@EmailId", MySqlDbType.String).Value = data.UserDetails.EmailId;
+                    command.Parameters.Add("@ResidentialAddress", MySqlDbType.String).Value = data.UserDetails.ResidentialAddress;
+                    command.Parameters.Add("@PermanentAddress", MySqlDbType.String).Value = data.UserDetails.PermanentAddress;
+                    command.Parameters.Add("@ContactNo", MySqlDbType.String).Value = data.UserDetails.ContactNo;
+                    command.Parameters.Add("@AlContactNo", MySqlDbType.String).Value = data.UserDetails.AltContactNo;
+                    command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.UserDetails.BloodGroup;
+                    command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
+
+                    command.Parameters.Add("@FathersName", MySqlDbType.String).Value = data.FatherName;
+                    command.Parameters.Add("@FathersContactNo", MySqlDbType.String).Value = data.FatherContact;
+                    command.Parameters.Add("@FathersEmailId", MySqlDbType.String).Value = data.FatherEmailId;
+                    command.Parameters.Add("@FathersOccupation", MySqlDbType.String).Value = data.FatherOccupation;
+                    command.Parameters.Add("@FathersDesignation", MySqlDbType.String).Value = data.FatherDesignation;
+                    command.Parameters.Add("@FatherOfficeAddress", MySqlDbType.String).Value = data.FatherOfficeAddress;
+                    command.Parameters.Add("@FatherTypeOfBusiness", MySqlDbType.String).Value = data.FatherTypeOfBusiness;
+                    command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;
+
+                    command.Parameters.Add("@PresentStandardId", MySqlDbType.Int32).Value = data.Currclass;
+                    command.Parameters.Add("@AppliedStandardId", MySqlDbType.Int32).Value = data.classAppld;
+
+                    command.Parameters.Add("@MothersName", MySqlDbType.String).Value = data.MotherName;
+                    command.Parameters.Add("@MothersQualification", MySqlDbType.String).Value = data.MotherQualification;
+                    command.Parameters.Add("@MothersOccupation", MySqlDbType.String).Value = data.MotherOccupation;
+                    command.Parameters.Add("@MothersOrganisationName", MySqlDbType.String).Value = data.MotherOrganisationName;
+
+                    command.Parameters.Add("@MotherDesignation", MySqlDbType.String).Value = data.MotherDesignation;
+                    command.Parameters.Add("@MotherDepartment", MySqlDbType.String).Value = data.MotherDepartment;
+                    //command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+                    //command.Parameters.Add("@MotherOfficePhNo", MySqlDbType.String).Value = data.MotherOfficePhNo;
+                    command.Parameters.Add("@MotherTypeOfBusiness", MySqlDbType.String).Value = data.MotherTypeOfBusiness;
+
+                    command.Parameters.Add("@MothersAnnualIncome", MySqlDbType.String).Value = data.MotherAnnualIncome;
+                    command.Parameters.Add("@SponsorOrGuardianName", MySqlDbType.String).Value = data.GuardianName;
+
+                    command.Parameters.Add("@Religion", MySqlDbType.String).Value = data.Religion;
+                    command.Parameters.Add("@Caste", MySqlDbType.String).Value = data.Caste;
+                    command.Parameters.Add("@sibName", MySqlDbType.String).Value = data.sibName;
+                    command.Parameters.Add("@sibGender", MySqlDbType.String).Value = data.sibGender;
+                    command.Parameters.Add("@sibclass", MySqlDbType.String).Value = data.sibclass;
+                    command.Parameters.Add("@Category", MySqlDbType.String).Value = data.Category;
+                    command.Parameters.Add("@Nationality", MySqlDbType.String).Value = data.Nationality;
+                    command.Parameters.Add("@Secondlang", MySqlDbType.String).Value = data.Secondlang;
+                    command.Parameters.Add("@Prevmedium", MySqlDbType.String).Value = data.Prevmedium;
+                    command.Parameters.Add("@Prevstream", MySqlDbType.String).Value = data.Prevstream;
+                    command.Parameters.Add("@Prevschool", MySqlDbType.String).Value = data.Prevschool;
+                    //if (Convert.ToInt32(data.StandardSectionMap.StandardSectionId) > 0)
+                    //{
+                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
+                    //}
+                    //else
+                    //{
+                    //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = DBNull.Value;
+                    //}
+
+
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    _dtData = new DataTable();
+                    _dtData.Load(rdr);
+                    StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+
+                    if (_dtData.Columns.Count > 1)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = new StudentDTO();
+                        status.ReturnObj.UserDetails = new UserMasterDTO();
+                        status.ReturnObj.UserDetails.AdmissionId = (int)_dtData.Rows[0][1];
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = _dtData.Rows[0][0].ToString();
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+
+
+                //command.ExecuteNonQuery();
+                //    StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                //    status.IsSuccess = true;
+                //    return status;
+                //}
+                //catch (Exception exp)
+                //{
+                //    throw exp;
+                //}
+            }
+        }
+
+        public StatusDTO<StudentDTO> SelectAdmission(int rowId)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "sp_getAdmissionStudentDetails";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@studentadmissionId", MySqlDbType.Int32).Value = rowId;
+
+                    MySqlDataAdapter rdr = new MySqlDataAdapter(command);
+                    _dsData = new DataSet();
+                    rdr.Fill(_dsData);
+                    StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+                    StudentDTO studentDTO = new StudentDTO();
+                    if (_dsData != null && _dsData.Tables.Count > 0)
+                    {
+                        if (_dsData.Tables[0].Rows.Count > 0)
+                        {
+                            studentDTO.UserDetails = new UserMasterDTO();
+                            studentDTO.UserDetails.AdmissionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StdntAdmissionId"]);
+                           
+                            studentDTO.UserDetails.Location = new LocationDTO();
+                            studentDTO.UserDetails.Location.LocationId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["LocationId"]);
+                            studentDTO.UserDetails.FName = _dsData.Tables[0].Rows[0]["FName"].ToString();
+                            studentDTO.UserDetails.MName = _dsData.Tables[0].Rows[0]["MName"].ToString();
+                            studentDTO.UserDetails.LName = _dsData.Tables[0].Rows[0]["LName"].ToString();
+                            studentDTO.UserDetails.Gender = _dsData.Tables[0].Rows[0]["Gender"].ToString();
+                      //      studentDTO.UserDetails.Image = _dsData.Tables[0].Rows[0]["Image"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["DOB"].ToString()))
+                            {
+                                studentDTO.UserDetails.DOB = Convert.ToDateTime(_dsData.Tables[0].Rows[0]["DOB"]);
+                            }
+                            else
+                            {
+                                studentDTO.UserDetails.DOB = null;
+                            }
+                            studentDTO.UserDetails.EmailId = _dsData.Tables[0].Rows[0]["EmailId"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["ResidentialAddress"].ToString()))
+                            {
+                                studentDTO.UserDetails.ResidentialAddress = _dsData.Tables[0].Rows[0]["ResidentialAddress"].ToString();
+                            }
+                            else
+                            {
+                                studentDTO.UserDetails.ResidentialAddress = _dsData.Tables[0].Rows[0]["PermanentAddress"].ToString();
+                            }
+                            studentDTO.UserDetails.PermanentAddress = _dsData.Tables[0].Rows[0]["PermanentAddress"].ToString();
+                            studentDTO.UserDetails.ContactNo = _dsData.Tables[0].Rows[0]["ContactNo"].ToString();
+                            studentDTO.UserDetails.AltContactNo = _dsData.Tables[0].Rows[0]["AltContactNo"].ToString();
+                            studentDTO.UserDetails.BloodGroup = _dsData.Tables[0].Rows[0]["BloodGroup"].ToString();
+
+
+                            //studentDTO.GuardianContact = _dsData.Tables[0].Rows[0]["GuardianContactNo"].ToString();
+                            if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString()))
+                            {
+                                studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
+                            }
+                            else if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["FathersName"].ToString()))
+                            {
+                                studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["FathersName"].ToString();
+                            }
+                            else
+                            {
+                                studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["MothersName"].ToString();
+                            }
+                            //studentDTO.GuardianName = _dsData.Tables[0].Rows[0]["SponsorOrGuardianName"].ToString();
+                            studentDTO.FatherEmailId = _dsData.Tables[0].Rows[0]["FathersEmailId"].ToString();
+                            //studentDTO.StandardSectionMap = new StandardSectionMapDTO();
+                            //studentDTO.StandardSectionMap.StandardSectionId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["StandardSectionId"]);
+                            //studentDTO.HouseType = new HouseTypeDTO();
+                            //if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["HouseTypeId"].ToString()))
+                            //{
+                            //    studentDTO.HouseType.HouseTypeId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["HouseTypeId"]);
+                            //}
+                            studentDTO.FatherName = _dsData.Tables[0].Rows[0]["FathersName"].ToString();
+                            studentDTO.FatherContact = _dsData.Tables[0].Rows[0]["FathersContactNo"].ToString();
+                           // studentDTO.FatherQualification = _dsData.Tables[0].Rows[0]["FathersQualification"].ToString();
+                            studentDTO.FatherOccupation = _dsData.Tables[0].Rows[0]["FathersOccupation"].ToString();
+                            studentDTO.FatherDesignation = _dsData.Tables[0].Rows[0]["FathersDesignation"].ToString();
+                          //  studentDTO.FatherOrganisationName = _dsData.Tables[0].Rows[0]["OrganisationName"].ToString();
+                          //  studentDTO.FatherDepartment = _dsData.Tables[0].Rows[0]["FathersDepartment"].ToString();
+                            studentDTO.FatherOfficeAddress = _dsData.Tables[0].Rows[0]["FathersOrgAddress"].ToString();
+                           // studentDTO.FatherOfficePhNo = _dsData.Tables[0].Rows[0]["OFFICEPHONENO"].ToString();
+                      //      studentDTO.FatherTypeOfBusiness = _dsData.Tables[0].Rows[0]["TypeOfBusiness"].ToString();
+                            studentDTO.FatherAnnualIncome = _dsData.Tables[0].Rows[0]["FathersAnnualIncome"].ToString();
+                            studentDTO.MotherName = _dsData.Tables[0].Rows[0]["MothersName"].ToString();
+                            studentDTO.MotherQualification = _dsData.Tables[0].Rows[0]["MothersQualification"].ToString();
+                            studentDTO.MotherOccupation = _dsData.Tables[0].Rows[0]["MothersOccupation"].ToString();
+                            studentDTO.MotherOrganisationName = _dsData.Tables[0].Rows[0]["MothersOrgName"].ToString();
+                            studentDTO.MotherDepartment = _dsData.Tables[0].Rows[0]["MotherDEPT"].ToString();
+                            studentDTO.MotherDesignation = _dsData.Tables[0].Rows[0]["MotherDesignation"].ToString();
+                          //  studentDTO.MotherOfficeAddress = _dsData.Tables[0].Rows[0]["MotherOfcAdress"].ToString();
+                           // studentDTO.MotherOfficePhNo = _dsData.Tables[0].Rows[0]["MotherOfcPhNo"].ToString();
+                  //          studentDTO.MotherTypeOfBusiness = _dsData.Tables[0].Rows[0]["MTYPEBUSINESS"].ToString();
+                            studentDTO.MotherAnnualIncome = _dsData.Tables[0].Rows[0]["MothersAnnualIncome"].ToString();
+                            studentDTO.Religion = _dsData.Tables[0].Rows[0]["Religion"].ToString();
+                            studentDTO.Caste = _dsData.Tables[0].Rows[0]["Caste"].ToString();
+                            studentDTO.classAppld = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                            studentDTO.Currclass = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                            studentDTO.sibName = _dsData.Tables[0].Rows[0]["sibName"].ToString();
+                            studentDTO.sibclass = _dsData.Tables[0].Rows[0]["sibclass"].ToString();
+                            studentDTO.sibGender = _dsData.Tables[0].Rows[0]["sibGender"].ToString();
+                            studentDTO.Nationality = _dsData.Tables[0].Rows[0]["Nationality"].ToString();
+                            studentDTO.Prevmedium = _dsData.Tables[0].Rows[0]["Prevmedium"].ToString();
+                            studentDTO.Prevschool = _dsData.Tables[0].Rows[0]["Prevschool"].ToString();
+                            studentDTO.Prevstream = _dsData.Tables[0].Rows[0]["Prevstream"].ToString();
+                            studentDTO.Category = _dsData.Tables[0].Rows[0]["Category"].ToString();
+                            studentDTO.Secondlang = _dsData.Tables[0].Rows[0]["Secondlang"].ToString();
+                            // studentDTO.Nationality = _dsData.Tables[0].Rows[0]["Nationality"].ToString();
+                        }
+                    }
+                    status.ReturnObj = studentDTO;
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+
+        }
         public StatusDTO<StudentDTO> InsertHealthReport(StudentDTO data)
         {
 
@@ -629,6 +862,139 @@ namespace OpMgr.DataAccess.Implementations
             return studLst;
         }
 
+        public StatusDTO<List<StudentDTO>> AdmissionSearch(StudentDTO data)
+        {
+            StatusDTO<List<StudentDTO>> studLst = new StatusDTO<List<StudentDTO>>();
+            string whereClause = null;
+            string selectClause = null;
+            DataSet dsStudentLst = null;
+
+            if (data != null)
+            {
+                using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                {
+                    try
+                    {
+                        dbSvc.OpenConnection();//openning the connection
+
+                        MySqlCommand command = new MySqlCommand();// creating my sql command for queries
+
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                        selectClause = "select * from StudentAdmission ";
+
+                        //Select All students who are ACTIVE
+                        whereClause = "WHERE Active=1 ";
+
+
+                        if (data != null)
+                        {
+                            //Name Search
+                            //data.UserDetails = new UserMasterDTO();
+
+                            if (!string.IsNullOrEmpty(data.UserDetails.FName))
+                            {
+                                data.UserDetails.FName = data.UserDetails.FName + "%";
+                                whereClause = whereClause + " AND FName LIKE @FName";
+                                command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                            }
+                            //if (!string.IsNullOrEmpty(data.UserDetails.MName))
+                            //{
+                            //    data.UserDetails.MName = data.UserDetails.MName + "%";
+                            //    whereClause = whereClause + " AND users.MName LIKE @MName ";
+                            //    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+                            //}
+
+                            if (!string.IsNullOrEmpty(data.UserDetails.LName))
+                            {
+                                data.UserDetails.LName = data.UserDetails.LName + "%";
+                                whereClause = whereClause + " AND LName LIKE @LName ";
+                                command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                            }
+
+                            //Location Search
+                            if (data.UserDetails.Location.LocationId != -1)
+                            {
+                                whereClause = whereClause + " AND users.LocationId=@LocationId ";
+                                command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
+                            }
+
+                            //Class Search
+
+                        //    if (data.StandardSectionMap.StandardSectionId != -1)
+                        //    {
+                        //        whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
+                        //        command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value = data.StandardSectionMap.StandardSectionId;
+                        //    }
+
+                        //    // Roll Number and Registration Search
+
+                        //    if (!string.IsNullOrEmpty(data.RegistrationNumber))
+                        //    {
+                        //        whereClause = whereClause + " AND student.RegistrationNumber=@RegistrationNumber ";
+                        //        command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
+                        //    }
+
+                        //    if (!string.IsNullOrEmpty(data.RollNumber))
+                        //    {
+                        //        whereClause = whereClause + " AND student.RollNumber=@RollNumber ";
+                        //        command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
+                        //    }
+                        }
+
+                        //command.CommandText = "select * from studentinfo";
+
+                        command.CommandText = selectClause + whereClause;
+
+                        MySqlDataAdapter da = new MySqlDataAdapter(command);
+                        dsStudentLst = new DataSet();
+                        da.Fill(dsStudentLst);
+
+                        if (dsStudentLst != null && dsStudentLst.Tables.Count > 0)
+                        {
+                            studLst.ReturnObj = new List<StudentDTO>();
+                            for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
+                            {
+                                StudentDTO student = new StudentDTO();
+                                student.Active = true;
+                                student.FatherContact = dsStudentLst.Tables[0].Rows[i]["FathersContactNo"].ToString();
+
+                              
+
+                               
+                                student.UserDetails = new UserMasterDTO();
+                                student.UserDetails.Location = new LocationDTO();
+                                student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
+                                student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
+                                student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
+                                student.classAppld= Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["CurrentStandardId"].ToString());
+                                student.UserDetails.Location.LocationId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["LocationId"].ToString());
+                                student.UserDetails.ContactNo = dsStudentLst.Tables[0].Rows[i]["ContactNo"].ToString();
+                                student.UserDetails.AdmissionId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["StdntAdmissionId"].ToString());
+                                //     student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
+                                //     student.UserDetails.Location.LocationDescription = dsStudentLst.Tables[0].Rows[i]["LocationDescription"].ToString();
+                                //     student.UserDetails.ContactNo = dsStudentLst.Tables[0].Rows[i]["ContactNo"].ToString();
+
+                                studLst.ReturnObj.Add(student);
+
+                                studLst.IsSuccess = true;
+                            }
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+                        _logger.Log(exp);
+                        studLst.IsSuccess = false;
+                        studLst.IsException = true;
+                        studLst.ReturnObj = null;
+                        studLst.ExceptionMessage = exp.Message;
+                        studLst.StackTrace = exp.StackTrace;
+                        // return studLst;
+                    }
+                }
+            }
+            return studLst;
+        }
         public StatusDTO<StudentDTO> Update(StudentDTO data)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))

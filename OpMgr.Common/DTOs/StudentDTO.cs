@@ -60,12 +60,19 @@ namespace OpMgr.Common.DTOs
         public string DrSugg { get; set; }
 
 
-
-
-
-
-
-
+        
+        public string Nationality { get; set; }
+        public string Category { get; set; }
+       
+        public string Secondlang { get; set; }
+        public int Currclass { get; set; }
+        public int classAppld { get; set; }
+        public string Prevschool { get; set; }
+        public string Prevmedium { get; set; }
+        public string Prevstream { get; set; }
+        public string sibName { get; set; }
+        public string sibclass { get; set; }
+        public string sibGender { get; set; }
 
         public string Religion { get; set; }
 

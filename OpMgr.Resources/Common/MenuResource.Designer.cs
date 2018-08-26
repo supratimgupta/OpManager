@@ -133,6 +133,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ADMISSION.
+        /// </summary>
+        public static string Admission {
+            get {
+                return ResourceManager.GetString("Admission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Appraisal.
         /// </summary>
         public static string Appraisal {

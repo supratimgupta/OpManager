@@ -79,6 +79,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admission.
+        /// </summary>
+        public static string Admission {
+            get {
+                return ResourceManager.GetString("Admission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Promotion Status.
         /// </summary>
         public static string BatchHeading {
@@ -309,6 +318,15 @@ namespace OpMgr.Resources.User {
         public static string RollNo {
             get {
                 return ResourceManager.GetString("RollNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchAdmissionButton {
+            get {
+                return ResourceManager.GetString("SearchAdmissionButton", resourceCulture);
             }
         }
         

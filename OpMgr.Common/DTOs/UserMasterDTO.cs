@@ -10,7 +10,7 @@ namespace OpMgr.Common.DTOs
     public class UserMasterDTO
     {
         public int UserMasterId { get; set; }
-
+        public int AdmissionId { get; set; }
         public UserMasterDTO CreatedBy { get; set; }
 
         public DateTime? CreatedDate { get; set; }

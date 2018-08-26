@@ -1169,6 +1169,10 @@
     <Content Include="Areas\Exam\Views\Result\Results.cshtml" />
     <Content Include="Areas\Exam\Views\Remarks\Remarks.cshtml" />
     <Content Include="Areas\Academics\Views\web.config" />
+    <Content Include="Areas\Student\Views\Student\HealthReport.cshtml" />
+    <Content Include="Areas\Student\Views\Student\PrintHealthReport.cshtml" />
+    <Content Include="Areas\Student\Views\Student\AdmissionSearch.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Admission.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
