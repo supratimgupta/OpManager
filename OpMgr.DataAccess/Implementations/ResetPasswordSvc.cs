@@ -28,20 +28,43 @@ namespace OpMgr.DataAccess.Implementations
             _configSvc = configSvc;
             _logger = logger;
         }
-       public bool ResetPassword(string newPassword, int UserMasterId)
+       public bool ResetPassword(string newPassword, int UserMasterId,string studentOrStaffEmpId,string roleDescription)
         {
             bool isResetPassword = false;
             string updateClause = null;
             string whereClause = null;
+            string selectClause = null;
             try
             {
-                if (!string.IsNullOrEmpty(newPassword) && UserMasterId != 0)
+                if (!string.IsNullOrEmpty(newPassword) && UserMasterId != 0 || !string.IsNullOrEmpty(studentOrStaffEmpId))
                 {
                     using (IDbSvc dbSvc = new DbSvc(_configSvc))
                     {
                         dbSvc.OpenConnection();
                         MySqlCommand command = new MySqlCommand();
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;// establish connection
+                        if (UserMasterId==0)
+                        {
+                            if (!string.IsNullOrEmpty(roleDescription) && string.Equals(roleDescription, "Staff"))
+                                selectClause = "select usermasterid from employeedetails where staffemployeeid=@studentOrStaffEmpId AND Active=1";
+                            else
+                                selectClause = "select usermasterid from studentinfo where registrationnumber=@studentOrStaffEmpId AND Active=1";
+
+                            command.Parameters.Add("@studentOrStaffEmpId", MySqlDbType.String).Value = studentOrStaffEmpId;
+                            command.CommandText = selectClause;
+
+                            MySqlDataAdapter msda = new MySqlDataAdapter(command);
+                            _dsPasswordSet = new DataSet();
+                            msda.Fill(_dsPasswordSet);
+                            if (_dsPasswordSet != null && _dsPasswordSet.Tables.Count > 0)
+                            {
+                                if (_dsPasswordSet.Tables[0].Rows.Count > 0)
+                                {
+                                    UserMasterId = (int)_dsPasswordSet.Tables[0].Rows[0]["usermasterid"];
+                                }
+                            }
+                        }
+
                         updateClause = "update usermaster set Password=@newPassword ";
                         whereClause = "WHERE UserMasterId=@UserMasterId AND Active=1";
                         command.CommandText = updateClause+whereClause;

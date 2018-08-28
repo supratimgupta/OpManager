@@ -408,13 +408,73 @@
   <data name="BrotherSisterInSchool" xml:space="preserve">
     <value>Brother Sister In School</value>
   </data>
-  <data name="InterestedSubject1" xml:space="preserve">
-    <value>Optional Subject 1</value>
+  <data name="BMI" xml:space="preserve">
+    <value>BMI</value>
   </data>
-  <data name="InterestedSubject2" xml:space="preserve">
-    <value>Optional Subject 2</value>
+  <data name="DrRemarks" xml:space="preserve">
+    <value>Doctor Remarks</value>
   </data>
-  <data name="MainSubject" xml:space="preserve">
-    <value>Main Subject</value>
+  <data name="DrSugg" xml:space="preserve">
+    <value>Doctor Suggestion</value>
+  </data>
+  <data name="DV" xml:space="preserve">
+    <value>Distance Vision</value>
+  </data>
+  <data name="GenHealth" xml:space="preserve">
+    <value>General Health</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="Majorillness" xml:space="preserve">
+    <value>Major Illness</value>
+  </data>
+  <data name="NV" xml:space="preserve">
+    <value>Near Vision</value>
+  </data>
+  <data name="Pulserate" xml:space="preserve">
+    <value>Pulse Rate</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="AddHealthReport" xml:space="preserve">
+    <value>AddHealthReport</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="classAppld" xml:space="preserve">
+    <value>Class Applied For</value>
+  </data>
+  <data name="Currclass" xml:space="preserve">
+    <value>Current Class</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="Prevmedium" xml:space="preserve">
+    <value>Previous School's Medium</value>
+  </data>
+  <data name="Prevschool" xml:space="preserve">
+    <value>Previous School</value>
+  </data>
+  <data name="Prevstream" xml:space="preserve">
+    <value>Previous Stream</value>
+  </data>
+  <data name="Secondlang" xml:space="preserve">
+    <value>Second Language </value>
+  </data>
+  <data name="sibclass" xml:space="preserve">
+    <value>Sibling's Class</value>
+  </data>
+  <data name="sibGender" xml:space="preserve">
+    <value>Sibling's Gender</value>
+  </data>
+  <data name="sibName" xml:space="preserve">
+    <value>Sibling's Name</value>
+  </data>
+  <data name="AdmissionRegisterButton" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

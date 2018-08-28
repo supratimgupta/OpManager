@@ -1,0 +1,304 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Student.Models.StudentVM
+
+@{
+
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h2></h2>
+@section PageScripts{
+    <script type="text/javascript">
+        function printResult() {
+
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title></title>');
+            //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
+            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .resultCard{page-break-after: always; margin-top: 150px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}} .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {padding: 10px;width: 1px;}</style>');
+            mywindow.document.write('<style> body {font-size: 12px;} .headerSummary{font-weight:bold;} .printInnerTable{border-collapse: collapse; text-align:left;} .graphImage{display:inline;} .graphCanvas{display:none;}</style>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write(document.getElementById("printSection").innerHTML);
+            mywindow.document.write('<script type="text/javascript">');
+            mywindow.document.write('var arrCanvases = document.getElementsByClassName("graphCanvas");');
+            mywindow.document.write('for(i=0;i<arrCanvases.length;i++){ arrCanvases[i].style.display = "none"; }')
+            mywindow.document.write('<\/script>');
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+            return true;
+        }
+
+        $(document).ready(function () {
+            var currentDate = new Date();
+            var strDate = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear();
+            $(".spnDate").html(strDate);
+            $(".resultHeader").html($("#ddlResultType").find("option:selected").text());
+        });
+    </script>
+}
+<style>
+    body {
+        padding: 10px;
+    }
+
+    #a {
+        color: #428bca;
+        text-decoration: none;
+    }
+
+    #tabStudent h3 {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>Health Reports</b></div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-2">
+                                @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, StudentResource.FName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, StudentResource.LName, new { @class = "form-control" })
+                            </div>
+
+                            <div class="col-lg-2">
+                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, StudentResource.RegistrationNo, new { @class = "form-control" })
+                            </div>
+
+                            <div class="col-lg-2">
+                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, StudentResource.Location, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-2">
+                                @*<button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>*@
+                                @Html.OpMgrSubmitButtonWithIcon("Command", @StudentResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                            </div>
+
+                            <div class="col-lg-2">
+                                @Html.OpMgrButtonWithIcon("btnPrint", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();" }, "fa fa-print")
+                            </div>
+
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+        @*@if (Model != null && Model.studentList != null && Model.studentList.Count > 0)
+            {*@
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>HealthReport</b></div>
+            <div id="printSection">
+                <div class="panel-body printPanel">
+                    @if (Model.studentList == null || Model.studentList.Count == 0)
+                    {
+                        <span class="danger" style="color:red">NO REPORT IS FOUND FOR THIS SEARCH</span>
+                    }
+                    else
+                    {
+                        int gId = 0;
+                        foreach (var studentHdr in Model.studentList)
+                        {
+                            gId++;
+                        <table class="table table-bordered resultCard" style="width:100%">
+                            <tr>
+                                <td colspan="4" style="text-align:center; color:olive;">
+                                    <b><span class="resultHeader"></span></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="width:1px;">NAME &amp; REG. NO: </td>
+                                <td align="left">@studentHdr.Name &nbsp;(@studentHdr.RegistrationNumber)</td>
+                                <td align="left" >DATE: </td>
+                                <td align="left" ><span class="spnDate"></span></td>
+                            </tr>
+                            @*<tr>
+            <td align="left" width="100px;" class="headerSummary">CLASS &amp; SEC: </td>
+            <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) / @rcDTO.StudentRollNo</td>
+            <td align="left" width="100px;" class="headerSummary">SESSION: </td>
+            <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
+        </tr>*@
+                            <tbody>
+                                @if (Model != null)
+        {
+            if (Model.IsSearchSuccessful)
+            {
+                foreach (var student in Model.studentList)
+                {
+                        <tr>
+                            <td align="left">Height (In Cms): </td>
+                            <td>
+                                @student.Height
+                            </td>
+                            <td align="left">Weight (In Kgs): </td>
+                            <td>
+                                @student.Weight
+                            </td>
+                           
+                        </tr>
+                        <tr>
+                            <td align="left" width="100px;" class="headerSummary">BMI: </td>
+                            <td>
+                                @student.BMI
+                            </td>
+                            <td align="left" width="100px;" class="headerSummary">General Health Appearence: </td>
+                            <td>
+                                @student.GenHealth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" width=100%></td>
+                        </tr>
+                        <tr>
+                            <td align="left" width="100px;" class="headerSummary">Distance Vision: </td>
+                            <td>
+                                @student.DV
+                            </td>
+                            <td align="left" width="100px;" class="headerSummary">Near Vision: </td>
+                            <td>
+                                @student.NV
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" width="100px;" class="headerSummary">Any Major history of Illness: </td>
+                            <td>
+                                @student.Majorillness
+                            </td>
+                            <td align="left" width="100px;" class="headerSummary">Pulse Rate(/Min): </td>
+                            <td>
+                                @student.Pulserate
+                            </td>
+
+
+                        </tr>
+}
+}
+
+}
+                            </tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <table style="width:100%" class="table table-bordered printInnerTable">
+                                        <tr>
+                                            <th style="text-align:left;">
+                                                Doctor Remarks:
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100%">
+                                                @studentHdr.DrRemarks
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th style="text-align:left;">
+                                                Doctor Suggestion:
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:100%">
+                                                @studentHdr.DrSugg
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <table style="width:100%" class="table table-bordered signatureColumn" cellspacing="20">
+                                        <tr>
+                                            <td style="text-align:left; height:40px;"></td>
+                                            <td></td>
+                                            @*<td>
+                            <img width="70" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
+                        </td>*@
+                                        </tr>
+                                        <tr>
+                                            <th style="text-align:center; border:none;">
+                                                DOCTOR SIGNATURE
+                                            </th>
+
+                                            <th style="text-align:center; border:none;">
+                                                PRINCIPAL SIGNATURE
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center; border:none;">
+                                    BODY MASS INDEX
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center; border:none;">
+                                    CHILDREN UNDER 5 YEARS
+                                </th>
+                                <th style="text-align:center; border:none;">
+                                    RANGE
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Normal BMI</td>
+                                <td>15-25</td>
+                            </tr>
+                            <tr>
+                                <td>Obesity</td>
+                                <td>30 or More</td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center; border:none;">
+                                    CHILDREN 6 YEARS AND ABOVE
+                                </th>
+                                <th style="text-align:center; border:none;">
+                                    RANGE
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Normal BMI</td>
+                                <td>18.5-24.9</td>
+                            </tr>
+                            <tr>
+                                <td>UNDER WEIGHT</td>
+                                <td>Below 18</td>
+                            </tr>
+                            <tr>
+                                <td>OVER WEIGHT</td>
+                                <td>25-29</td>
+                            </tr>
+                            <tr>
+                                <td>Obesity</td>
+                                <td>30 and More</td>
+                            </tr>
+                        </table>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        @*}
+            else
+            {
+                <div class="lblSuccessOrFail" style="text-align:center">
+                    <label style="text-align:center;font-size:large;color:@Model.MsgColor">@Model.SuccessOrFailureMessage</label>
+                </div>
+            }*@
+    </div>
+</div>

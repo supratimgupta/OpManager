@@ -144,6 +144,9 @@
   <data name="AdminPanel" xml:space="preserve">
     <value>Admin Panel</value>
   </data>
+  <data name="Admission" xml:space="preserve">
+    <value>ADMISSION</value>
+  </data>
   <data name="Appraisal" xml:space="preserve">
     <value>Appraisal</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="EntitlementAction" xml:space="preserve">
     <value>Entitlement Action</value>
+  </data>
+  <data name="HealthReport" xml:space="preserve">
+    <value>Health Report</value>
   </data>
   <data name="Library" xml:space="preserve">
     <value>Library</value>

@@ -19,7 +19,7 @@ namespace OpMgr.Resources.User {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StudentResource {
@@ -79,29 +79,11 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attendance Date.
+        ///   Looks up a localized string similar to Admission.
         /// </summary>
-        public static string AttendanceDate {
+        public static string Admission {
             get {
-                return ResourceManager.GetString("AttendanceDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Attendance Status.
-        /// </summary>
-        public static string AttendanceStatus {
-            get {
-                return ResourceManager.GetString("AttendanceStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Collect Attendance.
-        /// </summary>
-        public static string AttendanceTitle {
-            get {
-                return ResourceManager.GetString("AttendanceTitle", resourceCulture);
+                return ResourceManager.GetString("Admission", resourceCulture);
             }
         }
         
@@ -160,15 +142,6 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply Attendance.
-        /// </summary>
-        public static string ConfirmAttendance {
-            get {
-                return ResourceManager.GetString("ConfirmAttendance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Promotion Confirmed.
         /// </summary>
         public static string ConfirmPromotionCommand {
@@ -201,6 +174,15 @@ namespace OpMgr.Resources.User {
         public static string GuardianContactNo {
             get {
                 return ResourceManager.GetString("GuardianContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health Report.
+        /// </summary>
+        public static string HealthReport {
+            get {
+                return ResourceManager.GetString("HealthReport", resourceCulture);
             }
         }
         
@@ -336,6 +318,15 @@ namespace OpMgr.Resources.User {
         public static string RollNo {
             get {
                 return ResourceManager.GetString("RollNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchAdmissionButton {
+            get {
+                return ResourceManager.GetString("SearchAdmissionButton", resourceCulture);
             }
         }
         

@@ -37,7 +37,43 @@ namespace OpMgr.Common.DTOs
 
         [Required(ErrorMessage = "Guardian Name is required")]
         public string GuardianName { get; set; }
+
+        public string FName { get; set; }
+
+        public string MName { get; set; }
+
+        public string LName { get; set; }
+
+        public string Height { get; set; }
+
+
+        public string Weight { get; set; }
+
+        public string BMI { get; set; }
+
+        public string DV { get; set; }
+        public string NV { get; set; }
+        public string GenHealth { get; set; }
+        public string Majorillness { get; set; }
+        public string Pulserate { get; set; }
+        public string DrRemarks { get; set; }
+        public string DrSugg { get; set; }
+
+
         
+        public string Nationality { get; set; }
+        public string Category { get; set; }
+       
+        public string Secondlang { get; set; }
+        public int Currclass { get; set; }
+        public int classAppld { get; set; }
+        public string Prevschool { get; set; }
+        public string Prevmedium { get; set; }
+        public string Prevstream { get; set; }
+        public string sibName { get; set; }
+        public string sibclass { get; set; }
+        public string sibGender { get; set; }
+
         public string Religion { get; set; }
 
         public string Caste { get; set; }

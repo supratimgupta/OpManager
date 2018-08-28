@@ -1,0 +1,426 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Student.Models.StudentVM
+
+@{
+
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h2></h2>
+@section PageScripts{
+    <script>
+        $(document).ready(function () {
+            var registerstudentform = $("#registerstudentform");
+            $("#registerstudentform").validate({
+                ignore: "",
+                invalidHandler: function (event, validator) {
+                    // 'this' refers to the form
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        var message = errors == 1
+                          ? 'You missed 1 field. It has been highlighted. Please check all tabs.'
+                          : 'You missed ' + errors + ' fields. They have been highlighted. Please check all tabs.';
+                        //$("div.error span").html(message);
+                        //$("div.error").show();
+                        alert(message);
+                    }
+                    //else {
+                    //    $("div.error").hide();
+                    //}
+                }
+
+            });
+
+            //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            $(".admissiondate").datepicker({ maxDate: 0 });
+            $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
+
+            //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
+
+        });
+    </script>
+    <script>
+        function addTransactionItems() {
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "Transactions[" + nextRowId + "].UserTransactionId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlTrMaster = document.createElement("select");
+            ddlTrMaster.name = "Transactions[" + nextRowId + "].Transaction.TranMasterId";
+            ddlTrMaster.className = "form-control";
+            populateTrMasterDDL(ddlTrMaster);
+            scndCell.appendChild(ddlTrMaster);
+
+            var thirdCell = document.createElement("td");
+            var ddlCalcIn = document.createElement("select");
+            ddlCalcIn.name = "Transactions[" + nextRowId + "].GraceAmountIn";
+            ddlCalcIn.className = "form-control";
+            populateGraceIn(ddlCalcIn);
+            thirdCell.appendChild(ddlCalcIn);
+
+            var fourthCell = document.createElement("td");
+            var txtGraceAmt = document.createElement("input");
+            txtGraceAmt.type = "text";
+            txtGraceAmt.name = "Transactions[" + nextRowId + "].GraceAmount";
+            txtGraceAmt.className = "form-control";
+            fourthCell.appendChild(txtGraceAmt);
+
+            var fifthCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteRow(this);');
+            fifthCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+            newRow.appendChild(fourthCell);
+            newRow.appendChild(fifthCell);
+
+            tbody.appendChild(newRow);
+
+            return false;
+        }
+
+        function deleteRow(aDelete) {
+            var row = aDelete.parentNode.parentNode;
+
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+
+            tbody.removeChild(row);
+        }
+
+        function populateGraceIn(ddlCalcIn) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetCalcIn',
+                dataType: "json",
+                success: function (resultData) { populateCalcInDDL(resultData, ddlCalcIn); },
+                error: function (error) { }
+            });
+        }
+
+        function populateCalcInDDL(trnsMasters, ddlCalcIn) {
+            var ddlTrnsMasters = ddlCalcIn;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].Key;
+                    option.innerHTML = trnsMasters[i].Value;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function populateTrMasterDDL(ddlTrMaster) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetTransactionMasterDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrnsMasterDDL(resultData, ddlTrMaster); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrnsMasterDDL(trnsMasters, ddlTrMaster) {
+            var ddlTrnsMasters = ddlTrMaster;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].TranMasterId;
+                    option.innerHTML = trnsMasters[i].TransactionName;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function deleteUserTrans(uTransId) {
+            var uTrans = new Object();
+            uTrans.UserTransactionId = parseInt(uTransId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteUserTransaction',
+                data: uTrans,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+    </script>
+}
+<style>
+    body {
+        padding: 10px;
+    }
+
+    #a {
+        color: #428bca;
+        text-decoration: none;
+    }
+
+    #tabStudent h3 {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
+            <div class="panel-body">
+                <div class="row" style="padding-bottom:5px">
+                    <i class="ion-ios7-arrow-back" style="padding-right:5px"></i>@Html.ActionLink("Back", "AdmissionSearch")
+                </div>
+
+                <fieldset>
+                    <div id="tabStudent" class="container" style="padding-bottom:5px">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#basicinfo" data-toggle="tab">Candidate's Information</a>
+                            </li>
+                            <li>
+                                <a href="#sibinfo" data-toggle="tab">Sibling's Details</a>
+                            </li>
+                            <li>
+                                <a href="#familyinfo" data-toggle="tab">Family Details</a>
+                            </li>
+                        
+                        </ul>
+                        @using (Html.BeginForm("Admission", "Student", FormMethod.Post, new { id = "registerstudentform", enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div>
+                                <div class="tab-content @Model.DisabledClass">
+                                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                                    {
+                                        <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                            <strong>@Model.ErrorMessage</strong>
+                                        </div>
+                                    }
+                                        <div class="tab-pane active" id="basicinfo">
+                                            @if (string.Equals(Model.MODE, "EDIT") || string.Equals(Model.MODE, "VIEW"))
+    {
+                                        @*<div class="row">
+                                            <div class="col-lg-5">
+                                                <img src="@Model.StudentImagePath" alt="No image found" height="249" width="177" class="image-viewer" />
+                                            </div>
+                                        </div>*@
+}
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
+                                                @Html.HiddenFor(m => m.MODE)
+                                                @Html.HiddenFor(m => m.UserDetails.UserMasterId)
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.ContactNo, UserResource.ContactNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Contact No is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.AltContactNo, UserResource.AltContactNo, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.EmailId, UserResource.EmailId, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.DOBString, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Religion, UserResource.Religion, new { @class = "form-control" })
+                                            </div>
+                                           
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Nationality, UserResource.Nationality, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Category, UserResource.Category, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Secondlang, UserResource.Secondlang, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Currclass, UserResource.Currclass, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.classAppld, UserResource.classAppld, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Prevschool, UserResource.Prevschool, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Prevmedium, UserResource.Prevmedium, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.Prevstream, UserResource.Prevstream, new { @class = "form-control" })
+                                            </div>
+                                            @*<div class="col-lg-5">
+            <div class="form-group">
+                <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
+                <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+            </div>
+        </div>*@
+                                        </div>
+                                        <div class="tab-pane" id="sibinfo">
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.sibName, UserResource.sibName, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.sibclass, UserResource.sibclass, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.sibGender, Model.GenderList, UserResource.sibGender, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    <div class="tab-pane" id="familyinfo">
+                                        @*<div class="row">*@
+                                            @*<div class="col-lg-5">
+                                                <img src="@Model.FatherImagePath" alt="No image found" height="249" width="177" class="image-viewer" />
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <img src="@Model.MotherImagePath" alt="No image found" height="249" width="177" class="image-viewer" />
+                                            </div>*@
+                                        @*</div>*@
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.GuardianName, UserResource.GuardianName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian Name is required" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherName, UserResource.FatherName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Guardian ContactNo is required" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherContact, UserResource.FatherContactNo, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherEmailId, UserResource.FatherEmailId, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherQualification, UserResource.FatherQualification, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherOccupation, UserResource.FatherOccupation, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherDesignation, UserResource.FatherDesignation, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherDepartment, UserResource.FatherDepartment, new { @class = "form-control" })
+                                        </div>                                        
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherOrganisationName, UserResource.FatherOrganisationName, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherOfficeAddress, UserResource.FatherOfficeAddress, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherOfficePhNo, UserResource.FatherOfficePhNo, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherTypeOfBusiness, UserResource.FatherTypeOfBusiness, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.FatherAnnualIncome, UserResource.FatherAnnualIncome, new { @class = "form-control" })
+                                        </div>
+                                        <div id="divImages">
+                                            @*<div class="col-lg-5">
+                                                <div class="form-group">
+                                                    <label for="fatherImage">Upload Image of Father (Old will be replaced)</label>
+                                                    <input type="file" name="fuFatherImage" class="form-control" id="fatherImage" />
+                                                </div>
+                                            </div>*@
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherName, UserResource.MotherName, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherQualification, UserResource.MotherQualification, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherOccupation, UserResource.MotherOccupation, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherOrganisationName, UserResource.MotherOrganisationName, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherDesignation, UserResource.MotherDesignation, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherDepartment, UserResource.MotherDepartment, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherOfficeAddress, UserResource.MotherOfficeAddress, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherOfficePhNo, UserResource.MotherOfficePhNo, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherTypeOfBusiness, UserResource.MotherTypeOfBusiness, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.MotherAnnualIncome, UserResource.MotherAnnualInccome, new { @class = "form-control" })
+                                            </div>
+                                            
+  
+                                        </div>
+                                    </div>
+                                   
+                                   
+                          
+                                    @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <div class="col-lg-10">
+                                            <button type="submit" class="btn btn-primary block">@UserResource.AdmissionRegisterButton</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+
+                </fieldset>
+            </div>
+        </div>
+    </div><!-- /.col-->
+</div>

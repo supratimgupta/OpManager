@@ -141,7 +141,14 @@ namespace OpMgr.DataAccess.Implementations
                             examRuleDTO.ExamRuleId = int.Parse(dr["ExamRuleId"].ToString());
                             examRuleDTO.AssesmentMarks = double.Parse(dr["AssesmentMarks"].ToString());
                             examRuleDTO.ActualFullMarks = double.Parse(dr["ActualFullMarks"].ToString());
-                            examRuleDTO.PassMarks = double.Parse(dr["PassMarks"].ToString());
+                            if (!string.IsNullOrEmpty(dr["PassMarks"].ToString()))
+                            {
+                                examRuleDTO.PassMarks = double.Parse(dr["PassMarks"].ToString());
+                            }
+                            else
+                            {
+                                examRuleDTO.PassMarks = 0;
+                            }
                             if (!string.IsNullOrEmpty(dr["DateTimeLog"].ToString()))
                             {
                                 examRuleDTO.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());

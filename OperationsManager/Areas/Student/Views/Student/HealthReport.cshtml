@@ -1,0 +1,317 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Student.Models.StudentVM
+
+@{
+
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h2></h2>
+@section PageScripts{
+    <script>
+        $(document).ready(function () {
+            var registerstudentform = $("#registerstudentform");
+            $("#registerstudentform").validate({
+                ignore: "",
+                invalidHandler: function (event, validator) {
+                    // 'this' refers to the form
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        var message = errors == 1
+                            ? 'You missed 1 field. It has been highlighted. Please check all tabs.'
+                            : 'You missed ' + errors + ' fields. They have been highlighted. Please check all tabs.';
+                        //$("div.error span").html(message);
+                        //$("div.error").show();
+                        alert(message);
+                    }
+                    //else {
+                    //    $("div.error").hide();
+                    //}
+                }
+
+            });
+
+            //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
+            $(".admissiondate").datepicker({ maxDate: 0 });
+            $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
+
+            //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
+
+        });
+    </script>
+    <script>
+        function addTransactionItems() {
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var nextRowId = tbody.getElementsByTagName("tr").length;
+            var newRow = document.createElement("tr");
+
+            var firstCell = document.createElement("td");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "Transactions[" + nextRowId + "].UserTransactionId";
+            hiddenInput.value = "-1";
+            firstCell.style.display = "none";
+            firstCell.appendChild(hiddenInput);
+
+            var scndCell = document.createElement("td");
+            var ddlTrMaster = document.createElement("select");
+            ddlTrMaster.name = "Transactions[" + nextRowId + "].Transaction.TranMasterId";
+            ddlTrMaster.className = "form-control";
+            populateTrMasterDDL(ddlTrMaster);
+            scndCell.appendChild(ddlTrMaster);
+
+            var thirdCell = document.createElement("td");
+            var ddlCalcIn = document.createElement("select");
+            ddlCalcIn.name = "Transactions[" + nextRowId + "].GraceAmountIn";
+            ddlCalcIn.className = "form-control";
+            populateGraceIn(ddlCalcIn);
+            thirdCell.appendChild(ddlCalcIn);
+
+            var fourthCell = document.createElement("td");
+            var txtGraceAmt = document.createElement("input");
+            txtGraceAmt.type = "text";
+            txtGraceAmt.name = "Transactions[" + nextRowId + "].GraceAmount";
+            txtGraceAmt.className = "form-control";
+            fourthCell.appendChild(txtGraceAmt);
+
+            var fifthCell = document.createElement("td");
+            var aDelete = document.createElement("a");
+            aDelete.innerHTML = "Delete";
+            aDelete.style.cursor = "pointer";
+            $(aDelete).attr('onclick', 'deleteRow(this);');
+            fifthCell.appendChild(aDelete);
+
+            newRow.appendChild(firstCell);
+            newRow.appendChild(scndCell);
+            newRow.appendChild(thirdCell);
+            newRow.appendChild(fourthCell);
+            newRow.appendChild(fifthCell);
+
+            tbody.appendChild(newRow);
+
+            return false;
+        }
+
+        function deleteRow(aDelete) {
+            var row = aDelete.parentNode.parentNode;
+
+            var table = document.getElementById("tblTransactions");
+            var tbody = table.getElementsByTagName("tbody")[0];
+
+            tbody.removeChild(row);
+        }
+
+        function populateGraceIn(ddlCalcIn) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetCalcIn',
+                dataType: "json",
+                success: function (resultData) { populateCalcInDDL(resultData, ddlCalcIn); },
+                error: function (error) { }
+            });
+        }
+
+        function populateCalcInDDL(trnsMasters, ddlCalcIn) {
+            var ddlTrnsMasters = ddlCalcIn;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].Key;
+                    option.innerHTML = trnsMasters[i].Value;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function populateTrMasterDDL(ddlTrMaster) {
+            $.ajax({
+                type: 'POST',
+                url: 'GetTransactionMasterDDL',
+                dataType: "json",
+                success: function (resultData) { populateTrnsMasterDDL(resultData, ddlTrMaster); },
+                error: function (error) { }
+            });
+        }
+
+        function populateTrnsMasterDDL(trnsMasters, ddlTrMaster) {
+            var ddlTrnsMasters = ddlTrMaster;
+            ddlTrnsMasters.innerHTML = "";
+            for (i = -1; i < trnsMasters.length; i++) {
+                var option = document.createElement("option");
+                if (i == -1) {
+                    option.value = "-1";
+                    option.innerHTML = "";
+                }
+                else {
+                    option.value = trnsMasters[i].TranMasterId;
+                    option.innerHTML = trnsMasters[i].TransactionName;
+                }
+                ddlTrnsMasters.appendChild(option);
+            }
+        }
+
+        function deleteUserTrans(uTransId) {
+            var uTrans = new Object();
+            uTrans.UserTransactionId = parseInt(uTransId);
+            $.ajax({
+                type: 'POST',
+                url: 'DeleteUserTransaction',
+                data: uTrans,
+                dataType: "json",
+                success: function (resultData) { window.location.reload(); },
+                error: function (error) { }
+            });
+        }
+    </script>
+}
+<style>
+    body {
+        padding: 10px;
+    }
+
+    #a {
+        color: #428bca;
+        text-decoration: none;
+    }
+
+    #tabStudent h3 {
+        color: white;
+        background-color: #428bca;
+        padding: 5px 15px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-color panel-primary">
+            <div class="panel-heading"><b>@UserResource.PageHeaderStudent</b></div>
+            <div class="panel-body">
+                <div class="row" style="padding-bottom:5px">
+                    <i class="ion-ios7-arrow-back" style="padding-right:5px"></i>@Html.ActionLink("Back", "Search")
+                </div>
+              
+                <fieldset>
+                    <div id="tabStudent" class="container" style="padding-bottom:5px">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#basicinfo" data-toggle="tab">Personal Information</a>
+                            </li>
+                            @*<li>
+                                <a href="#familyinfo" data-toggle="tab">Family Details</a>
+                            </li>
+                            <li>
+                                <a href="#schoolinfo" data-toggle="tab">School Details</a>
+                            </li>
+                            <li>
+                                <a href="#feesinfo" data-toggle="tab">Fees Details</a>
+                            </li>
+                            <li>
+                                <a href="#logininfo" data-toggle="tab">Login Details</a>
+                            </li>*@
+                        </ul>
+                        @using (Html.BeginForm("HealthReport", "Student", FormMethod.Post, new { id = "registerstudentformhr", enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div>
+                                <div class="tab-content @Model.DisabledClass">
+                                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                                    {
+                                        <div class="alert alert-danger alert-dismissable alert-dismissible fade in">
+                                            <strong>@Model.ErrorMessage</strong>
+                                        </div>
+                                    }
+                                        <div class="tab-pane active" id="basicinfo">
+                                          
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
+                                                @Html.HiddenFor(m => m.MODE)
+                                                @Html.HiddenFor(m => m.UserDetails.UserMasterId)
+                                                @Html.HiddenFor(m => m.UserDetails.Location.LocationId)
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, UserResource.LName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Last Name is required" })
+                                            </div>
+                                            @*<div class="col-lg-5">
+        @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+            </div>*@
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, UserResource.RegistrationNo, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Registration No is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", id = "txtAdmissionDate" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.Height, UserResource.Height, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Height is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.Weight, UserResource.Weight, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Weight is required" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.BMI, UserResource.BMI, new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.GenHealth, UserResource.GenHealth, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.DV, UserResource.DV, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Distance Vision is required" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.NV, UserResource.NV, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Near Visionis required" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.Majorillness, UserResource.Majorillness, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.Pulserate, UserResource.Pulserate, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.DrRemarks, UserResource.DrRemarks, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.DrSugg, UserResource.DrSugg, new { @class = "form-control" })
+                                                </div>
+                                                @*<span>Dr Signature:</span>
+                                                <span>Principal Signature:</span>*@
+                                                @*<div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.Drsig, UserResource.Drsig, new { @class = "form-control" })
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    @Html.OpMgrTextBoxFor(m => m.UserDetails.Prsig, UserResource.Prsig, new { @class = "form-control" })
+                                                </div>*@
+                                       </div>
+                                 
+                                    @if (!string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <div class="col-lg-10">
+                                            <button type="submit" class="btn btn-primary block">@UserResource.AddHealthReport</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                           
+                        }
+                    </div>
+                    
+
+                </fieldset>
+           
+        </div>
+    </div><!-- /.col-->
+</div>
+ </div>
