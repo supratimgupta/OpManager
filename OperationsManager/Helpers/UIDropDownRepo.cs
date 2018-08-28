@@ -456,5 +456,13 @@ namespace OperationsManager.Helpers
             //dicGender.Add("3", "Other");
             return new SelectList(dicResultType, "key", "value");
         }
+
+        public SelectList getAttendanceStatusDropDown()
+        {
+            Dictionary<string, string> dicAttendanceStatus = new Dictionary<string, string>();
+            dicAttendanceStatus.Add("1", "Present");
+            dicAttendanceStatus.Add("2", "Absent");
+            return new SelectList(dicAttendanceStatus, "key", "value");
+        }
     }
 }

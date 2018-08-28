@@ -79,6 +79,33 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance Date.
+        /// </summary>
+        public static string AttendanceDate {
+            get {
+                return ResourceManager.GetString("AttendanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance Status.
+        /// </summary>
+        public static string AttendanceStatus {
+            get {
+                return ResourceManager.GetString("AttendanceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collect Attendance.
+        /// </summary>
+        public static string AttendanceTitle {
+            get {
+                return ResourceManager.GetString("AttendanceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Promotion Status.
         /// </summary>
         public static string BatchHeading {
@@ -129,6 +156,15 @@ namespace OpMgr.Resources.User {
         public static string Class {
             get {
                 return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Attendance.
+        /// </summary>
+        public static string ConfirmAttendance {
+            get {
+                return ResourceManager.GetString("ConfirmAttendance", resourceCulture);
             }
         }
         

@@ -421,6 +421,24 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Optional Subject 1.
+        /// </summary>
+        public static string InterestedSubject1 {
+            get {
+                return ResourceManager.GetString("InterestedSubject1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optional Subject 2.
+        /// </summary>
+        public static string InterestedSubject2 {
+            get {
+                return ResourceManager.GetString("InterestedSubject2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Christian.
         /// </summary>
         public static string IsChristian {
@@ -489,6 +507,15 @@ namespace OpMgr.Resources.User {
         public static string Location {
             get {
                 return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main Subject.
+        /// </summary>
+        public static string MainSubject {
+            get {
+                return ResourceManager.GetString("MainSubject", resourceCulture);
             }
         }
         

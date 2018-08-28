@@ -79,6 +79,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activities.
+        /// </summary>
+        public static string Activities {
+            get {
+                return ResourceManager.GetString("Activities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AddBooks.
         /// </summary>
         public static string AddBooks {
@@ -147,6 +156,15 @@ namespace OpMgr.Resources.Common {
         public static string ApproveDues {
             get {
                 return ResourceManager.GetString("ApproveDues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance.
+        /// </summary>
+        public static string Attendance {
+            get {
+                return ResourceManager.GetString("Attendance", resourceCulture);
             }
         }
         

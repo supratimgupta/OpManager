@@ -123,6 +123,15 @@
   <data name="AddCommand" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AttendanceDate" xml:space="preserve">
+    <value>Attendance Date</value>
+  </data>
+  <data name="AttendanceStatus" xml:space="preserve">
+    <value>Attendance Status</value>
+  </data>
+  <data name="AttendanceTitle" xml:space="preserve">
+    <value>Collect Attendance</value>
+  </data>
   <data name="BatchHeading" xml:space="preserve">
     <value>Promotion Status</value>
   </data>
@@ -140,6 +149,9 @@
   </data>
   <data name="Class" xml:space="preserve">
     <value>Class</value>
+  </data>
+  <data name="ConfirmAttendance" xml:space="preserve">
+    <value>Apply Attendance</value>
   </data>
   <data name="ConfirmPromotionCommand" xml:space="preserve">
     <value>Promotion Confirmed</value>

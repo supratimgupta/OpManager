@@ -49,6 +49,7 @@
     <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
+    <Compile Include="Contracts\Modules\IAttendanceSvc.cs" />
     <Compile Include="Contracts\Modules\IBookMasterSvc.cs" />
     <Compile Include="Contracts\Modules\IChatSvc.cs" />
     <Compile Include="Contracts\Modules\IDropdownRepo.cs" />

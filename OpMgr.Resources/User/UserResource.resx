@@ -408,4 +408,13 @@
   <data name="BrotherSisterInSchool" xml:space="preserve">
     <value>Brother Sister In School</value>
   </data>
+  <data name="InterestedSubject1" xml:space="preserve">
+    <value>Optional Subject 1</value>
+  </data>
+  <data name="InterestedSubject2" xml:space="preserve">
+    <value>Optional Subject 2</value>
+  </data>
+  <data name="MainSubject" xml:space="preserve">
+    <value>Main Subject</value>
+  </data>
 </root>
