@@ -179,5 +179,13 @@ namespace OpMgr.Common.DTOs
         public string RelationWithChild1stPerson { get; set; }
 
         public string RelationWithChild2ndPerson { get; set; }
+
+        //for admission
+
+        public AdmissionStatusDTO AdmissionStatus { get; set; }
+
+        public DateTime AdmissionExamDate { get; set; }
+
+        public DateTime AdmissionInterviewDate { get; set; }
     }
 }

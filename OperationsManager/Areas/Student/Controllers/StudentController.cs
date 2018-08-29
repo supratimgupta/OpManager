@@ -744,6 +744,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.GenderList = _uiddlRepo.getGenderDropDown();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
 
+                //to show admission status in edit mode
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
             }
 
             studView.GenderList = _uiddlRepo.getGenderDropDown();

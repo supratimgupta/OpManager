@@ -1091,5 +1091,39 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+
+        public List<AdmissionStatusDTO> AdmissionStatus()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select admissionstatusId,admissionstatusdescription from admissionstatus where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);
+                    List<AdmissionStatusDTO> lstAdmissionStatus = new List<AdmissionStatusDTO>();
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        AdmissionStatusDTO admissionstatusDTO = null;
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            admissionstatusDTO = new AdmissionStatusDTO();
+                            admissionstatusDTO.AdmissionStatusId = (int)dr["AdmissionStatusId"];
+                            admissionstatusDTO.AdmissionStatusDescription = dr["AdmissionStatusDescription"].ToString();
+                            lstAdmissionStatus.Add(admissionstatusDTO);
+                        }
+                    }
+                    return lstAdmissionStatus;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+            }
+        }
     }
 }

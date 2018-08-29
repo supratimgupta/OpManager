@@ -223,6 +223,7 @@
     <Compile Include="Areas\Academics\AcademicsAreaRegistration.cs" />
     <Compile Include="Areas\Academics\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\Academics\Controllers\RoutineController.cs" />
+    <Compile Include="Areas\Academics\Models\AttendanceVM.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Models\AdminViewModel.cs" />
@@ -1983,7 +1984,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Academics\Models\" />
     <Folder Include="Areas\Academics\Views\Attendance\" />
     <Folder Include="Areas\Academics\Views\Routine\" />
     <Folder Include="Areas\Academics\Views\Shared\" />

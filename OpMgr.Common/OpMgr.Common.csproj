@@ -76,6 +76,7 @@
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
     <Compile Include="Contracts\IResetPasswordSvc.cs" />
     <Compile Include="DTOs\AcademicSessionDTO.cs" />
+    <Compile Include="DTOs\AdmissionStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusLogDTO.cs" />
     <Compile Include="DTOs\ApprovalMappingDTO.cs" />
