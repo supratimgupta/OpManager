@@ -520,6 +520,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to interviewdate.
+        /// </summary>
+        public static string interviewdate {
+            get {
+                return ResourceManager.GetString("interviewdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Christian.
         /// </summary>
         public static string IsChristian {
@@ -1137,6 +1146,15 @@ namespace OpMgr.Resources.User {
         public static string Weight {
             get {
                 return ResourceManager.GetString("Weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xamdate.
+        /// </summary>
+        public static string xamdate {
+            get {
+                return ResourceManager.GetString("xamdate", resourceCulture);
             }
         }
     }

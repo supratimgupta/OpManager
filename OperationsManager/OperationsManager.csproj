@@ -1027,7 +1027,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Employee\Views\web.config" />
-    <Content Include="Areas\Student\Views\web.config" />
+    <Content Include="Areas\Student\Models\Views\web.config" />
     <Content Include="Areas\Library\Views\web.config" />
     <Content Include="Areas\Transaction\Views\web.config" />
     <Content Include="Areas\Login\Views\web.config" />
@@ -1043,8 +1043,8 @@
     <Content Include="Areas\Transaction\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Transaction\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Transaction\Views\Transaction\AddTransaction.cshtml" />
-    <Content Include="Areas\Student\Views\Student\Search.cshtml" />
-    <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\Search.cshtml" />
+    <Content Include="Areas\Student\Models\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Login\Views\Login\AccessDenied.cshtml" />
     <Content Include="Areas\Transaction\Views\Transaction\Search.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\ActionUserRoleMapping.cshtml" />
@@ -1056,7 +1056,7 @@
     <Content Include="Areas\User\Views\User\Search.cshtml" />
     <Content Include="Areas\User\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\AddStyle.cshtml" />
-    <Content Include="Areas\Student\Views\Student\Register.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\Register.cshtml" />
     <Content Include="Areas\Transaction\Views\Payment\GetPayment.cshtml" />
     <Content Include="Areas\Transaction\Views\TransactionRule\Search.cshtml" />
     <Content Include="Areas\Transaction\Views\TransactionRule\SearchRules.cshtml" />
@@ -1073,11 +1073,11 @@
     <Content Include="Content\jquery-validation-1.16.0\package.json" />
     <Content Include="Content\jquery-validation-1.16.0\README.md" />
     <Content Include="Areas\Login\Views\Login\Landing.cshtml" />
-    <Content Include="Areas\Student\Views\Student\PromoteToNewClass.cshtml" />
-    <Content Include="Areas\Student\Views\Student\RegisterStudent.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\PromoteToNewClass.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\RegisterStudent.cshtml" />
     <Content Include="Areas\Login\Views\Login\ForgotPassword.cshtml" />
     <Content Include="Areas\Login\Views\Login\ResetPassword.cshtml" />
-    <Content Include="Areas\Student\Views\Student\PromotionBatch.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\PromotionBatch.cshtml" />
     <Content Include="Areas\Exam\Views\web.config" />
     <Content Include="Areas\Exam\Views\ExamMarks\Register.cshtml" />
     <Content Include="admin\assets\calendar\bootstrap-calendar-master.zip" />
@@ -1170,10 +1170,10 @@
     <Content Include="Areas\Exam\Views\Result\Results.cshtml" />
     <Content Include="Areas\Exam\Views\Remarks\Remarks.cshtml" />
     <Content Include="Areas\Academics\Views\web.config" />
-    <Content Include="Areas\Student\Views\Student\HealthReport.cshtml" />
-    <Content Include="Areas\Student\Views\Student\PrintHealthReport.cshtml" />
-    <Content Include="Areas\Student\Views\Student\AdmissionSearch.cshtml" />
-    <Content Include="Areas\Student\Views\Student\Admission.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\HealthReport.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\PrintHealthReport.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\AdmissionSearch.cshtml" />
+    <Content Include="Areas\Student\Models\Views\Student\Admission.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1996,7 +1996,7 @@
     <Folder Include="Areas\Notification\Views\Chat\" />
     <Folder Include="Areas\Notification\Views\Shared\" />
     <Folder Include="Areas\PMS\Views\Shared\" />
-    <Folder Include="Areas\Student\Views\Shared\" />
+    <Folder Include="Areas\Student\Models\Views\Shared\" />
     <Folder Include="Images\Father\" />
     <Folder Include="Images\Mother\" />
     <Folder Include="Images\Student\" />

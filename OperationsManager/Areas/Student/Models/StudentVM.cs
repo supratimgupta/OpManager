@@ -86,6 +86,8 @@ namespace OperationsManager.Areas.Student.Models
         public string DisabledClass { get; set; }
 
         public string DOBString { get; set; }
+        public string xamdate { get; set; }
+        public string interviewdate { get; set; }
         public string FName { get; set; }
 
         public string MName { get; set; }

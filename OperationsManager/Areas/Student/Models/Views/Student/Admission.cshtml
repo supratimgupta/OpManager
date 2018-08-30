@@ -225,12 +225,13 @@
                                         <div class="tab-pane active" id="basicinfo">
                                             @if (string.Equals(Model.MODE, "EDIT") || string.Equals(Model.MODE, "VIEW"))
     {
-                                        @*<div class="row">
-                                            <div class="col-lg-5">
-                                                <img src="@Model.StudentImagePath" alt="No image found" height="249" width="177" class="image-viewer" />
-                                            </div>
-                                        </div>*@
-}
+                                        <div class="row">
+                                       <div class="col-lg-5">
+                                       <span class="headerSummary">STATUS:</span>
+                                       <span class="headerSummary" id="stsspn"></span>
+                                        </div>
+                                       </div>
+                   }
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                                                 @Html.HiddenFor(m => m.MODE)
@@ -254,55 +255,64 @@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.DOBString, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
                                             </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Religion, UserResource.Religion, new { @class = "form-control" })
-                                            </div>
-                                           
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Nationality, UserResource.Nationality, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Category, UserResource.Category, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Secondlang, UserResource.Secondlang, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Currclass, UserResource.Currclass, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.classAppld, UserResource.classAppld, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Prevschool, UserResource.Prevschool, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Prevmedium, UserResource.Prevmedium, new { @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Prevstream, UserResource.Prevstream, new { @class = "form-control" })
-                                            </div>
-                                            @*<div class="col-lg-5">
-            <div class="form-group">
-                <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
-                <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
-            </div>
-        </div>*@
+                                            @if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))||((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))))
+                                            {
+                                          <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.xamdate, UserResource.xamdate, new { @class = "DOB-picker form-control" })
+                                          </div>
+                                          <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.interviewdate, UserResource.interviewdate, new { @class = "DOB-picker form-control" })
+                                          </div>
+                                            }
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextAreaFor(m => m.UserDetails.ResidentialAddress, UserResource.ResidentialAddress, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextAreaFor(m => m.UserDetails.PermanentAddress, UserResource.ParmanentAddress, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, UserResource.Location, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Permanent Address is required" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.UserDetails.Gender, Model.GenderList, UserResource.Gender, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Religion, UserResource.Religion, new { @class = "form-control" })
+                                        </div>
+
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Nationality, UserResource.Nationality, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Category, UserResource.Category, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Secondlang, UserResource.Secondlang, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Currclass, UserResource.Currclass, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.classAppld, UserResource.classAppld, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Prevschool, UserResource.Prevschool, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Prevmedium, UserResource.Prevmedium, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-lg-5">
+                                            @Html.OpMgrTextBoxFor(m => m.Prevstream, UserResource.Prevstream, new { @class = "form-control" })
+                                        </div>
+                                        @*<div class="col-lg-5">
+        <div class="form-group">
+            <label for="fatherImage">Upload Image of Student (Old will be replaced)</label>
+            <input type="file" name="fuStudentImage" class="form-control" id="studentImage" />
+        </div>
+    </div>*@
                                         </div>
                                         <div class="tab-pane" id="sibinfo">
                                             <div class="col-lg-5">

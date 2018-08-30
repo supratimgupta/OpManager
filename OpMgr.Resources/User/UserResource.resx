@@ -477,4 +477,10 @@
   <data name="AdmissionRegisterButton" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="interviewdate" xml:space="preserve">
+    <value>interviewdate</value>
+  </data>
+  <data name="xamdate" xml:space="preserve">
+    <value>xamdate</value>
+  </data>
 </root>
