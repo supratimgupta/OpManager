@@ -17,7 +17,7 @@
             width: 100%;
             height: 100%;
             background-image: url("../../../../Images/loading-ttcredesign.gif");
-            background-repeat:no-repeat;
+            background-repeat: no-repeat;
         }
     </style>
 }
@@ -112,7 +112,7 @@
 
 
         function getSubjectDetails_callback(result) {
-            
+
             if (result.length > 0) {
                 var data = result;
                 var ddlSubject = document.getElementById("SubjectId");
@@ -299,7 +299,7 @@
                         <div class="col-lg-4">
                             <input type="hidden" value="@Model.CourseExamId" name="CourseExamId" />
                             <input type="hidden" value="@Model.RuleId" name="RuleId" />
-                            
+
                             @Html.HiddenFor(m => m.Mode, new { id = "hfMode" })
                         </div>
 
@@ -463,11 +463,11 @@
                                                         {
                                                             <td>
                                                                 @*@Html.OpMgrTextBoxFor(m => m.ExamMarksList[i].MarksObtained, "", new { @class = "form-control requiredField reqSave", onchange = "calcMarks(this,'txtActualMarks_" + i + "', 'hfActualMarks_"+i+"');", type = "number" })*@
-                                                                <input type="number" value="@Model.ExamMarksList[i].MarksObtained" name="ExamMarksList[@i].MarksObtained" class="form-control requiredField reqSave" onblur="calcMarks(this, 'txtActualMarks_@i', 'hfActualMarks_@i');" />
+                                                                <input type="number" value="@Model.ExamMarksList[i].DisplayedObtainedMarks" name="ExamMarksList[@i].DisplayedObtainedMarks" class="form-control requiredField reqSave" onblur="calcMarks(this, 'txtActualMarks_@i', 'hfActualMarks_@i');" />
                                                             </td>
                                                             <td>
-                                                                <input type="number" class="form-control reqSave" value="@Model.ExamMarksList[i].CalculatedMarks" id="txtActualMarks_@i" readonly />
-                                                                @Html.HiddenFor(m => m.ExamMarksList[i].CalculatedMarks, new { id = "hfActualMarks_" + i, @class = "reqSave" })
+                                                                <input type="number" class="form-control reqSave" value="@Model.ExamMarksList[i].DisplayedCalculatedMarks" id="txtActualMarks_@i" readonly />
+                                                                @Html.HiddenFor(m => m.ExamMarksList[i].DisplayedCalculatedMarks, new { id = "hfActualMarks_" + i, @class = "reqSave" })
                                                             </td>
                                                         }
                                                     </tr>

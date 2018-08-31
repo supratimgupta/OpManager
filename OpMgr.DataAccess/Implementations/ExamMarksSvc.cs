@@ -194,11 +194,18 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     exammarks.MarksObtained = Convert.ToDouble(_dsData.Tables[0].Rows[i]["MarksObtained"]);
                                 }
+                                else
+                                {
+                                    exammarks.MarksObtained = null;
+                                }
                                 if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["CalculatedMarks"].ToString()))
                                 {
                                     exammarks.CalculatedMarks = Convert.ToDouble(_dsData.Tables[0].Rows[i]["CalculatedMarks"]);
                                 }
-
+                                else
+                                {
+                                    exammarks.MarksObtained = null;
+                                }
                                 examMarksList.ReturnObj.Add(exammarks);
                             }
                             examMarksList.IsSuccess = true;
@@ -206,7 +213,14 @@ namespace OpMgr.DataAccess.Implementations
                         else
                         {
                             examMarksList.IsSuccess = false;
-                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString() + "^" + _dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
+                            if (_dsData.Tables[0].Columns.Contains("COURSEEXAMID"))
+                            {
+                                examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString() + "^" + _dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
+                            }
+                            else
+                            {
+                                examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString();
+                            }
                         }
                     }
 
@@ -433,7 +447,7 @@ namespace OpMgr.DataAccess.Implementations
                 using (IDbSvc dbSvc = new DbSvc(_configSvc))
                 {
                     dbSvc.OpenConnection();
-                    if(commands!=null && commands.Count>0)
+                    if (commands != null && commands.Count > 0)
                     {
                         IDataReader rdr = null;
                         foreach (IDbCommand command in commands)
@@ -441,7 +455,7 @@ namespace OpMgr.DataAccess.Implementations
                             try
                             {
                                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                                if(command.CommandType==CommandType.StoredProcedure)
+                                if (command.CommandType == CommandType.StoredProcedure)
                                 {
                                     rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                                     _dtData = new DataTable();
@@ -452,7 +466,7 @@ namespace OpMgr.DataAccess.Implementations
                                     command.ExecuteNonQuery();
                                 }
                             }
-                            catch(Exception exp)
+                            catch (Exception exp)
                             {
                                 throw exp;
                             }
@@ -530,6 +544,24 @@ namespace OpMgr.DataAccess.Implementations
 
                 command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
 
+
+                return command;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        public IDbCommand GetDeleteMarksCommand(ExamMarksDTO data)
+        {
+            try
+            {
+                MySqlCommand command = new MySqlCommand();
+                command.CommandText = "DELETE from exammarks WHERE ExamMarksId=@examMarksId";
+                command.CommandType = CommandType.Text;
+
+                command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
 
                 return command;
             }
