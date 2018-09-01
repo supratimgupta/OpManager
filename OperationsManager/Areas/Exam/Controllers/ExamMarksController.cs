@@ -267,6 +267,8 @@ namespace OperationsManager.Areas.Exam.Controllers
                             if (double.TryParse(examMarksVM.ExamMarksList[i].DisplayedCalculatedMarks, out calculatedMarks)
                                 && double.TryParse(examMarksVM.ExamMarksList[i].DisplayedObtainedMarks, out obtainedMarks))
                             {
+                                examMarksVM.ExamMarksList[i].MarksObtained = obtainedMarks;
+                                examMarksVM.ExamMarksList[i].CalculatedMarks = calculatedMarks;
                                 commandList.Add(_examMarksSvc.GetInsertMarksCommand(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade));
                             }
                             //_examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);

@@ -179,7 +179,7 @@
                                                     @Html.OpMgrActionLinkMultiple(" DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
                                                 </td>
                                                 <td>
-                                                    @Html.OpMgrActionLinkMultiple("ADD /", "HealthReport?mode=ADD&id=" + student.UserDetails.UserMasterId, new { name = "AddStudent" }))
+                                                    @Html.OpMgrActionLinkMultiple("ADD /", "HealthReport?mode=ADD&id=" + student.UserDetails.UserMasterId, new { name = "AddStudent" })
                                                     @Html.OpMgrActionLinkMultiple("VIEW /", "HealthReport?mode=VIEW&id=" + student.UserDetails.UserMasterId, new { name = "viewStudent" })
                                                     @Html.OpMgrActionLinkMultiple(" EDIT /", "HealthReport?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
                                                     @Html.OpMgrActionLinkMultiple(" DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
