@@ -483,4 +483,7 @@
   <data name="xamdate" xml:space="preserve">
     <value>xamdate</value>
   </data>
+  <data name="AdmissionStatus" xml:space="preserve">
+    <value>Admission Status</value>
+  </data>
 </root>

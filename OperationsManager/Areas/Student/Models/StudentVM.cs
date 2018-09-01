@@ -27,7 +27,7 @@ namespace OperationsManager.Areas.Student.Models
         public SelectList LocationList { get; set; }
 
         public SelectList GenderList { get; set; }
-
+        
         public SelectList IsChristianList { get; set; }
 
         public SelectList IsParentTeacherList { get; set; }

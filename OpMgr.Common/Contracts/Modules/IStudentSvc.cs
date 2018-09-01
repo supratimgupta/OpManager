@@ -20,6 +20,7 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<StudentDTO> InsertHealthReport(StudentDTO student);
         StatusDTO<StudentDTO> UpdateHealthReport(StudentDTO student);
         StatusDTO<StudentDTO> InsertAdmission(StudentDTO student);
+        StatusDTO<StudentDTO> UpdateAdmission(StudentDTO student);
         StatusDTO<List<StudentDTO>> AdmissionSearch(StudentDTO student);
         StatusDTO<StudentDTO> SelectAdmission(int AdmissionId);
     }

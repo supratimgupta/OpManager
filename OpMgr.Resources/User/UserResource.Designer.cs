@@ -106,6 +106,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admission Status.
+        /// </summary>
+        public static string AdmissionStatus {
+            get {
+                return ResourceManager.GetString("AdmissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alternate Contact Number.
         /// </summary>
         public static string AltContactNo {

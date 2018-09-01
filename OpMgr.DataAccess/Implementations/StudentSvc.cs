@@ -303,8 +303,85 @@ namespace OpMgr.DataAccess.Implementations
                 //}
             }
         }
+        //public StatusDTO<StudentDTO> UpdateAdmission(StudentDTO data)
+        //{
+        //    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+        //    {
+        //        try
+        //        {
+        //            dbSvc.OpenConnection();
 
-        public StatusDTO<StudentDTO> SelectAdmission(int rowId)
+        //            MySqlCommand command = new MySqlCommand();
+        //            command.CommandText = "sp_updateStudentAdmission";
+        //            command.CommandType = CommandType.StoredProcedure;
+        //            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+        //            command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+        //            command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
+        //            command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+        //            command.Parameters.Add("@Gender", MySqlDbType.String).Value = data.UserDetails.Gender;
+        //            command.Parameters.Add("@DOB", MySqlDbType.DateTime).Value = data.UserDetails.DOB;
+        //            command.Parameters.Add("@EmailId", MySqlDbType.String).Value = data.UserDetails.EmailId;
+        //            command.Parameters.Add("@ResidentialAddress", MySqlDbType.String).Value = data.UserDetails.ResidentialAddress;
+        //            command.Parameters.Add("@PermanentAddress", MySqlDbType.String).Value = data.UserDetails.PermanentAddress;
+        //            command.Parameters.Add("@ContactNo", MySqlDbType.String).Value = data.UserDetails.ContactNo;
+        //            command.Parameters.Add("@AlContactNo", MySqlDbType.String).Value = data.UserDetails.AltContactNo;
+        //            command.Parameters.Add("@BloodGroup", MySqlDbType.String).Value = data.UserDetails.BloodGroup;
+        //            command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
+
+        //            command.Parameters.Add("@FathersName", MySqlDbType.String).Value = data.FatherName;
+        //            command.Parameters.Add("@FathersContactNo", MySqlDbType.String).Value = data.FatherContact;
+        //            command.Parameters.Add("@FathersEmailId", MySqlDbType.String).Value = data.FatherEmailId;
+        //            command.Parameters.Add("@FathersOccupation", MySqlDbType.String).Value = data.FatherOccupation;
+        //            command.Parameters.Add("@FathersDesignation", MySqlDbType.String).Value = data.FatherDesignation;
+        //            command.Parameters.Add("@FatherOfficeAddress", MySqlDbType.String).Value = data.FatherOfficeAddress;
+        //            command.Parameters.Add("@FatherTypeOfBusiness", MySqlDbType.String).Value = data.FatherTypeOfBusiness;
+        //            command.Parameters.Add("@FathersAnnualIncome", MySqlDbType.String).Value = data.FatherAnnualIncome;
+
+        //            command.Parameters.Add("@PresentStandardId", MySqlDbType.Int32).Value = data.Currclass;
+        //            command.Parameters.Add("@AppliedStandardId", MySqlDbType.Int32).Value = data.classAppld;
+
+        //            command.Parameters.Add("@MothersName", MySqlDbType.String).Value = data.MotherName;
+        //            command.Parameters.Add("@MothersQualification", MySqlDbType.String).Value = data.MotherQualification;
+        //            command.Parameters.Add("@MothersOccupation", MySqlDbType.String).Value = data.MotherOccupation;
+        //            command.Parameters.Add("@MothersOrganisationName", MySqlDbType.String).Value = data.MotherOrganisationName;
+
+        //            command.Parameters.Add("@MotherDesignation", MySqlDbType.String).Value = data.MotherDesignation;
+        //            command.Parameters.Add("@MotherDepartment", MySqlDbType.String).Value = data.MotherDepartment;
+        //            //command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+        //            //command.Parameters.Add("@MotherOfficePhNo", MySqlDbType.String).Value = data.MotherOfficePhNo;
+        //            command.Parameters.Add("@MotherTypeOfBusiness", MySqlDbType.String).Value = data.MotherTypeOfBusiness;
+
+        //            command.Parameters.Add("@MothersAnnualIncome", MySqlDbType.String).Value = data.MotherAnnualIncome;
+        //            command.Parameters.Add("@SponsorOrGuardianName", MySqlDbType.String).Value = data.GuardianName;
+
+        //            command.Parameters.Add("@Religion", MySqlDbType.String).Value = data.Religion;
+        //            command.Parameters.Add("@Caste", MySqlDbType.String).Value = data.Caste;
+        //            command.Parameters.Add("@sibName", MySqlDbType.String).Value = data.sibName;
+        //            command.Parameters.Add("@sibGender", MySqlDbType.String).Value = data.sibGender;
+        //            command.Parameters.Add("@sibclass", MySqlDbType.String).Value = data.sibclass;
+        //            command.Parameters.Add("@Category", MySqlDbType.String).Value = data.Category;
+        //            command.Parameters.Add("@Nationality", MySqlDbType.String).Value = data.Nationality;
+        //            command.Parameters.Add("@Secondlang", MySqlDbType.String).Value = data.Secondlang;
+        //            command.Parameters.Add("@Prevmedium", MySqlDbType.String).Value = data.Prevmedium;
+        //            command.Parameters.Add("@Prevstream", MySqlDbType.String).Value = data.Prevstream;
+        //            command.Parameters.Add("@Prevschool", MySqlDbType.String).Value = data.Prevschool;
+        //            command.Parameters.Add("@admissionstatusId", MySqlDbType.String).Value = data.AdmissionStatus;
+        //            command.Parameters.Add("@StudentAdmissionId", MySqlDbType.String).Value = data.UserDetails.AdmissionId;
+
+        //            command.ExecuteNonQuery();
+        //            StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
+        //            status.IsSuccess = true;
+        //            return status;
+        //        }
+        //        catch (Exception exp)
+        //        {
+        //            throw exp;
+        //        }
+
+        //    }
+        //}
+            public StatusDTO<StudentDTO> SelectAdmission(int rowId)
         {
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
@@ -1587,7 +1664,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@Prevmedium", MySqlDbType.String).Value = data.Prevmedium;
                     command.Parameters.Add("@Prevstream", MySqlDbType.String).Value = data.Prevstream;
                     command.Parameters.Add("@Prevschool", MySqlDbType.String).Value = data.Prevschool;
-
+                    command.Parameters.Add("@StudentAdmissionId", MySqlDbType.String).Value = data.UserDetails.AdmissionId;
                     command.ExecuteNonQuery();
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
                     status.IsSuccess = true;
