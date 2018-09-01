@@ -32,10 +32,10 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
-        public StatusDTO<ExamMarksDTO> Delete(ExamMarksDTO data)
-        {
-            throw new NotImplementedException();
-        }
+        //public StatusDTO<ExamMarksDTO> Delete(ExamMarksDTO data)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public StatusDTO<CourseMappingDTO> GetCourseMappingDetails(CourseMappingDTO coursemappingDTO)
         {
@@ -333,7 +333,7 @@ namespace OpMgr.DataAccess.Implementations
                     else
                     {
                         status.IsSuccess = false;
-                        status.FailureReason = "User Insertion Failed";
+                        status.FailureReason = "Marks Update Failed";
                     }
                     return status;
                 }
@@ -568,6 +568,43 @@ namespace OpMgr.DataAccess.Implementations
             catch (Exception exp)
             {
                 throw exp;
+            }
+        }
+
+        public StatusDTO<ExamMarksDTO> Delete(ExamMarksDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "DELETE from exammarks WHERE ExamMarksId=@examMarksId";
+                    command.CommandType = CommandType.Text;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
+
+
+                    StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = data;
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "Marks Deletion Failed";
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+
             }
         }
     }

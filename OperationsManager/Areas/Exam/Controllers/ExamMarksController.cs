@@ -252,11 +252,16 @@ namespace OperationsManager.Areas.Exam.Controllers
                             {
                                 examMarksVM.ExamMarksList[i].MarksObtained = obtainedMarks;
                                 examMarksVM.ExamMarksList[i].CalculatedMarks = calculatedMarks;
-                                commandList.Add(_examMarksSvc.GetUpdateMarksCommand(examMarksVM.ExamMarksList[i]));
+                                //commandList.Add(_examMarksSvc.GetUpdateMarksCommand(examMarksVM.ExamMarksList[i]));
+
+                                //batch was not working for insertion more than 1 record so reverting previous code
+                                _examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
                             }
                             else
                             {
-                                commandList.Add(_examMarksSvc.GetDeleteMarksCommand(examMarksVM.ExamMarksList[i]));
+                                //batch was not working for insertion more than 1 record so reverting previous code
+                                _examMarksSvc.Delete(examMarksVM.ExamMarksList[i]);
+                                //commandList.Add(_examMarksSvc.GetDeleteMarksCommand(examMarksVM.ExamMarksList[i]));
                             }
                             //_examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
                         }
@@ -269,7 +274,10 @@ namespace OperationsManager.Areas.Exam.Controllers
                             {
                                 examMarksVM.ExamMarksList[i].MarksObtained = obtainedMarks;
                                 examMarksVM.ExamMarksList[i].CalculatedMarks = calculatedMarks;
-                                commandList.Add(_examMarksSvc.GetInsertMarksCommand(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade));
+                                //commandList.Add(_examMarksSvc.GetInsertMarksCommand(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade));
+
+                                //batch was not working for insertion more than 1 record so reverting previous code
+                                _examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
                             }
                             //_examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
                         }
