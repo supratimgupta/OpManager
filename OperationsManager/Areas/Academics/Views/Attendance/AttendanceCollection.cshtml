@@ -1,0 +1,162 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Academics.Models.AttendanceVM
+
+@{
+    // Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@StudentResource.PromotionTitle</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.Attendance-picker').datepicker({ dateFormat: 'dd-M-yy' });
+        });
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">@StudentResource.AttendanceTitle</div>
+                <div class="panel-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <div class="col-lg-2">
+                                @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, StudentResource.Location, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control", @id = "ddlStandardSection" })
+                                @Html.HiddenFor(m => m.StandardSectionMap.Serial)
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.OpMgrTextBoxFor(m => m.AttendanceDateString, StudentResource.AttendanceDate, new { @class = "Attendance-picker form-control", data_rule_required = "true", data_msg_required = "Attendance Date is required" })
+                            </div>
+                            <div class="col-lg-3" style="vertical-align:bottom;padding-top:30px">
+                                <button type="submit" name="Command" value="@StudentResource.GetStandardCommand" class="btn btn-primary">@StudentResource.SearchButton</button>
+                            </div>
+                            @*<div class="col-lg-3" style="vertical-align:bottom;padding-top:30px">
+                                <button type="submit" name="Command" value="@StudentResource.ConfirmAttendance" class="btn btn-primary">@StudentResource.ConfirmAttendance</button>
+                            </div>*@
+                        </fieldset>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.studentList != null && Model.studentList.Count > 0 && Model.IsSearchSuccessful)
+            {
+                int flag = 0;
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Class</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                            <thead>
+                                <tr>
+                                    <th th data-field="name" data-sortable="true">
+                                        @StudentResource.Name
+                                    </th>
+                                    <th th data-field="name" data-sortable="true">
+                                        @StudentResource.Location
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @StudentResource.RollNo
+                                    </th>
+                                    <th th data-field="roll number" data-sortable="true">
+                                        @StudentResource.AttendanceStatus
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.studentList.Count; i++)
+                                {
+                                    flag = 1;                   
+                                    @Html.HiddenFor(m => m.studentList[i].StudentInfoId)
+                                    <tr>
+                                        <td>
+                                            @Model.studentList[i].Name
+                                        </td>
+                                        <td>
+                                            @Model.studentList[i].Location
+                                        </td>
+                                        <td>
+                                            <input type="text" disabled="disabled" class="form-control" name="studentList[@i].RollNumber" value="@Model.studentList[i].RollNumber" />
+                                        </td>
+                                        <td>
+                                            @if (string.IsNullOrEmpty(Model.studentList[i].Status))
+                                            {
+                                                <select id="ddlPromotionStatusList" name="studentList[@i].Status" class="form-control" onchange="changePromotionStatus(this.parentNode.parentNode)">
+                                                    @foreach (var promotionStatus in Model.AttendanceList)
+                                                    {
+                                                        <option value="@promotionStatus.Value" @(Model.studentList[i].Status == promotionStatus.Value ? "selected=\"selected\"" : "")>@promotionStatus.Text</option>
+                                                    }
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                @(Model.studentList[i].Status == null ? "" : Model.studentList[i].Status)
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <br />
+                        <br />
+
+                        @if (!Model.IsCommandPromote)
+                        {
+                            <button type="submit" name="Command" value="@StudentResource.ConfirmAttendance" class="btn btn-primary">@StudentResource.ConfirmAttendance</button>
+                        }
+                    </fieldset>
+                }
+                <script>
+                   
+                    function changePromotionStatus(row) {
+                        //debugger
+                        var ddlPromotion = row.cells[1].getElementsByTagName("select")[0];
+                        if (ddlPromotion.selectedIndex == 1) {
+                            row.cells[3].getElementsByTagName("select")[0].disabled = true;
+                            row.cells[3].getElementsByTagName("select")[0].selectedIndex = 0;
+                        }
+                        else {
+                            row.cells[3].getElementsByTagName("select")[0].disabled = false;
+
+                        }
+                    }
+
+                </script>
+            </div>
+        </div>
+
+    }
+    else if (Model.studentList != null && Model.studentList.Count == 0 && Model.IsSearchSuccessful)
+    {
+        <label class="form-control" style="">Attendance of all Students of this class has been completed</label>
+
+    }
+
+
+</body>
+
+</html>

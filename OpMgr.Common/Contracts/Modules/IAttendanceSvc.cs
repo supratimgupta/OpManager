@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpMgr.Common.Contracts;
+using OpMgr.Common.DTOs;
+
+namespace OpMgr.Common.Contracts.Modules
+{
+    public interface IAttendanceSvc : ICRUDSvc<StudentDTO, StudentDTO>
+    {
+        StatusDTO<List<StudentDTO>> MarkAttendance(string  absentstudentinfoids, string Command, int StandardSectionId, int LocationId);
+    }
+}

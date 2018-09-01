@@ -109,5 +109,7 @@ namespace OperationsManager.Areas.Student.Models
         public string Pulserate { get; set; }
         public string DrRemarks { get; set; }
         public string DrSugg { get; set; }
+
+        public SelectList AdmissionStatusList { get; set; }
     }
 }

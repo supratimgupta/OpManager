@@ -50,6 +50,7 @@
     <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
+    <Compile Include="Contracts\Modules\IAttendanceSvc.cs" />
     <Compile Include="Contracts\Modules\IBookMasterSvc.cs" />
     <Compile Include="Contracts\Modules\IChatSvc.cs" />
     <Compile Include="Contracts\Modules\IDropdownRepo.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
     <Compile Include="Contracts\IResetPasswordSvc.cs" />
     <Compile Include="DTOs\AcademicSessionDTO.cs" />
+    <Compile Include="DTOs\AdmissionStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusLogDTO.cs" />
     <Compile Include="DTOs\ApprovalMappingDTO.cs" />

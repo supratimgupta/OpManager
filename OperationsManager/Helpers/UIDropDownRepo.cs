@@ -456,5 +456,25 @@ namespace OperationsManager.Helpers
             //dicGender.Add("3", "Other");
             return new SelectList(dicResultType, "key", "value");
         }
+
+        public SelectList getAttendanceStatusDropDown()
+        {
+            Dictionary<string, string> dicAttendanceStatus = new Dictionary<string, string>();
+            dicAttendanceStatus.Add("1", "Present");
+            dicAttendanceStatus.Add("2", "Absent");
+            return new SelectList(dicAttendanceStatus, "key", "value");
+        }
+
+        public SelectList getAdmissionStatusDropdown()
+        {
+            List<AdmissionStatusDTO> rDto = _ddlRepo.AdmissionStatus();
+            AdmissionStatusDTO admissionstatusDTO = new AdmissionStatusDTO();
+            admissionstatusDTO.AdmissionStatusId = -1;
+            admissionstatusDTO.AdmissionStatusDescription = "";
+
+            rDto.Insert(0, admissionstatusDTO);
+
+            return new SelectList(rDto, "AdmissionStatusId", "AdmissionStatusDescription");
+        }
     }
 }

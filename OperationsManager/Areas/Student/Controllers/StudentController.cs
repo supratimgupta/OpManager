@@ -743,7 +743,9 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.Prevstream = dto.ReturnObj.Prevstream;
                 studView.GenderList = _uiddlRepo.getGenderDropDown();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
-               // studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+
+                //to show admission status in edit mode
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
             }
 
             studView.GenderList = _uiddlRepo.getGenderDropDown();

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementations\AttendanceSvc.cs" />
     <Compile Include="Implementations\BookMasterSvc.cs" />
     <Compile Include="Implementations\ChatSvc.cs" />
     <Compile Include="Implementations\CommonConfigDataSvc.cs" />

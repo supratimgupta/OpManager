@@ -70,5 +70,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<GradeConfigDTO> getGrades(int location);
 
         List<SubjectDTO> getSubjectDropdown(int? locationId = null, int? satndardsectionid=null);
+
+        List<AdmissionStatusDTO> AdmissionStatus();
     }
 }
