@@ -77,7 +77,7 @@ namespace OperationsManager.Areas.Exam.Controllers
             examMarksVM.ToDateString = examMarksVM.SelectedAcademicSession.Split(';')[1];
             examMarksVM.CourseFrom = DateTime.Parse(examMarksVM.FromDateString);
             examMarksVM.CourseTo = DateTime.Parse(examMarksVM.ToDateString);
-            if(string.Equals(examMarksVM.Mode,"SEARCH", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(examMarksVM.Mode, "SEARCH", StringComparison.OrdinalIgnoreCase))
             {
                 Models.ExamMarksVM examVM = null;
                 //ExamMarksDTO exammarksdto = null;
@@ -87,7 +87,7 @@ namespace OperationsManager.Areas.Exam.Controllers
 
                     examVM.StandardSectionId = examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId;
                     examVM.SubjectId = examMarksVM.CourseExam.CourseMapping.Subject.SubjectId;
-                    
+
 
                     StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntry(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.CourseExam.ExamType.ExamTypeId, examMarksVM.CourseExam.ExamSubType.ExamSubTypeId);
 
@@ -116,26 +116,26 @@ namespace OperationsManager.Areas.Exam.Controllers
                                 {
                                     exammarksvm = new Models.ExamMarksVM();
                                     exammarksvm.ExamMarksId = exammarksdto.ExamMarksId;
-                                    if (exammarksdto.MarksObtained > 0)
+                                    if (exammarksdto.MarksObtained.HasValue)
                                     {
-                                        exammarksvm.MarksObtained = exammarksdto.MarksObtained;
+                                        exammarksvm.DisplayedObtainedMarks = exammarksdto.MarksObtained.Value.ToString();
                                     }
                                     else
                                     {
-                                        exammarksvm.MarksObtained = 0;
+                                        exammarksvm.DisplayedObtainedMarks = "NA";
                                     }
-                                    if (exammarksdto.CalculatedMarks > 0)
+                                    if (exammarksdto.CalculatedMarks.HasValue)
                                     {
-                                        exammarksvm.CalculatedMarks = exammarksdto.CalculatedMarks;
+                                        exammarksvm.DisplayedCalculatedMarks = exammarksdto.CalculatedMarks.Value.ToString();
                                     }
                                     else
                                     {
-                                        exammarksvm.CalculatedMarks = 0;
+                                        exammarksvm.DisplayedCalculatedMarks = "NA";
                                     }
                                     exammarksvm.DirectGrade = exammarksdto.DirectGrade;
                                     exammarksvm.SubjectExamType = exammarksdto.SubjectExamType;
 
-                                    if(string.Equals(exammarksdto.SubjectExamType, "G", StringComparison.OrdinalIgnoreCase))
+                                    if (string.Equals(exammarksdto.SubjectExamType, "G", StringComparison.OrdinalIgnoreCase))
                                     {
                                         examVM.IsRuleNeededToBeAdded = false;
                                         examVM.Rule = null;
@@ -161,7 +161,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                                             else if (rules.Count > 1)
                                             {
                                                 examVM.IsRuleOk = false;
-                                                examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this. Please provide the Course Exam Id - "+ exammarksdto.CourseExam.CourseExamId+".";
+                                                examVM.RuleAdditionMessage = "More than 1 rule added for this exam. Please contact dev team to fix this. Please provide the Course Exam Id - " + exammarksdto.CourseExam.CourseExamId + ".";
                                                 examVM.IsRuleNeededToBeAdded = false;
                                                 break;
                                             }
@@ -176,7 +176,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                                             }
                                         }
                                     }
-                                    
+
                                     exammarksvm.StandardSection = new StandardSectionMapDTO();
                                     exammarksvm.StandardSection.StandardSectionId = exammarksdto.StandardSection.StandardSectionId;
 
@@ -216,10 +216,13 @@ namespace OperationsManager.Areas.Exam.Controllers
                         {
                             examVM.IsRuleNeededToBeAdded = true;
                         }
-                        examVM.CourseExamId = int.Parse(status.FailureReason.Split('^')[1]);
+                        if (status.FailureReason.Split('^').Length > 1)
+                        {
+                            examVM.CourseExamId = int.Parse(status.FailureReason.Split('^')[1]);
+                        }
                         examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
                         examVM.SubjectList = _uiddlRepo.getSubjectDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId);
-                        
+
                         examVM.LocationList = _uiddlRepo.getLocationDropDown();
                         examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
                         examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown(examMarksVM.CourseExam.ExamType.ExamTypeId);
@@ -229,7 +232,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                 }
                 return View(examVM);
             }
-            else if(string.Equals(examMarksVM.Mode,"SAVE", StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(examMarksVM.Mode, "SAVE", StringComparison.OrdinalIgnoreCase))
             {
                 if (examMarksVM.ExamMarksList != null && examMarksVM.ExamMarksList.Count > 0)
                 {
@@ -242,16 +245,44 @@ namespace OperationsManager.Areas.Exam.Controllers
                         //examVm.ExamMarksList[i].CourseExam.CourseExamId = examVm.hd
                         if (examMarksVM.ExamMarksList[i].ExamMarksId > 0)
                         {
-                            commandList.Add(_examMarksSvc.GetUpdateMarksCommand(examMarksVM.ExamMarksList[i]));
+                            double calculatedMarks = 0.0;
+                            double obtainedMarks = 0.0;
+                            if (double.TryParse(examMarksVM.ExamMarksList[i].DisplayedCalculatedMarks, out calculatedMarks)
+                                && double.TryParse(examMarksVM.ExamMarksList[i].DisplayedObtainedMarks, out obtainedMarks))
+                            {
+                                examMarksVM.ExamMarksList[i].MarksObtained = obtainedMarks;
+                                examMarksVM.ExamMarksList[i].CalculatedMarks = calculatedMarks;
+                                //commandList.Add(_examMarksSvc.GetUpdateMarksCommand(examMarksVM.ExamMarksList[i]));
+
+                                //batch was not working for insertion more than 1 record so reverting previous code
+                                _examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
+                            }
+                            else
+                            {
+                                //batch was not working for insertion more than 1 record so reverting previous code
+                                _examMarksSvc.Delete(examMarksVM.ExamMarksList[i]);
+                                //commandList.Add(_examMarksSvc.GetDeleteMarksCommand(examMarksVM.ExamMarksList[i]));
+                            }
                             //_examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
                         }
                         else
                         {
-                            commandList.Add(_examMarksSvc.GetInsertMarksCommand(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade));
+                            double calculatedMarks = 0.0;
+                            double obtainedMarks = 0.0;
+                            if (double.TryParse(examMarksVM.ExamMarksList[i].DisplayedCalculatedMarks, out calculatedMarks)
+                                && double.TryParse(examMarksVM.ExamMarksList[i].DisplayedObtainedMarks, out obtainedMarks))
+                            {
+                                examMarksVM.ExamMarksList[i].MarksObtained = obtainedMarks;
+                                examMarksVM.ExamMarksList[i].CalculatedMarks = calculatedMarks;
+                                //commandList.Add(_examMarksSvc.GetInsertMarksCommand(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade));
+
+                                //batch was not working for insertion more than 1 record so reverting previous code
+                                _examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
+                            }
                             //_examMarksSvc.InsertMarks(examMarksVM.ExamMarksList[i], examMarksVM.CourseExamId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.ExamMarksList[i].DirectGrade);
                         }
                     }
-                    if(commandList!=null && commandList.Count > 0)
+                    if (commandList != null && commandList.Count > 0)
                     {
                         _examMarksSvc.BatchCommandProcess(commandList);
                     }

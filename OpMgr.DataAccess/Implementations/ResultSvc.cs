@@ -45,7 +45,7 @@ namespace OpMgr.DataAccess.Implementations
                 command.Parameters.Add("@stdSec", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@loc", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@resType", MySqlDbType.String).Value = resultType;
-                using(MySqlDataAdapter mDA = new MySqlDataAdapter(command))
+                using (MySqlDataAdapter mDA = new MySqlDataAdapter(command))
                 {
                     _dtData = new DataTable("FORMAT");
                     mDA.Fill(_dtData);
@@ -88,40 +88,40 @@ namespace OpMgr.DataAccess.Implementations
             List<string> lstDoneWithStudents = new List<string>();
             Dictionary<string, double> dicSubjectHeighest = new Dictionary<string, double>();
             Dictionary<string, double> dicSubjectTotal = new Dictionary<string, double>();
-            if(dtResults!=null && dtResults.Rows.Count>0 && dtResultFormat!=null && dtResultFormat.Rows.Count>0)
+            if (dtResults != null && dtResults.Rows.Count > 0 && dtResultFormat != null && dtResultFormat.Rows.Count > 0)
             {
                 for (int st = 0; st < dtResults.Rows.Count; st++)
                 {
                     rsCard = new ResultCardDTO();
                     rsCard.StudentInfoId = dtResults.Rows[st]["StudentInfoId"].ToString();
                     rsCard.TotalMarks = 0;
-                    if(lstDoneWithStudents.Contains(rsCard.StudentInfoId))
+                    if (lstDoneWithStudents.Contains(rsCard.StudentInfoId))
                     {
                         continue;
                     }
                     rsCard.ClassName = dtResults.Rows[st]["StandardName"].ToString();
                     rsCard.SectionName = dtResults.Rows[st]["SectionName"].ToString();
                     rsCard.SessionEnd = academicSessionEndDate.ToString("yyyy");
-                    rsCard.SessionStart = academicSessionStartDate.ToString("yyyy");                    
+                    rsCard.SessionStart = academicSessionStartDate.ToString("yyyy");
                     rsCard.StudentName = dtResults.Rows[st]["FName"].ToString() + " " + dtResults.Rows[st]["LName"].ToString();
                     rsCard.StudentRegNo = dtResults.Rows[st]["RegistrationNumber"].ToString();
                     rsCard.StudentRollNo = dtResults.Rows[st]["RollNumber"].ToString();
                     List<string> lstDoneWithSubjects = new List<string>();
                     DataRow[] arrStudentResults = dtResults.Select("StudentInfoId=" + rsCard.StudentInfoId);
-                    if(arrStudentResults!=null && arrStudentResults.Length>0)
+                    if (arrStudentResults != null && arrStudentResults.Length > 0)
                     {
                         rsCard.ResultRows = new List<ResultCardRows>();
                         rsCard.GradeResultRows = new List<ResultCardRows>();
                         ResultCardRows rsRows = null;
-                        foreach(DataRow drSub in arrStudentResults)
+                        foreach (DataRow drSub in arrStudentResults)
                         {
                             string subjectId = drSub["SubjectId"].ToString();
-                            if(lstDoneWithSubjects.Contains(subjectId))
+                            if (lstDoneWithSubjects.Contains(subjectId))
                             {
                                 continue;
                             }
-                            rsRows = new ResultCardRows();                            
-                            DataRow[] drSubjects = arrStudentResults.Where(dr=>string.Equals(dr["SubjectId"].ToString(), subjectId)).ToArray();
+                            rsRows = new ResultCardRows();
+                            DataRow[] drSubjects = arrStudentResults.Where(dr => string.Equals(dr["SubjectId"].ToString(), subjectId)).ToArray();
                             rsRows.SubjectName = drSub["SubjectName"].ToString();
                             //----Need to modify this part for now skipping all G subjects ---
                             //if(string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
@@ -132,14 +132,14 @@ namespace OpMgr.DataAccess.Implementations
                             //----Need to modify this part for now skipping all G subjects ---
                             rsRows.ResultColumns = new List<ResultCardColumns>();
                             ResultCardColumns resultCol = null;
-                            for(int rf=0; rf<dtResultFormat.Rows.Count;rf++)
+                            for (int rf = 0; rf < dtResultFormat.Rows.Count; rf++)
                             {
                                 resultCol = new ResultCardColumns();
                                 resultCol.ColumnName = dtResultFormat.Rows[rf]["column_header"].ToString();
                                 resultCol.ColumnSequence = Convert.ToInt32(dtResultFormat.Rows[rf]["column_sequence"]);
                                 string expression = dtResultFormat.Rows[rf]["value_expression"].ToString();
                                 string gradeExpression = dtResultFormat.Rows[rf]["grade_expression"].ToString();
-                                if(string.IsNullOrEmpty(gradeExpression) && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                                if (string.IsNullOrEmpty(gradeExpression) && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
                                 {
                                     resultCol.ColumnValue = string.Empty;
                                     rsRows.ResultColumns.Add(resultCol);
@@ -158,7 +158,7 @@ namespace OpMgr.DataAccess.Implementations
                                 string isCalcForTotal = dtResultFormat.Rows[rf]["is_calc_for_total"].ToString();
                                 resultCol.IsAllowedForGrade = false;
                                 resultCol.IsUsedForTotal = false;
-                                if(string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
+                                if (string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
                                 {
                                     resultCol.IsAllowedForGrade = true;
                                 }
@@ -166,12 +166,12 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     resultCol.IsUsedForTotal = true;
                                 }
-                                if(!resultCol.IsAllowedForGrade && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
+                                if (!resultCol.IsAllowedForGrade && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
                                 {
                                     continue;
                                 }
                                 string marks = string.Empty;
-                                if(string.Equals(valueType, "FIXED", StringComparison.OrdinalIgnoreCase))
+                                if (string.Equals(valueType, "FIXED", StringComparison.OrdinalIgnoreCase))
                                 {
                                     marks = this.CreateValueWithExpression(expression, drSubjects, fixedColName, dtGrades, hasGrade);
                                 }
@@ -184,7 +184,7 @@ namespace OpMgr.DataAccess.Implementations
                                     else
                                     {
                                         marks = this.CreateValueWithExpression(expression, drSubjects, "CalculatedMarks", dtGrades, hasGrade);
-                                        if(resultCol.IsUsedForTotal)
+                                        if (resultCol.IsUsedForTotal)
                                         {
                                             rsCard.TotalMarks = rsCard.TotalMarks + double.Parse(Regex.Match(marks, @"\d+").Value);
 
@@ -192,7 +192,7 @@ namespace OpMgr.DataAccess.Implementations
                                             //============HEIGHEST=============//
                                             double currentValue = double.Parse(Regex.Match(marks, @"\d+").Value);
                                             rsRows.GraphValue = Math.Ceiling(currentValue);
-                                            if(dicSubjectHeighest.ContainsKey(subjectId))
+                                            if (dicSubjectHeighest.ContainsKey(subjectId))
                                             {
                                                 double highestValue = dicSubjectHeighest[subjectId];
                                                 if (Math.Ceiling(currentValue) > highestValue)
@@ -206,7 +206,7 @@ namespace OpMgr.DataAccess.Implementations
                                             }
                                             //============HEIGHEST============//
                                             //==============TOTAL=============//
-                                            if(dicSubjectTotal.ContainsKey(subjectId))
+                                            if (dicSubjectTotal.ContainsKey(subjectId))
                                             {
                                                 dicSubjectTotal[subjectId] = dicSubjectTotal[subjectId] + Math.Ceiling(currentValue);
                                             }
@@ -237,9 +237,12 @@ namespace OpMgr.DataAccess.Implementations
                     if (remark != null)
                     {
                         rsCard.CurrentRemarks = remark.Remarks;
+                        if (!string.IsNullOrEmpty(remark.AttendancePercent))
+                        {
+                            rsCard.AttendancePercent = remark.AttendancePercent;
+                        }
                     }
 
-                    rsCard.AttendancePercent = remark.AttendancePercent;
                     rsCard.ResultType = resultType;
                     lstResultCards.Add(rsCard);
                     lstDoneWithStudents.Add(rsCard.StudentInfoId);
@@ -271,7 +274,7 @@ namespace OpMgr.DataAccess.Implementations
         private string CreateGradeWithExpression(string expression, DataRow[] arrValues, DataTable dtGrade)
         {
             string tentativeFullMarks = dtGrade.Rows[0]["full_marks"].ToString();
-            while(expression.Contains("{{") && expression.Contains("}}"))
+            while (expression.Contains("{{") && expression.Contains("}}"))
             {
                 int indexOfOpenBrace = expression.IndexOf("{{");
                 int indexOfCloseBrace = expression.IndexOf("}}");
@@ -302,8 +305,8 @@ namespace OpMgr.DataAccess.Implementations
                 if (drValue != null && !string.IsNullOrEmpty(drValue["DirectGrade"].ToString()))
                 {
                     string grade = drValue["DirectGrade"].ToString();
-                    DataRow[] grades = dtGrade.Select("grade_name='" + grade+"' AND full_marks="+tentativeFullMarks);
-                    if(grades!=null && grades.Length>0)
+                    DataRow[] grades = dtGrade.Select("grade_name='" + grade + "' AND full_marks=" + tentativeFullMarks);
+                    if (grades != null && grades.Length > 0)
                     {
                         gradeMarks = grades[0]["to_marks"].ToString();
                     }
@@ -328,7 +331,7 @@ namespace OpMgr.DataAccess.Implementations
         private string CreateValueWithExpression(string expression, DataRow[] arrValues, string columnName, DataTable dtGrade, string hasGrade)
         {
             string totMarksExpr = expression;
-            while(expression.Contains("{{") && expression.Contains("}}") && totMarksExpr.Contains("{{") && totMarksExpr.Contains("}}"))
+            while (expression.Contains("{{") && expression.Contains("}}") && totMarksExpr.Contains("{{") && totMarksExpr.Contains("}}"))
             {
                 int indexOfOpenBrace = expression.IndexOf("{{");
                 int indexOfCloseBrace = expression.IndexOf("}}");
@@ -336,11 +339,11 @@ namespace OpMgr.DataAccess.Implementations
                 string[] arrExpr = expr.Split(',');
                 string etId = string.Empty;
                 string estId = string.Empty;
-                if(arrExpr[0].Contains("ET-"))
+                if (arrExpr[0].Contains("ET-"))
                 {
                     etId = arrExpr[0].Split('-')[1];
                 }
-                else if(arrExpr[0].Contains("EST-"))
+                else if (arrExpr[0].Contains("EST-"))
                 {
                     estId = arrExpr[0].Split('-')[1];
                 }
@@ -368,19 +371,19 @@ namespace OpMgr.DataAccess.Implementations
             var computedMarks = dtEvaluator.Compute(expression, "");
             computedMarks = (int)Math.Ceiling(Convert.ToDouble(computedMarks));
             dtEvaluator = new DataTable();
-            var totalMarks = dtEvaluator.Compute(totMarksExpr,"");
+            var totalMarks = dtEvaluator.Compute(totMarksExpr, "");
             totalMarks = (int)Math.Ceiling(Convert.ToDouble(totalMarks));
             totalMarks = totalMarks.ToString().Split('.')[0];
             string grade = string.Empty;
-            if(string.Equals(hasGrade,"Y", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(hasGrade, "Y", StringComparison.OrdinalIgnoreCase))
             {
                 DataRow[] arrGrade = dtGrade.Select("full_marks=" + totalMarks + " AND from_marks<=" + computedMarks + " AND to_marks>=" + computedMarks);
-                if(arrGrade!=null && arrGrade.Length>0)
+                if (arrGrade != null && arrGrade.Length > 0)
                 {
                     grade = arrGrade[0]["grade_name"].ToString();
                 }
             }
-            if(!string.IsNullOrEmpty(grade))
+            if (!string.IsNullOrEmpty(grade))
             {
                 computedMarks = computedMarks + " (" + grade + ")";
             }
@@ -395,13 +398,13 @@ namespace OpMgr.DataAccess.Implementations
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
                 string examTypeWhereClause = string.Empty;
-                
-                command.CommandText = "SELECT u.FName, u.MName, u.LName, st.RegistrationNumber, st.StudentInfoId, st.RollNumber, std.StandardName, sc.SectionName, sub.SubjectName, sub.SubjectId, sub.SubjectExamType, "+
+
+                command.CommandText = "SELECT u.FName, u.MName, u.LName, st.RegistrationNumber, st.StudentInfoId, st.RollNumber, std.StandardName, sc.SectionName, sub.SubjectName, sub.SubjectId, sub.SubjectExamType, " +
                                       "et.ExamTypeDescription, et.ExamTypeId, est.ExamSubTypeDescription, est.ExamSubTypeId, exm.CalculatedMarks, exm.DirectGrade, er.PassMarks, er.ActualFullMarks, rsm.subject_order " +
-                                      "FROM exammarks exm LEFT JOIN StudentInfo st ON exm.StudentInfoId=st.StudentInfoId LEFT JOIN usermaster u ON st.UserMasterId=u.UserMasterId "+
-                                      "LEFT JOIN StandardSectionMap scm ON exm.StandardSectionId=scm.StandardSectionId LEFT JOIN standard std ON scm.StandardId=std.StandardId "+
-                                      "LEFT JOIN Section sc ON scm.SectionId=sc.SectionId LEFT JOIN subject sub ON exm.SubjectId=sub.SubjectId "+
-                                      "LEFT JOIN ExamRule er ON exm.ExamRuleId=er.ExamRuleId "+
+                                      "FROM exammarks exm LEFT JOIN StudentInfo st ON exm.StudentInfoId=st.StudentInfoId LEFT JOIN usermaster u ON st.UserMasterId=u.UserMasterId " +
+                                      "LEFT JOIN StandardSectionMap scm ON exm.StandardSectionId=scm.StandardSectionId LEFT JOIN standard std ON scm.StandardId=std.StandardId " +
+                                      "LEFT JOIN Section sc ON scm.SectionId=sc.SectionId LEFT JOIN subject sub ON exm.SubjectId=sub.SubjectId " +
+                                      "LEFT JOIN ExamRule er ON exm.ExamRuleId=er.ExamRuleId " +
                                       "LEFT JOIN courseexam cexm ON exm.CourseExamId=cexm.CourseExamId LEFT JOIN coursemapping cmpng ON cexm.CourseMappingId=cmpng.CourseMappingId " +
                                       "LEFT JOIN ExamTypes et ON cexm.ExamTypeId=et.ExamTypeId LEFT JOIN ExamSubTypes est ON cexm.ExamSubTypeId=est.ExamSubTypeId " +
                                       "LEFT JOIN result_subject_map rsm ON exm.SubjectId=rsm.subject_id " +

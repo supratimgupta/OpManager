@@ -8,7 +8,7 @@ using System.Data;
 
 namespace OpMgr.Common.Contracts.Modules
 {
-    public interface IExamMarksSvc :ICRUDSvc<ExamMarksDTO,ExamMarksDTO>, IBatchProcess<bool>
+    public interface IExamMarksSvc : ICRUDSvc<ExamMarksDTO, ExamMarksDTO>, IBatchProcess<bool>
     {
         StatusDTO<CourseMappingDTO> GetCourseMappingDetails(CourseMappingDTO coursemappingDTO);
         StatusDTO<ExamRuleDTO> GetExamRuleDetails(CourseExam courseExamDTO);
@@ -19,5 +19,6 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<List<SubjectDTO>> GetSubjectDropdownData(int LocationId, int StandardSectionId);
         IDbCommand GetInsertMarksCommand(ExamMarksDTO data, int CourseExamId, int StandardSectionId, int SubjectId, DateTime FromDate, DateTime ToDate, string directGrade);
         IDbCommand GetUpdateMarksCommand(ExamMarksDTO data);
+        IDbCommand GetDeleteMarksCommand(ExamMarksDTO data);
     }
 }

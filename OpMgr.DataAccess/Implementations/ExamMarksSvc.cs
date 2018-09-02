@@ -32,10 +32,10 @@ namespace OpMgr.DataAccess.Implementations
             throw new NotImplementedException();
         }
 
-        public StatusDTO<ExamMarksDTO> Delete(ExamMarksDTO data)
-        {
-            throw new NotImplementedException();
-        }
+        //public StatusDTO<ExamMarksDTO> Delete(ExamMarksDTO data)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public StatusDTO<CourseMappingDTO> GetCourseMappingDetails(CourseMappingDTO coursemappingDTO)
         {
@@ -194,11 +194,18 @@ namespace OpMgr.DataAccess.Implementations
                                 {
                                     exammarks.MarksObtained = Convert.ToDouble(_dsData.Tables[0].Rows[i]["MarksObtained"]);
                                 }
+                                else
+                                {
+                                    exammarks.MarksObtained = null;
+                                }
                                 if (!String.IsNullOrEmpty(_dsData.Tables[0].Rows[i]["CalculatedMarks"].ToString()))
                                 {
                                     exammarks.CalculatedMarks = Convert.ToDouble(_dsData.Tables[0].Rows[i]["CalculatedMarks"]);
                                 }
-
+                                else
+                                {
+                                    exammarks.MarksObtained = null;
+                                }
                                 examMarksList.ReturnObj.Add(exammarks);
                             }
                             examMarksList.IsSuccess = true;
@@ -206,7 +213,14 @@ namespace OpMgr.DataAccess.Implementations
                         else
                         {
                             examMarksList.IsSuccess = false;
-                            examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString() + "^" + _dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
+                            if (_dsData.Tables[0].Columns.Contains("COURSEEXAMID"))
+                            {
+                                examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString() + "^" + _dsData.Tables[0].Rows[0]["COURSEEXAMID"].ToString();
+                            }
+                            else
+                            {
+                                examMarksList.FailureReason = _dsData.Tables[0].Rows[0]["MESSAGE"].ToString();
+                            }
                         }
                     }
 
@@ -319,7 +333,7 @@ namespace OpMgr.DataAccess.Implementations
                     else
                     {
                         status.IsSuccess = false;
-                        status.FailureReason = "User Insertion Failed";
+                        status.FailureReason = "Marks Update Failed";
                     }
                     return status;
                 }
@@ -433,7 +447,7 @@ namespace OpMgr.DataAccess.Implementations
                 using (IDbSvc dbSvc = new DbSvc(_configSvc))
                 {
                     dbSvc.OpenConnection();
-                    if(commands!=null && commands.Count>0)
+                    if (commands != null && commands.Count > 0)
                     {
                         IDataReader rdr = null;
                         foreach (IDbCommand command in commands)
@@ -441,7 +455,7 @@ namespace OpMgr.DataAccess.Implementations
                             try
                             {
                                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                                if(command.CommandType==CommandType.StoredProcedure)
+                                if (command.CommandType == CommandType.StoredProcedure)
                                 {
                                     rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                                     _dtData = new DataTable();
@@ -452,7 +466,7 @@ namespace OpMgr.DataAccess.Implementations
                                     command.ExecuteNonQuery();
                                 }
                             }
-                            catch(Exception exp)
+                            catch (Exception exp)
                             {
                                 throw exp;
                             }
@@ -536,6 +550,61 @@ namespace OpMgr.DataAccess.Implementations
             catch (Exception exp)
             {
                 throw exp;
+            }
+        }
+
+        public IDbCommand GetDeleteMarksCommand(ExamMarksDTO data)
+        {
+            try
+            {
+                MySqlCommand command = new MySqlCommand();
+                command.CommandText = "DELETE from exammarks WHERE ExamMarksId=@examMarksId";
+                command.CommandType = CommandType.Text;
+
+                command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
+
+                return command;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+
+        public StatusDTO<ExamMarksDTO> Delete(ExamMarksDTO data)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "DELETE from exammarks WHERE ExamMarksId=@examMarksId";
+                    command.CommandType = CommandType.Text;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@examMarksId", MySqlDbType.Int32).Value = data.ExamMarksId;
+
+
+                    StatusDTO<ExamMarksDTO> status = new StatusDTO<ExamMarksDTO>();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        status.IsSuccess = true;
+                        status.ReturnObj = data;
+                    }
+                    else
+                    {
+                        status.IsSuccess = false;
+                        status.FailureReason = "Marks Deletion Failed";
+                    }
+                    return status;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+
             }
         }
     }

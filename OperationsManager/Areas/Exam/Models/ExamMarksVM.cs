@@ -54,5 +54,9 @@ namespace OperationsManager.Areas.Exam.Models
         public int RuleId { get; set; }
 
         public string SelectedAcademicSession { get; set; }
+
+        public string DisplayedObtainedMarks { get; set; }
+
+        public string DisplayedCalculatedMarks { get; set; }
     }
 }
