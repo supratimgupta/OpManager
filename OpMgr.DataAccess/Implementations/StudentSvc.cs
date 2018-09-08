@@ -239,7 +239,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Parameters.Add("@MotherDesignation", MySqlDbType.String).Value = data.MotherDesignation;
                     command.Parameters.Add("@MotherDepartment", MySqlDbType.String).Value = data.MotherDepartment;
-                    //command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+                   
                     //command.Parameters.Add("@MotherOfficePhNo", MySqlDbType.String).Value = data.MotherOfficePhNo;
                     command.Parameters.Add("@MotherTypeOfBusiness", MySqlDbType.String).Value = data.MotherTypeOfBusiness;
 
@@ -257,6 +257,14 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@Prevmedium", MySqlDbType.String).Value = data.Prevmedium;
                     command.Parameters.Add("@Prevstream", MySqlDbType.String).Value = data.Prevstream;
                     command.Parameters.Add("@Prevschool", MySqlDbType.String).Value = data.Prevschool;
+
+
+                    command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
+                    command.Parameters.Add("@FathersDepartment", MySqlDbType.String).Value = data.FatherDepartment;
+                    command.Parameters.Add("@FathersOrganisationname", MySqlDbType.String).Value = data.FatherOrganisationName;
+                    command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+
+                    command.Parameters.Add("@admission_formno", MySqlDbType.String).Value = data.admissionformno;
                     //if (Convert.ToInt32(data.StandardSectionMap.StandardSectionId) > 0)
                     //{
                     //    command.Parameters.Add("@StandardSectionId", MySqlDbType.Int32).Value = data.StandardSectionMap.StandardSectionId;
@@ -460,11 +468,11 @@ namespace OpMgr.DataAccess.Implementations
                             //}
                             studentDTO.FatherName = _dsData.Tables[0].Rows[0]["FathersName"].ToString();
                             studentDTO.FatherContact = _dsData.Tables[0].Rows[0]["FathersContactNo"].ToString();
-                           // studentDTO.FatherQualification = _dsData.Tables[0].Rows[0]["FathersQualification"].ToString();
+                            studentDTO.FatherQualification = _dsData.Tables[0].Rows[0]["FathersQualification"].ToString();
                             studentDTO.FatherOccupation = _dsData.Tables[0].Rows[0]["FathersOccupation"].ToString();
                             studentDTO.FatherDesignation = _dsData.Tables[0].Rows[0]["FathersDesignation"].ToString();
-                          //  studentDTO.FatherOrganisationName = _dsData.Tables[0].Rows[0]["OrganisationName"].ToString();
-                          //  studentDTO.FatherDepartment = _dsData.Tables[0].Rows[0]["FathersDepartment"].ToString();
+                            studentDTO.FatherOrganisationName = _dsData.Tables[0].Rows[0]["FathersOrganisationName"].ToString();
+                            studentDTO.FatherDepartment = _dsData.Tables[0].Rows[0]["FathersDepartment"].ToString();
                             studentDTO.FatherOfficeAddress = _dsData.Tables[0].Rows[0]["FathersOrgAddress"].ToString();
                            // studentDTO.FatherOfficePhNo = _dsData.Tables[0].Rows[0]["OFFICEPHONENO"].ToString();
                       //      studentDTO.FatherTypeOfBusiness = _dsData.Tables[0].Rows[0]["TypeOfBusiness"].ToString();
@@ -475,7 +483,7 @@ namespace OpMgr.DataAccess.Implementations
                             studentDTO.MotherOrganisationName = _dsData.Tables[0].Rows[0]["MothersOrgName"].ToString();
                             studentDTO.MotherDepartment = _dsData.Tables[0].Rows[0]["MotherDEPT"].ToString();
                             studentDTO.MotherDesignation = _dsData.Tables[0].Rows[0]["MotherDesignation"].ToString();
-                          //  studentDTO.MotherOfficeAddress = _dsData.Tables[0].Rows[0]["MotherOfcAdress"].ToString();
+                            studentDTO.MotherOfficeAddress = _dsData.Tables[0].Rows[0]["MothersOfficeAddress"].ToString();
                            // studentDTO.MotherOfficePhNo = _dsData.Tables[0].Rows[0]["MotherOfcPhNo"].ToString();
                   //          studentDTO.MotherTypeOfBusiness = _dsData.Tables[0].Rows[0]["MTYPEBUSINESS"].ToString();
                             studentDTO.MotherAnnualIncome = _dsData.Tables[0].Rows[0]["MothersAnnualIncome"].ToString();
@@ -492,6 +500,13 @@ namespace OpMgr.DataAccess.Implementations
                             studentDTO.Prevstream = _dsData.Tables[0].Rows[0]["Prevstream"].ToString();
                             studentDTO.Category = _dsData.Tables[0].Rows[0]["Category"].ToString();
                             studentDTO.Secondlang = _dsData.Tables[0].Rows[0]["Secondlang"].ToString();
+                            studentDTO.AdmissionStatus = new AdmissionStatusDTO();
+                            studentDTO.AdmissionStatus.AdmissionStatusId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["admissionstatusId"]);
+                           // DateTime? dt = _dsData.Tables[0].Rows[0]["AdmissionExamDate"];
+                            studentDTO.AdmissionExamDate = ((_dsData.Tables[0].Rows[0]["AdmissionExamDate"] == DBNull.Value) ? (DateTime?)null : Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionExamDate"]));
+                            studentDTO.AdmissionInterviewDate = ((_dsData.Tables[0].Rows[0]["AdmissionInterviewDate"] == DBNull.Value) ? (DateTime?)null : Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionInterviewDate"]));
+                            studentDTO.AdmissionDate = ((_dsData.Tables[0].Rows[0]["AdmissionDate"] == DBNull.Value) ? (DateTime?)null : Convert.ToDateTime(_dsData.Tables[0].Rows[0]["AdmissionDate"]));
+                            studentDTO.admissionformno = _dsData.Tables[0].Rows[0]["admission_formno"].ToString();
                             // studentDTO.Nationality = _dsData.Tables[0].Rows[0]["Nationality"].ToString();
                         }
                     }
@@ -814,7 +829,7 @@ namespace OpMgr.DataAccess.Implementations
                                        " INNER JOIN StandardSectionMap stdSecMap ON student.StandardSectionId = stdSecMap.StandardSectionId" +
                                        " INNER JOIN Standard stnd ON stdSecMap.StandardId = stnd.StandardId" +
                                        " INNER JOIN Section sec ON stdSecMap.SectionId = sec.SectionId "+
-                                       " LEFT OUTER JOIN operationsmanager_test.tbl_studenthealth_report hrpt ON hrpt.RegistrationNo= student.RegistrationNumber ";
+                                       " LEFT OUTER JOIN operationsmanager.tbl_studenthealth_report hrpt ON hrpt.RegistrationNo= student.RegistrationNumber ";
 
                         //Select All students who are ACTIVE
                         whereClause = "WHERE student.Active=1 ";
@@ -1665,6 +1680,14 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@Prevstream", MySqlDbType.String).Value = data.Prevstream;
                     command.Parameters.Add("@Prevschool", MySqlDbType.String).Value = data.Prevschool;
                     command.Parameters.Add("@StudentAdmissionId", MySqlDbType.String).Value = data.UserDetails.AdmissionId;
+
+                    command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
+                    command.Parameters.Add("@FathersDepartment", MySqlDbType.String).Value = data.FatherDepartment;
+                    command.Parameters.Add("@FathersOrganisationname", MySqlDbType.String).Value = data.FatherOrganisationName;
+                    command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+
+                    command.Parameters.Add("@admission_formno", MySqlDbType.String).Value = data.admissionformno;
+
                     command.ExecuteNonQuery();
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
                     status.IsSuccess = true;

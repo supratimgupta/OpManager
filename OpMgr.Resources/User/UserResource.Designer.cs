@@ -97,6 +97,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admission Form No..
+        /// </summary>
+        public static string admissionformno {
+            get {
+                return ResourceManager.GetString("admissionformno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Submit.
         /// </summary>
         public static string AdmissionRegisterButton {
@@ -529,7 +538,7 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to interviewdate.
+        ///   Looks up a localized string similar to Interview Date.
         /// </summary>
         public static string interviewdate {
             get {
@@ -1159,7 +1168,7 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xamdate.
+        ///   Looks up a localized string similar to Exam Date.
         /// </summary>
         public static string xamdate {
             get {

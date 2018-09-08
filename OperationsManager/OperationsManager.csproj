@@ -1175,6 +1175,18 @@
     <Content Include="Areas\Student\Models\Views\Student\PrintHealthReport.cshtml" />
     <Content Include="Areas\Student\Models\Views\Student\AdmissionSearch.cshtml" />
     <Content Include="Areas\Student\Models\Views\Student\Admission.cshtml" />
+    <Content Include="Areas\Student\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Admission.cshtml" />
+    <Content Include="Areas\Student\Views\Student\AdmissionSearch.cshtml" />
+    <Content Include="Areas\Student\Views\Student\HealthReport.cshtml" />
+    <Content Include="Areas\Student\Views\Student\PrintHealthReport.cshtml" />
+    <Content Include="Areas\Student\Views\Student\PromoteToNewClass.cshtml" />
+    <Content Include="Areas\Student\Views\Student\PromotionBatch.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Register.cshtml" />
+    <Content Include="Areas\Student\Views\Student\RegisterStudent.cshtml" />
+    <Content Include="Areas\Student\Views\Student\Search.cshtml" />
+    <Content Include="Areas\Student\Views\web.config" />
+    <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

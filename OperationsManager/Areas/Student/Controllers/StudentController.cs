@@ -25,7 +25,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
         private IConfigSvc _configSvc;
 
-        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc,ISessionSvc sessionSvc)
+        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc, ISessionSvc sessionSvc)
         {
             _studSvc = studSvc;
             _dropDwnRepo = dropDwnRepo;
@@ -89,8 +89,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.FName = dto.ReturnObj.UserDetails.FName;
                 studView.UserDetails.MName = dto.ReturnObj.UserDetails.MName;
                 studView.UserDetails.LName = dto.ReturnObj.UserDetails.LName;
-               // studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
-               
+                // studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
+
 
                 //studView.Student = new StudentDTO();
                 studView.RollNumber = dto.ReturnObj.RollNumber;
@@ -119,7 +119,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
             }
 
-           
+
             return View(studView);
         }
 
@@ -220,7 +220,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
 
             return View(studView);
-          
+
         }
         [HttpPost]
         public ActionResult PrintHealthReport(StudentVM studentView, string Command)
@@ -349,7 +349,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult HealthReport(Models.StudentVM studentView, HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-            
+
 
             DateTime dtValidator = new DateTime();
             if (DateTime.TryParse(studentView.DOBString, out dtValidator))
@@ -369,7 +369,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 StatusDTO<StudentDTO> status = _studSvc.UpdateHealthReport(studentView);
                 if (status.IsSuccess)
                 {
-                   
+
 
                     return RedirectToAction("Search");
                 }
@@ -386,7 +386,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 //studentView.UserDetails.Password = pass;
                 StatusDTO<StudentDTO> status = _studSvc.InsertHealthReport(studentView);
                 studentView.UserDetails = new UserMasterDTO();
-          //      studentView.UserDetails.UserMasterId = status.ReturnObj.UserDetails.UserMasterId;
+                //      studentView.UserDetails.UserMasterId = status.ReturnObj.UserDetails.UserMasterId;
                 if (status.IsSuccess)
                 {
                     //if (studentView.Transactions != null && studentView.Transactions.Count > 0)
@@ -450,7 +450,7 @@ namespace OperationsManager.Areas.Student.Controllers
             {
                 studView.UserDetails.UserMasterId = int.Parse(id);
             }
-            if(string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
                 studView.DisabledClass = "disabledPlace";
             }
@@ -508,11 +508,11 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.MotherOfficePhNo = dto.ReturnObj.MotherOfficePhNo;
                 studView.MotherTypeOfBusiness = dto.ReturnObj.MotherTypeOfBusiness;
 
-                if (string.Equals(dto.ReturnObj.IsChristian,"YES") || string.Equals(dto.ReturnObj.IsChristian, "Yes") || string.Equals(dto.ReturnObj.IsChristian, "1"))
+                if (string.Equals(dto.ReturnObj.IsChristian, "YES") || string.Equals(dto.ReturnObj.IsChristian, "Yes") || string.Equals(dto.ReturnObj.IsChristian, "1"))
                 {
                     studView.IsChristian = "1";
                 }
-                else if(string.Equals(dto.ReturnObj.IsChristian, "NO") || string.Equals(dto.ReturnObj.IsChristian, "No") || string.Equals(dto.ReturnObj.IsChristian, "2"))
+                else if (string.Equals(dto.ReturnObj.IsChristian, "NO") || string.Equals(dto.ReturnObj.IsChristian, "No") || string.Equals(dto.ReturnObj.IsChristian, "2"))
                 {
                     studView.IsChristian = "2";
                 }
@@ -524,8 +524,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 else if (string.Equals(dto.ReturnObj.IsParentTeacher, "NO") || string.Equals(dto.ReturnObj.IsParentTeacher, "No") || string.Equals(dto.ReturnObj.IsParentTeacher, "2"))
                 {
                     studView.IsParentTeacher = "2";
-                }                
-                
+                }
+
                 if (string.Equals(dto.ReturnObj.IsParentFromEngMedium, "YES") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "Yes") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "1"))
                 {
                     studView.IsParentFromEngMedium = "1";
@@ -534,8 +534,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 {
                     studView.IsParentFromEngMedium = "2";
                 }
-                                
-                if(string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "JOINT") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "Joint") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "1"))
+
+                if (string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "JOINT") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "Joint") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "1"))
                 {
                     studView.IsJointOrNuclearFamily = "1";
                 }
@@ -622,7 +622,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 string fatherImageFolder = _configSvc.GetFatherImagesFolder();
                 string motherImageFolder = _configSvc.GetMotherImagesFolder();
 
-                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder) + "?ver="+DateTime.UtcNow.Ticks;
+                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
                 studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
                 studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
             }
@@ -654,7 +654,7 @@ namespace OperationsManager.Areas.Student.Controllers
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-            studView.GraceAmountOnList = _uiddlRepo.getCalcType();            
+            studView.GraceAmountOnList = _uiddlRepo.getCalcType();
 
             return View(studView);
         }
@@ -685,7 +685,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.MName = dto.ReturnObj.UserDetails.MName;
                 studView.UserDetails.LName = dto.ReturnObj.UserDetails.LName;
                 studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
-             //   studView.UserDetails.Image = dto.ReturnObj.UserDetails.Image;
+                //   studView.UserDetails.Image = dto.ReturnObj.UserDetails.Image;
                 studView.UserDetails.DOB = dto.ReturnObj.UserDetails.DOB;
                 studView.DOBString = studView.UserDetails.DOB.HasValue ? studView.UserDetails.DOB.Value.ToString("dd-MMM-yyyy") : string.Empty;
                 studView.UserDetails.EmailId = dto.ReturnObj.UserDetails.EmailId;
@@ -695,17 +695,17 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.AltContactNo = dto.ReturnObj.UserDetails.AltContactNo;
                 studView.UserDetails.BloodGroup = dto.ReturnObj.UserDetails.BloodGroup;
                 studView.UserDetails.Location = dto.ReturnObj.UserDetails.Location;
-               // studView.UserDetails.Role = dto.ReturnObj.UserDetails.Role;
+                // studView.UserDetails.Role = dto.ReturnObj.UserDetails.Role;
 
                 //studView.Student = new StudentDTO();
                 //studView.RollNumber = dto.ReturnObj.RollNumber;
                 //studView.RegistrationNumber = dto.ReturnObj.RegistrationNumber;
-              //  studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
+                //  studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
                 studView.FatherContact = dto.ReturnObj.FatherContact;
                 studView.GuardianName = dto.ReturnObj.GuardianName;
                 studView.FatherEmailId = dto.ReturnObj.FatherEmailId;
-               // studView.HouseType = dto.ReturnObj.HouseType;
-              //  studView.StandardSectionMap = dto.ReturnObj.StandardSectionMap;
+                // studView.HouseType = dto.ReturnObj.HouseType;
+                //  studView.StandardSectionMap = dto.ReturnObj.StandardSectionMap;
                 studView.FatherName = dto.ReturnObj.FatherName;
                 studView.FatherQualification = dto.ReturnObj.FatherQualification;
                 studView.FatherOccupation = dto.ReturnObj.FatherOccupation;
@@ -713,8 +713,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.FatherOrganisationName = dto.ReturnObj.FatherOrganisationName;
                 studView.FatherDepartment = dto.ReturnObj.FatherDepartment;
                 studView.FatherOfficeAddress = dto.ReturnObj.FatherOfficeAddress;
-               // studView.FatherOfficePhNo = dto.ReturnObj.FatherOfficePhNo;
-              //  studView.FatherTypeOfBusiness = dto.ReturnObj.FatherTypeOfBusiness;
+                // studView.FatherOfficePhNo = dto.ReturnObj.FatherOfficePhNo;
+                //  studView.FatherTypeOfBusiness = dto.ReturnObj.FatherTypeOfBusiness;
                 studView.FatherAnnualIncome = dto.ReturnObj.FatherAnnualIncome;
                 studView.MotherName = dto.ReturnObj.MotherName;
                 studView.MotherQualification = dto.ReturnObj.MotherQualification;
@@ -726,8 +726,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.MotherOfficeAddress = dto.ReturnObj.MotherOfficeAddress;
                 studView.MotherOfficePhNo = dto.ReturnObj.MotherOfficePhNo;
                 studView.MotherTypeOfBusiness = dto.ReturnObj.MotherTypeOfBusiness;
+                
 
-              
                 studView.Religion = dto.ReturnObj.Religion;
                 studView.Caste = dto.ReturnObj.Caste;
                 studView.classAppld = dto.ReturnObj.classAppld;
@@ -743,9 +743,16 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.Prevstream = dto.ReturnObj.Prevstream;
                 studView.GenderList = _uiddlRepo.getGenderDropDown();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
-
+                studView.AdmissionStatus = new AdmissionStatusDTO();
+                studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                studView.AdmissionExamDate = dto.ReturnObj.AdmissionExamDate;
+                studView.AdmissionInterviewDate = dto.ReturnObj.AdmissionInterviewDate;
+                studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
+                studView.UserDetails.AdmissionId = dto.ReturnObj.UserDetails.AdmissionId;
+                studView.admissionformno = dto.ReturnObj.admissionformno;
                 //to show admission status in edit mode
                 studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+
             }
 
             studView.GenderList = _uiddlRepo.getGenderDropDown();
@@ -759,7 +766,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult Admission(Models.StudentVM studentView, HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-           
+
 
             DateTime dtValidator = new DateTime();
             if (DateTime.TryParse(studentView.DOBString, out dtValidator))
@@ -776,27 +783,16 @@ namespace OperationsManager.Areas.Student.Controllers
                 //Call update
                 //if (ModelState.IsValid)
                 //{ 
-                StatusDTO<StudentDTO> status = _studSvc.Update(studentView);
+                //StudentDTO student = null;
+                //student = new StudentDTO();
+                //student.AdmissionStatus = new AdmissionStatusDTO();
+                //student.AdmissionStatus.AdmissionStatusId = studentView.AdmissionStatus.AdmissionStatusId;
+                StatusDTO<StudentDTO> status = _studSvc.UpdateAdmission(studentView);
                 if (status.IsSuccess)
                 {
-                    if (studentView.Transactions != null && studentView.Transactions.Count > 0)
-                    {
-                        for (int i = 0; i < studentView.Transactions.Count; i++)
-                        {
-                            if (studentView.Transactions[i].UserTransactionId > 0)
-                            {
-                                _userTrans.Update(studentView.Transactions[i]);
-                            }
-                            else
-                            {
-                                studentView.Transactions[i].User = new UserMasterDTO();
-                                studentView.Transactions[i].User.UserMasterId = studentView.UserDetails.UserMasterId;
-                                _userTrans.Insert(studentView.Transactions[i]);
-                            }
-                        }
-                    }
 
-                    return RedirectToAction("Search");
+
+                    return RedirectToAction("AdmissionSearch");
                 }
                 studentView.ErrorMessage = status.FailureReason;
                 //}
@@ -814,9 +810,9 @@ namespace OperationsManager.Areas.Student.Controllers
                 studentView.UserDetails.AdmissionId = status.ReturnObj.UserDetails.AdmissionId;
                 return RedirectToAction("AdmissionSearch");
                 //}
-                         
+
             }
-          
+
             return View(studentView);
         }
         [HttpGet]
@@ -921,7 +917,7 @@ namespace OperationsManager.Areas.Student.Controllers
             StudentDTO student = null;
 
             //Fetch the StandardSection List
-          //  studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+            //  studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
 
             if (studentView != null)
             {
@@ -981,7 +977,7 @@ namespace OperationsManager.Areas.Student.Controllers
                                 searchItem.UserDetails.FName = stud.UserDetails.FName;
                                 searchItem.UserDetails.MName = stud.UserDetails.MName;
                                 searchItem.UserDetails.LName = stud.UserDetails.LName;
-                                
+
                                 searchItem.Name = searchItem.UserDetails.FName;
                                 if (!string.IsNullOrEmpty(searchItem.UserDetails.MName))
                                 {
@@ -990,7 +986,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
                                 searchItem.classAppld = stud.classAppld;
-                                
+
                                 searchItem.StandardSectionMap = new StandardSectionMapDTO();
                                 searchItem.StandardSectionMap.Standard = new StandardDTO();
                                 searchItem.StandardSectionMap.Section = new SectionDTO();
@@ -998,18 +994,18 @@ namespace OperationsManager.Areas.Student.Controllers
                                 searchItem.UserDetails.ContactNo = stud.UserDetails.ContactNo;
                                 searchItem.UserDetails.Location.LocationId = stud.UserDetails.Location.LocationId;
                                 searchItem.UserDetails.AdmissionId = stud.UserDetails.AdmissionId;
-                               // if (searchItem.UserDetails.Location.LocationId == 1)
-                               // {
-                               //     stud.UserDetails.Location.LocationDescription = "Barrackpur";
-                               // }
-                               //else if (searchItem.UserDetails.Location.LocationId == 2)
-                               // {
-                               //     stud.UserDetails.Location.LocationDescription = "Shyamnagar";
-                               // }
-                               //else
-                               // {
-                               //     stud.UserDetails.Location.LocationDescription = "Manipukur";
-                               // }
+                                // if (searchItem.UserDetails.Location.LocationId == 1)
+                                // {
+                                //     stud.UserDetails.Location.LocationDescription = "Barrackpur";
+                                // }
+                                //else if (searchItem.UserDetails.Location.LocationId == 2)
+                                // {
+                                //     stud.UserDetails.Location.LocationDescription = "Shyamnagar";
+                                // }
+                                //else
+                                // {
+                                //     stud.UserDetails.Location.LocationDescription = "Manipukur";
+                                // }
                                 // searchItem.LocationList = _uiddlRepo.getLocationDropDown();
                                 //          searchItem.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
                                 //          searchItem.StandardSectionMap.Section.SectionName = stud.StandardSectionMap.Section.SectionName;
@@ -1043,7 +1039,7 @@ namespace OperationsManager.Areas.Student.Controllers
             string fileName = string.Empty;
             registrationNo = registrationNo.Replace('/', '_').Replace('\\', '_');
             string[] similarFiles = Directory.GetFiles(folder, registrationNo + ".*");
-            if(similarFiles!=null && similarFiles.Length>0)
+            if (similarFiles != null && similarFiles.Length > 0)
             {
                 fileName = similarFiles[0];
                 string[] fileParts = fileName.Split('\\');
@@ -1059,7 +1055,7 @@ namespace OperationsManager.Areas.Student.Controllers
             StatusDTO<List<StudentDTO>> status = _studSvc.Select(null);
             StudentVM studView = null;
 
-            if(Session["SEARCH_RESULT"]!=null)
+            if (Session["SEARCH_RESULT"] != null)
             {
                 studView = (StudentVM)Session["SEARCH_RESULT"];
                 Session["SEARCH_RESULT"] = null;
@@ -1138,7 +1134,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
             }
 
-            
+
 
             return View(studView);
         }
@@ -1150,12 +1146,12 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(StudentVM studentView,string Command)
+        public ActionResult Search(StudentVM studentView, string Command)
         {
             //if Command Add then Redirect it to Add
-            if(string.Equals(Command,"Add"))
+            if (string.Equals(Command, "Add"))
             {
-               return RedirectToAction("Register");
+                return RedirectToAction("Register");
             }
             StudentVM studView = null;
             StudentDTO student = null;
@@ -1232,7 +1228,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 searchItem.StandardSectionMap = new StandardSectionMapDTO();
                                 searchItem.StandardSectionMap.Standard = new StandardDTO();
-                                searchItem.StandardSectionMap.Section = new SectionDTO();                                
+                                searchItem.StandardSectionMap.Section = new SectionDTO();
                                 searchItem.UserDetails.Location = new LocationDTO();
 
                                 searchItem.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
@@ -1288,13 +1284,13 @@ namespace OperationsManager.Areas.Student.Controllers
             string folderName = string.Empty;
             //if (file != null)
             //{
-                //if (file.ContentLength > 0)
-                //{
-            if(Request.Files!=null && Request.Files.Count>0)
+            //if (file.ContentLength > 0)
+            //{
+            if (Request.Files != null && Request.Files.Count > 0)
             {
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    if(Request.Files[i].ContentLength>0 && Request.Files[i].FileName.Trim().Length>0)
+                    if (Request.Files[i].ContentLength > 0 && Request.Files[i].FileName.Trim().Length > 0)
                     {
                         string keyName = Request.Files.Keys[i];
                         switch (keyName)
@@ -1315,14 +1311,14 @@ namespace OperationsManager.Areas.Student.Controllers
                     }
                 }
             }
-            
-                //}
+
+            //}
             //}
 
             DateTime dtValidator = new DateTime();
-            if(DateTime.TryParse(studentView.DOBString, out dtValidator))
+            if (DateTime.TryParse(studentView.DOBString, out dtValidator))
             {
-                if(studentView.UserDetails==null)
+                if (studentView.UserDetails == null)
                 {
                     studentView.UserDetails = new UserMasterDTO();
                 }
@@ -1365,7 +1361,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 //if (ModelState.IsValid)
                 //{   
-                string pass = !string.IsNullOrEmpty(studentView.UserDetails.Password)? encrypt.encryption(studentView.UserDetails.Password):null;
+                string pass = !string.IsNullOrEmpty(studentView.UserDetails.Password) ? encrypt.encryption(studentView.UserDetails.Password) : null;
                 studentView.UserDetails.Password = pass;
                 StatusDTO<StudentDTO> status = _studSvc.Insert(studentView);
                 studentView.UserDetails = new UserMasterDTO();
@@ -1453,7 +1449,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 if (string.Equals(Command, "Promotion Confirmed"))
                 {
-                    StatusDTO<List<StudentDTO>> batchStatus = _studSvc.PromoteToNewClass(null, Command, 0,0);
+                    StatusDTO<List<StudentDTO>> batchStatus = _studSvc.PromoteToNewClass(null, Command, 0, 0);
 
                     if (batchStatus.ReturnObj != null)
                     {
@@ -1599,15 +1595,15 @@ namespace OperationsManager.Areas.Student.Controllers
             StudentVM studView = null;
 
             StatusDTO<List<StudentDTO>> studList = _studSvc.RunPromotionBatch();
-            if(studList!=null && studList.IsSuccess)
+            if (studList != null && studList.IsSuccess)
             {
-                if(studList.ReturnObj!=null && studList.ReturnObj.Count>0)
+                if (studList.ReturnObj != null && studList.ReturnObj.Count > 0)
                 {
                     studView = new StudentVM();// instantiating parent
                     studView.studentList = new List<StudentVM>();//instantiating list of parent
-                    foreach(StudentDTO student in studList.ReturnObj)
+                    foreach (StudentDTO student in studList.ReturnObj)
                     {
-                        if(student!=null)
+                        if (student != null)
                         {
                             StudentVM studV = new StudentVM();// for each student
                             studV.StandardSectionMap = new StandardSectionMapDTO();
@@ -1626,21 +1622,21 @@ namespace OperationsManager.Areas.Student.Controllers
             return View(studView);
         }
         [HttpPost]
-        public  ActionResult PromotionBatch(StudentVM studView)
+        public ActionResult PromotionBatch(StudentVM studView)
         {
             bool isSuccess = false;
             int loggedInUser;
             DateTime date;
             string status;// right now hard coded
-            if(studView!=null)
+            if (studView != null)
             {
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();//Get Data from User Seesion
                 status = "Promotion Confirmed";
                 loggedInUser = sessionRet.UserMasterId;
-                if(status!=null && loggedInUser!=0)
+                if (status != null && loggedInUser != 0)
                 {
-                    isSuccess = _studSvc.UpdatePromotedStudents(loggedInUser,status);
-                    if(isSuccess)
+                    isSuccess = _studSvc.UpdatePromotedStudents(loggedInUser, status);
+                    if (isSuccess)
                     {
                         date = DateTime.Now;
                         studView.SuccessOrFailureMessage = "The students of all classes have been promoted for academic year" + (int)(date.Year - 1) + "/" + (date.Year);
@@ -1651,7 +1647,7 @@ namespace OperationsManager.Areas.Student.Controllers
                         studView.SuccessOrFailureMessage = "All students have not been Promoted yet";
                         studView.MsgColor = "red";
                     }
-                }                
+                }
             }
             return View(studView);
         }
@@ -1660,7 +1656,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public JsonResult Delete(StudentDTO stud)
         {
             //StudentDTO stud = null;
-            if (stud.UserDetails!=null && stud.UserDetails.UserMasterId != 0)
+            if (stud.UserDetails != null && stud.UserDetails.UserMasterId != 0)
             {
                 //stud = new StudentDTO();
                 //stud.UserDetails = new UserMasterDTO();
@@ -1671,7 +1667,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 }
             }
-            return Json(new { status="true", message="Deleted!!!" },JsonRequestBehavior.AllowGet);
+            return Json(new { status = "true", message = "Deleted!!!" }, JsonRequestBehavior.AllowGet);
         }
     }
 }
