@@ -120,6 +120,7 @@ namespace OpMgr.Common.DTOs
 
         public string MotherOfficeAddress { get; set; }
 
+        public string admissionformno { get; set; }
         public string MotherOfficePhNo { get; set; }
 
         public string MotherTypeOfBusiness { get; set; }
@@ -184,8 +185,8 @@ namespace OpMgr.Common.DTOs
 
         public AdmissionStatusDTO AdmissionStatus { get; set; }
 
-        public DateTime AdmissionExamDate { get; set; }
+        public DateTime? AdmissionExamDate { get; set; }
 
-        public DateTime AdmissionInterviewDate { get; set; }
+        public DateTime? AdmissionInterviewDate { get; set; }
     }
 }

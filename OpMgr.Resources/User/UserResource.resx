@@ -478,12 +478,15 @@
     <value>Submit</value>
   </data>
   <data name="interviewdate" xml:space="preserve">
-    <value>interviewdate</value>
+    <value>Interview Date</value>
   </data>
   <data name="xamdate" xml:space="preserve">
-    <value>xamdate</value>
+    <value>Exam Date</value>
   </data>
   <data name="AdmissionStatus" xml:space="preserve">
     <value>Admission Status</value>
+  </data>
+  <data name="admissionformno" xml:space="preserve">
+    <value>Admission Form No.</value>
   </data>
 </root>
