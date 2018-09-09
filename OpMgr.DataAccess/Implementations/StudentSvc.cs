@@ -1101,6 +1101,7 @@ namespace OpMgr.DataAccess.Implementations
                                     student.AppliedStandard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
                                 }
                                 student.UserDetails.Location.LocationId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["LocationId"].ToString());
+                                student.UserDetails.Location.LocationDescription = (dsStudentLst.Tables[0].Rows[i]["LocationDescription"].ToString());
                                 student.UserDetails.ContactNo = dsStudentLst.Tables[0].Rows[i]["ContactNo"].ToString();
                                 student.UserDetails.AdmissionId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["StdntAdmissionId"].ToString());
                                 student.AdmissionStatus = new AdmissionStatusDTO();
