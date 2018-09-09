@@ -231,7 +231,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     if (data.CurrentStandard != null)
                     {
-                        if(Convert.ToInt32(data.CurrentStandard.StandardId) > 0)
+                        if (Convert.ToInt32(data.CurrentStandard.StandardId) > 0)
                         {
                             command.Parameters.Add("@PresentStandardId", MySqlDbType.Int32).Value = data.CurrentStandard.StandardId;
                         }
@@ -259,7 +259,7 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         command.Parameters.Add("@AppliedStandardId", MySqlDbType.Int32).Value = DBNull.Value;
                     }
-                   
+
 
                     command.Parameters.Add("@MothersName", MySqlDbType.String).Value = data.MotherName;
                     command.Parameters.Add("@MothersQualification", MySqlDbType.String).Value = data.MotherQualification;
@@ -294,7 +294,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
 
                     command.Parameters.Add("@admission_formno", MySqlDbType.String).Value = data.admissionformno;
-                    
+
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
@@ -1000,10 +1000,14 @@ namespace OpMgr.DataAccess.Implementations
 
                         command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                        selectClause = "select * from StudentAdmission ";
+                        selectClause = "select sa.StdntAdmissionId,sa.FName, sa.MName, sa.LName,sa.FathersContactNo,sa.AppliedStandardId,sa.ContactNo,sa.LocationId,Lo.LocationDescription,stnd.StandardName,sa.admission_formno,sa.AdmissionStatusId,ads.Admissionstatusdescription " +
+                                        " from StudentAdmission sa " +
+                                        " INNER JOIN Location Lo ON Lo.LocationId = sa.LocationId " +
+                                       " INNER JOIN Standard stnd ON stnd.StandardId = sa.AppliedStandardId " +
+                                       " INNER JOIN AdmissionStatus ads ON ads.AdmissionStatusId = sa.AdmissionStatusId ";
 
                         //Select All students who are ACTIVE
-                        whereClause = "WHERE Active=1 ";
+                        whereClause = " WHERE sa.Active=1 ";
 
 
                         if (data != null)
@@ -1011,11 +1015,11 @@ namespace OpMgr.DataAccess.Implementations
                             //Name Search
                             //data.UserDetails = new UserMasterDTO();
 
-                            if (!string.IsNullOrEmpty(data.UserDetails.FName))
+                            if (!string.IsNullOrEmpty(data.FName))
                             {
-                                data.UserDetails.FName = data.UserDetails.FName + "%";
+                                data.FName = data.FName + "%";
                                 whereClause = whereClause + " AND FName LIKE @FName";
-                                command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
+                                command.Parameters.Add("@FName", MySqlDbType.String).Value = data.FName;
                             }
                             //if (!string.IsNullOrEmpty(data.UserDetails.MName))
                             //{
@@ -1024,41 +1028,43 @@ namespace OpMgr.DataAccess.Implementations
                             //    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
                             //}
 
-                            if (!string.IsNullOrEmpty(data.UserDetails.LName))
+                            if (!string.IsNullOrEmpty(data.LName))
                             {
-                                data.UserDetails.LName = data.UserDetails.LName + "%";
+                                data.LName = data.LName + "%";
                                 whereClause = whereClause + " AND LName LIKE @LName ";
-                                command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
+                                command.Parameters.Add("@LName", MySqlDbType.String).Value = data.LName;
+                            }
+
+                            //Form No Search
+                            if (!string.IsNullOrEmpty(data.admissionformno))
+                            {
+                                data.admissionformno = data.admissionformno + "%";
+                                whereClause = whereClause + " AND sa.admission_formno LIKE @FormNo ";
+                                command.Parameters.Add("@FormNo", MySqlDbType.String).Value = data.admissionformno;
                             }
 
                             //Location Search
                             if (data.UserDetails.Location.LocationId != -1)
                             {
-                                whereClause = whereClause + " AND users.LocationId=@LocationId ";
+                                whereClause = whereClause + " AND sa.LocationId=@LocationId ";
                                 command.Parameters.Add("@LocationId", MySqlDbType.Int32).Value = data.UserDetails.Location.LocationId;
                             }
 
-                            //Class Search
+                            //Standard Search
 
-                            //    if (data.StandardSectionMap.StandardSectionId != -1)
-                            //    {
-                            //        whereClause = whereClause + " AND stdSecMap.StandardSectionId=@StandardSectionId ";
-                            //        command.Parameters.Add("@StandardSectionId", MySqlDbType.String).Value = data.StandardSectionMap.StandardSectionId;
-                            //    }
+                            if (data.AppliedStandard.StandardId != -1)
+                            {
+                                whereClause = whereClause + " AND sa.AppliedStandardId=@AppliedStandardId ";
+                                command.Parameters.Add("@AppliedStandardId", MySqlDbType.Int32).Value = data.AppliedStandard.StandardId;
+                            }
 
-                            //    // Roll Number and Registration Search
+                            //Admission Status Search
 
-                            //    if (!string.IsNullOrEmpty(data.RegistrationNumber))
-                            //    {
-                            //        whereClause = whereClause + " AND student.RegistrationNumber=@RegistrationNumber ";
-                            //        command.Parameters.Add("@RegistrationNumber", MySqlDbType.String).Value = data.RegistrationNumber;
-                            //    }
-
-                            //    if (!string.IsNullOrEmpty(data.RollNumber))
-                            //    {
-                            //        whereClause = whereClause + " AND student.RollNumber=@RollNumber ";
-                            //        command.Parameters.Add("@RollNumber", MySqlDbType.String).Value = data.RollNumber;
-                            //    }
+                            if (data.AdmissionStatus.AdmissionStatusId != -1)
+                            {
+                                whereClause = whereClause + " AND sa.AdmissionStatusId=@AdmissionStatusId ";
+                                command.Parameters.Add("@AdmissionStatusId", MySqlDbType.Int32).Value = data.AdmissionStatus.AdmissionStatusId;
+                            }
                         }
 
                         //command.CommandText = "select * from studentinfo";
@@ -1075,24 +1081,27 @@ namespace OpMgr.DataAccess.Implementations
                             for (int i = 0; i < dsStudentLst.Tables[0].Rows.Count; i++)
                             {
                                 StudentDTO student = new StudentDTO();
+
+                                student.AppliedStandard = new StandardDTO();
                                 student.Active = true;
                                 student.FatherContact = dsStudentLst.Tables[0].Rows[i]["FathersContactNo"].ToString();
-
-
-
-
                                 student.UserDetails = new UserMasterDTO();
                                 student.UserDetails.Location = new LocationDTO();
                                 student.UserDetails.FName = dsStudentLst.Tables[0].Rows[i]["FName"].ToString();
                                 student.UserDetails.MName = dsStudentLst.Tables[0].Rows[i]["MName"].ToString();
                                 student.UserDetails.LName = dsStudentLst.Tables[0].Rows[i]["LName"].ToString();
-                                student.classAppld = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["CurrentStandardId"].ToString());
+                                student.admissionformno = dsStudentLst.Tables[0].Rows[i]["admission_formno"].ToString();
+                                if (!string.IsNullOrEmpty(dsStudentLst.Tables[0].Rows[i]["AppliedStandardId"].ToString()))
+                                {
+                                    student.AppliedStandard.StandardId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["AppliedStandardId"].ToString());
+                                    student.AppliedStandard.StandardName = dsStudentLst.Tables[0].Rows[i]["StandardName"].ToString();
+                                }
                                 student.UserDetails.Location.LocationId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["LocationId"].ToString());
                                 student.UserDetails.ContactNo = dsStudentLst.Tables[0].Rows[i]["ContactNo"].ToString();
                                 student.UserDetails.AdmissionId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["StdntAdmissionId"].ToString());
-                                //     student.UserDetails.UserMasterId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["UserMasterId"]);
-                                //     student.UserDetails.Location.LocationDescription = dsStudentLst.Tables[0].Rows[i]["LocationDescription"].ToString();
-                                //     student.UserDetails.ContactNo = dsStudentLst.Tables[0].Rows[i]["ContactNo"].ToString();
+                                student.AdmissionStatus = new AdmissionStatusDTO();
+                                //student.AdmissionStatus.AdmissionStatusId = Convert.ToInt32(dsStudentLst.Tables[0].Rows[i]["AdmissionStatusId"].ToString());
+                                student.AdmissionStatus.AdmissionStatusDescription = dsStudentLst.Tables[0].Rows[i]["AdmissionStatusDescription"].ToString();
 
                                 studLst.ReturnObj.Add(student);
 
@@ -1757,6 +1766,37 @@ namespace OpMgr.DataAccess.Implementations
                     throw exp;
                 }
             }
+        }
+
+        public StatusDTO<StudentDTO> DeleteAdmission(int AdmissionId)
+        {
+            StatusDTO<StudentDTO> status = null;
+            try
+            {
+                if (AdmissionId != 0)
+                {
+                    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+                    {
+                        dbSvc.OpenConnection();
+                        MySqlCommand command = new MySqlCommand();
+                        command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                        command.CommandText = "UPDATE studentadmission SET Active=0 WHERE StdntAdmissionId=@AdmissionId";
+                        command.Parameters.Add("@AdmissionId", MySqlDbType.Int32).Value = AdmissionId;
+
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            status = new StatusDTO<StudentDTO>();
+                            status.IsSuccess = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                throw ex;
+            }
+            return status;
         }
     }
 }

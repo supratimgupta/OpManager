@@ -843,6 +843,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 //Fetch the Standard List
                 studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
 
                 if (status.IsSuccess && !status.IsException)
                 {
@@ -898,6 +899,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 //Fetch the Standard List
                 studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
                 studView.IsSearchSuccessful = false;
                 studView.MsgColor = "green";
                 studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
@@ -918,13 +920,12 @@ namespace OperationsManager.Areas.Student.Controllers
             }
             StudentVM studView = null;
             StudentDTO student = null;
-
-            //Fetch the StandardSection List
-            //  studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-
+                        
+           
             if (studentView != null)
             {
                 student = new StudentDTO();
+                student.admissionformno = studentView.admissionformno;
                 //studentView.UserDetails = new UserMasterDTO();
                 student.UserDetails = new UserMasterDTO();
                 // Search for FName LName and MName
@@ -935,28 +936,25 @@ namespace OperationsManager.Areas.Student.Controllers
                 
                 student.AppliedStandard = new StandardDTO();                
                 student.UserDetails.Location = new LocationDTO();
+                student.AdmissionStatus = new AdmissionStatusDTO();
 
                 // Search for Standard
                 student.AppliedStandard.StandardId = studentView.AppliedStandard.StandardId;
+                student.AdmissionStatus.AdmissionStatusId = studentView.AdmissionStatus.AdmissionStatusId;
 
                 //Search by Location
                 student.UserDetails.Location.LocationId = studentView.UserDetails.Location.LocationId;
-
-                // Search for Roll and Registration
-                //student.RollNumber = studentView.RollNumber;
-                student.RegistrationNumber = studentView.RegistrationNumber;
-
+                
                 StatusDTO<List<StudentDTO>> status = _studSvc.AdmissionSearch(student);  //Admision
 
                 if (status.ReturnObj != null && status.ReturnObj.Count > 0)
                 {
                     studView = new StudentVM(); // Instantiating Student View model
                     studView.studentList = new List<StudentVM>(); // instantiating list of Students
-
-                    //Fetch the StandardSection List
-                    studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                                        
                     studView.LocationList = _uiddlRepo.getLocationDropDown();
-                    studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                    studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                    studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
 
                     if (status.IsSuccess && !status.IsException)
                     {
@@ -971,10 +969,9 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 searchItem.Active = stud.Active;
                                 searchItem.FatherContact = stud.FatherContact;
-                                searchItem.RegistrationNumber = stud.RegistrationNumber;
-                                searchItem.RollNumber = stud.RollNumber;
-
+                                
                                 searchItem.UserDetails = new UserMasterDTO();
+                                searchItem.UserDetails.Location = new LocationDTO();
                                 searchItem.UserDetails.UserMasterId = stud.UserDetails.UserMasterId;
                                 searchItem.UserDetails.FName = stud.UserDetails.FName;
                                 searchItem.UserDetails.MName = stud.UserDetails.MName;
@@ -987,32 +984,18 @@ namespace OperationsManager.Areas.Student.Controllers
                                 }
 
                                 searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
-                                searchItem.classAppld = stud.classAppld;
-
-                                searchItem.StandardSectionMap = new StandardSectionMapDTO();
-                                searchItem.StandardSectionMap.Standard = new StandardDTO();
-                                searchItem.StandardSectionMap.Section = new SectionDTO();
-                                searchItem.UserDetails.Location = new LocationDTO();
+                                searchItem.admissionformno = stud.admissionformno;
+                                searchItem.AppliedStandard = new StandardDTO();
+                                searchItem.AppliedStandard.StandardName = stud.AppliedStandard.StandardName;
+                                
                                 searchItem.UserDetails.ContactNo = stud.UserDetails.ContactNo;
                                 searchItem.UserDetails.Location.LocationId = stud.UserDetails.Location.LocationId;
+                                searchItem.UserDetails.Location.LocationDescription = stud.UserDetails.Location.LocationDescription;
                                 searchItem.UserDetails.AdmissionId = stud.UserDetails.AdmissionId;
-                                // if (searchItem.UserDetails.Location.LocationId == 1)
-                                // {
-                                //     stud.UserDetails.Location.LocationDescription = "Barrackpur";
-                                // }
-                                //else if (searchItem.UserDetails.Location.LocationId == 2)
-                                // {
-                                //     stud.UserDetails.Location.LocationDescription = "Shyamnagar";
-                                // }
-                                //else
-                                // {
-                                //     stud.UserDetails.Location.LocationDescription = "Manipukur";
-                                // }
-                                // searchItem.LocationList = _uiddlRepo.getLocationDropDown();
-                                //          searchItem.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
-                                //          searchItem.StandardSectionMap.Section.SectionName = stud.StandardSectionMap.Section.SectionName;
+                                searchItem.AdmissionStatus = new AdmissionStatusDTO();
+                                //searchItem.AdmissionStatus.AdmissionStatusId = stud.AdmissionStatus.AdmissionStatusId;
+                                searchItem.AdmissionStatus.AdmissionStatusDescription = stud.AdmissionStatus.AdmissionStatusDescription;
 
-                                //          searchItem.UserDetails.Location.LocationDescription = stud.UserDetails.Location.LocationDescription;
                                 //         searchItem.UserDetails.ContactNo = stud.UserDetails.ContactNo;
 
                                 //Add into Student vIew Model List
@@ -1027,8 +1010,9 @@ namespace OperationsManager.Areas.Student.Controllers
                     studView = studentView;
                     studentView.IsSearchSuccessful = false;
                     //Fetch the Standard List
-                    studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                    studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                     studView.LocationList = _uiddlRepo.getLocationDropDown();
+                    studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
                 }
             }
 
@@ -1664,6 +1648,22 @@ namespace OperationsManager.Areas.Student.Controllers
                 //stud.UserDetails = new UserMasterDTO();
                 //stud.UserDetails.UserMasterId = id;
                 StatusDTO<StudentDTO> status = _studSvc.Delete(stud);
+                if (status != null && status.IsSuccess)
+                {
+
+                }
+            }
+            return Json(new { status = "true", message = "Deleted!!!" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeleteAdmission(StudentDTO stud)
+        {
+            //StudentDTO stud = null;
+            if (stud.UserDetails.AdmissionId != null && stud.UserDetails.AdmissionId != 0)
+            {                
+                StatusDTO<StudentDTO> status = _studSvc.DeleteAdmission(stud.UserDetails.AdmissionId);
                 if (status != null && status.IsSuccess)
                 {
 
