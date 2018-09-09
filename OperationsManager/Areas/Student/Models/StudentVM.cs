@@ -111,5 +111,9 @@ namespace OperationsManager.Areas.Student.Models
         public string DrSugg { get; set; }
 
         public SelectList AdmissionStatusList { get; set; }
+
+        public SelectList CurrentStandardList { get; set; }
+
+        public SelectList AppliedStandardList { get; set; }
     }
 }

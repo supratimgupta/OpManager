@@ -185,6 +185,10 @@ namespace OpMgr.Common.DTOs
 
         public AdmissionStatusDTO AdmissionStatus { get; set; }
 
+        public StandardDTO CurrentStandard { get; set; }
+
+        public StandardDTO AppliedStandard { get; set; }
+
         public DateTime? AdmissionExamDate { get; set; }
 
         public DateTime? AdmissionInterviewDate { get; set; }

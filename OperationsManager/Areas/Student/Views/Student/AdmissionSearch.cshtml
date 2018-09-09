@@ -73,26 +73,23 @@
                                 <div class="col-lg-2">
                                     @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, StudentResource.LName, new { @class = "form-control" })
                                 </div>
-
+                                <div class="col-lg-2">
+                                    @Html.OpMgrTextBoxFor(m => m.admissionformno, UserResource.admissionformno, new { @class = "form-control" })
+                                </div>
                                <div class="col-lg-2">
                                     @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, StudentResource.Location, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
+                                    @Html.OpMgrDropDownListFor(m => m.AppliedStandard.StandardId, Model.AppliedStandardList, StudentResource.Class, new { @class = "form-control" })
                                 </div>
                               </div>
                               <div class="row col-lg-12">
-                                <div class="col-lg-2">
-                                    @*<button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>*@
+                                <div class="col-lg-2">                                   
                                     @Html.OpMgrSubmitButtonWithIcon("Command", @StudentResource.SearchAdmissionButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
                                 </div>
-                                <div class="col-lg-2">
-                                    @*@Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block ion-person-add", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })*@
-                                    @Html.OpMgrButtonWithIcon("btnAdd", StudentResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", onclick = "redirectToAdd();" }, "ion-person-add", true)
-                                    @*<button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>*@
+                                <div class="col-lg-2">                                   
+                                    @Html.OpMgrButtonWithIcon("btnAdd", StudentResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", onclick = "redirectToAdd();" }, "ion-person-add", true)                                  
                                 </div>
-
-
                             </div>
                         </fieldset>
                     }

@@ -265,7 +265,7 @@
                                             @Html.OpMgrTextBoxFor(m => m.AdmissionExamDate, UserResource.xamdate, new { @class = "DOB-picker form-control" })
                                         </div>
                                         <div class="col-lg-5">
-                                            @Html.OpMgrDropDownListFor(m => m.AdmissionStatus, Model.AdmissionStatusList, UserResource.AdmissionStatus, new { @class = "form-control" })
+                                            @Html.OpMgrDropDownListFor(m => m.AdmissionStatus.AdmissionStatusId, Model.AdmissionStatusList, UserResource.AdmissionStatus, new { @class = "form-control" })
                                         </div>
 }
                                             @if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1) || ((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1)))
@@ -304,10 +304,10 @@
                                                 @Html.OpMgrTextBoxFor(m => m.Secondlang, UserResource.Secondlang, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Currclass, UserResource.Currclass, new { @class = "form-control" })
+                                                @Html.OpMgrDropDownListFor(m => m.CurrentStandard.StandardId, Model.CurrentStandardList,UserResource.Currclass, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.classAppld, UserResource.classAppld, new { @class = "form-control" })
+                                                @Html.OpMgrDropDownListFor(m => m.AppliedStandard.StandardId,Model.AppliedStandardList, UserResource.classAppld, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.Prevschool, UserResource.Prevschool, new { @class = "form-control" })

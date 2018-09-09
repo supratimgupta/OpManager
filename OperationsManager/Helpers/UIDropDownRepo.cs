@@ -136,6 +136,17 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardId", "StandardName");
         }
 
+        public SelectList getStandardDDL()
+        {
+            List<StandardDTO> rDto = _ddlRepo.Standard();
+            StandardDTO sDto = new StandardDTO();
+            sDto.StandardId = -1;
+            sDto.StandardName = string.Empty;
+
+            rDto.Insert(0, sDto);
+            return new SelectList(rDto, "StandardId", "StandardName");
+        }
+
         // return standardlist not based on classtype
         public SelectList getStandardDropDown()
         {

@@ -743,8 +743,14 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.Prevstream = dto.ReturnObj.Prevstream;
                 studView.GenderList = _uiddlRepo.getGenderDropDown();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
-                studView.AdmissionStatus = new AdmissionStatusDTO();
-                studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                if (dto.ReturnObj.AdmissionStatus != null)
+                {
+                    if (dto.ReturnObj.AdmissionStatus.AdmissionStatusId > 0)
+                    {
+                        studView.AdmissionStatus = new AdmissionStatusDTO();
+                        studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                    }
+                }
                 studView.AdmissionExamDate = dto.ReturnObj.AdmissionExamDate;
                 studView.AdmissionInterviewDate = dto.ReturnObj.AdmissionInterviewDate;
                 studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
@@ -757,16 +763,17 @@ namespace OperationsManager.Areas.Student.Controllers
 
             studView.GenderList = _uiddlRepo.getGenderDropDown();
             studView.LocationList = _uiddlRepo.getLocationDropDown();
-
-
-
+            studView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+            studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+            
             return View(studView);
         }
         [HttpPost]
-        public ActionResult Admission(Models.StudentVM studentView, HttpPostedFileBase file)
+        public ActionResult Admission(Models.StudentVM studentView)
         {
             string folderName = string.Empty;
-
+            studentView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+            studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
 
             DateTime dtValidator = new DateTime();
             if (DateTime.TryParse(studentView.DOBString, out dtValidator))
@@ -781,6 +788,8 @@ namespace OperationsManager.Areas.Student.Controllers
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 //Call update
+                //to show admission status in edit mode
+                studentView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
                 //if (ModelState.IsValid)
                 //{ 
                 //StudentDTO student = null;
@@ -790,8 +799,6 @@ namespace OperationsManager.Areas.Student.Controllers
                 StatusDTO<StudentDTO> status = _studSvc.UpdateAdmission(studentView);
                 if (status.IsSuccess)
                 {
-
-
                     return RedirectToAction("AdmissionSearch");
                 }
                 studentView.ErrorMessage = status.FailureReason;
@@ -812,7 +819,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 //}
 
             }
-
+            
             return View(studentView);
         }
         [HttpGet]
@@ -833,8 +840,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView = new StudentVM(); // Instantiating Student View model
                 studView.studentList = new List<StudentVM>(); // instantiating list of Students
 
-                //Fetch the StandardSection List
-                studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                //Fetch the Standard List
+                studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
 
                 if (status.IsSuccess && !status.IsException)
@@ -865,16 +872,12 @@ namespace OperationsManager.Areas.Student.Controllers
                             }
 
                             searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
-
-
-                            searchItem.StandardSectionMap = new StandardSectionMapDTO();
-                            searchItem.StandardSectionMap.Standard = new StandardDTO();
-                            searchItem.StandardSectionMap.Section = new SectionDTO();
+                            searchItem.AppliedStandard = new StandardDTO();
+                            
                             searchItem.UserDetails = new UserMasterDTO();
                             searchItem.UserDetails.Location = new LocationDTO();
 
-                            searchItem.StandardSectionMap.Standard.StandardName = student.StandardSectionMap.Standard.StandardName;
-                            searchItem.StandardSectionMap.Section.SectionName = student.StandardSectionMap.Section.SectionName;
+                            searchItem.AppliedStandard.StandardName = student.AppliedStandard.StandardName;                            
                             searchItem.UserDetails.Location.LocationDescription = student.UserDetails.Location.LocationDescription;
 
                             //Add into Student vIew Model List
@@ -892,8 +895,8 @@ namespace OperationsManager.Areas.Student.Controllers
             else
             {
                 studView = new StudentVM();
-                //Fetch the StandardSection List
-                studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                //Fetch the Standard List
+                studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                 studView.LocationList = _uiddlRepo.getLocationDropDown();
                 studView.IsSearchSuccessful = false;
                 studView.MsgColor = "green";
@@ -929,14 +932,12 @@ namespace OperationsManager.Areas.Student.Controllers
                 student.UserDetails.FName = studentView.UserDetails.FName;
                 //student.UserDetails.MName = studentView.UserDetails.MName;
                 student.UserDetails.LName = studentView.UserDetails.LName;
-
-                student.StandardSectionMap = new StandardSectionMapDTO();
-                student.StandardSectionMap.Standard = new StandardDTO();
-                student.StandardSectionMap.Section = new SectionDTO();
+                
+                student.AppliedStandard = new StandardDTO();                
                 student.UserDetails.Location = new LocationDTO();
 
-                // Search for Class
-                student.StandardSectionMap.StandardSectionId = studentView.StandardSectionMap.StandardSectionId;
+                // Search for Standard
+                student.AppliedStandard.StandardId = studentView.AppliedStandard.StandardId;
 
                 //Search by Location
                 student.UserDetails.Location.LocationId = studentView.UserDetails.Location.LocationId;
@@ -955,6 +956,7 @@ namespace OperationsManager.Areas.Student.Controllers
                     //Fetch the StandardSection List
                     studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
                     studView.LocationList = _uiddlRepo.getLocationDropDown();
+                    studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
 
                     if (status.IsSuccess && !status.IsException)
                     {
@@ -1024,8 +1026,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 {
                     studView = studentView;
                     studentView.IsSearchSuccessful = false;
-                    //Fetch the StandardSection List
-                    studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                    //Fetch the Standard List
+                    studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                     studView.LocationList = _uiddlRepo.getLocationDropDown();
                 }
             }
