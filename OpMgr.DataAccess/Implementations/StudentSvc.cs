@@ -1671,9 +1671,11 @@ namespace OpMgr.DataAccess.Implementations
                     if (data.AdmissionStatus.AdmissionStatusId == 2)
                     {
                         command.Parameters.Add("@AdmissionExamDate", MySqlDbType.DateTime).Value = data.AdmissionExamDate;
+                        command.Parameters.Add("@AdmissionInterviewDate", MySqlDbType.DateTime).Value = DBNull.Value;
                     }
                     else if (data.AdmissionStatus.AdmissionStatusId == 3)
                     {
+                        command.Parameters.Add("@AdmissionExamDate", MySqlDbType.DateTime).Value = data.AdmissionExamDate;
                         command.Parameters.Add("@AdmissionInterviewDate", MySqlDbType.DateTime).Value = data.AdmissionInterviewDate;
                     }
                     else
