@@ -35,8 +35,29 @@
             //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
             $(".admissiondate").datepicker({ maxDate: 0 });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
-
+            $("#admxmdt").hide();
+            $("#admivdt").hide();
             //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
+
+            $("#AdmissionStatus_AdmissionStatusId").change(function () {
+                debugger;
+                var admsts = $("#AdmissionStatus_AdmissionStatusId").val();
+                   var xmdt = $("#AdmissionExamDate").val();
+                if (admsts == 2) {
+                    $("#admxmdt").show();
+
+                  
+                }
+                else if (admsts == 3)
+                {
+                    $("#admivdt").show();
+                }
+                else {
+                    $("#admxmdt").hide();
+                    $("#admivdt").hide();
+                }
+                return false;
+            });
 
         });
     </script>
@@ -261,20 +282,21 @@
                                             </div>
                                             @if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase)) || ((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))))
     {
-                                        <div class="col-lg-5">
-                                            @Html.OpMgrTextBoxFor(m => m.AdmissionExamDate, UserResource.xamdate, new { @class = "DOB-picker form-control" })
-                                        </div>
-                                        <div class="col-lg-5">
+
+                                        <div id="admsts" class="col-lg-5">
                                             @Html.OpMgrDropDownListFor(m => m.AdmissionStatus.AdmissionStatusId, Model.AdmissionStatusList, UserResource.AdmissionStatus, new { @class = "form-control" })
                                         </div>
 }
-                                            @if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1) || ((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1)))
-    {
-                                        <div class="col-lg-5">
+                                            <div id="admxmdt" class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.AdmissionExamDate, UserResource.xamdate, new { @class = "DOB-picker form-control" })
+                                            </div>
+                                            @*@if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1) || ((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1)))
+    {*@
+                                        <div id="admivdt" class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.AdmissionInterviewDate, UserResource.interviewdate, new { @class = "DOB-picker form-control" })
                                         </div>
 
-}
+@*}*@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
                                             </div>
@@ -304,10 +326,10 @@
                                                 @Html.OpMgrTextBoxFor(m => m.Secondlang, UserResource.Secondlang, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
-                                                @Html.OpMgrDropDownListFor(m => m.CurrentStandard.StandardId, Model.CurrentStandardList,UserResource.Currclass, new { @class = "form-control" })
+                                                @Html.OpMgrDropDownListFor(m => m.CurrentStandard.StandardId, Model.CurrentStandardList, UserResource.Currclass, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
-                                                @Html.OpMgrDropDownListFor(m => m.AppliedStandard.StandardId,Model.AppliedStandardList, UserResource.classAppld, new { @class = "form-control" })
+                                                @Html.OpMgrDropDownListFor(m => m.AppliedStandard.StandardId, Model.AppliedStandardList, UserResource.classAppld, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.Prevschool, UserResource.Prevschool, new { @class = "form-control" })

@@ -748,17 +748,34 @@ namespace OperationsManager.Areas.Student.Controllers
                     if (dto.ReturnObj.AdmissionStatus.AdmissionStatusId > 0)
                     {
                         studView.AdmissionStatus = new AdmissionStatusDTO();
-                        studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                                                                                                                                                                                                                                               studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
                     }
                 }
                 studView.AdmissionExamDate = dto.ReturnObj.AdmissionExamDate;
                 studView.AdmissionInterviewDate = dto.ReturnObj.AdmissionInterviewDate;
                 studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
+                if (dto.ReturnObj.CurrentStandard != null)
+                {
+                    if (dto.ReturnObj.CurrentStandard.StandardId > 0)
+                    {
+                        studView.CurrentStandard = new StandardDTO();
+                        studView.CurrentStandard.StandardId = dto.ReturnObj.CurrentStandard.StandardId;
+                    }
+                }
+                if (dto.ReturnObj.AppliedStandard != null)
+                {
+                    if (dto.ReturnObj.AppliedStandard.StandardId > 0)
+                    {
+                        studView.AppliedStandard = new StandardDTO();
+                        studView.AppliedStandard.StandardId = dto.ReturnObj.AppliedStandard.StandardId;
+                    }
+                }
                 studView.UserDetails.AdmissionId = dto.ReturnObj.UserDetails.AdmissionId;
                 studView.admissionformno = dto.ReturnObj.admissionformno;
                 //to show admission status in edit mode
                 studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
-
+                studView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+                studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
             }
 
             studView.GenderList = _uiddlRepo.getGenderDropDown();
@@ -790,6 +807,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 //Call update
                 //to show admission status in edit mode
                 studentView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+                studentView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+                studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
                 //if (ModelState.IsValid)
                 //{ 
                 //StudentDTO student = null;

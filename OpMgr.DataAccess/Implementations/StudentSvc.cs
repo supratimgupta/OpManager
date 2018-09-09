@@ -291,7 +291,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
                     command.Parameters.Add("@FathersDepartment", MySqlDbType.String).Value = data.FatherDepartment;
                     command.Parameters.Add("@FathersOrganisationname", MySqlDbType.String).Value = data.FatherOrganisationName;
-                    command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+                    command.Parameters.Add("@MothersOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
 
                     command.Parameters.Add("@admission_formno", MySqlDbType.String).Value = data.admissionformno;
 
@@ -511,6 +511,10 @@ namespace OpMgr.DataAccess.Implementations
                             studentDTO.Caste = _dsData.Tables[0].Rows[0]["Caste"].ToString();
                             studentDTO.classAppld = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
                             studentDTO.Currclass = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                            studentDTO.CurrentStandard = new StandardDTO();
+                            studentDTO.CurrentStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                            studentDTO.AppliedStandard = new StandardDTO();
+                            studentDTO.AppliedStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
                             studentDTO.sibName = _dsData.Tables[0].Rows[0]["sibName"].ToString();
                             studentDTO.sibclass = _dsData.Tables[0].Rows[0]["sibclass"].ToString();
                             studentDTO.sibGender = _dsData.Tables[0].Rows[0]["sibGender"].ToString();
@@ -1015,11 +1019,11 @@ namespace OpMgr.DataAccess.Implementations
                             //Name Search
                             //data.UserDetails = new UserMasterDTO();
 
-                            if (!string.IsNullOrEmpty(data.FName))
+                            if (!string.IsNullOrEmpty(data.UserDetails.FName))
                             {
-                                data.FName = data.FName + "%";
+                                data.UserDetails.FName = data.UserDetails.FName + "%";
                                 whereClause = whereClause + " AND FName LIKE @FName";
-                                command.Parameters.Add("@FName", MySqlDbType.String).Value = data.FName;
+                                command.Parameters.Add("@FName", MySqlDbType.String).Value = data.UserDetails.FName;
                             }
                             //if (!string.IsNullOrEmpty(data.UserDetails.MName))
                             //{
@@ -1028,11 +1032,11 @@ namespace OpMgr.DataAccess.Implementations
                             //    command.Parameters.Add("@MName", MySqlDbType.String).Value = data.UserDetails.MName;
                             //}
 
-                            if (!string.IsNullOrEmpty(data.LName))
+                            if (!string.IsNullOrEmpty(data.UserDetails.LName))
                             {
-                                data.LName = data.LName + "%";
+                                data.UserDetails.LName = data.UserDetails.LName + "%";
                                 whereClause = whereClause + " AND LName LIKE @LName ";
-                                command.Parameters.Add("@LName", MySqlDbType.String).Value = data.LName;
+                                command.Parameters.Add("@LName", MySqlDbType.String).Value = data.UserDetails.LName;
                             }
 
                             //Form No Search
@@ -1752,7 +1756,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
                     command.Parameters.Add("@FathersDepartment", MySqlDbType.String).Value = data.FatherDepartment;
                     command.Parameters.Add("@FathersOrganisationname", MySqlDbType.String).Value = data.FatherOrganisationName;
-                    command.Parameters.Add("@MotherOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
+                    command.Parameters.Add("@MothersOfficeAddress", MySqlDbType.String).Value = data.MotherOfficeAddress;
 
                     command.Parameters.Add("@admission_formno", MySqlDbType.String).Value = data.admissionformno;
 
