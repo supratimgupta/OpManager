@@ -1754,7 +1754,7 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@Prevmedium", MySqlDbType.String).Value = data.Prevmedium;
                     command.Parameters.Add("@Prevstream", MySqlDbType.String).Value = data.Prevstream;
                     command.Parameters.Add("@Prevschool", MySqlDbType.String).Value = data.Prevschool;
-                    command.Parameters.Add("@StudentAdmissionId", MySqlDbType.String).Value = data.UserDetails.AdmissionId;
+                    command.Parameters.Add("@StudentAdmissionId", MySqlDbType.Int32).Value = data.UserDetails.AdmissionId;
 
                     command.Parameters.Add("@FathersQualification", MySqlDbType.String).Value = data.FatherQualification;
                     command.Parameters.Add("@FathersDepartment", MySqlDbType.String).Value = data.FatherDepartment;
