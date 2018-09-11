@@ -138,30 +138,30 @@
         </tr>*@
                             <tbody>
                                 @if (Model != null)
-        {
-            if (Model.IsSearchSuccessful)
-            {
-                foreach (var student in Model.studentList)
-                {
+                                {
+                                    if (Model.IsSearchSuccessful)
+                                    {
+                                        //foreach (var student in Model.studentList)
+                                        //{
                         <tr>
                             <td align="left">Height (In Cms): </td>
                             <td>
-                                @student.Height
+                                @studentHdr.Height
                             </td>
                             <td align="left">Weight (In Kgs): </td>
                             <td>
-                                @student.Weight
+                                @studentHdr.Weight
                             </td>
                            
                         </tr>
                         <tr>
                             <td align="left" width="100px;" class="headerSummary">BMI: </td>
                             <td>
-                                @student.BMI
+                                @studentHdr.BMI
                             </td>
                             <td align="left" width="100px;" class="headerSummary">General Health Appearence: </td>
                             <td>
-                                @student.GenHealth
+                                @studentHdr.GenHealth
                             </td>
                         </tr>
                         <tr>
@@ -170,26 +170,26 @@
                         <tr>
                             <td align="left" width="100px;" class="headerSummary">Distance Vision: </td>
                             <td>
-                                @student.DV
+                                @studentHdr.DV
                             </td>
                             <td align="left" width="100px;" class="headerSummary">Near Vision: </td>
                             <td>
-                                @student.NV
+                                @studentHdr.NV
                             </td>
                         </tr>
                         <tr>
                             <td align="left" width="100px;" class="headerSummary">Any Major history of Illness: </td>
                             <td>
-                                @student.Majorillness
+                                @studentHdr.Majorillness
                             </td>
                             <td align="left" width="100px;" class="headerSummary">Pulse Rate(/Min): </td>
                             <td>
-                                @student.Pulserate
+                                @studentHdr.Pulserate
                             </td>
 
 
                         </tr>
-}
+//}
 }
 
 }

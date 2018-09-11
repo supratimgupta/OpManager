@@ -561,6 +561,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     double htsq = (Convert.ToDouble(data.UserDetails.Height) * Convert.ToDouble(data.UserDetails.Height));
                     double bmi = (Convert.ToDouble(data.UserDetails.Weight) / htsq);
+                    bmi = Math.Round(bmi, 4);
                     data.UserDetails.BMI = Convert.ToString(bmi);
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "InsertHealthDetails";
@@ -623,6 +624,7 @@ namespace OpMgr.DataAccess.Implementations
                     dbSvc.OpenConnection();
                     double htsq = (Convert.ToDouble(data.UserDetails.Height) * Convert.ToDouble(data.UserDetails.Height));
                     double bmi = (Convert.ToDouble(data.UserDetails.Weight) / htsq);
+                    bmi = Math.Round(bmi, 4);
                     data.UserDetails.BMI = Convert.ToString(bmi);
                     MySqlCommand command = new MySqlCommand();
                     command.CommandText = "UpdateHealthReport";
