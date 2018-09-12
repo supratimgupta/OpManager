@@ -855,7 +855,7 @@ namespace OpMgr.DataAccess.Implementations
                         selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName,Lo.LocationDescription," +
                                        "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
                                        "student.FathersContactNo, users.ContactNo " +
-                                       ",hrpt.height ,hrpt.weight,hrpt.bmi,hrpt.distancevision,hrpt.nearvision,hrpt.AnymajorIllness,hrpt.PulseRate,hrpt.DrRemarks,hrpt.DrSuggesstion" +
+                                       ",hrpt.height ,hrpt.weight,ROUND(hrpt.bmi,4) as bmi,hrpt.distancevision,hrpt.nearvision,hrpt.AnymajorIllness,hrpt.PulseRate,hrpt.DrRemarks,hrpt.DrSuggesstion" +
                                        " FROM studentinfo student " +
                                        " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
                                        " INNER JOIN Location Lo ON Lo.LocationId = users.LocationId" +
