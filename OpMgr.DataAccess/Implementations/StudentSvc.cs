@@ -509,12 +509,26 @@ namespace OpMgr.DataAccess.Implementations
                             studentDTO.MotherAnnualIncome = _dsData.Tables[0].Rows[0]["MothersAnnualIncome"].ToString();
                             studentDTO.Religion = _dsData.Tables[0].Rows[0]["Religion"].ToString();
                             studentDTO.Caste = _dsData.Tables[0].Rows[0]["Caste"].ToString();
-                            studentDTO.classAppld = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
-                            studentDTO.Currclass = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
-                            studentDTO.CurrentStandard = new StandardDTO();
-                            studentDTO.CurrentStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
-                            studentDTO.AppliedStandard = new StandardDTO();
-                            studentDTO.AppliedStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                            //studentDTO.classAppld = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                            //studentDTO.Currclass = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                            
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["CurrentStandardId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]) > 0)
+                                {
+                                    studentDTO.CurrentStandard = new StandardDTO();
+                                    studentDTO.CurrentStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                                }
+                            }
+                            
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AppliedStandardId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]) > 0)
+                                {
+                                    studentDTO.AppliedStandard = new StandardDTO();
+                                    studentDTO.AppliedStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                                }
+                            }
                             studentDTO.sibName = _dsData.Tables[0].Rows[0]["sibName"].ToString();
                             studentDTO.sibclass = _dsData.Tables[0].Rows[0]["sibclass"].ToString();
                             studentDTO.sibGender = _dsData.Tables[0].Rows[0]["sibGender"].ToString();

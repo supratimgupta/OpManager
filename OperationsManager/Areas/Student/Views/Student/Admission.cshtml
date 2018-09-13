@@ -13,6 +13,7 @@
         $(document).ready(function () {
             var registerstudentform = $("#registerstudentform");
             $("#registerstudentform").validate({
+
                 ignore: "",
                 invalidHandler: function (event, validator) {
                     // 'this' refers to the form
@@ -263,7 +264,7 @@
                                         </div>
 }
                                             <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.admissionformno, UserResource.admissionformno, new { @class = "form-control" })
+                                                @Html.OpMgrTextBoxFor(m => m.admissionformno, UserResource.admissionformno, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Form Number is required" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })

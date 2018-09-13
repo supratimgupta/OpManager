@@ -730,8 +730,8 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 studView.Religion = dto.ReturnObj.Religion;
                 studView.Caste = dto.ReturnObj.Caste;
-                studView.classAppld = dto.ReturnObj.classAppld;
-                studView.Currclass = dto.ReturnObj.Currclass;
+                //studView.classAppld = dto.ReturnObj.classAppld;
+                //studView.Currclass = dto.ReturnObj.Currclass;
                 studView.sibName = dto.ReturnObj.sibName;
                 studView.sibclass = dto.ReturnObj.sibclass;
                 studView.sibGender = dto.ReturnObj.sibGender;
@@ -748,7 +748,7 @@ namespace OperationsManager.Areas.Student.Controllers
                     if (dto.ReturnObj.AdmissionStatus.AdmissionStatusId > 0)
                     {
                         studView.AdmissionStatus = new AdmissionStatusDTO();
-                                                                                                                                                                                                                                               studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                        studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
                     }
                 }
                 studView.AdmissionExamDate = dto.ReturnObj.AdmissionExamDate;
