@@ -23,28 +23,27 @@
     <![endif]-->
     <script language="javascript" type="text/javascript">
         function redirectToAdd() {
-            window.location.href = "Register";
+            window.location.href = "Admission";
         }
-        function redirectToAddHReport() {
-            window.location.href = "HealthReport";
-        }
-        function confirmDelete(id)
-        {
+        //function redirectToAddHReport() {
+        //    window.location.href = "HealthReport";
+        //}
+        function confirmDelete(id) {
             
-            var flag = confirm("Are you sure you want to delete this Student");
+            var flag = confirm("Are you sure you want to delete this Record");
             var stud = new Object();
             stud.UserDetails = new Object();
-            stud.UserDetails.UserMasterId = id;
+            stud.UserDetails.AdmissionId = id;
             if (flag) {
 
                 $.ajax({
                     dataType: 'JSON',
-                    url: "Delete",
+                    url: "DeleteAdmission",
                     type: "POST",
                     data: stud,
                     success: function (data) {
-                        alert("Student has been deleted successfully.");
-                        window.location.href="../../Student/Student/Search";
+                        alert("Admission Record has been deleted successfully.");
+                        window.location.href = "../../Student/Student/AdmissionSearch";
                     },
                     error: function (data) {
                         alert("Eror");
@@ -73,37 +72,33 @@
                                 <div class="col-lg-2">
                                     @Html.OpMgrTextBoxFor(m => m.UserDetails.LName, StudentResource.LName, new { @class = "form-control" })
                                 </div>
-
                                 <div class="col-lg-2">
-                                    @Html.OpMgrTextBoxFor(m => m.RegistrationNumber, StudentResource.RegistrationNo, new { @class = "form-control" })
+                                    @Html.OpMgrTextBoxFor(m => m.admissionformno, UserResource.admissionformno, new { @class = "form-control" })
                                 </div>
-
                                 <div class="col-lg-2">
                                     @Html.OpMgrDropDownListFor(m => m.UserDetails.Location.LocationId, Model.LocationList, StudentResource.Location, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-2">
-                                    @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, StudentResource.Class, new { @class = "form-control" })
+                                    @Html.OpMgrDropDownListFor(m => m.AppliedStandard.StandardId, Model.AppliedStandardList, StudentResource.Class, new { @class = "form-control" })
+                                </div>
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m => m.AdmissionStatus.AdmissionStatusId, Model.AdmissionStatusList, UserResource.AdmissionStatus, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="row col-lg-12">
                                 <div class="col-lg-2">
-                                    @*<button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>*@
-                                    @Html.OpMgrSubmitButtonWithIcon("Command", @StudentResource.SearchButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", @StudentResource.SearchAdmissionButton, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
                                 </div>
-
                                 <div class="col-lg-2">
-                                    @*@Html.OpMgrButton("btnAdd", StudentResource.AddButton, new {@class= "btn btn-primary btn-block ion-person-add", id="btnRedirectToAdd", style= "", onclick="redirectToAdd();" })*@
                                     @Html.OpMgrButtonWithIcon("btnAdd", StudentResource.AddButton, new { @class = "btn btn-primary btn-block", id = "btnRedirectToAdd", onclick = "redirectToAdd();" }, "ion-person-add", true)
-                                    @*<button type="submit" name="Command" value="@StudentResource.AddCommand" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.AddButton</button>*@
                                 </div>
-                              
                             </div>
                         </fieldset>
                     }
                 </div>
             </div>
             @*@if (Model != null && Model.studentList != null && Model.studentList.Count > 0)
-            {*@
+                {*@
             <div class="panel panel-color panel-primary">
                 <div class="panel-heading"><b>@StudentResource.StudentTable</b></div>
                 <div class="panel-body">
@@ -112,10 +107,13 @@
                             <thead>
                                 <tr>
                                     @*<th th data-field="name" data-checkbox="true">
-                                        @Html.CheckBox("chkStudentHeader")
-                                    </th>*@
+                                            @Html.CheckBox("chkStudentHeader")
+                                        </th>*@
                                     <th th data-field="name" data-sortable="true">
                                         @StudentResource.Name
+                                    </th>
+                                    <th th data-field="name" data-sortable="true">
+                                        @UserResource.admissionformno
                                     </th>
                                     <th th data-field="name" data-sortable="true">
                                         @StudentResource.Location
@@ -123,14 +121,8 @@
                                     <th h data-field="standard" data-sortable="true">
                                         @StudentResource.Class
                                     </th>
-                                    <th th data-field="section" data-sortable="true">
-                                        @StudentResource.Section
-                                    </th>
-                                    <th th data-field="roll number" data-sortable="true">
-                                        @StudentResource.RollNo
-                                    </th>
-                                    <th th data-field="registration" data-sortable="true">
-                                        @StudentResource.RegistrationNo
+                                    <th h data-field="admissionstatusdescription" data-sortable="true">
+                                        @UserResource.AdmissionStatus
                                     </th>
                                     <th th data-field="contact" data-sortable="true">
                                         @StudentResource.GuardianContactNo
@@ -138,7 +130,7 @@
                                     <th>
                                         @StudentResource.StudentActions
                                     </th>
-                                    <th>@StudentResource.HealthReport</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -149,40 +141,29 @@
                                         foreach (var student in Model.studentList)
                                         {
                                             <tr>
-                                                @*<td>
-                                                    <input type="checkbox" name="chkStudent" value="@student.StudentInfoId" />
-                                                </td>*@
                                                 <td>
                                                     @student.Name
+                                                </td>
+                                                <td>
+                                                    @student.admissionformno
                                                 </td>
                                                 <td>
                                                     @student.UserDetails.Location.LocationDescription
                                                 </td>
                                                 <td>
-                                                    @student.StandardSectionMap.Standard.StandardName
+                                                    @student.AppliedStandard.StandardName
                                                 </td>
                                                 <td>
-                                                    @student.StandardSectionMap.Section.SectionName
-                                                </td>
-                                                <td>
-                                                    @student.RollNumber
-                                                </td>
-                                                <td>
-                                                    @student.RegistrationNumber
+                                                    @student.AdmissionStatus.AdmissionStatusDescription
                                                 </td>
                                                 <td>
                                                     @student.UserDetails.ContactNo
                                                 </td>
                                                 <td>
-                                                    @Html.OpMgrActionLinkMultiple("VIEW /", "Register?mode=VIEW&id="+ student.UserDetails.UserMasterId, new { name = "viewStudent" })
-                                                    @Html.OpMgrActionLinkMultiple(" EDIT /", "Register?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
-                                                    @Html.OpMgrActionLinkMultiple(" DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
-                                                </td>
-                                                <td>
-                                                    @Html.OpMgrActionLinkMultiple("ADD /", "HealthReport?mode=ADD&id=" + student.UserDetails.UserMasterId, new { name = "AddStudent" })
-                                                    @Html.OpMgrActionLinkMultiple("VIEW /", "HealthReport?mode=VIEW&id=" + student.UserDetails.UserMasterId, new { name = "viewStudent" })
-                                                    @Html.OpMgrActionLinkMultiple(" EDIT /", "HealthReport?mode=EDIT&id=" + student.UserDetails.UserMasterId, new { name = "editStudent" })
-                                                    @Html.OpMgrActionLinkMultiple(" DELETE", "", new { name = "delStudent", onclick = "return confirmDelete('" + student.UserDetails.UserMasterId + "');" })
+                                                    @Html.OpMgrActionLinkMultiple("VIEW /", "Admission?mode=VIEW&id=" + student.UserDetails.AdmissionId, new { name = "viewStudent" })
+                                                    @Html.OpMgrActionLinkMultiple(" EDIT /", "Admission?mode=EDIT&id=" + student.UserDetails.AdmissionId, new { name = "editStudent" })
+                                                   @Html.OpMgrActionLinkMultiple(" DELETE", "", new { name = "delStudentAdmission", onclick = "return confirmDelete('" + student.UserDetails.AdmissionId + "');" })
+
                                                 </td>
                                             </tr>
                                         }
@@ -202,12 +183,12 @@
                 </div>
             </div>
             @*}
-            else
-            {
-                <div class="lblSuccessOrFail" style="text-align:center">
-                    <label style="text-align:center;font-size:large;color:@Model.MsgColor">@Model.SuccessOrFailureMessage</label>
-                </div>
-            }*@
+                else
+                {
+                    <div class="lblSuccessOrFail" style="text-align:center">
+                        <label style="text-align:center;font-size:large;color:@Model.MsgColor">@Model.SuccessOrFailureMessage</label>
+                    </div>
+                }*@
         </div>
     </div>
 </body>

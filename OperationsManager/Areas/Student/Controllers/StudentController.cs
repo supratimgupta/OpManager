@@ -25,7 +25,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
         private IConfigSvc _configSvc;
 
-        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc,ISessionSvc sessionSvc)
+        public StudentController(IStudentSvc studSvc, IDropdownRepo dropDwnRepo, IUserTransactionSvc userTrans, IConfigSvc configSvc, ISessionSvc sessionSvc)
         {
             _studSvc = studSvc;
             _dropDwnRepo = dropDwnRepo;
@@ -89,8 +89,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.UserDetails.FName = dto.ReturnObj.UserDetails.FName;
                 studView.UserDetails.MName = dto.ReturnObj.UserDetails.MName;
                 studView.UserDetails.LName = dto.ReturnObj.UserDetails.LName;
-               // studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
-               
+                // studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
+
 
                 //studView.Student = new StudentDTO();
                 studView.RollNumber = dto.ReturnObj.RollNumber;
@@ -119,7 +119,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
             }
 
-           
+
             return View(studView);
         }
 
@@ -220,7 +220,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
 
             return View(studView);
-          
+
         }
         [HttpPost]
         public ActionResult PrintHealthReport(StudentVM studentView, string Command)
@@ -349,7 +349,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public ActionResult HealthReport(Models.StudentVM studentView, HttpPostedFileBase file)
         {
             string folderName = string.Empty;
-            
+
 
             DateTime dtValidator = new DateTime();
             if (DateTime.TryParse(studentView.DOBString, out dtValidator))
@@ -369,7 +369,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 StatusDTO<StudentDTO> status = _studSvc.UpdateHealthReport(studentView);
                 if (status.IsSuccess)
                 {
-                   
+
 
                     return RedirectToAction("Search");
                 }
@@ -386,7 +386,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 //studentView.UserDetails.Password = pass;
                 StatusDTO<StudentDTO> status = _studSvc.InsertHealthReport(studentView);
                 studentView.UserDetails = new UserMasterDTO();
-          //      studentView.UserDetails.UserMasterId = status.ReturnObj.UserDetails.UserMasterId;
+                //      studentView.UserDetails.UserMasterId = status.ReturnObj.UserDetails.UserMasterId;
                 if (status.IsSuccess)
                 {
                     //if (studentView.Transactions != null && studentView.Transactions.Count > 0)
@@ -450,7 +450,7 @@ namespace OperationsManager.Areas.Student.Controllers
             {
                 studView.UserDetails.UserMasterId = int.Parse(id);
             }
-            if(string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
             {
                 studView.DisabledClass = "disabledPlace";
             }
@@ -508,11 +508,11 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.MotherOfficePhNo = dto.ReturnObj.MotherOfficePhNo;
                 studView.MotherTypeOfBusiness = dto.ReturnObj.MotherTypeOfBusiness;
 
-                if (string.Equals(dto.ReturnObj.IsChristian,"YES") || string.Equals(dto.ReturnObj.IsChristian, "Yes") || string.Equals(dto.ReturnObj.IsChristian, "1"))
+                if (string.Equals(dto.ReturnObj.IsChristian, "YES") || string.Equals(dto.ReturnObj.IsChristian, "Yes") || string.Equals(dto.ReturnObj.IsChristian, "1"))
                 {
                     studView.IsChristian = "1";
                 }
-                else if(string.Equals(dto.ReturnObj.IsChristian, "NO") || string.Equals(dto.ReturnObj.IsChristian, "No") || string.Equals(dto.ReturnObj.IsChristian, "2"))
+                else if (string.Equals(dto.ReturnObj.IsChristian, "NO") || string.Equals(dto.ReturnObj.IsChristian, "No") || string.Equals(dto.ReturnObj.IsChristian, "2"))
                 {
                     studView.IsChristian = "2";
                 }
@@ -524,8 +524,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 else if (string.Equals(dto.ReturnObj.IsParentTeacher, "NO") || string.Equals(dto.ReturnObj.IsParentTeacher, "No") || string.Equals(dto.ReturnObj.IsParentTeacher, "2"))
                 {
                     studView.IsParentTeacher = "2";
-                }                
-                
+                }
+
                 if (string.Equals(dto.ReturnObj.IsParentFromEngMedium, "YES") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "Yes") || string.Equals(dto.ReturnObj.IsParentFromEngMedium, "1"))
                 {
                     studView.IsParentFromEngMedium = "1";
@@ -534,8 +534,8 @@ namespace OperationsManager.Areas.Student.Controllers
                 {
                     studView.IsParentFromEngMedium = "2";
                 }
-                                
-                if(string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "JOINT") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "Joint") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "1"))
+
+                if (string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "JOINT") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "Joint") || string.Equals(dto.ReturnObj.IsJointOrNuclearFamily, "1"))
                 {
                     studView.IsJointOrNuclearFamily = "1";
                 }
@@ -622,7 +622,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 string fatherImageFolder = _configSvc.GetFatherImagesFolder();
                 string motherImageFolder = _configSvc.GetMotherImagesFolder();
 
-                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder) + "?ver="+DateTime.UtcNow.Ticks;
+                studView.StudentImagePath = _configSvc.GetStudentImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, studentImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
                 studView.FatherImagePath = _configSvc.GetFatherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, fatherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
                 studView.MotherImagePath = _configSvc.GetMotherImagesRelPath() + "/" + GetImageFileName(studView.RegistrationNumber, motherImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
             }
@@ -665,14 +665,393 @@ namespace OperationsManager.Areas.Student.Controllers
 
             return View(studView);
         }
+        [HttpGet]
+        public ActionResult Admission(string mode, string id)
+        {
+            Models.StudentVM studView = new Models.StudentVM();
+            studView.UserDetails = new UserMasterDTO();
+            studView.MODE = mode;
+            studView.DisabledClass = "";
+            if (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                studView.UserDetails.AdmissionId = int.Parse(id);
+            }
+            if (string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase))
+            {
+                studView.DisabledClass = "disabledPlace";
+            }
+            studView.Transactions = new List<UserTransactionDTO>();
+            if (mode != null && (string.Equals(mode, "EDIT", StringComparison.OrdinalIgnoreCase) || string.Equals(mode, "VIEW", StringComparison.OrdinalIgnoreCase)))
+            {
+                //Populate edit data using id passed in URL, if id==null then show error message
+                StatusDTO<StudentDTO> dto = _studSvc.SelectAdmission(Convert.ToInt32(id)); //Admission
+                studView.UserDetails = new UserMasterDTO();
+                studView.UserDetails.UserMasterId = dto.ReturnObj.UserDetails.UserMasterId;
+                //uvModel.UserMasterId = dto.ReturnObj.UserMasterId;
+                studView.UserDetails.FName = dto.ReturnObj.UserDetails.FName;
+                studView.UserDetails.MName = dto.ReturnObj.UserDetails.MName;
+                studView.UserDetails.LName = dto.ReturnObj.UserDetails.LName;
+                studView.UserDetails.Gender = dto.ReturnObj.UserDetails.Gender;
+                //   studView.UserDetails.Image = dto.ReturnObj.UserDetails.Image;
+                studView.UserDetails.DOB = dto.ReturnObj.UserDetails.DOB;
+                studView.DOBString = studView.UserDetails.DOB.HasValue ? studView.UserDetails.DOB.Value.ToString("dd-MMM-yyyy") : string.Empty;
+                studView.UserDetails.EmailId = dto.ReturnObj.UserDetails.EmailId;
+                studView.UserDetails.ResidentialAddress = dto.ReturnObj.UserDetails.ResidentialAddress;
+                studView.UserDetails.PermanentAddress = dto.ReturnObj.UserDetails.PermanentAddress;
+                studView.UserDetails.ContactNo = dto.ReturnObj.UserDetails.ContactNo;
+                studView.UserDetails.AltContactNo = dto.ReturnObj.UserDetails.AltContactNo;
+                studView.UserDetails.BloodGroup = dto.ReturnObj.UserDetails.BloodGroup;
+                studView.UserDetails.Location = dto.ReturnObj.UserDetails.Location;
+                // studView.UserDetails.Role = dto.ReturnObj.UserDetails.Role;
 
+                //studView.Student = new StudentDTO();
+                //studView.RollNumber = dto.ReturnObj.RollNumber;
+                //studView.RegistrationNumber = dto.ReturnObj.RegistrationNumber;
+                //  studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
+                studView.FatherContact = dto.ReturnObj.FatherContact;
+                studView.GuardianName = dto.ReturnObj.GuardianName;
+                studView.FatherEmailId = dto.ReturnObj.FatherEmailId;
+                // studView.HouseType = dto.ReturnObj.HouseType;
+                //  studView.StandardSectionMap = dto.ReturnObj.StandardSectionMap;
+                studView.FatherName = dto.ReturnObj.FatherName;
+                studView.FatherQualification = dto.ReturnObj.FatherQualification;
+                studView.FatherOccupation = dto.ReturnObj.FatherOccupation;
+                studView.FatherDesignation = dto.ReturnObj.FatherDesignation;
+                studView.FatherOrganisationName = dto.ReturnObj.FatherOrganisationName;
+                studView.FatherDepartment = dto.ReturnObj.FatherDepartment;
+                studView.FatherOfficeAddress = dto.ReturnObj.FatherOfficeAddress;
+                // studView.FatherOfficePhNo = dto.ReturnObj.FatherOfficePhNo;
+                //  studView.FatherTypeOfBusiness = dto.ReturnObj.FatherTypeOfBusiness;
+                studView.FatherAnnualIncome = dto.ReturnObj.FatherAnnualIncome;
+                studView.MotherName = dto.ReturnObj.MotherName;
+                studView.MotherQualification = dto.ReturnObj.MotherQualification;
+                studView.MotherOccupation = dto.ReturnObj.MotherOccupation;
+                studView.MotherAnnualIncome = dto.ReturnObj.MotherAnnualIncome;
+                studView.MotherOrganisationName = dto.ReturnObj.MotherOrganisationName;
+                studView.MotherDepartment = dto.ReturnObj.MotherDepartment;
+                studView.MotherDesignation = dto.ReturnObj.MotherDesignation;
+                studView.MotherOfficeAddress = dto.ReturnObj.MotherOfficeAddress;
+                studView.MotherOfficePhNo = dto.ReturnObj.MotherOfficePhNo;
+                studView.MotherTypeOfBusiness = dto.ReturnObj.MotherTypeOfBusiness;
+                
+
+                studView.Religion = dto.ReturnObj.Religion;
+                studView.Caste = dto.ReturnObj.Caste;
+                //studView.classAppld = dto.ReturnObj.classAppld;
+                //studView.Currclass = dto.ReturnObj.Currclass;
+                studView.sibName = dto.ReturnObj.sibName;
+                studView.sibclass = dto.ReturnObj.sibclass;
+                studView.sibGender = dto.ReturnObj.sibGender;
+                studView.Category = dto.ReturnObj.Category;
+                studView.Nationality = dto.ReturnObj.Nationality;
+                studView.Secondlang = dto.ReturnObj.Secondlang;
+                studView.Prevmedium = dto.ReturnObj.Prevmedium;
+                studView.Prevschool = dto.ReturnObj.Prevschool;
+                studView.Prevstream = dto.ReturnObj.Prevstream;
+                studView.GenderList = _uiddlRepo.getGenderDropDown();
+                studView.LocationList = _uiddlRepo.getLocationDropDown();
+                if (dto.ReturnObj.AdmissionStatus != null)
+                {
+                    if (dto.ReturnObj.AdmissionStatus.AdmissionStatusId > 0)
+                    {
+                        studView.AdmissionStatus = new AdmissionStatusDTO();
+                        studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                    }
+                }
+                studView.AdmissionExamDate = dto.ReturnObj.AdmissionExamDate;
+                studView.AdmissionInterviewDate = dto.ReturnObj.AdmissionInterviewDate;
+                studView.AdmissionDate = dto.ReturnObj.AdmissionDate;
+                if (dto.ReturnObj.CurrentStandard != null)
+                {
+                    if (dto.ReturnObj.CurrentStandard.StandardId > 0)
+                    {
+                        studView.CurrentStandard = new StandardDTO();
+                        studView.CurrentStandard.StandardId = dto.ReturnObj.CurrentStandard.StandardId;
+                    }
+                }
+                if (dto.ReturnObj.AppliedStandard != null)
+                {
+                    if (dto.ReturnObj.AppliedStandard.StandardId > 0)
+                    {
+                        studView.AppliedStandard = new StandardDTO();
+                        studView.AppliedStandard.StandardId = dto.ReturnObj.AppliedStandard.StandardId;
+                    }
+                }
+                studView.UserDetails.AdmissionId = dto.ReturnObj.UserDetails.AdmissionId;
+                studView.admissionformno = dto.ReturnObj.admissionformno;
+                //to show admission status in edit mode
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+                studView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+                studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+            }
+
+            studView.GenderList = _uiddlRepo.getGenderDropDown();
+            studView.LocationList = _uiddlRepo.getLocationDropDown();
+            studView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+            studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+            
+            return View(studView);
+        }
+        [HttpPost]
+        public ActionResult Admission(Models.StudentVM studentView)
+        {
+            string folderName = string.Empty;
+            studentView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+            studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+
+            DateTime dtValidator = new DateTime();
+            if (DateTime.TryParse(studentView.DOBString, out dtValidator))
+            {
+                if (studentView.UserDetails == null)
+                {
+                    studentView.UserDetails = new UserMasterDTO();
+                }
+                studentView.UserDetails.DOB = dtValidator;
+            }
+
+            if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
+            {
+                //Call update
+                //to show admission status in edit mode
+                studentView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+                studentView.CurrentStandardList = _uiddlRepo.getStandardDDL();
+                studentView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                //if (ModelState.IsValid)
+                //{ 
+                //StudentDTO student = null;
+                //student = new StudentDTO();
+                //student.AdmissionStatus = new AdmissionStatusDTO();
+                //student.AdmissionStatus.AdmissionStatusId = studentView.AdmissionStatus.AdmissionStatusId;
+                StatusDTO<StudentDTO> status = _studSvc.UpdateAdmission(studentView);
+                if (status.IsSuccess)
+                {
+                    return RedirectToAction("AdmissionSearch");
+                }
+                studentView.ErrorMessage = status.FailureReason;
+                //}
+            }
+            else
+            {
+                //Call insert
+
+                //if (ModelState.IsValid)
+                //{   
+                string pass = !string.IsNullOrEmpty(studentView.UserDetails.Password) ? encrypt.encryption(studentView.UserDetails.Password) : null;
+                studentView.UserDetails.Password = pass;
+                StatusDTO<StudentDTO> status = _studSvc.InsertAdmission(studentView);
+                studentView.UserDetails = new UserMasterDTO();
+                studentView.UserDetails.AdmissionId = status.ReturnObj.UserDetails.AdmissionId;
+                return RedirectToAction("AdmissionSearch");
+                //}
+
+            }
+            
+            return View(studentView);
+        }
+        [HttpGet]
+        public ActionResult AdmissionSearch()
+        {
+            StatusDTO<List<StudentDTO>> status = _studSvc.Select(null);
+            StudentVM studView = null;
+
+            if (Session["SEARCH_RESULT"] != null)
+            {
+                studView = (StudentVM)Session["SEARCH_RESULT"];
+                Session["SEARCH_RESULT"] = null;
+                return View(studView);
+            }
+
+            if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+            {
+                studView = new StudentVM(); // Instantiating Student View model
+                studView.studentList = new List<StudentVM>(); // instantiating list of Students
+
+                //Fetch the Standard List
+                studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                studView.LocationList = _uiddlRepo.getLocationDropDown();
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+
+                if (status.IsSuccess && !status.IsException)
+                {
+                    //studView = new List<StudentVM>();
+                    StudentVM searchItem = null;
+                    foreach (StudentDTO student in status.ReturnObj)
+                    {
+                        if (student != null)
+                        {
+                            searchItem = new StudentVM(); // instantiating each student
+
+                            searchItem.Active = student.Active;
+                            searchItem.FatherContact = student.FatherContact;
+                            searchItem.RegistrationNumber = student.RegistrationNumber;
+                            searchItem.RollNumber = student.RollNumber;
+
+                            searchItem.UserDetails = new UserMasterDTO();
+                            searchItem.UserDetails.UserMasterId = student.UserDetails.UserMasterId;
+                            searchItem.UserDetails.FName = student.UserDetails.FName;
+                            searchItem.UserDetails.MName = student.UserDetails.MName;
+                            searchItem.UserDetails.LName = student.UserDetails.LName;
+
+                            searchItem.Name = student.UserDetails.FName;
+                            if (!string.IsNullOrEmpty(student.UserDetails.FName))
+                            {
+                                searchItem.Name = searchItem.Name + " " + student.UserDetails.MName;
+                            }
+
+                            searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
+                            searchItem.AppliedStandard = new StandardDTO();
+                            
+                            searchItem.UserDetails = new UserMasterDTO();
+                            searchItem.UserDetails.Location = new LocationDTO();
+
+                            searchItem.AppliedStandard.StandardName = student.AppliedStandard.StandardName;                            
+                            searchItem.UserDetails.Location.LocationDescription = student.UserDetails.Location.LocationDescription;
+
+                            //Add into Student vIew Model List
+                            studView.studentList.Add(searchItem);
+                            studView.IsSearchSuccessful = true;
+
+                        }
+                    }
+                }
+                if (status.IsException)
+                {
+                    throw new Exception(status.ExceptionMessage);
+                }
+            }
+            else
+            {
+                studView = new StudentVM();
+                //Fetch the Standard List
+                studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                studView.LocationList = _uiddlRepo.getLocationDropDown();
+                studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+                studView.IsSearchSuccessful = false;
+                studView.MsgColor = "green";
+                studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
+            }
+
+
+
+            return View(studView);
+        }
+
+        [HttpPost]
+        public ActionResult AdmissionSearch(StudentVM studentView, string Command)
+        {
+            //if Command Add then Redirect it to Add
+            if (string.Equals(Command, "Add"))
+            {
+                return RedirectToAction("Register");
+            }
+            StudentVM studView = null;
+            StudentDTO student = null;
+                        
+           
+            if (studentView != null)
+            {
+                student = new StudentDTO();
+                student.admissionformno = studentView.admissionformno;
+                //studentView.UserDetails = new UserMasterDTO();
+                student.UserDetails = new UserMasterDTO();
+                // Search for FName LName and MName
+
+                student.UserDetails.FName = studentView.UserDetails.FName;
+                //student.UserDetails.MName = studentView.UserDetails.MName;
+                student.UserDetails.LName = studentView.UserDetails.LName;
+                
+                student.AppliedStandard = new StandardDTO();                
+                student.UserDetails.Location = new LocationDTO();
+                student.AdmissionStatus = new AdmissionStatusDTO();
+
+                // Search for Standard
+                student.AppliedStandard.StandardId = studentView.AppliedStandard.StandardId;
+                student.AdmissionStatus.AdmissionStatusId = studentView.AdmissionStatus.AdmissionStatusId;
+
+                //Search by Location
+                student.UserDetails.Location.LocationId = studentView.UserDetails.Location.LocationId;
+                
+                StatusDTO<List<StudentDTO>> status = _studSvc.AdmissionSearch(student);  //Admision
+
+                if (status.ReturnObj != null && status.ReturnObj.Count > 0)
+                {
+                    studView = new StudentVM(); // Instantiating Student View model
+                    studView.studentList = new List<StudentVM>(); // instantiating list of Students
+                                        
+                    studView.LocationList = _uiddlRepo.getLocationDropDown();
+                    studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                    studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+
+                    if (status.IsSuccess && !status.IsException)
+                    {
+                        //studView = new List<StudentVM>();
+
+                        StudentVM searchItem = null;
+                        foreach (StudentDTO stud in status.ReturnObj)
+                        {
+                            if (stud != null)
+                            {
+                                searchItem = new StudentVM(); // instantiating each student
+
+                                searchItem.Active = stud.Active;
+                                searchItem.FatherContact = stud.FatherContact;
+                                
+                                searchItem.UserDetails = new UserMasterDTO();
+                                searchItem.UserDetails.Location = new LocationDTO();
+                                searchItem.UserDetails.UserMasterId = stud.UserDetails.UserMasterId;
+                                searchItem.UserDetails.FName = stud.UserDetails.FName;
+                                searchItem.UserDetails.MName = stud.UserDetails.MName;
+                                searchItem.UserDetails.LName = stud.UserDetails.LName;
+
+                                searchItem.Name = searchItem.UserDetails.FName;
+                                if (!string.IsNullOrEmpty(searchItem.UserDetails.MName))
+                                {
+                                    searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.MName;
+                                }
+
+                                searchItem.Name = searchItem.Name + " " + searchItem.UserDetails.LName;
+                                searchItem.admissionformno = stud.admissionformno;
+                                searchItem.AppliedStandard = new StandardDTO();
+                                searchItem.AppliedStandard.StandardName = stud.AppliedStandard.StandardName;
+                                
+                                searchItem.UserDetails.ContactNo = stud.UserDetails.ContactNo;
+                                searchItem.UserDetails.Location.LocationId = stud.UserDetails.Location.LocationId;
+                                searchItem.UserDetails.Location.LocationDescription = stud.UserDetails.Location.LocationDescription;
+                                searchItem.UserDetails.AdmissionId = stud.UserDetails.AdmissionId;
+                                searchItem.AdmissionStatus = new AdmissionStatusDTO();
+                                //searchItem.AdmissionStatus.AdmissionStatusId = stud.AdmissionStatus.AdmissionStatusId;
+                                searchItem.AdmissionStatus.AdmissionStatusDescription = stud.AdmissionStatus.AdmissionStatusDescription;
+
+                                //         searchItem.UserDetails.ContactNo = stud.UserDetails.ContactNo;
+
+                                //Add into Student vIew Model List
+                                studView.studentList.Add(searchItem);
+                                studView.IsSearchSuccessful = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    studView = studentView;
+                    studentView.IsSearchSuccessful = false;
+                    //Fetch the Standard List
+                    studView.AppliedStandardList = _uiddlRepo.getStandardDDL();
+                    studView.LocationList = _uiddlRepo.getLocationDropDown();
+                    studView.AdmissionStatusList = _uiddlRepo.getAdmissionStatusDropdown();
+                }
+            }
+
+            Session["SEARCH_RESULT"] = studView;
+            return View(studView);
+        }
 
         public string GetImageFileName(string registrationNo, string folder)
         {
             string fileName = string.Empty;
             registrationNo = registrationNo.Replace('/', '_').Replace('\\', '_');
             string[] similarFiles = Directory.GetFiles(folder, registrationNo + ".*");
-            if(similarFiles!=null && similarFiles.Length>0)
+            if (similarFiles != null && similarFiles.Length > 0)
             {
                 fileName = similarFiles[0];
                 string[] fileParts = fileName.Split('\\');
@@ -688,7 +1067,7 @@ namespace OperationsManager.Areas.Student.Controllers
             StatusDTO<List<StudentDTO>> status = _studSvc.Select(null);
             StudentVM studView = null;
 
-            if(Session["SEARCH_RESULT"]!=null)
+            if (Session["SEARCH_RESULT"] != null)
             {
                 studView = (StudentVM)Session["SEARCH_RESULT"];
                 Session["SEARCH_RESULT"] = null;
@@ -767,7 +1146,7 @@ namespace OperationsManager.Areas.Student.Controllers
                 studView.SuccessOrFailureMessage = "Please Select atleast 1 Search Criteria";
             }
 
-            
+
 
             return View(studView);
         }
@@ -779,12 +1158,12 @@ namespace OperationsManager.Areas.Student.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(StudentVM studentView,string Command)
+        public ActionResult Search(StudentVM studentView, string Command)
         {
             //if Command Add then Redirect it to Add
-            if(string.Equals(Command,"Add"))
+            if (string.Equals(Command, "Add"))
             {
-               return RedirectToAction("Register");
+                return RedirectToAction("Register");
             }
             StudentVM studView = null;
             StudentDTO student = null;
@@ -861,7 +1240,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                                 searchItem.StandardSectionMap = new StandardSectionMapDTO();
                                 searchItem.StandardSectionMap.Standard = new StandardDTO();
-                                searchItem.StandardSectionMap.Section = new SectionDTO();                                
+                                searchItem.StandardSectionMap.Section = new SectionDTO();
                                 searchItem.UserDetails.Location = new LocationDTO();
 
                                 searchItem.StandardSectionMap.Standard.StandardName = stud.StandardSectionMap.Standard.StandardName;
@@ -917,13 +1296,13 @@ namespace OperationsManager.Areas.Student.Controllers
             string folderName = string.Empty;
             //if (file != null)
             //{
-                //if (file.ContentLength > 0)
-                //{
-            if(Request.Files!=null && Request.Files.Count>0)
+            //if (file.ContentLength > 0)
+            //{
+            if (Request.Files != null && Request.Files.Count > 0)
             {
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    if(Request.Files[i].ContentLength>0 && Request.Files[i].FileName.Trim().Length>0)
+                    if (Request.Files[i].ContentLength > 0 && Request.Files[i].FileName.Trim().Length > 0)
                     {
                         string keyName = Request.Files.Keys[i];
                         switch (keyName)
@@ -944,14 +1323,14 @@ namespace OperationsManager.Areas.Student.Controllers
                     }
                 }
             }
-            
-                //}
+
+            //}
             //}
 
             DateTime dtValidator = new DateTime();
-            if(DateTime.TryParse(studentView.DOBString, out dtValidator))
+            if (DateTime.TryParse(studentView.DOBString, out dtValidator))
             {
-                if(studentView.UserDetails==null)
+                if (studentView.UserDetails == null)
                 {
                     studentView.UserDetails = new UserMasterDTO();
                 }
@@ -994,7 +1373,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 //if (ModelState.IsValid)
                 //{   
-                string pass = !string.IsNullOrEmpty(studentView.UserDetails.Password)? encrypt.encryption(studentView.UserDetails.Password):null;
+                string pass = !string.IsNullOrEmpty(studentView.UserDetails.Password) ? encrypt.encryption(studentView.UserDetails.Password) : null;
                 studentView.UserDetails.Password = pass;
                 StatusDTO<StudentDTO> status = _studSvc.Insert(studentView);
                 studentView.UserDetails = new UserMasterDTO();
@@ -1082,7 +1461,7 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 if (string.Equals(Command, "Promotion Confirmed"))
                 {
-                    StatusDTO<List<StudentDTO>> batchStatus = _studSvc.PromoteToNewClass(null, Command, 0,0);
+                    StatusDTO<List<StudentDTO>> batchStatus = _studSvc.PromoteToNewClass(null, Command, 0, 0);
 
                     if (batchStatus.ReturnObj != null)
                     {
@@ -1228,15 +1607,15 @@ namespace OperationsManager.Areas.Student.Controllers
             StudentVM studView = null;
 
             StatusDTO<List<StudentDTO>> studList = _studSvc.RunPromotionBatch();
-            if(studList!=null && studList.IsSuccess)
+            if (studList != null && studList.IsSuccess)
             {
-                if(studList.ReturnObj!=null && studList.ReturnObj.Count>0)
+                if (studList.ReturnObj != null && studList.ReturnObj.Count > 0)
                 {
                     studView = new StudentVM();// instantiating parent
                     studView.studentList = new List<StudentVM>();//instantiating list of parent
-                    foreach(StudentDTO student in studList.ReturnObj)
+                    foreach (StudentDTO student in studList.ReturnObj)
                     {
-                        if(student!=null)
+                        if (student != null)
                         {
                             StudentVM studV = new StudentVM();// for each student
                             studV.StandardSectionMap = new StandardSectionMapDTO();
@@ -1255,21 +1634,21 @@ namespace OperationsManager.Areas.Student.Controllers
             return View(studView);
         }
         [HttpPost]
-        public  ActionResult PromotionBatch(StudentVM studView)
+        public ActionResult PromotionBatch(StudentVM studView)
         {
             bool isSuccess = false;
             int loggedInUser;
             DateTime date;
             string status;// right now hard coded
-            if(studView!=null)
+            if (studView != null)
             {
                 SessionDTO sessionRet = _sessionSvc.GetUserSession();//Get Data from User Seesion
                 status = "Promotion Confirmed";
                 loggedInUser = sessionRet.UserMasterId;
-                if(status!=null && loggedInUser!=0)
+                if (status != null && loggedInUser != 0)
                 {
-                    isSuccess = _studSvc.UpdatePromotedStudents(loggedInUser,status);
-                    if(isSuccess)
+                    isSuccess = _studSvc.UpdatePromotedStudents(loggedInUser, status);
+                    if (isSuccess)
                     {
                         date = DateTime.Now;
                         studView.SuccessOrFailureMessage = "The students of all classes have been promoted for academic year" + (int)(date.Year - 1) + "/" + (date.Year);
@@ -1280,7 +1659,7 @@ namespace OperationsManager.Areas.Student.Controllers
                         studView.SuccessOrFailureMessage = "All students have not been Promoted yet";
                         studView.MsgColor = "red";
                     }
-                }                
+                }
             }
             return View(studView);
         }
@@ -1289,7 +1668,7 @@ namespace OperationsManager.Areas.Student.Controllers
         public JsonResult Delete(StudentDTO stud)
         {
             //StudentDTO stud = null;
-            if (stud.UserDetails!=null && stud.UserDetails.UserMasterId != 0)
+            if (stud.UserDetails != null && stud.UserDetails.UserMasterId != 0)
             {
                 //stud = new StudentDTO();
                 //stud.UserDetails = new UserMasterDTO();
@@ -1300,7 +1679,23 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 }
             }
-            return Json(new { status="true", message="Deleted!!!" },JsonRequestBehavior.AllowGet);
+            return Json(new { status = "true", message = "Deleted!!!" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult DeleteAdmission(StudentDTO stud)
+        {
+            //StudentDTO stud = null;
+            if (stud.UserDetails.AdmissionId != null && stud.UserDetails.AdmissionId != 0)
+            {                
+                StatusDTO<StudentDTO> status = _studSvc.DeleteAdmission(stud.UserDetails.AdmissionId);
+                if (status != null && status.IsSuccess)
+                {
+
+                }
+            }
+            return Json(new { status = "true", message = "Deleted!!!" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

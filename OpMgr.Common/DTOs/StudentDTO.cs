@@ -60,12 +60,19 @@ namespace OpMgr.Common.DTOs
         public string DrSugg { get; set; }
 
 
-
-
-
-
-
-
+        
+        public string Nationality { get; set; }
+        public string Category { get; set; }
+       
+        public string Secondlang { get; set; }
+        public int Currclass { get; set; }
+        public int classAppld { get; set; }
+        public string Prevschool { get; set; }
+        public string Prevmedium { get; set; }
+        public string Prevstream { get; set; }
+        public string sibName { get; set; }
+        public string sibclass { get; set; }
+        public string sibGender { get; set; }
 
         public string Religion { get; set; }
 
@@ -113,6 +120,7 @@ namespace OpMgr.Common.DTOs
 
         public string MotherOfficeAddress { get; set; }
 
+        public string admissionformno { get; set; }
         public string MotherOfficePhNo { get; set; }
 
         public string MotherTypeOfBusiness { get; set; }
@@ -172,6 +180,18 @@ namespace OpMgr.Common.DTOs
         public string RelationWithChild1stPerson { get; set; }
 
         public string RelationWithChild2ndPerson { get; set; }
+
+        //for admission
+
+        public AdmissionStatusDTO AdmissionStatus { get; set; }
+
+        public StandardDTO CurrentStandard { get; set; }
+
+        public StandardDTO AppliedStandard { get; set; }
+
+        public DateTime? AdmissionExamDate { get; set; }
+
+        public DateTime? AdmissionInterviewDate { get; set; }
 
         //Added by Navajit to pass it from controller--will give correct implementation later on if required
         public List<ExtraCurricularActivitiesDTO> extraCurricularActivities { get; set; }

@@ -123,6 +123,9 @@
   <data name="AddCommand" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Admission" xml:space="preserve">
+    <value>Admission</value>
+  </data>
   <data name="BatchHeading" xml:space="preserve">
     <value>Promotion Status</value>
   </data>
@@ -200,6 +203,9 @@
   </data>
   <data name="RollNo" xml:space="preserve">
     <value>Roll</value>
+  </data>
+  <data name="SearchAdmissionButton" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="SearchButton" xml:space="preserve">
     <value>Search</value>

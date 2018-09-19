@@ -27,7 +27,7 @@ namespace OperationsManager.Areas.Student.Models
         public SelectList LocationList { get; set; }
 
         public SelectList GenderList { get; set; }
-
+        
         public SelectList IsChristianList { get; set; }
 
         public SelectList IsParentTeacherList { get; set; }
@@ -86,6 +86,8 @@ namespace OperationsManager.Areas.Student.Models
         public string DisabledClass { get; set; }
 
         public string DOBString { get; set; }
+        public string xamdate { get; set; }
+        public string interviewdate { get; set; }
         public string FName { get; set; }
 
         public string MName { get; set; }
@@ -107,6 +109,12 @@ namespace OperationsManager.Areas.Student.Models
         public string Pulserate { get; set; }
         public string DrRemarks { get; set; }
         public string DrSugg { get; set; }
+
+        public SelectList AdmissionStatusList { get; set; }
+
+        public SelectList CurrentStandardList { get; set; }
+
+        public SelectList AppliedStandardList { get; set; }
 
         //Added by Navajit
         //public List<GamesDTO> gamesList {get;set;}

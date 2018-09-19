@@ -97,6 +97,33 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admission Form No..
+        /// </summary>
+        public static string admissionformno {
+            get {
+                return ResourceManager.GetString("admissionformno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        public static string AdmissionRegisterButton {
+            get {
+                return ResourceManager.GetString("AdmissionRegisterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Admission Status.
+        /// </summary>
+        public static string AdmissionStatus {
+            get {
+                return ResourceManager.GetString("AdmissionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alternate Contact Number.
         /// </summary>
         public static string AltContactNo {
@@ -178,11 +205,29 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Standard Section.
         /// </summary>
         public static string Class {
             get {
                 return ResourceManager.GetString("Class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class Applied For.
+        /// </summary>
+        public static string classAppld {
+            get {
+                return ResourceManager.GetString("classAppld", resourceCulture);
             }
         }
         
@@ -219,6 +264,15 @@ namespace OpMgr.Resources.User {
         public static string ContactNo {
             get {
                 return ResourceManager.GetString("ContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Class.
+        /// </summary>
+        public static string Currclass {
+            get {
+                return ResourceManager.GetString("Currclass", resourceCulture);
             }
         }
         
@@ -520,6 +574,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interview Date.
+        /// </summary>
+        public static string interviewdate {
+            get {
+                return ResourceManager.GetString("interviewdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Christian.
         /// </summary>
         public static string IsChristian {
@@ -745,6 +808,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nationality.
+        /// </summary>
+        public static string Nationality {
+            get {
+                return ResourceManager.GetString("Nationality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Of Siblings.
         /// </summary>
         public static string NoOfSiblings {
@@ -813,6 +885,33 @@ namespace OpMgr.Resources.User {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous School&apos;s Medium.
+        /// </summary>
+        public static string Prevmedium {
+            get {
+                return ResourceManager.GetString("Prevmedium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous School.
+        /// </summary>
+        public static string Prevschool {
+            get {
+                return ResourceManager.GetString("Prevschool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous Stream.
+        /// </summary>
+        public static string Prevstream {
+            get {
+                return ResourceManager.GetString("Prevstream", resourceCulture);
             }
         }
         
@@ -925,6 +1024,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Second Language .
+        /// </summary>
+        public static string Secondlang {
+            get {
+                return ResourceManager.GetString("Secondlang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Section.
         /// </summary>
         public static string Section {
@@ -934,11 +1042,38 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sibling&apos;s Class.
+        /// </summary>
+        public static string sibclass {
+            get {
+                return ResourceManager.GetString("sibclass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sibling&apos;s Gender.
+        /// </summary>
+        public static string sibGender {
+            get {
+                return ResourceManager.GetString("sibGender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Siblings in Std Or Not.
         /// </summary>
         public static string SiblingInStdOrNot {
             get {
                 return ResourceManager.GetString("SiblingInStdOrNot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sibling&apos;s Name.
+        /// </summary>
+        public static string sibName {
+            get {
+                return ResourceManager.GetString("sibName", resourceCulture);
             }
         }
         
@@ -1065,6 +1200,15 @@ namespace OpMgr.Resources.User {
         public static string Weight {
             get {
                 return ResourceManager.GetString("Weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exam Date.
+        /// </summary>
+        public static string xamdate {
+            get {
+                return ResourceManager.GetString("xamdate", resourceCulture);
             }
         }
     }

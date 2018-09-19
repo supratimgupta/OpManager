@@ -81,5 +81,8 @@
 
   <bind service="OpMgr.Common.Contracts.Modules.IStudentRemarksSvc, OpMgr.Common"
     to="OpMgr.DataAccess.Implementations.StudentRemarksSvc, OpMgr.DataAccess" />
+
+  <bind service="OpMgr.Common.Contracts.Modules.IAttendanceSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.AttendanceSvc, OpMgr.DataAccess" />
 </module>
 

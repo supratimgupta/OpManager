@@ -123,6 +123,9 @@
   <data name="ActionRoleMap" xml:space="preserve">
     <value>MAP ROLE AND ACTION</value>
   </data>
+  <data name="Activities" xml:space="preserve">
+    <value>Activities</value>
+  </data>
   <data name="AddBooks" xml:space="preserve">
     <value>AddBooks</value>
   </data>
@@ -141,11 +144,17 @@
   <data name="AdminPanel" xml:space="preserve">
     <value>Admin Panel</value>
   </data>
+  <data name="Admission" xml:space="preserve">
+    <value>ADMISSION</value>
+  </data>
   <data name="Appraisal" xml:space="preserve">
     <value>Appraisal</value>
   </data>
   <data name="ApproveDues" xml:space="preserve">
     <value>APPROVE</value>
+  </data>
+  <data name="Attendance" xml:space="preserve">
+    <value>Attendance</value>
   </data>
   <data name="EditUser" xml:space="preserve">
     <value>Edit User</value>

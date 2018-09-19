@@ -31,7 +31,7 @@
 
             mywindow.document.write('<html><head><title></title>');
             //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
-            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .resultCard{page-break-after: always; margin-top: 150px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}}</style>');
+            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .resultCard{page-break-after: always; margin-top: 180px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}}</style>');
             mywindow.document.write('<style> body {font-size: 12px;} .headerSummary{font-weight:bold;} .printInnerTable{border-collapse: collapse; text-align:left;} .graphImage{display:inline;} .graphCanvas{display:none;}</style>');
             mywindow.document.write('</head><body>');
             mywindow.document.write(document.getElementById("printSection").innerHTML);
@@ -53,7 +53,7 @@
             var currentDate = new Date();
             var strDate = currentDate.getDate() + "-" + (currentDate.getMonth()+1) + "-" + currentDate.getFullYear();
             $(".spnDate").html(strDate);
-            $(".resultHeader").html($("#ddlResultType").find("option:selected").text());
+            //$(".resultHeader").html($("#ddlResultType").find("option:selected").text());
         });
     </script>
     <script language="javascript" type="text/javascript">
@@ -132,7 +132,7 @@
                                     </tr>
                                     <tr>
                                         <td align="left" width="100px;" class="headerSummary">CLASS &amp; SEC: </td>
-                                        <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) / @rcDTO.StudentRollNo</td>
+                                        <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) , <b>ROLL NO:</b> @rcDTO.StudentRollNo</td>
                                         <td align="left" width="100px;" class="headerSummary">SESSION: </td>
                                         <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
                                     </tr>
@@ -146,7 +146,7 @@
                                                             <table class="table table-bordered printInnerTable" style="width:100%;">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th rowspan="2">Subject</th>
+                                                                        <th rowspan="2">SUBJECT</th>
                                                                         @for (int h = 0; h < rcDTO.ResultRows[0].ResultColumns.Count; h++)
                                                                         {
                                                                             <th>@rcDTO.ResultRows[0].ResultColumns[h].ColumnName</th>
@@ -181,7 +181,7 @@
                                                                         }
                                                                     </tr>
                                                                     <tr>
-                                                                        <th>Class Heighest: </th>
+                                                                        <th>Class Highest: </th>
                                                                         @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
                                                                         {
                                                                             if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
@@ -226,21 +226,21 @@
                                                                             var maxData_@gId = {
                                                                                 label: 'Highest',
                                                                                 data: @OperationsManager.Helpers.GraphHelper.GetMaxMarksGraphData(rcDTO.GraphRecords),
-                                                                                backgroundColor: 'rgba(0, 99, 132, 0.6)',
+                                                                                backgroundColor: 'rgba(255, 0, 0, 1)',
                                                                                 borderWidth: 0
                                                                             };
 
                                                                             var avgData_@gId = {
                                                                                 label: 'Average',
                                                                                 data: @OperationsManager.Helpers.GraphHelper.GetAvgMarksGraphData(rcDTO.GraphRecords),
-                                                                                backgroundColor: 'rgba(99, 132, 0, 0.6)',
+                                                                                backgroundColor: 'rgba(0, 255, 0, 1)',
                                                                                 borderWidth: 0
                                                                             };
 
                                                                             var obtainedData_@gId = {
                                                                                 label: 'Obtained',
                                                                                 data: @OperationsManager.Helpers.GraphHelper.GetObtainedMarksGraphData(rcDTO.GraphRecords),
-                                                                                backgroundColor: 'rgba(0, 132, 99, 0.6)',
+                                                                                backgroundColor: 'rgba(0, 204, 255, 1)',
                                                                                 borderWidth: 0
                                                                             };
 
@@ -309,6 +309,7 @@
                                                                         <td>@rcDTO.GradeResultRows[i + 1].ResultColumns[x].ColumnValue</td>
                                                                     }
                                                                 }
+                                                                i = i + 1;
                                                             }
                                                             else
                                                             {
@@ -342,7 +343,7 @@
                                                         @rcDTO.CurrentRemarks
                                                     </td>
                                                     <td style="width:50%">
-                                                        @rcDTO.AttendancePercent
+                                                        @(rcDTO.AttendancePercent) %
                                                     </td>
                                                 </tr>
                                             </table>
@@ -355,17 +356,17 @@
                                                     <td style="text-align:left; height:40px;">
 
                                                     </td>
-                                                    <td>
+                                                    @*<td>
 
-                                                    </td>
+                                                    </td>*@
                                                     <td>
-                                                        <img width="70" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
+                                                        <img width="170" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th style="text-align:center; border:none;">
+                                                    @*<th style="text-align:center; border:none;">
                                                         PARENT SIGNATURE
-                                                    </th>
+                                                    </th>*@
                                                     <th style="text-align:center; border:none;">
                                                         CLASS TEACHER SIGNATURE
                                                     </th>
@@ -380,7 +381,7 @@
                                         <td colspan="4">
                                             <table style="width:100%">
                                                 <tr>
-                                                    <th width="120px;" style="border:none; font-size:12px;">
+                                                    @*<th width="120px;" style="border:none; font-size:12px;">
                                                         Marks Range:
                                                     </th>
                                                     <td align="left" style="padding-left:5px; font-size:12px;">
@@ -389,14 +390,30 @@
                                                     <th width="100px" style="border:none; font-size:12px;">
                                                         Pass Marks:
                                                     </th>
-                                                    <td align="left" width="30px" style="font-size:12px;">40</td>
+                                                    <td align="left" width="30px" style="font-size:12px;">35</td>*@
+                                                </tr>
+                                                <tr>
+                                                    <th width="120px;" style="border:none; font-size:12px;">
+                                                        Grades:
+                                                    </th>
+                                                    <td align="left" style="padding-left:5px; font-size:12px;">
+                                                        A(Very Good) / B(Good) / C(Fair) / D(Satisfactory) / E(Need Improvement) / U(Unsatisfactory)
+                                                    </td>
+                                                    <th width="100px" style="border:none; font-size:12px;">
+                                                        Pass Marks:
+                                                    </th>
+                                                    <td align="left" width="30px" style="font-size:12px;">35</td>
                                                 </tr>
                                                 <tr>
                                                     <th style="width:120px; border:none; font-size:12px;">
-                                                        Grades:
+                                                        IPD/APD:
                                                     </th>
                                                     <td colspan="3" style="font-size:12px;" align="left">
-                                                        A(Very Good) / B(Good) / C(Fair) / D(Satisfactory) / E(Need Improvement) / U(Unsatisfactory)
+                                                        Punctuality, Good manners &amp; setting good examples,
+                                                        Responsibility &amp; Perseverance, Completes work on time, Presentation of
+                                                        work, Neatness and Smartness in uniform, Spoken English, Participation
+                                                        in Co-Curricular/Cultural Activities, Respect for School Property,
+                                                        Participation in Games &amp; Sports.
                                                     </td>
                                                 </tr>
                                             </table>
