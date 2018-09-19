@@ -162,6 +162,33 @@ namespace OperationsManager.Helpers
 
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
+        //Added by Navajit
+        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList()
+        {
+            List<ExtraCurricularActivitiesDTO> extraCurricularActivityList = _ddlRepo.getExtraCurricularActivityList();
+            return extraCurricularActivityList;
+
+        }
+
+        //public List<GamesDTO> getGamesList()
+        //{
+        //    List<GamesDTO> gamesList = _ddlRepo.getGamesList();
+        //    return gamesList;
+
+        //}
+
+        //public List<CoCurricularDTO> getCoCurricularList()
+        //{
+        //    List<CoCurricularDTO> coCurricularList = _ddlRepo.getCoCurricularList();
+        //    return coCurricularList;
+
+        //}
+        //public List<DisciplineDTO> getDisciplineList()
+        //{
+        //    List<DisciplineDTO> disciplineList = _ddlRepo.getDisciplineList();
+        //    return disciplineList;
+
+        //}
 
         public SelectList getStandardSectionDropDownWithSerial()
         {

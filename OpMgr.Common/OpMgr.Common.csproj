@@ -83,6 +83,7 @@
     <Compile Include="DTOs\ChatGroupDTO.cs" />
     <Compile Include="DTOs\ChatLogDTO.cs" />
     <Compile Include="DTOs\ClassTypeDTO.cs" />
+    <Compile Include="DTOs\CoCurricularDTO.cs" />
     <Compile Include="DTOs\CompetencyDTO.cs" />
     <Compile Include="DTOs\ConfigDTO.cs" />
     <Compile Include="DTOs\CourseExam.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="DTOs\CourseMappingDTO.cs" />
     <Compile Include="DTOs\DepartmentDTO.cs" />
     <Compile Include="DTOs\DesignationDTO.cs" />
+    <Compile Include="DTOs\DisciplineDTO.cs" />
     <Compile Include="DTOs\EmployeeAppraisalMasterDTO.cs" />
     <Compile Include="DTOs\EmployeeCompetencyDTO.cs" />
     <Compile Include="DTOs\EmployeeDetailsDTO.cs" />
@@ -100,8 +102,10 @@
     <Compile Include="DTOs\ExamRuleDTO.cs" />
     <Compile Include="DTOs\ExamSubTypeDTO.cs" />
     <Compile Include="DTOs\ExamTypeDTO.cs" />
+    <Compile Include="DTOs\ExtraCurricularActivitiesDTO.cs" />
     <Compile Include="DTOs\FacultyCourseMapDTO.cs" />
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
+    <Compile Include="DTOs\GamesDTO.cs" />
     <Compile Include="DTOs\GoalAttributeDTO.cs" />
     <Compile Include="DTOs\GoalDTO.cs" />
     <Compile Include="DTOs\GoalLogExcelDTO.cs" />

@@ -169,6 +169,28 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@NameOf2ndPerson", MySqlDbType.String).Value = data.NameOf2ndPerson;
                     command.Parameters.Add("@RelationWithChild2ndPerson", MySqlDbType.String).Value = data.RelationWithChild2ndPerson;
 
+                    //Added by Navajit--will change to sp after split function
+                    if (data.extraCurricularActivities != null && data.extraCurricularActivities.Count > 0)
+                    {
+                        command = new MySqlCommand();
+                        for (int i = 0; i < data.extraCurricularActivities.Count; i++)
+                        {
+                            if (data.extraCurricularActivities[i].IsSelected)
+                            {
+                                //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                                command = new MySqlCommand();
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                                command.CommandText = "sp_stu_save_extracurricular";
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
+                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i + 1);
+                                command.Parameters.Add("@OpenMode", MySqlDbType.String).Value = "A";
+                                command.ExecuteNonQuery();
+                                
+                            }
+                        }
+                    }
+
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
@@ -713,10 +735,34 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@NameOf2ndPerson", MySqlDbType.String).Value = data.NameOf2ndPerson;
                     command.Parameters.Add("@RelationWithChild2ndPerson", MySqlDbType.String).Value = data.RelationWithChild2ndPerson;
 
-
                     command.ExecuteNonQuery();
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
                     status.IsSuccess = true;
+
+                    //Added by Navajit--will change to sp after split function
+                    if (data.extraCurricularActivities != null && data.extraCurricularActivities.Count > 0)
+                    {
+                        command = new MySqlCommand();
+                        for (int i = 0; i < data.extraCurricularActivities.Count; i++)
+                        {
+                            if (data.extraCurricularActivities[i].IsSelected)
+                            {
+                                //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                                command = new MySqlCommand();
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                                command.CommandText = "sp_stu_save_extracurricular";
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value=data.UserDetails.UserMasterId;
+                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i+1);
+                                command.Parameters.Add("@OpenMode", MySqlDbType.String).Value = "E";
+                                int no = command.ExecuteNonQuery();
+                                if (no == 0)
+                                {
+                                    status.IsSuccess = false;
+                                }
+                            }
+                        }
+                    }                    
                     return status;
                 }
                 catch (Exception exp)

@@ -172,5 +172,8 @@ namespace OpMgr.Common.DTOs
         public string RelationWithChild1stPerson { get; set; }
 
         public string RelationWithChild2ndPerson { get; set; }
+
+        //Added by Navajit to pass it from controller--will give correct implementation later on if required
+        public List<ExtraCurricularActivitiesDTO> extraCurricularActivities { get; set; }
     }
 }

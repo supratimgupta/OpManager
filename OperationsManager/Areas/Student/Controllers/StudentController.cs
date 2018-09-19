@@ -654,7 +654,14 @@ namespace OperationsManager.Areas.Student.Controllers
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
-            studView.GraceAmountOnList = _uiddlRepo.getCalcType();            
+            studView.GraceAmountOnList = _uiddlRepo.getCalcType();
+
+            //Added by Navajit for Extracurricular tab
+            //studView.gamesList = _uiddlRepo.getGamesList();
+            //studView.coCurricularList = _uiddlRepo.getCoCurricularList();
+            //studView.disciplineList = _uiddlRepo.getDisciplineList();
+
+            studView.extraCurricularActivityList = _uiddlRepo.getExtraCurricularActivityList();
 
             return View(studView);
         }
@@ -951,11 +958,11 @@ namespace OperationsManager.Areas.Student.Controllers
                 studentView.UserDetails.DOB = dtValidator;
             }
 
+            //Added by Navajit to include Extra Curricular list in StudentDTO object
+            studentView.extraCurricularActivities = studentView.extraCurricularActivityList;
+
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
-                //Call update
-                //if (ModelState.IsValid)
-                //{ 
                 StatusDTO<StudentDTO> status = _studSvc.Update(studentView);
                 if (status.IsSuccess)
                 {
