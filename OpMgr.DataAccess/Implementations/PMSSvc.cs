@@ -277,7 +277,7 @@ namespace OpMgr.DataAccess.Implementations
 
                                 if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["FinalRating"].ToString()))
                                 {
-                                    empgoallog.EmployeeAppraisalMaster.ReviewerFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
+                                    empgoallog.EmployeeAppraisalMaster.AppraiserFinalRating = Convert.ToDecimal(dsGoalLst.Tables[0].Rows[i]["FinalRating"]);
                                 }
                                 //if (!string.IsNullOrEmpty(dsGoalLst.Tables[0].Rows[i]["ReviewerComment1"].ToString()))
                                 //{

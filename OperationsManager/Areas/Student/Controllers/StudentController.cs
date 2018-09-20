@@ -656,6 +656,13 @@ namespace OperationsManager.Areas.Student.Controllers
             studView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             studView.GraceAmountOnList = _uiddlRepo.getCalcType();
 
+            //Added by Navajit for Extracurricular tab
+            //studView.gamesList = _uiddlRepo.getGamesList();
+            //studView.coCurricularList = _uiddlRepo.getCoCurricularList();
+            //studView.disciplineList = _uiddlRepo.getDisciplineList();
+
+            studView.extraCurricularActivityList = _uiddlRepo.getExtraCurricularActivityList();
+
             return View(studView);
         }
         [HttpGet]
@@ -730,8 +737,8 @@ namespace OperationsManager.Areas.Student.Controllers
 
                 studView.Religion = dto.ReturnObj.Religion;
                 studView.Caste = dto.ReturnObj.Caste;
-                studView.classAppld = dto.ReturnObj.classAppld;
-                studView.Currclass = dto.ReturnObj.Currclass;
+                //studView.classAppld = dto.ReturnObj.classAppld;
+                //studView.Currclass = dto.ReturnObj.Currclass;
                 studView.sibName = dto.ReturnObj.sibName;
                 studView.sibclass = dto.ReturnObj.sibclass;
                 studView.sibGender = dto.ReturnObj.sibGender;
@@ -748,7 +755,7 @@ namespace OperationsManager.Areas.Student.Controllers
                     if (dto.ReturnObj.AdmissionStatus.AdmissionStatusId > 0)
                     {
                         studView.AdmissionStatus = new AdmissionStatusDTO();
-                                                                                                                                                                                                                                               studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
+                        studView.AdmissionStatus.AdmissionStatusId = dto.ReturnObj.AdmissionStatus.AdmissionStatusId;
                     }
                 }
                 studView.AdmissionExamDate = dto.ReturnObj.AdmissionExamDate;
@@ -1330,11 +1337,11 @@ namespace OperationsManager.Areas.Student.Controllers
                 studentView.UserDetails.DOB = dtValidator;
             }
 
+            //Added by Navajit to include Extra Curricular list in StudentDTO object
+            studentView.extraCurricularActivities = studentView.extraCurricularActivityList;
+
             if (string.Equals(studentView.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))
             {
-                //Call update
-                //if (ModelState.IsValid)
-                //{ 
                 StatusDTO<StudentDTO> status = _studSvc.Update(studentView);
                 if (status.IsSuccess)
                 {

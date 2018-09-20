@@ -466,9 +466,157 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+        //Added by Navajit
+        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList()
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                List<ExtraCurricularActivitiesDTO> extraCurricularList = null;
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "select * from tbl_extra_curricular_activities where Active=1";
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    _dtData = new DataTable();
+                    MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+                    msDa.Fill(_dtData);                    
+                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    {
+                        extraCurricularList = new List<ExtraCurricularActivitiesDTO>();
+                        foreach (DataRow dr in _dtData.Rows)
+                        {
+                            ExtraCurricularActivitiesDTO extraCurricular = new ExtraCurricularActivitiesDTO();
+                            extraCurricular.ExtraCurricularId = (int)dr["ExtraCurricularId"];
+                            extraCurricular.ActivityName = dr["ActivityName"].ToString().Trim();
+                            extraCurricular.ActivityType= dr["ActivityType"].ToString().Trim();
+                           // extraCurricular.IsSelected= Convert.ToBoolean(dr["IsSelected"]);
+                            extraCurricular.IsActive = Convert.ToBoolean(dr["Active"]);
 
+                            extraCurricularList.Add(extraCurricular);
+                        }
+                    }
 
-       public  List<StandardSectionMapDTO> StandardSectionWithSerial()
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
+                return extraCurricularList;
+            }
+        }
+        //public List<GamesDTO> getGamesList()
+        //{
+        //    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+        //    {
+        //        List<GamesDTO> gamesList = null;
+        //        try
+        //        {
+        //            dbSvc.OpenConnection();
+        //            MySqlCommand command = new MySqlCommand();
+        //            command.CommandText = "select * from tbl_gamesMaster where Active=1";
+        //            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+        //            _dtData = new DataTable();
+        //            MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+        //            msDa.Fill(_dtData);
+        //            gamesList = new List<GamesDTO>();
+        //            if (_dtData != null && _dtData.Rows.Count > 0)
+        //            {
+        //                foreach (DataRow dr in _dtData.Rows)
+        //                {
+        //                    GamesDTO game = new GamesDTO();
+        //                    game.GamesId = (int)dr["idGames"];
+        //                    game.GamesName = dr["GamesName"].ToString().Trim();
+        //                    game.IsActive = Convert.ToBoolean(dr["Active"]);
+
+        //                    gamesList.Add(game);
+        //                }
+        //            }
+                    
+        //        }
+        //        catch (Exception exp)
+        //        {
+        //            throw exp;
+        //        }
+        //        return gamesList;
+        //    }
+        //}
+
+        //public List<CoCurricularDTO> getCoCurricularList()
+        //{
+        //    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+        //    {
+        //        List<CoCurricularDTO> coCurricularList = null;
+        //        try
+        //        {
+        //            dbSvc.OpenConnection();
+        //            MySqlCommand command = new MySqlCommand();
+        //            command.CommandText = "select * from tbl_extracurricular where Active=1";
+        //            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+        //            _dtData = new DataTable();
+        //            MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+        //            msDa.Fill(_dtData);
+        //            coCurricularList = new List<CoCurricularDTO>();
+        //            if (_dtData != null && _dtData.Rows.Count > 0)
+        //            {
+        //                foreach (DataRow dr in _dtData.Rows)
+        //                {
+        //                    CoCurricularDTO cocurr = new CoCurricularDTO();
+        //                    cocurr.CoCurricularId = (int)dr["ExtraCurricularId"];
+        //                    cocurr.CoCurricularName = dr["ExtraCurricularName"].ToString().Trim();
+        //                    cocurr.IsActive = Convert.ToBoolean(dr["Active"]);
+
+        //                    coCurricularList.Add(cocurr);
+        //                }
+        //            }
+
+        //        }
+        //        catch (Exception exp)
+        //        {
+        //            throw exp;
+        //        }
+        //        return coCurricularList;
+        //    }
+        //}
+
+        //public List<DisciplineDTO> getDisciplineList()
+        //{
+        //    using (IDbSvc dbSvc = new DbSvc(_configSvc))
+        //    {
+        //        List<DisciplineDTO> disciplineList = null;
+        //        try
+        //        {
+        //            dbSvc.OpenConnection();
+        //            MySqlCommand command = new MySqlCommand();
+        //            command.CommandText = "select * from tbl_disciplinemaster where Active=1";
+        //            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+        //            _dtData = new DataTable();
+        //            MySqlDataAdapter msDa = new MySqlDataAdapter(command);
+        //            msDa.Fill(_dtData);
+        //            disciplineList = new List<DisciplineDTO>();
+        //            if (_dtData != null && _dtData.Rows.Count > 0)
+        //            {
+        //                foreach (DataRow dr in _dtData.Rows)
+        //                {
+        //                    DisciplineDTO discipline = new DisciplineDTO();
+        //                    discipline.DisciplineId = (int)dr["DisciplineId"];
+        //                    discipline.DisciplineName = dr["DisciplineName"].ToString().Trim();
+        //                    discipline.IsActive = Convert.ToBoolean(dr["Active"]);
+
+        //                    disciplineList.Add(discipline);
+        //                }
+        //            }
+
+        //        }
+        //        catch (Exception exp)
+        //        {
+        //            throw exp;
+        //        }
+        //        return disciplineList;
+        //    }
+        //}
+
+        public List<StandardSectionMapDTO> StandardSectionWithSerial()
         {
             List<StandardSectionMapDTO> lstStandardSection = null;
             using (IDbSvc dbSvc = new DbSvc(_configSvc))

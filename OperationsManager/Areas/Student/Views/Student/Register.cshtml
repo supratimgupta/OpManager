@@ -19,8 +19,8 @@
                     var errors = validator.numberOfInvalids();
                     if (errors) {
                         var message = errors == 1
-                          ? 'You missed 1 field. It has been highlighted. Please check all tabs.'
-                          : 'You missed ' + errors + ' fields. They have been highlighted. Please check all tabs.';
+                            ? 'You missed 1 field. It has been highlighted. Please check all tabs.'
+                            : 'You missed ' + errors + ' fields. They have been highlighted. Please check all tabs.';
                         //$("div.error span").html(message);
                         //$("div.error").show();
                         alert(message);
@@ -213,6 +213,9 @@
                                 <a href="#feesinfo" data-toggle="tab">Fees Details</a>
                             </li>
                             <li>
+                                <a href="#extraCurricular" data-toggle="tab">Extra Curricular Activities</a>
+                            </li>
+                            <li>
                                 <a href="#logininfo" data-toggle="tab">Login Details</a>
                             </li>
                         </ul>
@@ -313,7 +316,7 @@
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherDepartment, UserResource.FatherDepartment, new { @class = "form-control" })
-                                        </div>                                        
+                                        </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherOrganisationName, UserResource.FatherOrganisationName, new { @class = "form-control" })
                                         </div>
@@ -444,7 +447,7 @@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.RelationWithChild2ndPerson, UserResource.RelationWithChild2ndPerson, new { @class = "form-control" })
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="schoolinfo">
@@ -455,7 +458,7 @@
                                             @Html.OpMgrTextBoxFor(m => m.RollNumber, UserResource.RollNo, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-5">
-                                            @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", id="txtAdmissionDate" })
+                                            @Html.OpMgrTextBoxFor(m => m.AdmissionDate, UserResource.AdmissionDate, new { @class = "admissiondate form-control", id = "txtAdmissionDate" })
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrDropDownListFor(m => m.StandardSectionMap.StandardSectionId, Model.StandardSectionList, UserResource.Class, new { @class = "form-control" })
@@ -534,6 +537,89 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="tab-pane" id="extraCurricular">
+                                        @*@if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase) && !string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
+                                            {*@
+                                        <div id="divExtraCurricular">
+                                            <div id="divGames" class="col-sm-12 col-md-12 col-lg-12">
+                                                @if (Model != null)
+                                                {
+                                                    int flag = 0;
+                                                    if (Model.extraCurricularActivityList != null && Model.extraCurricularActivityList.Count > 0)
+                                                    {
+                                                        for (int i = 0; i < Model.extraCurricularActivityList.Count; i++)
+                                                        {
+                                                            if (!string.IsNullOrEmpty(Model.extraCurricularActivityList[i].ActivityType) && string.Equals(Model.extraCurricularActivityList[i].ActivityType, "Games", StringComparison.OrdinalIgnoreCase))
+                                                            {
+
+                                                                if (flag == 0)
+                                                                {
+                                                                    @Html.Label("Games", new { @class = "form-control" })
+                                                                    flag = 1;
+                                                                }
+                                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                                    @Html.CheckBoxFor(m => m.extraCurricularActivityList[i].IsSelected) &nbsp @Model.extraCurricularActivityList[i].ActivityName
+                                                                </div>
+                                                            }
+                                                            if (!string.IsNullOrEmpty(Model.extraCurricularActivityList[i].ActivityType) && string.Equals(Model.extraCurricularActivityList[i].ActivityType, "Co-Curricular Activity", StringComparison.OrdinalIgnoreCase))
+                                                            {
+                                                                if (flag == 1)
+                                                                {
+                                                                    <br />                                                                    
+                                                                    @Html.Label("Co-Curricular Activity", new { @class = "form-control" })
+
+                                                                    flag = 0;
+                                                                }
+                                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                                    @Html.CheckBoxFor(m => m.extraCurricularActivityList[i].IsSelected) &nbsp @Model.extraCurricularActivityList[i].ActivityName
+                                                                </div>
+                                                            }
+                                                            if (!string.IsNullOrEmpty(Model.extraCurricularActivityList[i].ActivityType) && string.Equals(Model.extraCurricularActivityList[i].ActivityType, "Discipline", StringComparison.OrdinalIgnoreCase))
+                                                            {
+                                                                if (flag == 0)
+                                                                {
+                                                                    <br />
+                                                                    <br />
+                                                                    @Html.Label("Discipline", new { @class = "form-control" })
+                                                                    flag = 1;
+                                                                }
+                                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                                    @Html.CheckBoxFor(m => m.extraCurricularActivityList[i].IsSelected) &nbsp @Model.extraCurricularActivityList[i].ActivityName
+                                                                </div>
+                                                            }
+                                                        }
+                                                        <br />
+                                                    }
+                                                    @*if (Model.coCurricularList != null && Model.coCurricularList.Count > 0)
+                                                        {
+                                                            @Html.Label("Co-Curricular Activities", new { @class = "form-control" })
+                                                            for (int i = 0; i < Model.coCurricularList.Count; i++)
+                                                            {
+                                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                                    @*<input type="checkbox" value="@Model.coCurricularList[i].IsSelected" name="coCurricular" />&nbsp @Model.coCurricularList[i].CoCurricularName*@
+                                                    @*@Html.CheckBoxFor(m => m.coCurricularList[i].IsSelected) &nbsp @Model.coCurricularList[i].CoCurricularName*@
+                                                    @*</div>
+                                                        }*@
+                                                    @*<input type="hidden" value="false" name="coCurricular" />*@
+                                                    @*<br />
+                                                            <br />
+                                                        }
+                                                        if (Model.disciplineList != null && Model.disciplineList.Count > 0)
+                                                        {
+                                                            @Html.Label("Discipline", new { @class = "form-control" })
+                                                            for (int i = 0; i < Model.disciplineList.Count; i++)
+                                                            {
+                                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                                    <input type="checkbox" value="@Model.disciplineList[i].IsSelected" name="discipline" />&nbsp @Model.disciplineList[i].DisciplineName
+                                                                </div>
+                                                            }
+                                                            <input type="hidden" value="false" name="discipline" />
+                                                        }*@
+                                                }
+                                            </div>
+                                        </div>
+                                        @*}*@
+                                    </div>
                                     <div class="tab-pane" id="logininfo">
                                         @if (!string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase) && !string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase))
                                         {
@@ -542,7 +628,7 @@
                                                     @Html.OpMgrTextBoxFor(m => m.UserDetails.UserName, UserResource.UserName, new { @class = "form-control" })
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control"})
+                                                    @Html.OpMgrPasswordFor(m => m.UserDetails.Password, UserResource.Password, new { @class = "form-control" })
                                                 </div>
                                                 <div class="col-lg-10">
                                                     @Html.OpMgrPasswordFor(m => m.UserDetails.ConfirmPassword, UserResource.ConfirmPassword, new { @class = "form-control" })

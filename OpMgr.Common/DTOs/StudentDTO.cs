@@ -192,5 +192,8 @@ namespace OpMgr.Common.DTOs
         public DateTime? AdmissionExamDate { get; set; }
 
         public DateTime? AdmissionInterviewDate { get; set; }
+
+        //Added by Navajit to pass it from controller--will give correct implementation later on if required
+        public List<ExtraCurricularActivitiesDTO> extraCurricularActivities { get; set; }
     }
 }

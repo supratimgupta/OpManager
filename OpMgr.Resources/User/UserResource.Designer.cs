@@ -160,6 +160,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Awards.
+        /// </summary>
+        public static string Awards {
+            get {
+                return ResourceManager.GetString("Awards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blood Group.
         /// </summary>
         public static string BloodGrp {
@@ -232,6 +241,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Co-curricular Activities.
+        /// </summary>
+        public static string CoActivities {
+            get {
+                return ResourceManager.GetString("CoActivities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
@@ -291,6 +309,15 @@ namespace OpMgr.Resources.User {
         public static string DesignationId {
             get {
                 return ResourceManager.GetString("DesignationId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discipline.
+        /// </summary>
+        public static string Discipline {
+            get {
+                return ResourceManager.GetString("Discipline", resourceCulture);
             }
         }
         
@@ -471,6 +498,15 @@ namespace OpMgr.Resources.User {
         public static string FName {
             get {
                 return ResourceManager.GetString("FName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Games.
+        /// </summary>
+        public static string Games {
+            get {
+                return ResourceManager.GetString("Games", resourceCulture);
             }
         }
         

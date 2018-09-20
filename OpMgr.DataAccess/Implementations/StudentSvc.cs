@@ -169,6 +169,28 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@NameOf2ndPerson", MySqlDbType.String).Value = data.NameOf2ndPerson;
                     command.Parameters.Add("@RelationWithChild2ndPerson", MySqlDbType.String).Value = data.RelationWithChild2ndPerson;
 
+                    //Added by Navajit--will change to sp after split function
+                    if (data.extraCurricularActivities != null && data.extraCurricularActivities.Count > 0)
+                    {
+                        command = new MySqlCommand();
+                        for (int i = 0; i < data.extraCurricularActivities.Count; i++)
+                        {
+                            if (data.extraCurricularActivities[i].IsSelected)
+                            {
+                                //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                                command = new MySqlCommand();
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                                command.CommandText = "sp_stu_save_extracurricular";
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
+                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i + 1);
+                                command.Parameters.Add("@OpenMode", MySqlDbType.String).Value = "A";
+                                command.ExecuteNonQuery();
+                                
+                            }
+                        }
+                    }
+
                     MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
                     _dtData = new DataTable();
                     _dtData.Load(rdr);
@@ -509,12 +531,26 @@ namespace OpMgr.DataAccess.Implementations
                             studentDTO.MotherAnnualIncome = _dsData.Tables[0].Rows[0]["MothersAnnualIncome"].ToString();
                             studentDTO.Religion = _dsData.Tables[0].Rows[0]["Religion"].ToString();
                             studentDTO.Caste = _dsData.Tables[0].Rows[0]["Caste"].ToString();
-                            studentDTO.classAppld = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
-                            studentDTO.Currclass = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
-                            studentDTO.CurrentStandard = new StandardDTO();
-                            studentDTO.CurrentStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
-                            studentDTO.AppliedStandard = new StandardDTO();
-                            studentDTO.AppliedStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                            //studentDTO.classAppld = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                            //studentDTO.Currclass = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                            
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["CurrentStandardId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]) > 0)
+                                {
+                                    studentDTO.CurrentStandard = new StandardDTO();
+                                    studentDTO.CurrentStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["CurrentStandardId"]);
+                                }
+                            }
+                            
+                            if (!string.IsNullOrEmpty(_dsData.Tables[0].Rows[0]["AppliedStandardId"].ToString()))
+                            {
+                                if (Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]) > 0)
+                                {
+                                    studentDTO.AppliedStandard = new StandardDTO();
+                                    studentDTO.AppliedStandard.StandardId = Convert.ToInt32(_dsData.Tables[0].Rows[0]["AppliedStandardId"]);
+                                }
+                            }
                             studentDTO.sibName = _dsData.Tables[0].Rows[0]["sibName"].ToString();
                             studentDTO.sibclass = _dsData.Tables[0].Rows[0]["sibclass"].ToString();
                             studentDTO.sibGender = _dsData.Tables[0].Rows[0]["sibGender"].ToString();
@@ -855,7 +891,7 @@ namespace OpMgr.DataAccess.Implementations
                         selectClause = "SELECT users.UserMasterId,users.FName, users.MName,users.LName,Lo.LocationDescription," +
                                        "stnd.StandardName,sec.SectionName, student.RollNumber, student.RegistrationNumber," +
                                        "student.FathersContactNo, users.ContactNo " +
-                                       ",hrpt.height ,hrpt.weight,hrpt.bmi,hrpt.distancevision,hrpt.nearvision,hrpt.AnymajorIllness,hrpt.PulseRate,hrpt.DrRemarks,hrpt.DrSuggesstion" +
+                                       ",hrpt.height ,hrpt.weight,ROUND(hrpt.bmi,4) as bmi,hrpt.distancevision,hrpt.nearvision,hrpt.AnymajorIllness,hrpt.PulseRate,hrpt.DrRemarks,hrpt.DrSuggesstion" +
                                        " FROM studentinfo student " +
                                        " INNER JOIN UserMaster users ON student.UserMasterId = users.UserMasterId" +
                                        " INNER JOIN Location Lo ON Lo.LocationId = users.LocationId" +
@@ -1214,10 +1250,34 @@ namespace OpMgr.DataAccess.Implementations
                     command.Parameters.Add("@NameOf2ndPerson", MySqlDbType.String).Value = data.NameOf2ndPerson;
                     command.Parameters.Add("@RelationWithChild2ndPerson", MySqlDbType.String).Value = data.RelationWithChild2ndPerson;
 
-
                     command.ExecuteNonQuery();
                     StatusDTO<StudentDTO> status = new StatusDTO<StudentDTO>();
                     status.IsSuccess = true;
+
+                    //Added by Navajit--will change to sp after split function
+                    if (data.extraCurricularActivities != null && data.extraCurricularActivities.Count > 0)
+                    {
+                        command = new MySqlCommand();
+                        for (int i = 0; i < data.extraCurricularActivities.Count; i++)
+                        {
+                            if (data.extraCurricularActivities[i].IsSelected)
+                            {
+                                //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                                command = new MySqlCommand();
+                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                                command.CommandText = "sp_stu_save_extracurricular";
+                                command.CommandType = CommandType.StoredProcedure;
+                                command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value=data.UserDetails.UserMasterId;
+                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i+1);
+                                command.Parameters.Add("@OpenMode", MySqlDbType.String).Value = "E";
+                                int no = command.ExecuteNonQuery();
+                                if (no == 0)
+                                {
+                                    status.IsSuccess = false;
+                                }
+                            }
+                        }
+                    }                    
                     return status;
                 }
                 catch (Exception exp)
