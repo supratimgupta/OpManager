@@ -132,7 +132,7 @@
                                     </tr>
                                     <tr>
                                         <td align="left" width="100px;" class="headerSummary">CLASS &amp; SEC: </td>
-                                        <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) , <b>ROLL NO:</b> @rcDTO.StudentRollNo</td>
+                                        <td align="left">@rcDTO.ClassName &nbsp;(@rcDTO.SectionName) / ROLL NO: @rcDTO.StudentRollNo</td>
                                         <td align="left" width="100px;" class="headerSummary">SESSION: </td>
                                         <td align="left" width="100px;">@rcDTO.SessionStart - @rcDTO.SessionEnd</td>
                                     </tr>
@@ -226,21 +226,21 @@
                                                                             var maxData_@gId = {
                                                                                 label: 'Highest',
                                                                                 data: @OperationsManager.Helpers.GraphHelper.GetMaxMarksGraphData(rcDTO.GraphRecords),
-                                                                                backgroundColor: 'rgba(255, 0, 0, 1)',
+                                                                                backgroundColor: 'rgba(0, 99, 132, 0.6)',
                                                                                 borderWidth: 0
                                                                             };
 
                                                                             var avgData_@gId = {
                                                                                 label: 'Average',
                                                                                 data: @OperationsManager.Helpers.GraphHelper.GetAvgMarksGraphData(rcDTO.GraphRecords),
-                                                                                backgroundColor: 'rgba(0, 255, 0, 1)',
+                                                                                backgroundColor: 'rgba(99, 132, 0, 0.6)',
                                                                                 borderWidth: 0
                                                                             };
 
                                                                             var obtainedData_@gId = {
                                                                                 label: 'Obtained',
                                                                                 data: @OperationsManager.Helpers.GraphHelper.GetObtainedMarksGraphData(rcDTO.GraphRecords),
-                                                                                backgroundColor: 'rgba(0, 204, 255, 1)',
+                                                                                backgroundColor: 'rgba(0, 132, 99, 0.6)',
                                                                                 borderWidth: 0
                                                                             };
 
@@ -343,7 +343,7 @@
                                                         @rcDTO.CurrentRemarks
                                                     </td>
                                                     <td style="width:50%">
-                                                        @(rcDTO.AttendancePercent) %
+                                                        @rcDTO.AttendancePercent
                                                     </td>
                                                 </tr>
                                             </table>
@@ -360,7 +360,7 @@
 
                                                     </td>*@
                                                     <td>
-                                                        <img width="170" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
+                                                        <img width="120" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
                                                     </td>
                                                 </tr>
                                                 <tr>
