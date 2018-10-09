@@ -13,6 +13,7 @@
         $(document).ready(function () {
             var registerstudentform = $("#registerstudentform");
             $("#registerstudentform").validate({
+
                 ignore: "",
                 invalidHandler: function (event, validator) {
                     // 'this' refers to the form
@@ -35,8 +36,38 @@
             //$('.admissiondate').datepicker({ dateFormat: 'dd-M-yy' });
             $(".admissiondate").datepicker({ maxDate: 0 });
             $('.DOB-picker').datepicker({ dateFormat: 'dd-M-yy' });
-
+            debugger;
+            if ($("#AdmissionExamDate").val() != "") {
+                $("#admxmdt").show();
+            }
+          else  if ($("#AdmissionInterviewDate").val() != ""){
+                $("#admivdt").show();
+            }
+            else {
+                $("#admxmdt").hide();
+                $("#admivdt").hide();
+            }
             //$('.dateofjoining').datepicker({ dateFormat: 'dd-M-yy' });
+
+            $("#AdmissionStatus_AdmissionStatusId").change(function () {
+                debugger;
+                var admsts = $("#AdmissionStatus_AdmissionStatusId").val();
+                   var xmdt = $("#AdmissionExamDate").val();
+                if (admsts == 2) {
+                    $("#admxmdt").show();
+
+                  
+                }
+                else if (admsts == 3)
+                {
+                    $("#admivdt").show();
+                }
+                else {
+                    $("#admxmdt").hide();
+                    $("#admivdt").hide();
+                }
+                return false;
+            });
 
         });
     </script>
@@ -233,9 +264,13 @@
                                         </div>
 }
                                             <div class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.admissionformno, UserResource.admissionformno, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Form Number is required" })
+                                            </div>
+                                            <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.FName, UserResource.FName, new { @class = "form-control", data_rule_required = "true", data_msg_required = "First Name is required" })
                                                 @Html.HiddenFor(m => m.MODE)
                                                 @Html.HiddenFor(m => m.UserDetails.UserMasterId)
+                                                @Html.HiddenFor(m => m.UserDetails.AdmissionId)
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.MName, UserResource.MName, new { @class = "form-control" })
@@ -256,17 +291,22 @@
                                                 @Html.OpMgrTextBoxFor(m => m.DOBString, UserResource.DateOfBirth, new { @class = "DOB-picker form-control", data_rule_required = "true", data_msg_required = "Date of Birth is required" })
                                             </div>
                                             @if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase)) || ((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase))))
-                                         {
-                                        <div class="col-lg-5">
-                                            @Html.OpMgrTextBoxFor(m => m.AdmissionExamDate, UserResource.xamdate, new { @class = "DOB-picker form-control" })
+    {
+
+                                        <div id="admsts" class="col-lg-5">
+                                            @Html.OpMgrDropDownListFor(m => m.AdmissionStatus.AdmissionStatusId, Model.AdmissionStatusList, UserResource.AdmissionStatus, new { @class = "form-control" })
                                         </div>
-                                        <div class="col-lg-5">
+}
+                                            <div id="admxmdt" class="col-lg-5">
+                                                @Html.OpMgrTextBoxFor(m => m.AdmissionExamDate, UserResource.xamdate, new { @class = "DOB-picker form-control" })
+                                            </div>
+                                            @*@if ((string.Equals(Model.MODE, "VIEW", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1) || ((string.Equals(Model.MODE, "EDIT", StringComparison.OrdinalIgnoreCase)) && (Model.AdmissionStatus.AdmissionStatusId != 1)))
+    {*@
+                                        <div id="admivdt" class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.AdmissionInterviewDate, UserResource.interviewdate, new { @class = "DOB-picker form-control" })
                                         </div>
-                                        <div class="col-lg-5">
-                                            @Html.OpMgrDropDownListFor(m => m.AdmissionStatus, Model.AdmissionStatusList, UserResource.AdmissionStatus, new { @class = "form-control" })
-                                        </div>
-                                        }
+
+@*}*@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.UserDetails.BloodGroup, UserResource.BloodGrp, new { @class = "form-control", data_rule_required = "true", data_msg_required = "Blood Group is required" })
                                             </div>
@@ -296,10 +336,10 @@
                                                 @Html.OpMgrTextBoxFor(m => m.Secondlang, UserResource.Secondlang, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.Currclass, UserResource.Currclass, new { @class = "form-control" })
+                                                @Html.OpMgrDropDownListFor(m => m.CurrentStandard.StandardId, Model.CurrentStandardList, UserResource.Currclass, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
-                                                @Html.OpMgrTextBoxFor(m => m.classAppld, UserResource.classAppld, new { @class = "form-control" })
+                                                @Html.OpMgrDropDownListFor(m => m.AppliedStandard.StandardId, Model.AppliedStandardList, UserResource.classAppld, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.Prevschool, UserResource.Prevschool, new { @class = "form-control" })
@@ -367,12 +407,12 @@
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherOfficeAddress, UserResource.FatherOfficeAddress, new { @class = "form-control" })
                                         </div>
-                                        <div class="col-lg-5">
+                                        @*<div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherOfficePhNo, UserResource.FatherOfficePhNo, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherTypeOfBusiness, UserResource.FatherTypeOfBusiness, new { @class = "form-control" })
-                                        </div>
+                                        </div>*@
                                         <div class="col-lg-5">
                                             @Html.OpMgrTextBoxFor(m => m.FatherAnnualIncome, UserResource.FatherAnnualIncome, new { @class = "form-control" })
                                         </div>
@@ -404,12 +444,12 @@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.MotherOfficeAddress, UserResource.MotherOfficeAddress, new { @class = "form-control" })
                                             </div>
-                                            <div class="col-lg-5">
+                                            @*<div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.MotherOfficePhNo, UserResource.MotherOfficePhNo, new { @class = "form-control" })
                                             </div>
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.MotherTypeOfBusiness, UserResource.MotherTypeOfBusiness, new { @class = "form-control" })
-                                            </div>
+                                            </div>*@
                                             <div class="col-lg-5">
                                                 @Html.OpMgrTextBoxFor(m => m.MotherAnnualIncome, UserResource.MotherAnnualInccome, new { @class = "form-control" })
                                             </div>

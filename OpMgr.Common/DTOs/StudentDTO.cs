@@ -120,6 +120,7 @@ namespace OpMgr.Common.DTOs
 
         public string MotherOfficeAddress { get; set; }
 
+        public string admissionformno { get; set; }
         public string MotherOfficePhNo { get; set; }
 
         public string MotherTypeOfBusiness { get; set; }
@@ -184,8 +185,15 @@ namespace OpMgr.Common.DTOs
 
         public AdmissionStatusDTO AdmissionStatus { get; set; }
 
-        public DateTime AdmissionExamDate { get; set; }
+        public StandardDTO CurrentStandard { get; set; }
 
-        public DateTime AdmissionInterviewDate { get; set; }
+        public StandardDTO AppliedStandard { get; set; }
+
+        public DateTime? AdmissionExamDate { get; set; }
+
+        public DateTime? AdmissionInterviewDate { get; set; }
+
+        //Added by Navajit to pass it from controller--will give correct implementation later on if required
+        public List<ExtraCurricularActivitiesDTO> extraCurricularActivities { get; set; }
     }
 }

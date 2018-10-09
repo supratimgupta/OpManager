@@ -16,8 +16,8 @@
 
             mywindow.document.write('<html><head><title></title>');
             //mywindow.document.write('<link href="~/Content/printStyles.css" type="text/css" rel="stylesheet" />');
-            mywindow.document.write('<style>@@media print{ body {font-size: 12px!important;} .resultCard{page-break-after: always; margin-top: 150px;} .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}} .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {padding: 10px;width: 1px;}</style>');
-            mywindow.document.write('<style> body {font-size: 12px;} .headerSummary{font-weight:bold;} .printInnerTable{border-collapse: collapse; text-align:left;} .graphImage{display:inline;} .graphCanvas{display:none;}</style>');
+            mywindow.document.write('<style>@@media print{ body {font-size: 9px!important;} .resultCard{page-break-after: always; } .headerSummary{font-weight:bold;} .printInnerTable{border:1px solid black; text-align:left;} .printInnerTable td,th{border:1px solid black; text-align:left; padding-left:10px; } .graphImage{display:inline;} .graphCanvas{display:none;} .signatureColumn td{border-bottom: 1px dotted black; text-align:center;}} .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td {padding: 8px;width: 1px;}</style>');
+            mywindow.document.write('<style> body {font-size: 9px;} .headerSummary{font-weight:bold;} .printInnerTable{border-collapse: collapse; text-align:left;} .graphImage{display:inline;} .graphCanvas{display:none;}</style>');
             mywindow.document.write('</head><body>');
             mywindow.document.write(document.getElementById("printSection").innerHTML);
             mywindow.document.write('<script type="text/javascript">');
@@ -138,30 +138,30 @@
         </tr>*@
                             <tbody>
                                 @if (Model != null)
-        {
-            if (Model.IsSearchSuccessful)
-            {
-                foreach (var student in Model.studentList)
-                {
+                                {
+                                    if (Model.IsSearchSuccessful)
+                                    {
+                                        //foreach (var student in Model.studentList)
+                                        //{
                         <tr>
                             <td align="left">Height (In Cms): </td>
                             <td>
-                                @student.Height
+                                @studentHdr.Height
                             </td>
                             <td align="left">Weight (In Kgs): </td>
                             <td>
-                                @student.Weight
+                                @studentHdr.Weight
                             </td>
                            
                         </tr>
                         <tr>
                             <td align="left" width="100px;" class="headerSummary">BMI: </td>
                             <td>
-                                @student.BMI
+                                @studentHdr.BMI
                             </td>
                             <td align="left" width="100px;" class="headerSummary">General Health Appearence: </td>
                             <td>
-                                @student.GenHealth
+                                @studentHdr.GenHealth
                             </td>
                         </tr>
                         <tr>
@@ -170,26 +170,26 @@
                         <tr>
                             <td align="left" width="100px;" class="headerSummary">Distance Vision: </td>
                             <td>
-                                @student.DV
+                                @studentHdr.DV
                             </td>
                             <td align="left" width="100px;" class="headerSummary">Near Vision: </td>
                             <td>
-                                @student.NV
+                                @studentHdr.NV
                             </td>
                         </tr>
                         <tr>
                             <td align="left" width="100px;" class="headerSummary">Any Major history of Illness: </td>
                             <td>
-                                @student.Majorillness
+                                @studentHdr.Majorillness
                             </td>
                             <td align="left" width="100px;" class="headerSummary">Pulse Rate(/Min): </td>
                             <td>
-                                @student.Pulserate
+                                @studentHdr.Pulserate
                             </td>
 
 
                         </tr>
-}
+//}
 }
 
 }
@@ -226,6 +226,7 @@
                                         <tr>
                                             <td style="text-align:left; height:40px;"></td>
                                             <td></td>
+                                            <td></td>
                                             @*<td>
                             <img width="70" height="60" src="~/Images/principalSign_@(Model.SelectedLocation).jpg" />
                         </td>*@
@@ -234,7 +235,9 @@
                                             <th style="text-align:center; border:none;">
                                                 DOCTOR SIGNATURE
                                             </th>
-
+                                            <th style="text-align:center; border:none;">
+                                                NURSE SIGNATURE
+                                            </th>
                                             <th style="text-align:center; border:none;">
                                                 PRINCIPAL SIGNATURE
                                             </th>

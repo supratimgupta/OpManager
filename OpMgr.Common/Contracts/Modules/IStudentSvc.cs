@@ -23,5 +23,6 @@ namespace OpMgr.Common.Contracts.Modules
         StatusDTO<StudentDTO> UpdateAdmission(StudentDTO student);
         StatusDTO<List<StudentDTO>> AdmissionSearch(StudentDTO student);
         StatusDTO<StudentDTO> SelectAdmission(int AdmissionId);
+        StatusDTO<StudentDTO> DeleteAdmission(int admissionid);
     }
 }

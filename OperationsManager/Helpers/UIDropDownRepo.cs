@@ -136,6 +136,17 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardId", "StandardName");
         }
 
+        public SelectList getStandardDDL()
+        {
+            List<StandardDTO> rDto = _ddlRepo.Standard();
+            StandardDTO sDto = new StandardDTO();
+            sDto.StandardId = -1;
+            sDto.StandardName = string.Empty;
+
+            rDto.Insert(0, sDto);
+            return new SelectList(rDto, "StandardId", "StandardName");
+        }
+
         // return standardlist not based on classtype
         public SelectList getStandardDropDown()
         {
@@ -162,6 +173,33 @@ namespace OperationsManager.Helpers
 
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
+        //Added by Navajit
+        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList()
+        {
+            List<ExtraCurricularActivitiesDTO> extraCurricularActivityList = _ddlRepo.getExtraCurricularActivityList();
+            return extraCurricularActivityList;
+
+        }
+
+        //public List<GamesDTO> getGamesList()
+        //{
+        //    List<GamesDTO> gamesList = _ddlRepo.getGamesList();
+        //    return gamesList;
+
+        //}
+
+        //public List<CoCurricularDTO> getCoCurricularList()
+        //{
+        //    List<CoCurricularDTO> coCurricularList = _ddlRepo.getCoCurricularList();
+        //    return coCurricularList;
+
+        //}
+        //public List<DisciplineDTO> getDisciplineList()
+        //{
+        //    List<DisciplineDTO> disciplineList = _ddlRepo.getDisciplineList();
+        //    return disciplineList;
+
+        //}
 
         public SelectList getStandardSectionDropDownWithSerial()
         {

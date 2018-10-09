@@ -14,7 +14,7 @@ namespace OperationsManager.Areas.Student.Models
 
         public string Location { get; set; }
 
-        public List<StudentVM> studentList { get; set;}
+        public List<StudentVM> studentList { get; set; }
 
         public SelectList StandardSectionList { get; set; }
 
@@ -111,5 +111,17 @@ namespace OperationsManager.Areas.Student.Models
         public string DrSugg { get; set; }
 
         public SelectList AdmissionStatusList { get; set; }
+
+        public SelectList CurrentStandardList { get; set; }
+
+        public SelectList AppliedStandardList { get; set; }
+
+        //Added by Navajit
+        //public List<GamesDTO> gamesList {get;set;}
+        //public List<CoCurricularDTO> coCurricularList { get; set; }
+        //public List<DisciplineDTO> disciplineList { get; set; }
+
+        public List<ExtraCurricularActivitiesDTO> extraCurricularActivityList { get; set; }
+
     }
 }
