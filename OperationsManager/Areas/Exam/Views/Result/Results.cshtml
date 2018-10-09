@@ -61,7 +61,7 @@
             var arrCanvases = document.getElementsByClassName("graphCanvas");
             for(i=0;i<arrCanvases.length;i++)
             {
-                debugger;
+                //debugger;
                 var idCanvas = arrCanvases[i].id;
                 var intPart = idCanvas.split('_')[1];
                 document.getElementById("imgGraph_"+intPart).src = arrCanvases[i].toDataURL();
