@@ -1007,7 +1007,7 @@ namespace OpMgr.DataAccess.Implementations
                                 studLst.IsSuccess = true;
                             }
                         }
-                    }
+                  }
                     catch (Exception exp)
                     {
                         _logger.Log(exp);
