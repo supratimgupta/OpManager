@@ -650,6 +650,7 @@ namespace OperationsManager.Areas.Student.Controllers
             studView.LikeToPartCCAList = _uiddlRepo.getSelectValueDropDown();
             studView.LiketoPartGameList = _uiddlRepo.getSelectValueDropDown();
 
+
             //uvModel.BookCategoryList = _uiddlRepo.getBookCategoryDropDown();
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
@@ -660,8 +661,8 @@ namespace OperationsManager.Areas.Student.Controllers
             //studView.gamesList = _uiddlRepo.getGamesList();
             //studView.coCurricularList = _uiddlRepo.getCoCurricularList();
             //studView.disciplineList = _uiddlRepo.getDisciplineList();
-
-            studView.extraCurricularActivityList = _uiddlRepo.getExtraCurricularActivityList();
+            int userId = Convert.ToInt32(id);
+            studView.extraCurricularActivityList = _uiddlRepo.getExtraCurricularActivityList(userId);
 
             return View(studView);
         }

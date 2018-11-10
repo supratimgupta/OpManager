@@ -15,6 +15,7 @@ namespace OpMgr.DataAccess.Implementations
     {
         private IConfigSvc _configSvc;
         private DataTable _dtData;
+        private DataSet _dsData;
                        
         public DropdownRepo(IConfigSvc configSvc)
         {
@@ -467,8 +468,10 @@ namespace OpMgr.DataAccess.Implementations
             }
         }
         //Added by Navajit
-        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList()
+        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList(int userId)
         {
+            DataTable dtStudentAct = null;
+            ExtraCurricularActivitiesDTO extraCurricular = null;
             using (IDbSvc dbSvc = new DbSvc(_configSvc))
             {
                 List<ExtraCurricularActivitiesDTO> extraCurricularList = null;
@@ -476,27 +479,59 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "select * from tbl_extra_curricular_activities where Active=1";
+                    //command.CommandText = "select * from tbl_extra_curricular_activities where Active=1";
+                    command.CommandText = "sp_student_get_extraCurricularActivities";
+                    command.CommandType = CommandType.StoredProcedure;                   
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                    _dtData = new DataTable();
+                    _dsData = new DataSet();
                     MySqlDataAdapter msDa = new MySqlDataAdapter(command);
-                    msDa.Fill(_dtData);                    
-                    if (_dtData != null && _dtData.Rows.Count > 0)
+                    msDa.Fill(_dsData);
+
+
+                    MySqlCommand commandExtra = new MySqlCommand();
+                    commandExtra.CommandText = "sp_student_get_mappedExtraCurricularActivities";
+                    commandExtra.CommandType = CommandType.StoredProcedure;
+                    commandExtra.Parameters.AddWithValue("@userId", userId);
+                    commandExtra.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    dtStudentAct = new DataTable();
+                    MySqlDataAdapter msDaExtra = new MySqlDataAdapter(commandExtra);
+                    msDaExtra.Fill(dtStudentAct);
+
+                    if (_dsData != null && _dsData.Tables!=null && _dsData.Tables.Count > 0)
                     {
-                        extraCurricularList = new List<ExtraCurricularActivitiesDTO>();
-                        foreach (DataRow dr in _dtData.Rows)
+                        if (_dsData.Tables[0] != null && _dsData.Tables[0].Rows.Count > 0)
                         {
-                            ExtraCurricularActivitiesDTO extraCurricular = new ExtraCurricularActivitiesDTO();
-                            extraCurricular.ExtraCurricularId = (int)dr["ExtraCurricularId"];
-                            extraCurricular.ActivityName = dr["ActivityName"].ToString().Trim();
-                            extraCurricular.ActivityType= dr["ActivityType"].ToString().Trim();
-                           // extraCurricular.IsSelected= Convert.ToBoolean(dr["IsSelected"]);
-                            extraCurricular.IsActive = Convert.ToBoolean(dr["Active"]);
-
-                            extraCurricularList.Add(extraCurricular);
-                        }
+                            extraCurricularList = new List<ExtraCurricularActivitiesDTO>();
+                            for (int i = 0; i < _dsData.Tables[0].Rows.Count; i++)
+                            {
+                                int flag = 0;
+                                extraCurricular = new ExtraCurricularActivitiesDTO();
+                                extraCurricular.ExtraCurricularId = (int)_dsData.Tables[0].Rows[i]["ExtraCurricularId"];
+                                extraCurricular.ActivityName = _dsData.Tables[0].Rows[i]["ActivityName"].ToString().Trim();
+                                extraCurricular.ActivityType = _dsData.Tables[0].Rows[i]["ActivityType"].ToString().Trim();
+                                if(dtStudentAct != null && dtStudentAct.Rows.Count > 0)
+                                {
+                                    for(int j=0;j< dtStudentAct.Rows.Count; j++)
+                                    {
+                                        if (dtStudentAct.Rows[j]["SelectedActivityId"] != DBNull.Value && !string.IsNullOrEmpty(dtStudentAct.Rows[j]["SelectedActivityId"].ToString())
+                                        && ((int)dtStudentAct.Rows[j]["SelectedActivityId"] == (int)_dsData.Tables[0].Rows[i]["ExtraCurricularId"]))
+                                        {
+                                            extraCurricular.IsSelected = true;
+                                            extraCurricular.SelectedActivityId = Convert.ToInt32(dtStudentAct.Rows[j]["SelectedActivityId"]);
+                                            flag = 1;
+                                            break;
+                                        }
+                                    }                              
+                                }
+                                if (flag == 0)
+                                {
+                                    extraCurricular.IsSelected = false;
+                                    extraCurricular.SelectedActivityId = 0;
+                                }
+                                extraCurricularList.Add(extraCurricular);
+                            }
+                        }                        
                     }
-
                 }
                 catch (Exception exp)
                 {

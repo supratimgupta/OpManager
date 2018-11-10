@@ -175,19 +175,22 @@ namespace OpMgr.DataAccess.Implementations
                         command = new MySqlCommand();
                         for (int i = 0; i < data.extraCurricularActivities.Count; i++)
                         {
-                            if (data.extraCurricularActivities[i].IsSelected)
-                            {
-                                //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
-                                command = new MySqlCommand();
-                                command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                                command.CommandText = "sp_stu_save_extracurricular";
-                                command.CommandType = CommandType.StoredProcedure;
-                                command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
-                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i + 1);
-                                command.Parameters.Add("@OpenMode", MySqlDbType.String).Value = "A";
-                                command.ExecuteNonQuery();
-                                
-                            }
+                            //if (data.extraCurricularActivities[i].IsSelected)
+                            //{
+                            //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
+                            command = new MySqlCommand();
+                            command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                            command.CommandText = "sp_stu_save_extracurricular";
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value = data.UserDetails.UserMasterId;
+                            command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i + 1);
+                            command.Parameters.Add("@IsSelected", MySqlDbType.Bit).Value = data.extraCurricularActivities[i].IsSelected;
+                            int no = command.ExecuteNonQuery();
+                            //if (no == 0)
+                            //{
+                            //    status.IsSuccess = false;
+                            //}
+                            //}
                         }
                     }
 
@@ -1260,22 +1263,22 @@ namespace OpMgr.DataAccess.Implementations
                         command = new MySqlCommand();
                         for (int i = 0; i < data.extraCurricularActivities.Count; i++)
                         {
-                            if (data.extraCurricularActivities[i].IsSelected)
-                            {
+                            //if (data.extraCurricularActivities[i].IsSelected)
+                            //{
                                 //updateClause = "UPDATE studentinfo SET StandardSectionId=NewStandardSectionId, NewStandardSectionId=NULL, Status=NULL WHERE Active=1 AND Status='Promotion Confirmed' AND NewStandardSectionId IS NOT NULL";
                                 command = new MySqlCommand();
                                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
                                 command.CommandText = "sp_stu_save_extracurricular";
                                 command.CommandType = CommandType.StoredProcedure;
                                 command.Parameters.Add("@ParaUserMasterId", MySqlDbType.Int32).Value=data.UserDetails.UserMasterId;
-                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i+1);
-                                command.Parameters.Add("@OpenMode", MySqlDbType.String).Value = "E";
+                                command.Parameters.Add("@ExtraCurricularActivityId", MySqlDbType.Int32).Value = (i+1);                                
+                                command.Parameters.Add("@IsSelected", MySqlDbType.Bit).Value = data.extraCurricularActivities[i].IsSelected;
                                 int no = command.ExecuteNonQuery();
                                 if (no == 0)
                                 {
                                     status.IsSuccess = false;
                                 }
-                            }
+                            //}
                         }
                     }                    
                     return status;

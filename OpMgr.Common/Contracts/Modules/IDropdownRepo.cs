@@ -41,7 +41,7 @@ namespace OpMgr.Common.Contracts.Modules
         //List<GamesDTO> getGamesList();
         //List<CoCurricularDTO> getCoCurricularList();
         //List<DisciplineDTO> getDisciplineList();
-        List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList();
+        List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList(int userId);
 
         // returns list of standard and section along with serial
         List<StandardSectionMapDTO> StandardSectionWithSerial();

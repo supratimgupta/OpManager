@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpMgr.Common.DTOs
 {
-   public class ExtraCurricularActivitiesDTO
+    public class ExtraCurricularActivitiesDTO
     {
         public int ExtraCurricularId { get; set; }
 
@@ -21,5 +21,7 @@ namespace OpMgr.Common.DTOs
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
+
+        public int SelectedActivityId {get;set;}
     }
 }

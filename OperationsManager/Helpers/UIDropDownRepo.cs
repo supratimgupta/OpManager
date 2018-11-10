@@ -174,9 +174,9 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
         //Added by Navajit
-        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList()
+        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList(int userId)
         {
-            List<ExtraCurricularActivitiesDTO> extraCurricularActivityList = _ddlRepo.getExtraCurricularActivityList();
+            List<ExtraCurricularActivitiesDTO> extraCurricularActivityList = _ddlRepo.getExtraCurricularActivityList(userId);
             return extraCurricularActivityList;
 
         }
