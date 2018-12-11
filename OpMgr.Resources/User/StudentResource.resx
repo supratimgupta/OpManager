@@ -126,6 +126,15 @@
   <data name="Admission" xml:space="preserve">
     <value>Admission</value>
   </data>
+  <data name="AttendanceDate" xml:space="preserve">
+    <value>Attendance date</value>
+  </data>
+  <data name="AttendanceStatus" xml:space="preserve">
+    <value>Attendance Status</value>
+  </data>
+  <data name="AttendanceTitle" xml:space="preserve">
+    <value>Student Attendance</value>
+  </data>
   <data name="BatchHeading" xml:space="preserve">
     <value>Promotion Status</value>
   </data>
@@ -143,6 +152,9 @@
   </data>
   <data name="Class" xml:space="preserve">
     <value>Class</value>
+  </data>
+  <data name="ConfirmAttendance" xml:space="preserve">
+    <value>Confirm Attendance</value>
   </data>
   <data name="ConfirmPromotionCommand" xml:space="preserve">
     <value>Promotion Confirmed</value>

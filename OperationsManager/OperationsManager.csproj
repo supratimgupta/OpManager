@@ -1187,6 +1187,7 @@
     <Content Include="Areas\Student\Views\Student\Search.cshtml" />
     <Content Include="Areas\Student\Views\web.config" />
     <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Academics\Views\Attendance\AttendanceCollection.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1996,7 +1997,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Academics\Views\Attendance\" />
     <Folder Include="Areas\Academics\Views\Routine\" />
     <Folder Include="Areas\Academics\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
