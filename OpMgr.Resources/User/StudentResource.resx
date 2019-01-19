@@ -123,6 +123,18 @@
   <data name="AddCommand" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Admission" xml:space="preserve">
+    <value>Admission</value>
+  </data>
+  <data name="AttendanceDate" xml:space="preserve">
+    <value>Attendance date</value>
+  </data>
+  <data name="AttendanceStatus" xml:space="preserve">
+    <value>Attendance Status</value>
+  </data>
+  <data name="AttendanceTitle" xml:space="preserve">
+    <value>Student Attendance</value>
+  </data>
   <data name="BatchHeading" xml:space="preserve">
     <value>Promotion Status</value>
   </data>
@@ -141,6 +153,9 @@
   <data name="Class" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="ConfirmAttendance" xml:space="preserve">
+    <value>Confirm Attendance</value>
+  </data>
   <data name="ConfirmPromotionCommand" xml:space="preserve">
     <value>Promotion Confirmed</value>
   </data>
@@ -152,6 +167,9 @@
   </data>
   <data name="GuardianContactNo" xml:space="preserve">
     <value>Contact Number</value>
+  </data>
+  <data name="HealthReport" xml:space="preserve">
+    <value>Health Report</value>
   </data>
   <data name="LName" xml:space="preserve">
     <value>Last Name</value>
@@ -197,6 +215,9 @@
   </data>
   <data name="RollNo" xml:space="preserve">
     <value>Roll</value>
+  </data>
+  <data name="SearchAdmissionButton" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="SearchButton" xml:space="preserve">
     <value>Search</value>

@@ -14,7 +14,7 @@ namespace OperationsManager.Areas.Student.Models
 
         public string Location { get; set; }
 
-        public List<StudentVM> studentList { get; set;}
+        public List<StudentVM> studentList { get; set; }
 
         public SelectList StandardSectionList { get; set; }
 
@@ -27,7 +27,7 @@ namespace OperationsManager.Areas.Student.Models
         public SelectList LocationList { get; set; }
 
         public SelectList GenderList { get; set; }
-
+        
         public SelectList IsChristianList { get; set; }
 
         public SelectList IsParentTeacherList { get; set; }
@@ -86,5 +86,42 @@ namespace OperationsManager.Areas.Student.Models
         public string DisabledClass { get; set; }
 
         public string DOBString { get; set; }
+        public string xamdate { get; set; }
+        public string interviewdate { get; set; }
+        public string FName { get; set; }
+
+        public string MName { get; set; }
+
+        public string LName { get; set; }
+
+
+        public string Height { get; set; }
+
+
+        public string Weight { get; set; }
+
+        public string BMI { get; set; }
+
+        public string DV { get; set; }
+        public string NV { get; set; }
+        public string GenHealth { get; set; }
+        public string Majorillness { get; set; }
+        public string Pulserate { get; set; }
+        public string DrRemarks { get; set; }
+        public string DrSugg { get; set; }
+
+        public SelectList AdmissionStatusList { get; set; }
+
+        public SelectList CurrentStandardList { get; set; }
+
+        public SelectList AppliedStandardList { get; set; }
+
+        //Added by Navajit
+        //public List<GamesDTO> gamesList {get;set;}
+        //public List<CoCurricularDTO> coCurricularList { get; set; }
+        //public List<DisciplineDTO> disciplineList { get; set; }
+
+        public List<ExtraCurricularActivitiesDTO> extraCurricularActivityList { get; set; }
+
     }
 }

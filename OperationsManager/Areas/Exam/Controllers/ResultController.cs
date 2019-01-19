@@ -44,8 +44,16 @@ namespace OperationsManager.Areas.Exam.Controllers
         {
             List<ResultCardDTO> resultCards = _resultSvc.GetResult(result.SelectedLocation, result.SelectedStandardSection, result.SelectedResultType, DateTime.Parse(result.SelectedAcademicSession.Split(';')[0]), DateTime.Parse(result.SelectedAcademicSession.Split(';')[1]));
             result.ResultCards = resultCards;
-            result.ClassAverage = Math.Round(resultCards.Average(rc => rc.TotalMarks));
-            result.ClassHeighest = Math.Round(resultCards.Max(rc => rc.TotalMarks));
+            if(resultCards!= null && resultCards.Count > 0)
+            {
+                result.ClassAverage = Math.Round(resultCards.Average(rc => rc.TotalMarks));
+                result.ClassHeighest = Math.Round(resultCards.Max(rc => rc.TotalMarks));
+            }
+            else
+            {
+                result.ClassAverage = 0;
+                result.ClassHeighest = 0;
+            }
             result.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             result.LocationList = _uiddlRepo.getLocationDropDown();
             //result.ExamTypeList = _uiddlRepo.getExamTypeDropDown();

@@ -136,6 +136,17 @@ namespace OperationsManager.Helpers
             return new SelectList(rDto, "StandardId", "StandardName");
         }
 
+        public SelectList getStandardDDL()
+        {
+            List<StandardDTO> rDto = _ddlRepo.Standard();
+            StandardDTO sDto = new StandardDTO();
+            sDto.StandardId = -1;
+            sDto.StandardName = string.Empty;
+
+            rDto.Insert(0, sDto);
+            return new SelectList(rDto, "StandardId", "StandardName");
+        }
+
         // return standardlist not based on classtype
         public SelectList getStandardDropDown()
         {
@@ -162,6 +173,33 @@ namespace OperationsManager.Helpers
 
             return new SelectList(rDto, "StandardSectionId", "StandardSectionDesc");
         }
+        //Added by Navajit
+        public List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList(int userId)
+        {
+            List<ExtraCurricularActivitiesDTO> extraCurricularActivityList = _ddlRepo.getExtraCurricularActivityList(userId);
+            return extraCurricularActivityList;
+
+        }
+
+        //public List<GamesDTO> getGamesList()
+        //{
+        //    List<GamesDTO> gamesList = _ddlRepo.getGamesList();
+        //    return gamesList;
+
+        //}
+
+        //public List<CoCurricularDTO> getCoCurricularList()
+        //{
+        //    List<CoCurricularDTO> coCurricularList = _ddlRepo.getCoCurricularList();
+        //    return coCurricularList;
+
+        //}
+        //public List<DisciplineDTO> getDisciplineList()
+        //{
+        //    List<DisciplineDTO> disciplineList = _ddlRepo.getDisciplineList();
+        //    return disciplineList;
+
+        //}
 
         public SelectList getStandardSectionDropDownWithSerial()
         {
@@ -455,6 +493,26 @@ namespace OperationsManager.Helpers
             dicResultType.Add("FINAL", "FINAL");
             //dicGender.Add("3", "Other");
             return new SelectList(dicResultType, "key", "value");
+        }
+
+        public SelectList getAttendanceStatusDropDown()
+        {
+            Dictionary<string, string> dicAttendanceStatus = new Dictionary<string, string>();
+            dicAttendanceStatus.Add("1", "Present");
+            dicAttendanceStatus.Add("2", "Absent");
+            return new SelectList(dicAttendanceStatus, "key", "value");
+        }
+
+        public SelectList getAdmissionStatusDropdown()
+        {
+            List<AdmissionStatusDTO> rDto = _ddlRepo.AdmissionStatus();
+            AdmissionStatusDTO admissionstatusDTO = new AdmissionStatusDTO();
+            admissionstatusDTO.AdmissionStatusId = -1;
+            admissionstatusDTO.AdmissionStatusDescription = "";
+
+            rDto.Insert(0, admissionstatusDTO);
+
+            return new SelectList(rDto, "AdmissionStatusId", "AdmissionStatusDescription");
         }
     }
 }

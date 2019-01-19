@@ -55,7 +55,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     StatusDTO<ExamRuleDTO> status = new StatusDTO<ExamRuleDTO>();
 
-                    if(command.ExecuteNonQuery()>0)
+                    if (command.ExecuteNonQuery() > 0)
                     {
                         status.IsSuccess = true;
                         status.ReturnObj = data;
@@ -77,7 +77,7 @@ namespace OpMgr.DataAccess.Implementations
                 {
                     dbSvc.OpenConnection();
                     MySqlCommand command = new MySqlCommand();
-                    command.CommandText = "UPDATE ExamRule SET AssesmentMarks = @assesmentMarks, ActualFullMarks = @actualFullMarks, PassMarks = @passMarks, "+
+                    command.CommandText = "UPDATE ExamRule SET AssesmentMarks = @assesmentMarks, ActualFullMarks = @actualFullMarks, PassMarks = @passMarks, " +
                                           "DateTimeLog = @dateTimeLog, UpdatedBy = @updatedBy, UpdatedDate = @updatedDate WHERE ExamRuleId=@examRuleId";
                     command.CommandType = CommandType.Text;
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
@@ -141,7 +141,14 @@ namespace OpMgr.DataAccess.Implementations
                             examRuleDTO.ExamRuleId = int.Parse(dr["ExamRuleId"].ToString());
                             examRuleDTO.AssesmentMarks = double.Parse(dr["AssesmentMarks"].ToString());
                             examRuleDTO.ActualFullMarks = double.Parse(dr["ActualFullMarks"].ToString());
-                            examRuleDTO.PassMarks = double.Parse(dr["PassMarks"].ToString());
+                            if (!string.IsNullOrEmpty(dr["PassMarks"].ToString()))
+                            {
+                                examRuleDTO.PassMarks = double.Parse(dr["PassMarks"].ToString());
+                            }
+                            else
+                            {
+                                examRuleDTO.PassMarks = 0;
+                            }
                             if (!string.IsNullOrEmpty(dr["DateTimeLog"].ToString()))
                             {
                                 examRuleDTO.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());
@@ -190,14 +197,14 @@ namespace OpMgr.DataAccess.Implementations
                     {
                         status.ReturnObj = new ExamRuleDTO();
                         DataRow dr = dtData.Rows[0];
-                        status.ReturnObj.AssesmentMarks = double.Parse(dr["AssesmentMarks"].ToString());
-                        status.ReturnObj.ActualFullMarks = double.Parse(dr["ActualFullMarks"].ToString());
-                        status.ReturnObj.PassMarks = double.Parse(dr["PassMarks"].ToString());
+                        status.ReturnObj.AssesmentMarks = double.Parse(string.IsNullOrEmpty(dr["AssesmentMarks"].ToString()) ? "0" : dr["AssesmentMarks"].ToString());
+                        status.ReturnObj.ActualFullMarks = double.Parse(string.IsNullOrEmpty(dr["ActualFullMarks"].ToString()) ? "0" : dr["ActualFullMarks"].ToString());
+                        status.ReturnObj.PassMarks = double.Parse(string.IsNullOrEmpty(dr["PassMarks"].ToString()) ? "0" : dr["PassMarks"].ToString());
                         if (!string.IsNullOrEmpty(dr["DateTimeLog"].ToString()))
                         {
                             status.ReturnObj.DateTimeLog = DateTime.Parse(dr["DateTimeLog"].ToString());
                         }
-                        if (string.Equals(dr["Active"].ToString(),"1"))
+                        if (string.Equals(dr["Active"].ToString(), "1"))
                         {
                             status.ReturnObj.Active = true;
                         }

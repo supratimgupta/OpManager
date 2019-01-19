@@ -37,6 +37,12 @@ namespace OpMgr.Common.Contracts.Modules
 
         List<StandardSectionMapDTO> StandardSection();
 
+        //Added by Navajit
+        //List<GamesDTO> getGamesList();
+        //List<CoCurricularDTO> getCoCurricularList();
+        //List<DisciplineDTO> getDisciplineList();
+        List<ExtraCurricularActivitiesDTO> getExtraCurricularActivityList(int userId);
+
         // returns list of standard and section along with serial
         List<StandardSectionMapDTO> StandardSectionWithSerial();
 
@@ -70,5 +76,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<GradeConfigDTO> getGrades(int location);
 
         List<SubjectDTO> getSubjectDropdown(int? locationId = null, int? satndardsectionid=null);
+
+        List<AdmissionStatusDTO> AdmissionStatus();
     }
 }

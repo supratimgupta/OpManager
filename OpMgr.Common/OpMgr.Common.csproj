@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IBatchProcess.cs" />
     <Compile Include="Contracts\ICommonConfigSvc.cs" />
     <Compile Include="Contracts\IConfigSvc.cs" />
     <Compile Include="Contracts\ICRUDSvc.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Contracts\ISessionSvc.cs" />
     <Compile Include="Contracts\Modules\IActionSvc.cs" />
     <Compile Include="Contracts\ICommonConfigDataSvc.cs" />
+    <Compile Include="Contracts\Modules\IAttendanceSvc.cs" />
     <Compile Include="Contracts\Modules\IBookMasterSvc.cs" />
     <Compile Include="Contracts\Modules\IChatSvc.cs" />
     <Compile Include="Contracts\Modules\IDropdownRepo.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Contracts\Modules\IUserTransactionSvc.cs" />
     <Compile Include="Contracts\IResetPasswordSvc.cs" />
     <Compile Include="DTOs\AcademicSessionDTO.cs" />
+    <Compile Include="DTOs\AdmissionStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusDTO.cs" />
     <Compile Include="DTOs\AppraisalStatusLogDTO.cs" />
     <Compile Include="DTOs\ApprovalMappingDTO.cs" />
@@ -84,6 +87,7 @@
     <Compile Include="DTOs\ChatGroupDTO.cs" />
     <Compile Include="DTOs\ChatLogDTO.cs" />
     <Compile Include="DTOs\ClassTypeDTO.cs" />
+    <Compile Include="DTOs\CoCurricularDTO.cs" />
     <Compile Include="DTOs\CompetencyDTO.cs" />
     <Compile Include="DTOs\ConfigDTO.cs" />
     <Compile Include="DTOs\CourseExam.cs" />
@@ -91,18 +95,22 @@
     <Compile Include="DTOs\CourseMappingDTO.cs" />
     <Compile Include="DTOs\DepartmentDTO.cs" />
     <Compile Include="DTOs\DesignationDTO.cs" />
+    <Compile Include="DTOs\DisciplineDTO.cs" />
     <Compile Include="DTOs\EmployeeAppraisalMasterDTO.cs" />
     <Compile Include="DTOs\EmployeeCompetencyDTO.cs" />
     <Compile Include="DTOs\EmployeeDetailsDTO.cs" />
     <Compile Include="DTOs\EmployeeGoalDTO.cs" />
     <Compile Include="DTOs\EmployeeGoalLogDTO.cs" />
     <Compile Include="DTOs\EmployeeMappingDTO.cs" />
+    <Compile Include="DTOs\EmployeeSubjectDTO.cs" />
     <Compile Include="DTOs\ExamMarksDTO.cs" />
     <Compile Include="DTOs\ExamRuleDTO.cs" />
     <Compile Include="DTOs\ExamSubTypeDTO.cs" />
     <Compile Include="DTOs\ExamTypeDTO.cs" />
+    <Compile Include="DTOs\ExtraCurricularActivitiesDTO.cs" />
     <Compile Include="DTOs\FacultyCourseMapDTO.cs" />
     <Compile Include="DTOs\FacultyCourseStudentMapDTO.cs" />
+    <Compile Include="DTOs\GamesDTO.cs" />
     <Compile Include="DTOs\GoalAttributeDTO.cs" />
     <Compile Include="DTOs\GoalDTO.cs" />
     <Compile Include="DTOs\GoalLogExcelDTO.cs" />

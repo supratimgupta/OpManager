@@ -84,5 +84,8 @@
 
   <bind service="OpMgr.Common.Contracts.Modules.IRoutinesvc, OpMgr.Common"
         to="OpMgr.DataAccess.Implementations.Routinesvc, OpMgr.DataAccess"/>
+
+  <bind service="OpMgr.Common.Contracts.Modules.IAttendanceSvc, OpMgr.Common"
+    to="OpMgr.DataAccess.Implementations.AttendanceSvc, OpMgr.DataAccess" />
 </module>
 

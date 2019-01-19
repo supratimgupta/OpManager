@@ -79,6 +79,42 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admission.
+        /// </summary>
+        public static string Admission {
+            get {
+                return ResourceManager.GetString("Admission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance date.
+        /// </summary>
+        public static string AttendanceDate {
+            get {
+                return ResourceManager.GetString("AttendanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendance Status.
+        /// </summary>
+        public static string AttendanceStatus {
+            get {
+                return ResourceManager.GetString("AttendanceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Student Attendance.
+        /// </summary>
+        public static string AttendanceTitle {
+            get {
+                return ResourceManager.GetString("AttendanceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Promotion Status.
         /// </summary>
         public static string BatchHeading {
@@ -133,6 +169,15 @@ namespace OpMgr.Resources.User {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm Attendance.
+        /// </summary>
+        public static string ConfirmAttendance {
+            get {
+                return ResourceManager.GetString("ConfirmAttendance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Promotion Confirmed.
         /// </summary>
         public static string ConfirmPromotionCommand {
@@ -165,6 +210,15 @@ namespace OpMgr.Resources.User {
         public static string GuardianContactNo {
             get {
                 return ResourceManager.GetString("GuardianContactNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Health Report.
+        /// </summary>
+        public static string HealthReport {
+            get {
+                return ResourceManager.GetString("HealthReport", resourceCulture);
             }
         }
         
@@ -300,6 +354,15 @@ namespace OpMgr.Resources.User {
         public static string RollNo {
             get {
                 return ResourceManager.GetString("RollNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchAdmissionButton {
+            get {
+                return ResourceManager.GetString("SearchAdmissionButton", resourceCulture);
             }
         }
         
