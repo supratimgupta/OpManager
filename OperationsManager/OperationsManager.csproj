@@ -223,6 +223,7 @@
     <Compile Include="Areas\Academics\AcademicsAreaRegistration.cs" />
     <Compile Include="Areas\Academics\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\Academics\Controllers\RoutineController.cs" />
+    <Compile Include="Areas\Academics\Models\RoutineSectionIDVM.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Models\AdminViewModel.cs" />
@@ -1169,6 +1170,10 @@
     <Content Include="Areas\Exam\Views\Result\Results.cshtml" />
     <Content Include="Areas\Exam\Views\Remarks\Remarks.cshtml" />
     <Content Include="Areas\Academics\Views\web.config" />
+    <Content Include="Areas\Academics\Views\Routine\search.cshtml" />
+    <Content Include="Areas\Academics\Views\Routine\RoutineTable.cshtml" />
+    <Content Include="Areas\Academics\Views\Routine\AddEdit.cshtml" />
+    <Content Include="Areas\Academics\Views\Routine\Replacement.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1978,9 +1983,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Academics\Models\" />
     <Folder Include="Areas\Academics\Views\Attendance\" />
-    <Folder Include="Areas\Academics\Views\Routine\" />
     <Folder Include="Areas\Academics\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Employee\Controllers\" />
@@ -2043,6 +2046,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Areas\Academics\Views\Routine\Replacement.cshtml</ApplicationManifest>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

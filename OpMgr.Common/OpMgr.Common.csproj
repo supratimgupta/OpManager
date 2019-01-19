@@ -61,6 +61,7 @@
     <Compile Include="Contracts\Modules\IPMSSvc.cs" />
     <Compile Include="Contracts\Modules\IResultSvc.cs" />
     <Compile Include="Contracts\Modules\IRoleSvc.cs" />
+    <Compile Include="Contracts\Modules\IRoutinesvc.cs" />
     <Compile Include="Contracts\Modules\IStudentRemarksSvc.cs" />
     <Compile Include="Contracts\Modules\IStudentSvc.cs" />
     <Compile Include="Contracts\Modules\ITransactionBacklog.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="DTOs\RatingDTO.cs" />
     <Compile Include="DTOs\ResultCardDTO.cs" />
     <Compile Include="DTOs\RoleDTO.cs" />
+    <Compile Include="DTOs\RoutineDTO.cs" />
     <Compile Include="DTOs\SectionDTO.cs" />
     <Compile Include="DTOs\SessionDTO.cs" />
     <Compile Include="DTOs\StandardDTO.cs" />
