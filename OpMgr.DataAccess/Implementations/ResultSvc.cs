@@ -41,7 +41,7 @@ namespace OpMgr.DataAccess.Implementations
                 dbSvc.OpenConnection();
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = dbSvc.GetConnection() as MySqlConnection;
-                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade, is_allowed_for_grade, is_calc_for_total FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
+                command.CommandText = "SELECT column_header, value_expression, grade_expression , column_sequence, value_type, fixed_column_name, has_grade, is_allowed_for_grade, is_calc_for_total, is_calc_for_hgh_avg FROM result_schema WHERE standard_section=@stdSec AND location=@loc AND result_type=@resType ORDER BY column_sequence";
                 command.Parameters.Add("@stdSec", MySqlDbType.Int32).Value = standardSectionId;
                 command.Parameters.Add("@loc", MySqlDbType.Int32).Value = locationId;
                 command.Parameters.Add("@resType", MySqlDbType.String).Value = resultType;
@@ -113,6 +113,7 @@ namespace OpMgr.DataAccess.Implementations
                         rsCard.ResultRows = new List<ResultCardRows>();
                         rsCard.GradeResultRows = new List<ResultCardRows>();
                         ResultCardRows rsRows = null;
+                        Dictionary<int, double> dicTotals = new Dictionary<int, double>();
                         foreach (DataRow drSub in arrStudentResults)
                         {
                             string subjectId = drSub["SubjectId"].ToString();
@@ -156,8 +157,10 @@ namespace OpMgr.DataAccess.Implementations
                                 string hasGrade = dtResultFormat.Rows[rf]["has_grade"].ToString();
                                 string isAllowedForGrade = dtResultFormat.Rows[rf]["is_allowed_for_grade"].ToString();
                                 string isCalcForTotal = dtResultFormat.Rows[rf]["is_calc_for_total"].ToString();
+                                string isCalcForHghstAndAvg = dtResultFormat.Rows[rf]["is_calc_for_hgh_avg"].ToString();
                                 resultCol.IsAllowedForGrade = false;
                                 resultCol.IsUsedForTotal = false;
+                                resultCol.IsUsedForHeighestAndAvg = false;
                                 if (string.Equals(isAllowedForGrade, "Y", StringComparison.OrdinalIgnoreCase))
                                 {
                                     resultCol.IsAllowedForGrade = true;
@@ -165,6 +168,10 @@ namespace OpMgr.DataAccess.Implementations
                                 if (string.Equals(isCalcForTotal, "Y", StringComparison.OrdinalIgnoreCase))
                                 {
                                     resultCol.IsUsedForTotal = true;
+                                }
+                                if (string.Equals(isCalcForHghstAndAvg, "Y", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    resultCol.IsUsedForHeighestAndAvg = true;
                                 }
                                 if (!resultCol.IsAllowedForGrade && string.Equals(drSub["SubjectExamType"].ToString(), "G", StringComparison.OrdinalIgnoreCase))
                                 {
@@ -186,33 +193,45 @@ namespace OpMgr.DataAccess.Implementations
                                         marks = this.CreateValueWithExpression(expression, drSubjects, "CalculatedMarks", dtGrades, hasGrade);
                                         if (resultCol.IsUsedForTotal)
                                         {
+                                            if (dicTotals.Keys.Contains(rf))
+                                            {
+                                                dicTotals[rf] = dicTotals[rf] + double.Parse(Regex.Match(marks, @"\d+").Value);
+                                            }
+                                            else
+                                            {
+                                                dicTotals.Add(rf, double.Parse(Regex.Match(marks, @"\d+").Value));
+                                            }
+                                        }
+
+                                        if (resultCol.IsUsedForHeighestAndAvg)
+                                        {
                                             rsCard.TotalMarks = rsCard.TotalMarks + double.Parse(Regex.Match(marks, @"\d+").Value);
 
                                             //======= FOR GRAPH ENTRY =========//
                                             //============HEIGHEST=============//
                                             double currentValue = double.Parse(Regex.Match(marks, @"\d+").Value);
-                                            rsRows.GraphValue = Math.Ceiling(currentValue);
+                                            rsRows.GraphValue = Math.Round(currentValue);
                                             if (dicSubjectHeighest.ContainsKey(subjectId))
                                             {
                                                 double highestValue = dicSubjectHeighest[subjectId];
-                                                if (Math.Ceiling(currentValue) > highestValue)
+                                                if (Math.Round(currentValue) > highestValue)
                                                 {
-                                                    dicSubjectHeighest[subjectId] = Math.Ceiling(currentValue);
+                                                    dicSubjectHeighest[subjectId] = Math.Round(currentValue);
                                                 }
                                             }
                                             else
                                             {
-                                                dicSubjectHeighest.Add(subjectId, Math.Ceiling(currentValue));
+                                                dicSubjectHeighest.Add(subjectId, Math.Round(currentValue));
                                             }
                                             //============HEIGHEST============//
                                             //==============TOTAL=============//
                                             if (dicSubjectTotal.ContainsKey(subjectId))
                                             {
-                                                dicSubjectTotal[subjectId] = dicSubjectTotal[subjectId] + Math.Ceiling(currentValue);
+                                                dicSubjectTotal[subjectId] = dicSubjectTotal[subjectId] + Math.Round(currentValue);
                                             }
                                             else
                                             {
-                                                dicSubjectTotal.Add(subjectId, Math.Ceiling(currentValue));
+                                                dicSubjectTotal.Add(subjectId, Math.Round(currentValue));
                                             }
                                         }
                                     }
@@ -231,6 +250,26 @@ namespace OpMgr.DataAccess.Implementations
                             rsRows.SubjectId = subjectId;
                             lstDoneWithSubjects.Add(subjectId);
                         }
+
+                        ResultCardRows rowForTotal = null;
+                        if(rsCard.ResultRows.Count>0 && rsCard.ResultRows[0].ResultColumns.Count > 0)
+                        {
+                            rowForTotal = new ResultCardRows();
+                            rowForTotal.ResultColumns = new List<ResultCardColumns>();
+                            for (int tc=0; tc<rsCard.ResultRows[0].ResultColumns.Count;tc++)
+                            {
+                                ResultCardColumns totalColumns = new ResultCardColumns();
+                                totalColumns.IsUsedForTotal = false;
+                                totalColumns.ColumnValue = "";
+                                if (rsCard.ResultRows[0].ResultColumns[tc].IsUsedForTotal)
+                                {
+                                    totalColumns.IsUsedForTotal = true;
+                                    totalColumns.ColumnValue = Math.Round(dicTotals[tc]).ToString();
+                                }
+                                rowForTotal.ResultColumns.Add(totalColumns);
+                            }
+                        }
+                        rsCard.TotalDetailsRow = rowForTotal;
                     }
 
                     StudentRemarksDTO remark = remarks.FirstOrDefault(r => string.Equals(r.Student.StudentInfoId.ToString(), rsCard.StudentInfoId));
@@ -249,6 +288,28 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
             lstResultCards = this.CreateGraphRecords(lstResultCards, dicSubjectHeighest, dicSubjectTotal);
+            
+            if(string.Equals(resultType, "FINAL", StringComparison.OrdinalIgnoreCase))
+            {
+                ResultCardColumns subHeighestCol = null;
+                ResultCardColumns subAvgCol = null;
+                for(int rc = 0; rc < lstResultCards.Count; rc++)
+                {
+                    for(int rr=0; rr< lstResultCards[rc].ResultRows.Count; rr++)
+                    {
+                        subHeighestCol = new ResultCardColumns();
+                        subHeighestCol.ColumnName = "CLASS HEIGHEST MARKS";
+                        subHeighestCol.ColumnValue = Math.Round(dicSubjectHeighest[lstResultCards[rc].ResultRows[rr].SubjectId]).ToString();
+                        lstResultCards[rc].ResultRows[rr].ResultColumns.Add(subHeighestCol);
+
+                        subAvgCol = new ResultCardColumns();
+                        subAvgCol.ColumnName = "CLASS AVGERAGE MARKS";
+                        subAvgCol.ColumnValue = Math.Round(dicSubjectTotal[lstResultCards[rc].ResultRows[rr].SubjectId] / lstResultCards.Count).ToString();
+                        lstResultCards[rc].ResultRows[rr].ResultColumns.Add(subAvgCol);
+                    }
+                }
+            }
+
             return lstResultCards;
         }
 
@@ -263,7 +324,7 @@ namespace OpMgr.DataAccess.Implementations
                     graphRecord = new GraphRecords();
                     graphRecord.ClassHighest = dicHighests[currentCards[i].ResultRows[j].SubjectId];
                     graphRecord.SubjectName = currentCards[i].ResultRows[j].SubjectName;
-                    graphRecord.ClassAverage = Math.Ceiling(dicTotals[currentCards[i].ResultRows[j].SubjectId] / currentCards.Count);
+                    graphRecord.ClassAverage = Math.Round(dicTotals[currentCards[i].ResultRows[j].SubjectId] / currentCards.Count);
                     graphRecord.CurrentMarks = currentCards[i].ResultRows[j].GraphValue;
                     currentCards[i].GraphRecords.Add(graphRecord);
                 }
@@ -369,10 +430,10 @@ namespace OpMgr.DataAccess.Implementations
             }
             DataTable dtEvaluator = new DataTable();
             var computedMarks = dtEvaluator.Compute(expression, "");
-            computedMarks = (int)Math.Ceiling(Convert.ToDouble(computedMarks));
+            computedMarks = (int)Math.Round(Convert.ToDouble(computedMarks));
             dtEvaluator = new DataTable();
             var totalMarks = dtEvaluator.Compute(totMarksExpr, "");
-            totalMarks = (int)Math.Ceiling(Convert.ToDouble(totalMarks));
+            totalMarks = (int)Math.Round(Convert.ToDouble(totalMarks));
             totalMarks = totalMarks.ToString().Split('.')[0];
             string grade = string.Empty;
             if (string.Equals(hasGrade, "Y", StringComparison.OrdinalIgnoreCase))

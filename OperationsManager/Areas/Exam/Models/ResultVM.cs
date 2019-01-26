@@ -34,5 +34,9 @@ namespace OperationsManager.Areas.Exam.Models
         public double ClassHeighest { get; set; }
 
         public double ClassAverage { get; set; }
+
+        public ResultCardRows ClassHeighestRow { get; set; }
+
+        public ResultCardRows ClassAvgRow { get; set; }
     }
 }

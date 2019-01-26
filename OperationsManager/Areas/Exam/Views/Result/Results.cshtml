@@ -142,7 +142,7 @@
                                             <td colspan="4">
                                                 <table style="width:100%">
                                                     <tr>
-                                                        <td style="width:60%">
+                                                        <td style="width:90%">
                                                             <table class="table table-bordered printInnerTable" style="width:100%;">
                                                                 <thead>
                                                                     <tr>
@@ -168,69 +168,109 @@
                                                                 <tfoot>
                                                                     <tr>
                                                                         <th>Total: </th>
-                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        @if (rcDTO.TotalDetailsRow != null)
                                                                         {
-                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            for (int f = 0; f < rcDTO.TotalDetailsRow.ResultColumns.Count; f++)
                                                                             {
-                                                                                <th>@rcDTO.TotalMarks</th>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <th></th>
+                                                                                if (rcDTO.TotalDetailsRow.ResultColumns[f].IsUsedForTotal)
+                                                                                {
+                                                                                    <th>@rcDTO.TotalDetailsRow.ResultColumns[f].ColumnValue</th>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <th></th>
+                                                                                }
                                                                             }
                                                                         }
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Percentage: </th>
-                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        @if (rcDTO.TotalDetailsRow != null)
                                                                         {
-                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            for (int f = 0; f < rcDTO.TotalDetailsRow.ResultColumns.Count; f++)
                                                                             {
-                                                                            <th>@(Math.Round((rcDTO.TotalMarks / rcDTO.ResultRows.Count) ,1)) % </th>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <th></th>
+                                                                                if (rcDTO.TotalDetailsRow.ResultColumns[f].IsUsedForTotal)
+                                                                                {
+                                                                                    <th>@(Math.Round((double.Parse(rcDTO.TotalDetailsRow.ResultColumns[f].ColumnValue) / rcDTO.ResultRows.Count), 1)) % </th>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <th></th>
+                                                                                }
                                                                             }
                                                                         }
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Class Highest: </th>
-                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        @if (Model.ClassHeighestRow != null)
                                                                         {
-                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            for(int i=0; i < Model.ClassHeighestRow.ResultColumns.Count; i++)
                                                                             {
-                                                                                <th>@Model.ClassHeighest</th>
+                                                                                if (Model.ClassHeighestRow.ResultColumns[i].IsUsedForTotal)
+                                                                                {
+                                                                                    <th>@Model.ClassHeighestRow.ResultColumns[i].ColumnValue</th>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <th></th>
+                                                                                }
                                                                             }
-                                                                            else
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
                                                                             {
-                                                                                <th></th>
+                                                                                if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                                {
+                                                                                    <th>0</th>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <th></th>
+                                                                                }
                                                                             }
                                                                         }
                                                                     </tr>
                                                                     <tr>
                                                                         <th>Class Average: </th>
-                                                                        @for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
+                                                                        @if (Model.ClassAvgRow != null)
                                                                         {
-                                                                            if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                            for (int i = 0; i < Model.ClassAvgRow.ResultColumns.Count; i++)
                                                                             {
-                                                                                <th>@Model.ClassAverage</th>
+                                                                                if (Model.ClassAvgRow.ResultColumns[i].IsUsedForTotal)
+                                                                                {
+                                                                                    <th>@Model.ClassAvgRow.ResultColumns[i].ColumnValue</th>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <th></th>
+                                                                                }
                                                                             }
-                                                                            else
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            for (int f = 0; f < rcDTO.ResultRows[0].ResultColumns.Count; f++)
                                                                             {
-                                                                                <th></th>
+                                                                                if (rcDTO.ResultRows[0].ResultColumns[f].IsUsedForTotal)
+                                                                                {
+                                                                                    <th>0</th>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <th></th>
+                                                                                }
                                                                             }
                                                                         }
                                                                     </tr>
                                                                 </tfoot>
                                                             </table>
                                                         </td>
-                                                        <td>
+                                                        @*<td>
                                                             <table class="table table-bordered printInnerTable" style="width:100%">
                                                                 <tr>
                                                                     <td>
                                                                         <img id="imgGraph_@gId" width="250" height="300" class="graphImage" />
-                                                                        <canvas id="marksGraph_@gId" width="250" height="300" class="graphCanvas"></canvas>
+                                                                        <canvas style="display:none" id="marksGraph_@gId" width="250" height="300" class="graphCanvas"></canvas>
                                                                         <script>
                                                                             var marksGraph_@gId = document.getElementById("marksGraph_@gId");
 
@@ -284,7 +324,7 @@
                                                                     </td>
                                                                 </tr>
                                                             </table>
-                                                        </td>
+                                                        </td>*@
                                                     </tr>
                                                 </table>
                                             </td>

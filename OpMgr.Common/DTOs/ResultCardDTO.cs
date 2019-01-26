@@ -37,6 +37,8 @@ namespace OpMgr.Common.DTOs
         public string AttendancePercent { get; set; }
 
         public List<GraphRecords> GraphRecords { get; set; }
+
+        public ResultCardRows TotalDetailsRow { get; set; }
     }
 
     public class ResultCardRows
@@ -61,6 +63,9 @@ namespace OpMgr.Common.DTOs
         public bool IsAllowedForGrade { get; set; }
 
         public bool IsUsedForTotal { get; set; }
+
+        public bool IsUsedForHeighestAndAvg { get; set; }
+        
     }
 
     public class GraphRecords
