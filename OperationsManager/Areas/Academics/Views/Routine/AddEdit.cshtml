@@ -1,0 +1,196 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Academics.Models.AddEditRoutine
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
+    <script type="text/javascript">
+      
+        function refreshAndClose() {
+            
+        window.opener.location.reload(true);
+        window.close();
+    }
+   
+      
+   
+        $(document).ready(function () {
+            
+            $("#button_1").click(function (e) {
+                var model = {
+                    subjectid: document.getElementById("SubjectId").value,
+                    standardsectionid : document.getElementById("standardsectionid").value,
+                    periodid: document.getElementById("periodid").value,
+                    DayOfWeek: document.getElementById("dayofweek").value,
+                    periodschedule: document.getElementById("periodschedule").value,
+                    locationid: document.getElementById("locationid").value,
+                    PeriodName: document.getElementById("AutocompleteSubject").value,
+                    employeeid: document.getElementById("EmployeeId").value,
+                    periodstarttime: document.getElementById("starthour").value + ":" + document.getElementById("startmin").value + " " + document.getElementById("startmeridiem").value,
+                    periodendtime: document.getElementById("endhour").value + ":" + document.getElementById("endmin").value + " " + document.getElementById("endmeridiem").value,
+                    practical: document.getElementById("option1").checked,
+                    //practical : document.getElementById("practical:checked").value,
+                };
+                 e.preventDefault();
+                 $.ajax({
+                     dataType: 'JSON',
+                     type: "POST",
+                     url: "pstedit?data="+JSON.stringify(model),
+                                                           
+                     success: function (result) {
+                       
+                         refreshAndClose();
+                     },
+                     error: function (result) {
+                         alert(error.statusText);
+                     }
+                 });
+             });
+
+          
+
+             $("#AutocompleteSubject")
+          // don't navigate away from the field on tab when selecting an item
+          .on("keydown", function (event) {
+              if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).autocomplete("instance").menu.active) {
+                  event.preventDefault();
+              }
+          })
+            .autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    $.ajax({
+                        dataType: 'JSON',
+                        url: "Subjectsearch?term=" + request.term ,
+                        type: "POST",
+                        success: function (data) {  
+                            response($.map(data, function (item) {
+                                return { label: item.subjectname, value: item.subjectid };
+                            }))
+
+                        },
+                        error: function (error) {
+                            alert(error.statusText);
+                        }
+                    });
+                },
+                focus: function () {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function (event, ui) {
+                    document.getElementById("AutocompleteSubject").value = ui.item.label;
+                    document.getElementById("SubjectId").value = ui.item.value;
+                    return false;
+                }
+            });
+             $("#AutocompleteEmployee")
+         // don't navigate away from the field on tab when selecting an item
+         .on("keydown", function (event) {
+             if (event.keyCode === $.ui.keyCode.TAB &&
+                 $(this).autocomplete("instance").menu.active) {
+                 event.preventDefault();
+             }
+         })
+             .autocomplete({
+                 minLength: 1,
+                 source: function (request, response) {
+                     $.ajax({
+                         dataType: 'JSON',
+                         url: "EmployeeSearch?term=" + request.term + "&location=" + document.getElementById("locationid").value,
+                         type: "POST",
+                         success: function (data) {  
+                             response($.map(data, function (item) {
+                                 return { label: item.employeename, value: item.employeeid };
+                             }))
+
+                         },
+                         error: function (error) {
+                             alert(error.statusText);
+                         }
+                     });
+                 },
+                 focus: function () {
+                     // prevent value inserted on focus
+                     return false;
+                 },
+                 select: function (event, ui) {
+                     
+                     document.getElementById("AutocompleteEmployee").value = ui.item.label;
+                     document.getElementById("EmployeeId").value = ui.item.value;
+                     return false;
+                 }
+             });
+
+        })
+    </script>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-xs-12">
+                <div class="form-group">
+                    @using (Html.BeginForm("AddEdit", "Routine", FormMethod.Post, new { id = "AddEditRoutineForm", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.OpMgrTextBoxFor(m => m.PeriodName,"Period Name", new {id= "AutocompleteSubject", @class = "form-control", data_rule_required = "true", data_msg_required = "Period Name is required" })
+                        @Html.OpMgrTextBoxFor(m => m.employeename, "Faculty Name", new { id = "AutocompleteEmployee", @class = "form-control", data_rule_required = "true", data_msg_required = "Faculty Name is required" })
+                        @*@Html.Label("OffPeriod")<br/>
+                        @Html.RadioButtonFor(m => m.offperiod, true, new { id = "option1" })<text>Yes &nbsp; </text>
+                        @Html.RadioButtonFor(m => m.offperiod, false, new { id = "option2" })<text>No</text><br/>*@
+                        @Html.Label("Practical")<br />
+                        @Html.RadioButtonFor(m => m.practical, true, new { id = "option1" })<text>Yes &nbsp; </text>
+                        @Html.RadioButtonFor(m => m.practical, false)<text>No</text>
+                        <p>Start Time:</p>
+                        @Html.DropDownListFor(m => m.PeriodStartTimehour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Text = i.ToString("00"), Value = i.ToString("00") }), new { id = "starthour" })
+                        @Html.DropDownListFor(m => m.PeriodStartTimeminute, Enumerable.Range(00, 61).Select(i => new SelectListItem { Text = i.ToString("00"), Value = i.ToString("00") }), new { id = "startmin" })
+                        @Html.DropDownListFor(m => m.PeriodStartTimeMeridiem, new List<SelectListItem>
+
+                 {
+                    new SelectListItem{ Text="AM", Value = "AM" },
+                    new SelectListItem{ Text="PM", Value = "PM" }
+                 }, new { id = "startmeridiem" })<br />
+                  <p>End Time:</p>
+                    @Html.DropDownListFor(m => m.periodEndTimehour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Text = i.ToString("00"), Value = i.ToString("00") }), new { id = "endhour" })
+                    @Html.DropDownListFor(m => m.periodEndTimeminute, Enumerable.Range(00, 61).Select(i => new SelectListItem { Text = i.ToString("00"), Value = i.ToString("00") }), new { id = "endmin" })
+                    @Html.DropDownListFor(m => m.periodEndTimeMeridiem, new List<SelectListItem>
+
+                 {
+                    new SelectListItem{ Text="AM", Value = "AM" },
+                    new SelectListItem{ Text="PM", Value = "PM" }
+                 }, new { id = "endmeridiem" })<br />
+                    
+                        @Html.HiddenFor(m => m.subjectid, new { id = "SubjectId" })
+                        @Html.HiddenFor(m => m.employeeid, new { id = "EmployeeId" })
+                        @Html.HiddenFor(m => m.standardsectionid, new { id = "standardsectionid" })
+                        @Html.HiddenFor(m => m.periodid, new { id = "periodid" })
+                        @Html.HiddenFor(m=> m.period, new { id = "periodschedule" })
+                        @Html.HiddenFor(m=>m.DayOfWeek, new { id = "dayofweek" })
+                        @Html.HiddenFor(m=>m.locationid, new {id= "locationid" })
+                        
+                        <button  type="submit" class="btn btn-primary block" style="display:none">@UserResource.RegisterButton</button>
+                        <button id="button_1" value="val_1" name="but1">Submit</button>
+                        <input type='submit' id='btn' value='Close' onclick="refreshAndClose()"/>
+
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>  
+
+

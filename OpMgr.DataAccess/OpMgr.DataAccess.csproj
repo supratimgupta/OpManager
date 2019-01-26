@@ -63,6 +63,7 @@
     <Compile Include="Implementations\ResetPasswordSvc.cs" />
     <Compile Include="Implementations\ResultSvc.cs" />
     <Compile Include="Implementations\RoleSvc.cs" />
+    <Compile Include="Implementations\Routinesvc.cs" />
     <Compile Include="Implementations\StudentRemarksSvc.cs" />
     <Compile Include="Implementations\StudentSvc.cs" />
     <Compile Include="Implementations\EntitlementActionSvc.cs" />

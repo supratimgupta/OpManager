@@ -1,0 +1,384 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Academics.Models.RoutineTable
+
+
+
+@{
+    // Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+<script type="text/javascript">
+    function myFunctionADD(mode, dayofweek, period, location, standardsection) {
+
+        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var left = ((width / 2) - (500 / 2)) + dualScreenLeft;
+        var w = 500;
+        var top = ((height / 2) - (500 / 2)) + dualScreenTop;
+        var newWindow = window.open("AddEdit?mode=" + mode + "&dayofweek=" + dayofweek + "&period=" + period + "&location=" + location + "&standardsectionid=" + standardsection, "addwindow", "menubar=1,resizable=1,width=' + w + ', height=' + w + ', top=' + top + ', left=' + left");
+        // Puts focus on the newWindow
+        if (window.focus) {
+            newWindow.focus();
+        }
+    };
+ </script>
+<script type="text/javascript">
+    function myFunctionEDIT(mode,periodid, location, standardsection) {
+        
+        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        var left = ((width / 2) - (500 / 2)) + dualScreenLeft;
+        var w = 500;
+        var top = ((height / 2) - (500 / 2)) + dualScreenTop;
+        var newWindow = window.open("AddEdit?mode=" + mode + "&id=" + periodid + "&location=" + location + "&standardsectionid=" + standardsection, "addwindow", "menubar=1,resizable=1,width=' + w + ', height=' + w + ', top=' + top + ', left=' + left");
+        // Puts focus on the newWindow
+        if (window.focus) {
+            newWindow.focus();
+        }
+    };
+</script>
+<script type="text/javascript">
+    function myFunctionReplacement(periodid, location, standardsection) {
+
+        var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+        var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+        var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+        var h= 200;
+        var left = ((width / 2) - (500 / 2)) + dualScreenLeft;
+        var w = 400;
+        var top = ((height / 2) - (500 / 2)) + dualScreenTop;
+        var newWindow = window.open("Replacement?&id=" + periodid + "&location=" + location + "&standardsectionid=" + standardsection, "addwindow", "menubar=1,resizable=1,width=' + w + ', height=' + h + ', top=' + top + ', left=' + left");
+        // Puts focus on the newWindow
+        if (window.focus) {
+            newWindow.focus();
+        }
+    }
+
+</script>
+
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<title>@StudentResource.PageTitle</title>*@
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+    <div class="panel panel-color panel-primary">
+        <div class="panel-heading"><b>@StudentResource.StudentTable</b></div>
+        <div class="panel-body">
+            <div style="overflow:scroll;">
+                <table class="table table table-striped table-bordered table-responsive table-hover " border="1" data-toggle="table" data-url="tables/data1.json" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th th data-field="1st Period">
+                               1st Period
+                            </th>
+                            <th th data-field="2nd Period">
+                               2nd Period
+                            </th>
+                            <th th data-field="3rd Period">
+                               3rd Period
+                            </th>
+                            <th th data-field="4th Period">
+                               4th Period
+                            </th>
+                            <th>
+
+                            </th>
+                            <th th data-field="5th Period">
+                               5th Period
+                            </th>
+                            <th th data-field="6th Period">
+                                6th Period
+                            </th>
+                            <th th data-field="7th Period">
+                                7th Period
+                            </th>
+                            <th th data-field="8th Period">
+                                8th Period
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+
+                                foreach (var routine in Model.RoutineTblList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @routine.DayOfWeek
+                                        </td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.firstPeriodName<br /></font>
+                                            <font color="blue">
+                                                @routine.firstPeriodFaculty</font>
+                                            @if (@routine.firstperiodpractical)
+                                            {
+                                                <font color="green"><br /> <p>practical</p></font>
+                                            }
+                                            @if (@routine.firstperiodoff)
+                                            {
+                                                @*<br /><p>offperiod</p>*@
+                                            }
+                                           <font color="red"> @routine.firstperiodstarttime - @routine.firstperiodendtime</font>
+
+                                            @if (routine.firstperiodmode != 1)
+                                            {
+
+                                                <br /><linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','1',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                    @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek+"&period=1&location="+@routine.locationid+"&standardsectionid="+@routine.standardsectionid, new { name = "addRoutine" })*@
+                                            }
+                                            else
+                                            {
+                                                <br /><linkbutton onclick="myFunctionEDIT('EDIT','@routine.firstperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                    @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.firstperiodid+ "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "editRoutine" })*@
+                                                <linkbutton onclick="myFunctionReplacement('@routine.firstperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                            }
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.secondPeriodName<br /></font>
+                                                <font color="blue">
+                                                    @routine.secondPeriodFaculty</font>
+                                                    @if (@routine.secondperiodpractical)
+                                                    {
+                                                        <font color="green">
+                                                            <br /> <p>practical</p></font>
+                                                            }
+                                                            @if (@routine.secondperiodoff)
+                                                            {
+                                                                @*<br /><p>offperiod</p>*@
+                                                            }
+                                                            <font color="red">
+                                                                @routine.secondperiodstarttime - @routine.secondperiodendtime</font>
+                                                                @if (routine.secondperiodmode != 1)
+                                                                {
+                                                                    <br /><linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','2',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                                    @*@Html.ActionLink("ADD ", "AddEdit?mode=ADD", new { target="_blank", name = "addRoutine" })*@
+                                                                    @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek + "&period=2&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "addRoutine" })*@
+                                                                }
+                                                                else
+                                                                {
+                                                                    <br /> <linkbutton onclick="myFunctionEDIT('EDIT','@routine.secondperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                                    @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.secondperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                                    <linkbutton onclick="myFunctionReplacement('@routine.secondperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                                }
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.thirdPeriodName<br /></font>
+                                            <font color="blue">
+                                                @routine.thirdPeriodFaculty</font>
+                                                @if (@routine.thirdperiodpractical)
+                                                {
+                                                    <br /><font color="green">
+                                                        <p>practical</p></font>
+                                                        }
+                                                        @if (@routine.thirdperiodoff)
+                                                        {
+                                                            @*<br /><p>offperiod</p>*@
+                                                        }
+                                            <font color="red">
+                                                @routine.thirdperiodstarttime - @routine.thirdperiodendtime</font>
+                                                @if (routine.thirdperiodmode != 1)
+                                                {
+                                                    <br /> <linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','3',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                            @*@Html.ActionLink("ADD ", "AddEdit?mode=ADD", new { target="_blank", name = "addRoutine" })*@
+                                                            @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek + "&period=3&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "addRoutine" })*@
+                                                }
+                                                else
+                                                {
+                                                    <br /> <linkbutton onclick="myFunctionEDIT('EDIT','@routine.thirdperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                            @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.thirdperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                    <linkbutton onclick="myFunctionReplacement('@routine.thirdperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                }
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.fourthPeriodName<br /></font>
+                                            <font color="blue">
+                                                @routine.fourthPeriodFaculty</font>
+                                                @if (@routine.fourthperiodpractical)
+                                                {
+                                                    <font color="green">
+                                                        <br /> <p>practical</p></font>
+                                                        }
+                                                        @if (@routine.fourthperiodoff)
+                                                        {
+                                                            @*<br /><p>offperiod</p>*@
+                                                        }
+                                            <font color="red">
+                                                @routine.fourthperiodstarttime - @routine.fourthperiodendtime</font>
+                                                @if (routine.fourthperiodmode != 1)
+                                                {
+                                                    @*@Html.ActionLink("ADD ", "AddEdit?mode=ADD", new { target="_blank", name = "addRoutine" })*@
+                                                    @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek + "&period=4&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "addRoutine" })*@
+                                                    <br /> <linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','4',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                }
+                                                else
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionEDIT('EDIT','@routine.fourthperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                            @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.fourthperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                    <linkbutton onclick="myFunctionReplacement('@routine.fourthperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                }
+</td>
+                                        <td>
+                                            <font color="green"> BREAK</font>
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.fifthPeriodName<br /></font>
+                                            <font color="blue">
+                                                @routine.fifthPeriodFaculty</font>
+                                                @if (@routine.fifthperiodpractical)
+                                                {
+                                                    <font color="green">
+                                                        <br /> <p>practical</p></font>
+                                                        }
+                                                        @if (@routine.fifthperiodoff)
+                                                        {
+                                                            @*<br /><p>offperiod</p>*@
+                                                        }
+                                            <font color="red">
+                                                @routine.fifthperiodstarttime - @routine.fifthperiodendtime</font>
+                                                @if (routine.fifthperiodmode != 1)
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','5',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                            @*@Html.ActionLink("ADD ", "AddEdit?mode=ADD", new { target="_blank", name = "addRoutine" })*@
+                                                            @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek + "&period=5&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "addRoutine" })*@
+                                                }
+                                                else
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionEDIT('EDIT','@routine.fifthperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                            @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.fifthperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                    <linkbutton onclick="myFunctionReplacement('@routine.fifthperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                }
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.sixthPeriodName <br /></font>
+                                            <font color="blue">
+                                                @routine.sixthPeriodFaculty</font>
+                                            @if (@routine.sixthperiodpractical)
+                                            {
+                                                <font color="green>">
+                                                    <br /> <p>practical</p></font>
+                                                    }
+                                                    @if (@routine.sixthperiodoff)
+                                                    {
+                                                        @*<br /><p>offperiod</p>*@
+                                                    }
+                                            <font color="red">
+                                                @routine.sixthperiodstarttime - @routine.sixthperiodendtime</font>
+                                                @if (routine.sixthperiodmode != 1)
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','6',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                        @*@Html.ActionLink("ADD ", "AddEdit?mode=ADD", new { target="_blank", name = "addRoutine" })*@
+                                                        @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek + "&period=6&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "addRoutine" })*@
+                                                }
+                                                else
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionEDIT('EDIT','@routine.sixthperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                        @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.sixthperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                    <linkbutton onclick="myFunctionReplacement('@routine.sixthperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                }
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.seventhPeriodName <br /></font>
+                                            <font color="blue">
+                                                @routine.seventhPeriodFaculty</font>
+                                                @if (@routine.seventhperiodpractical)
+                                                {
+                                                    <font color="green">
+                                                        <br /> <p>practical</p></font>
+                                                        }
+                                                        @if (@routine.seventhperiodoff)
+                                                        {
+                                                            @*<br /><p>offperiod</p>*@
+                                                        }
+                                            <font color="red">
+                                                @routine.seventhperiodstarttime - @routine.seventhperiodendtime</font>
+                                                @if (routine.seventhperiodmode != 1)
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','7',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                            @*@Html.ActionLink("ADD ", "AddEdit?mode=ADD", new { target="_blank", name = "addRoutine" })*@
+                                                            @*@Html.OpMgrActionLinkMultiple("ADD ", "AddEdit?mode=ADD&dayofweek=" + @routine.DayOfWeek + "&period=7&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { name = "addRoutine" })*@
+                                                }
+                                                else
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionEDIT('EDIT','@routine.seventhperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                            @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.seventhperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                    <linkbutton onclick="myFunctionReplacement('@routine.seventhperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                }
+</td>
+                                        <td>
+                                            <font color="red">
+                                                @routine.eigthPeriodName<br /></font>
+                                            <font color="blue">
+                                                @routine.eigthPeriodFaculty</font>
+                                            @if (@routine.eigthperiodpractical)
+                                            { <font color="green">
+                                                <br /> <p>practical</p></font>
+                                                }
+                                                @if (@routine.eighthperiodoff)
+                                                {
+                                                    @*<br /><p>offperiod</p>*@
+                                                }
+                                            <font color="red">
+                                                @routine.eighthperiodstarttime - @routine.eighthperiodendtime</font>
+                                                @if (routine.eigthperiodmode != 1)
+                                                {
+                                                    <br /> <linkbutton onclick="myFunctionADD('ADD','@routine.DayOfWeek','8',@routine.locationid,@routine.standardsectionid)">Add</linkbutton>
+                                                   
+                                                }
+                                                else
+                                                {
+                                                    <br /><linkbutton onclick="myFunctionEDIT('EDIT','@routine.eigthperiodid',@routine.locationid,@routine.standardsectionid)">Edit</linkbutton>
+                                                    @*@Html.OpMgrActionLinkMultiple(" EDIT ", "AddEdit?mode=EDIT&id=" + routine.eigthperiodid + "&location=" + @routine.locationid + "&standardsectionid=" + @routine.standardsectionid, new { target = "_blank", name = "editRoutine" })*@
+                                                    <linkbutton onclick="myFunctionReplacement('@routine.eigthperiodid',@routine.locationid,@routine.standardsectionid)">Replacement</linkbutton>
+                                                }
+</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" align="center" style="font-style:oblique">
+                                        No Data Found
+                                    </td>
+                                </tr>
+                            }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿@using OpMgr.Resources.User
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.Academics.Models.Employee
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Replacement</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        function refreshAndClose() {
+
+        window.opener.location.reload(true);
+        window.close();
+    }
+
+
+
+        $(document).ready(function () {
+
+            $("#button_1").click(function (e) {
+                var model = {
+                    subjectid: document.getElementById("SubjectId").value,
+                    standardsectionid : document.getElementById("standardsectionid").value,
+                    periodid: document.getElementById("periodid").value,
+                    DayOfWeek: document.getElementById("dayofweek").value,
+                    periodschedule: document.getElementById("periodschedule").value,
+                    locationid: document.getElementById("locationid").value,
+                    PeriodName: document.getElementById("AutocompleteSubject").value,
+                    employeeid: document.getElementById("EmployeeId").value,
+                    periodstarttime: document.getElementById("starthour").value + ":" + document.getElementById("startmin").value + " " + document.getElementById("startmeridiem").value,
+                    periodendtime: document.getElementById("endhour").value + ":" + document.getElementById("endmin").value + " " + document.getElementById("endmeridiem").value,
+                    practical: document.getElementById("option1").checked,
+                    //practical : document.getElementById("practical:checked").value,
+                };
+                 e.preventDefault();
+                 $.ajax({
+                     dataType: 'JSON',
+                     type: "POST",
+                     url: "pstedit?data="+JSON.stringify(model),
+
+                     success: function (result) {
+
+                         refreshAndClose();
+                     },
+                     error: function (result) {
+                         alert(error.statusText);
+                     }
+                 });
+            });
+
+
+        })
+    </script>
+</head>
+<body><div class="container py-5">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-xs-12">
+            <div class="form-group">
+                @using (Html.BeginForm("Replacement", "Routine", FormMethod.Post, new { id = "ReplacementForm", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <p><b>SELECT A FACULTY FOR REPLACEMENT FROM THE BELOW LIST:</b></p>
+                    @Html.DropDownListFor(m => m.employeeid,Model.employeeList,"Please select a name", new { @class = "form-control requiredField reqSearch" })
+                        <br/>
+                        <button type="submit" class="btn btn-primary block" style="display:none">@UserResource.RegisterButton</button>
+                    //<button id="button_1" value="val_1" name="but1">Submit</button>
+                        <input type='submit' id='btn' value='Submit' onclick="refreshAndClose()" />
+                        <input type='submit' id='btn' value='Close' onclick="refreshAndClose()" />
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+ 
+    </body>
+</html>
