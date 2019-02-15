@@ -302,10 +302,11 @@ namespace OpMgr.DataAccess.Implementations
                         subHeighestCol.ColumnValue = Math.Round(dicSubjectHeighest[lstResultCards[rc].ResultRows[rr].SubjectId]).ToString();
                         lstResultCards[rc].ResultRows[rr].ResultColumns.Add(subHeighestCol);
 
-                        subAvgCol = new ResultCardColumns();
-                        subAvgCol.ColumnName = "CLASS AVGERAGE MARKS";
-                        subAvgCol.ColumnValue = Math.Round(dicSubjectTotal[lstResultCards[rc].ResultRows[rr].SubjectId] / lstResultCards.Count).ToString();
-                        lstResultCards[rc].ResultRows[rr].ResultColumns.Add(subAvgCol);
+                        //commented as Average marks is not require for Final Marks
+                        //subAvgCol = new ResultCardColumns();
+                        //subAvgCol.ColumnName = "CLASS AVGERAGE MARKS";
+                        //subAvgCol.ColumnValue = Math.Round(dicSubjectTotal[lstResultCards[rc].ResultRows[rr].SubjectId] / lstResultCards.Count).ToString();
+                        //lstResultCards[rc].ResultRows[rr].ResultColumns.Add(subAvgCol);
                     }
                 }
             }
@@ -324,7 +325,8 @@ namespace OpMgr.DataAccess.Implementations
                     graphRecord = new GraphRecords();
                     graphRecord.ClassHighest = dicHighests[currentCards[i].ResultRows[j].SubjectId];
                     graphRecord.SubjectName = currentCards[i].ResultRows[j].SubjectName;
-                    graphRecord.ClassAverage = Math.Round(dicTotals[currentCards[i].ResultRows[j].SubjectId] / currentCards.Count);
+                    //commented as Average marks is not require for Final Marks
+                    // graphRecord.ClassAverage = Math.Round(dicTotals[currentCards[i].ResultRows[j].SubjectId] / currentCards.Count);
                     graphRecord.CurrentMarks = currentCards[i].ResultRows[j].GraphValue;
                     currentCards[i].GraphRecords.Add(graphRecord);
                 }

@@ -1,6 +1,7 @@
 ﻿using OpMgr.Common.DTOs;
 using System.Data;
 using System.Data.OleDb;
+using System.Linq;
 
 namespace OpMgr.FileWatcher
 {
@@ -41,6 +42,10 @@ namespace OpMgr.FileWatcher
                             OleDbDataAdapter rdr = new OleDbDataAdapter(ocmd);
                             DataTable dtdata = new DataTable();
                             rdr.Fill(dtdata);
+                            dtdata = dtdata.Rows.Cast<DataRow>()
+                                       .Where(row => !row.ItemArray.All(field => field is System.DBNull))
+                                       .CopyToDataTable();
+
                             string goal = string.Empty;
                             DataRow[] dr = null;
                             GoalDTO goalDTO = null;
