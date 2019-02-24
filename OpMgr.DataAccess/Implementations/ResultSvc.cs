@@ -298,7 +298,7 @@ namespace OpMgr.DataAccess.Implementations
                     for(int rr=0; rr< lstResultCards[rc].ResultRows.Count; rr++)
                     {
                         subHeighestCol = new ResultCardColumns();
-                        subHeighestCol.ColumnName = "CLASS HEIGHEST MARKS";
+                        subHeighestCol.ColumnName = "CLASS HIGHEST MARKS";
                         subHeighestCol.ColumnValue = Math.Round(dicSubjectHeighest[lstResultCards[rc].ResultRows[rr].SubjectId]).ToString();
                         lstResultCards[rc].ResultRows[rr].ResultColumns.Add(subHeighestCol);
 

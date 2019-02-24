@@ -62,6 +62,8 @@ namespace OperationsManager.Areas.Login.Models
 
         public string StudentOrStaffId { get; set; }
 
-        
+        public string RoleName { get; set; }
+
+
     }
 }

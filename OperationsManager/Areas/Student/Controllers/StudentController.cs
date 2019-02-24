@@ -1425,6 +1425,17 @@ namespace OperationsManager.Areas.Student.Controllers
             //uvModel.DepartmentList = _uiddlRepo.getDepartmentDropDown();
             //uvModel.DesignationList = _uiddlRepo.getDesignationDropDown();
             studentView.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+            studentView.IsChristianList = _uiddlRepo.getSelectValueDropDown();
+
+            studentView.IsParentTeacherList = _uiddlRepo.getSelectValueDropDown();
+            studentView.IsParentFromEngMedList = _uiddlRepo.getSelectValueDropDown();
+            studentView.JointOrNuclearFamilyList = _uiddlRepo.getSelectJointNuclearDropDown();
+            studentView.SiblingsInStdOrNotList = _uiddlRepo.getSelectValueDropDown();
+            studentView.AnyAlumunimemberList = _uiddlRepo.getSelectValueDropDown();
+            studentView.StudentinPvtTutionList = _uiddlRepo.getSelectValueDropDown();
+            studentView.BrotherSisterInSchoolList = _uiddlRepo.getSelectValueDropDown();
+            studentView.LikeToPartCCAList = _uiddlRepo.getSelectValueDropDown();
+            studentView.LiketoPartGameList = _uiddlRepo.getSelectValueDropDown();
 
             studentView.Transactions = _userTrans.GetUserTransactions(studentView.UserDetails.UserMasterId);
 
