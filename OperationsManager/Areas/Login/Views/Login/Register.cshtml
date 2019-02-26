@@ -56,6 +56,7 @@
 
                 var classTypeId = $("#Employee_ClassType_ClassTypeId").val();
                 if (classTypeId > 2) {
+                    
                     $("#divSpecilizaion").show();
                 }
                 else {
@@ -69,8 +70,9 @@
 
             // If Selected Department = Teaching THEN ClassType will display, If classtype is MEDIUM or SENIOR then Subject/Specialization will appear
             $("#Employee_Department_DepartmentId").change(function () {
+                
                 var deptId = $("#Employee_Department_DepartmentId").val();
-
+                
                 if (deptId == 1) {
                     $("#divClasstype").show();
 
@@ -471,7 +473,7 @@
                                 @Html.OpMgrDropDownListFor(m => m.Employee.Designation.DesignationId, Model.DesignationList, UserResource.DesignationId, new { @class = "form-control", id="ddlDesignation" })
                             </div>
                             <div class="col-lg-5">
-                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control", id="ddlDepartment" })
+                                @Html.OpMgrDropDownListFor(m => m.Employee.Department.DepartmentId, Model.DepartmentList, UserResource.DepartmentId, new { @class = "form-control" })
                             </div>
                             <div class="col-lg-5" id="divClasstype">
                                 @Html.OpMgrDropDownListFor(m => m.Employee.ClassType.ClassTypeId, Model.ClassTypeList, UserResource.ClassType, new { @class = "form-control" })

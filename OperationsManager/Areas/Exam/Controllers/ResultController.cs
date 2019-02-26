@@ -44,15 +44,48 @@ namespace OperationsManager.Areas.Exam.Controllers
         {
             List<ResultCardDTO> resultCards = _resultSvc.GetResult(result.SelectedLocation, result.SelectedStandardSection, result.SelectedResultType, DateTime.Parse(result.SelectedAcademicSession.Split(';')[0]), DateTime.Parse(result.SelectedAcademicSession.Split(';')[1]));
             result.ResultCards = resultCards;
+            ResultCardRows classAverageRow = new ResultCardRows();
+            ResultCardRows classHeighestRow = new ResultCardRows();
             if(resultCards!= null && resultCards.Count > 0)
             {
-                result.ClassAverage = Math.Round(resultCards.Average(rc => rc.TotalMarks));
-                result.ClassHeighest = Math.Round(resultCards.Max(rc => rc.TotalMarks));
+                ResultCardDTO fRC = resultCards[0];
+                ResultCardRows fRow = fRC.TotalDetailsRow;
+                classAverageRow.ResultColumns = new List<ResultCardColumns>();
+                classHeighestRow.ResultColumns = new List<ResultCardColumns>();
+                for(int i = 0; i < fRow.ResultColumns.Count; i++)
+                {
+                    ResultCardColumns col = new ResultCardColumns();
+                    col.IsUsedForTotal = false;
+                    col.ColumnValue = "";
+                    if (fRow.ResultColumns[i].IsUsedForTotal)
+                    {
+                        col.IsUsedForTotal = true;
+                        col.ColumnValue = Math.Round(resultCards.Average(rc => double.Parse(rc.TotalDetailsRow.ResultColumns[i].ColumnValue))).ToString();
+                    }
+                    classAverageRow.ResultColumns.Add(col);
+                    col = new ResultCardColumns();
+                    col.IsUsedForTotal = false;
+                    col.ColumnValue = "";
+                    if (fRow.ResultColumns[i].IsUsedForTotal)
+                    {
+                        col.IsUsedForTotal = true;
+                        col.ColumnValue = Math.Round(resultCards.Max(rc => double.Parse(rc.TotalDetailsRow.ResultColumns[i].ColumnValue))).ToString();
+                    }
+                    classHeighestRow.ResultColumns.Add(col);
+                }
+
+                result.ClassHeighestRow = classHeighestRow;
+                result.ClassAvgRow = classAverageRow;
+                // result.ClassAverage = Math.Round(resultCards.Average(rc => rc.TotalMarks));
+                // result.ClassHeighest = Math.Round(resultCards.Max(rc => rc.TotalMarks));
             }
             else
             {
-                result.ClassAverage = 0;
-                result.ClassHeighest = 0;
+                // result.ClassAverage = 0;
+                // result.ClassHeighest = 0;
+
+                result.ClassHeighestRow = null;
+                result.ClassAvgRow = null;
             }
             result.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
             result.LocationList = _uiddlRepo.getLocationDropDown();

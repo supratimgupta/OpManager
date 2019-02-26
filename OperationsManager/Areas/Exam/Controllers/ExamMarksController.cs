@@ -277,7 +277,15 @@ namespace OperationsManager.Areas.Exam.Controllers
                                 //commandList.Add(_examMarksSvc.GetUpdateMarksCommand(examMarksVM.ExamMarksList[i]));
 
                                 //batch was not working for insertion more than 1 record so reverting previous code
-                                _examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
+                                // Marks will updated by only "Admin" Role
+                                var val = _sessionSvc.GetUserSession().EntitleMentList.Find(x => x.RoleName.Contains("Admin"));
+                                if (val != null)
+                                {
+                                    if (val.RoleName == "Admin")
+                                    {
+                                        _examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
+                                    }
+                                }
                             }
                             else
                             {

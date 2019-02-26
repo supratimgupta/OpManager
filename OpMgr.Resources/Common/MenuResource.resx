@@ -195,6 +195,9 @@
   <data name="Results" xml:space="preserve">
     <value>RESULTS</value>
   </data>
+  <data name="Routine" xml:space="preserve">
+    <value>ROUTINE MANAGEMENT</value>
+  </data>
   <data name="RulesCreation" xml:space="preserve">
     <value>RULES CREATION</value>
   </data>

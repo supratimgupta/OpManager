@@ -129,11 +129,11 @@ namespace OperationsManager.Areas.Login.Controllers
                 session.EntitleMentList = lstEntitleMent;
                 session.LocationList = lstLocation;
 
-                if(string.Equals(status.ReturnObj.UserType, "STUDENT", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(status.ReturnObj.UserType, "STUDENT", StringComparison.OrdinalIgnoreCase))
                 {
                     session.IconImagePath = _configSvc.GetStudentImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
                 }
-                if(string.Equals(status.ReturnObj.UserType, "STAFF", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(status.ReturnObj.UserType, "STAFF", StringComparison.OrdinalIgnoreCase))
                 {
                     session.IconImagePath = _configSvc.GetEmployeeImagesRelPath() + "/" + status.ReturnObj.UniqueId + ".jpg";
                 }
@@ -141,7 +141,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 nDTO.User = new UserMasterDTO();
                 nDTO.User.UserMasterId = session.UserMasterId;
                 session.Notifications = _notiSvc.Select(nDTO).ReturnObj;
-                if(session.Notifications!=null)
+                if (session.Notifications != null)
                 {
                     session.NotificationCounts = session.Notifications.Count;
                 }
@@ -241,7 +241,7 @@ namespace OperationsManager.Areas.Login.Controllers
 
                     string employeeImageFolder = _configSvc.GetEmployeeImagesFolder();
 
-                    uvModel.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(uvModel.Employee.StaffEmployeeId, employeeImageFolder)+"?ver="+DateTime.UtcNow.Ticks;
+                    uvModel.employeeimagepath = _configSvc.GetEmployeeImagesRelPath() + "/" + GetImageFileName(uvModel.Employee.StaffEmployeeId, employeeImageFolder) + "?ver=" + DateTime.UtcNow.Ticks;
                     //if(dto.ReturnObj.Employee.ClassType != null)
                     //{
                     //    uvModel.Employee.Subject = dto.ReturnObj.Employee.Subject;
@@ -311,18 +311,18 @@ namespace OperationsManager.Areas.Login.Controllers
             //{
             //    if (file.ContentLength > 0)
             //    {
-            if(Request.Files!=null && Request.Files.Count>0)
+            if (Request.Files != null && Request.Files.Count > 0)
             {
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    if(Request.Files[i].ContentLength>0 && Request.Files[i].FileName.Trim().Length>0)
+                    if (Request.Files[i].ContentLength > 0 && Request.Files[i].FileName.Trim().Length > 0)
                     {
                         string keyName = Request.Files.Keys[i];
                         folderName = _configSvc.GetEmployeeImagesFolder();
                         SaveImageFiles(folderName, Request.Files[i].FileName, uvModel.Employee.StaffEmployeeId);
-                    }                    
+                    }
                 }
-            }            
+            }
             //    }
             //}
 
@@ -349,7 +349,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 //Call update
                 if (!string.IsNullOrEmpty(uvModel.Password))
                 {
-                    string pass = encrypt.encryption(uvModel.Password);                
+                    string pass = encrypt.encryption(uvModel.Password);
                     uvModel.Password = pass;
                 }
                 uvModel.UpdatedBy = sessionRet;
@@ -457,7 +457,7 @@ namespace OperationsManager.Areas.Login.Controllers
                             uvModel.PMSEmpDesignationMapList[i].CreatedBy = new UserMasterDTO();
                             uvModel.PMSEmpDesignationMapList[i].CreatedBy.UserMasterId = Convert.ToInt32(_sessionSvc.GetUserSession().UserMasterId);
                             uvModel.PMSEmpDesignationMapList[i].Employee = new EmployeeDetailsDTO();
-                            
+
                             uvModel.PMSEmpDesignationMapList[i].Employee.EmployeeId = status.ReturnObj.Employee.EmployeeId;
                             _userSvc.InsertPMSDesignationMap(uvModel.PMSEmpDesignationMapList[i]);
                         }
@@ -595,7 +595,17 @@ namespace OperationsManager.Areas.Login.Controllers
                     userView.Name = userView.Name + " " + sessionRet.LName;
                 }
                 userView.UserMasterId = sessionRet.UserMasterId;
-                if(!string.IsNullOrEmpty(userView.Name) && userView.Name.Contains("admin"))
+
+                var val = _sessionSvc.GetUserSession().EntitleMentList.Find(x => x.RoleName.Contains("Admin"));
+                if (val != null)
+                {
+                    if (val.RoleName == "Admin")
+                    {
+                        userView.RoleName = "Admin";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(userView.RoleName) && userView.RoleName.Contains("Admin"))
                 {
                     userView.Password = _resetPassSvc.GetPasswordForUser(userView.UserMasterId);
                     userView.ConfirmPassword = "default1234";
@@ -623,7 +633,7 @@ namespace OperationsManager.Areas.Login.Controllers
                     userView.SuccessorFailureMessage = "Password and New Password should not match!!";
                     userView.MessageColor = "red";
                 }
-                else if (!string.IsNullOrEmpty(userView.Name) && !userView.Name.Contains("admin")
+                else if (!string.IsNullOrEmpty(userView.RoleName) && !userView.RoleName.Contains("Admin")
                 && !string.Equals(encrypt.encryption(userView.Password), _resetPassSvc.GetPasswordForUser(userView.UserMasterId)))
                 {
                     userView.SuccessorFailureMessage = "Password is Incorrect!!";
@@ -634,7 +644,7 @@ namespace OperationsManager.Areas.Login.Controllers
                 {
                     studentOrStaffId = userView.StudentOrStaffId;
                     roleDesc = userView.Role.RoleDescription;
-                    IsPasswordReset = _resetPassSvc.ResetPassword(encrypt.encryption(userView.NewPassword), userView.UserMasterId,studentOrStaffId,roleDesc);
+                    IsPasswordReset = _resetPassSvc.ResetPassword(encrypt.encryption(userView.NewPassword), userView.UserMasterId, studentOrStaffId, roleDesc);
                     if (IsPasswordReset)
                     {
                         userView.SuccessorFailureMessage = "Your password has been successfully reset";// Sucess
