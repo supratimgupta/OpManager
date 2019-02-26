@@ -206,6 +206,9 @@
             if (mode === "SEARCH") {
                 return validate('reqSearch');
             }
+            else if (mode === "EXCEL") {
+                return validate('reqSearch');
+            }
             if (mode === "SAVE") {
                 //return validate('reqSave');
                 $("#overlay").fadeIn(1000);
@@ -302,13 +305,18 @@
 
                             @Html.HiddenFor(m => m.Mode, new { id = "hfMode" })
                         </div>
+                        <div class="col-lg-3">
+                            @Html.OpMgrSubmitButtonWithIcon("btnExcel", ExamMarks.ExportExcel, new { @class = "btn btn-primary btn-block", onclick = "return changeMode('EXCEL');" }, "fa fa-search")
+                        </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             @Html.OpMgrSubmitButtonWithIcon("btnSearch", ExamMarks.Submit, new { @class = "btn btn-primary btn-block", onclick = "return changeMode('SEARCH');" }, "fa fa-search")
                             @*<button type="submit" class="btn btn-primary" onclick="return changeMode('SEARCH');" id="btnSearch">@ExamMarks.Submit</button>*@
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             @Html.OpMgrButtonWithIcon("btnPrint", "Print", new { @class = "btn btn-primary btn-block", onclick = "printResult();" }, "fa fa-print")
+                        </div>
+                        <div  class="col-lg-3">
                         </div>
                     </fieldset>
                 </div>

@@ -232,6 +232,28 @@ namespace OperationsManager.Areas.Exam.Controllers
                 }
                 return View(examVM);
             }
+            else if(string.Equals(examMarksVM.Mode, "Excel", StringComparison.OrdinalIgnoreCase))
+            {
+                Models.ExamMarksVM examVM = null;
+
+                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntryExcel(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.CourseExam.ExamType.ExamTypeId, examMarksVM.CourseExam.ExamSubType.ExamSubTypeId);
+
+                examVM = examMarksVM;
+                examVM.IsSearchSuccessful = false;
+                examVM.IsRuleOk = false;
+                examVM.IsRuleNeededToBeAdded = false;
+                examVM.RuleAdditionMessage = status.FailureReason;
+               
+                examVM.StandardSectionList = _uiddlRepo.getStandardSectionDropDown();
+                examVM.SubjectList = _uiddlRepo.getSubjectDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId);
+
+                examVM.LocationList = _uiddlRepo.getLocationDropDown();
+                examVM.ExamTypeList = _uiddlRepo.getExamTypeDropDown();
+                examVM.ExamSubTypeList = _uiddlRepo.getExamSubTypeDropDown(examMarksVM.CourseExam.ExamType.ExamTypeId);
+                examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
+                examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
+                return View(examVM);
+            }
             else if (string.Equals(examMarksVM.Mode, "SAVE", StringComparison.OrdinalIgnoreCase))
             {
                 if (examMarksVM.ExamMarksList != null && examMarksVM.ExamMarksList.Count > 0)

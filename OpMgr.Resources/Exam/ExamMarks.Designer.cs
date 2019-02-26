@@ -115,6 +115,15 @@ namespace OpMgr.Resources.Exam {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export To Excel.
+        /// </summary>
+        public static string ExportExcel {
+            get {
+                return ResourceManager.GetString("ExportExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string Location {

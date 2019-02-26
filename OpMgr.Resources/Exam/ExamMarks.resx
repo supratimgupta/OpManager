@@ -135,6 +135,9 @@
   <data name="ExamType" xml:space="preserve">
     <value>Exam Type</value>
   </data>
+  <data name="ExportExcel" xml:space="preserve">
+    <value>Export To Excel</value>
+  </data>
   <data name="Location" xml:space="preserve">
     <value>Location</value>
   </data>
