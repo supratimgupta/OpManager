@@ -246,6 +246,7 @@ namespace OpMgr.DataAccess.Implementations
                 }
                 catch (Exception exp)
                 {
+                    _logger.Log(exp);
                     throw exp;
                 }
             }
