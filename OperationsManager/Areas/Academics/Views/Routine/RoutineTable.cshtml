@@ -134,14 +134,17 @@
                                             <font color="red">
                                                 @routine.firstPeriodName<br /></font>
                                             <font color="blue">
-                                                @routine.firstPeriodFaculty</font>
+                                                <p>@routine.firstPeriodFaculty</p></font>
                                             @if (@routine.firstperiodpractical)
                                             {
-                                                <font color="green"><br /> <p>practical</p></font>
+                                                <font color="green"><p>practical</p></font>
                                             }
-                                            @if (@routine.firstperiodoff)
+                                            @if ((@routine.firstPeriodReplacedFaculty !=string.Empty) && (@routine.firstPeriodReplacedFaculty !=  null))
                                             {
-                                                @*<br /><p>offperiod</p>*@
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                @routine.firstPeriodReplacedFaculty<br /></font>
+                                            
                                             }
                                            <font color="red"> @routine.firstperiodstarttime - @routine.firstperiodendtime</font>
 
@@ -162,16 +165,20 @@
                                             <font color="red">
                                                 @routine.secondPeriodName<br /></font>
                                                 <font color="blue">
-                                                    @routine.secondPeriodFaculty</font>
+                                                    <p>@routine.secondPeriodFaculty</p></font>
                                                     @if (@routine.secondperiodpractical)
                                                     {
                                                         <font color="green">
-                                                            <br /> <p>practical</p></font>
+                                                            <p>practical</p></font>
                                                             }
-                                                            @if (@routine.secondperiodoff)
-                                                            {
-                                                                @*<br /><p>offperiod</p>*@
-                                                            }
+                                            @if ((@routine.secondPeriodReplacedFaculty != string.Empty) && (@routine.secondPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.secondPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                                             <font color="red">
                                                                 @routine.secondperiodstarttime - @routine.secondperiodendtime</font>
                                                                 @if (routine.secondperiodmode != 1)
@@ -197,10 +204,14 @@
                                                     <br /><font color="green">
                                                         <p>practical</p></font>
                                                         }
-                                                        @if (@routine.thirdperiodoff)
-                                                        {
-                                                            @*<br /><p>offperiod</p>*@
-                                                        }
+                                            @if ((@routine.thirdPeriodReplacedFaculty != string.Empty) && (@routine.thirdPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.thirdPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                             <font color="red">
                                                 @routine.thirdperiodstarttime - @routine.thirdperiodendtime</font>
                                                 @if (routine.thirdperiodmode != 1)
@@ -226,10 +237,14 @@
                                                     <font color="green">
                                                         <br /> <p>practical</p></font>
                                                         }
-                                                        @if (@routine.fourthperiodoff)
-                                                        {
-                                                            @*<br /><p>offperiod</p>*@
-                                                        }
+                                            @if ((@routine.fourthPeriodReplacedFaculty != string.Empty) && (@routine.fourthPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.fourthPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                             <font color="red">
                                                 @routine.fourthperiodstarttime - @routine.fourthperiodendtime</font>
                                                 @if (routine.fourthperiodmode != 1)
@@ -258,10 +273,14 @@
                                                     <font color="green">
                                                         <br /> <p>practical</p></font>
                                                         }
-                                                        @if (@routine.fifthperiodoff)
-                                                        {
-                                                            @*<br /><p>offperiod</p>*@
-                                                        }
+                                            @if ((@routine.fifthPeriodReplacedFaculty != string.Empty) && (@routine.fifthPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.fifthPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                             <font color="red">
                                                 @routine.fifthperiodstarttime - @routine.fifthperiodendtime</font>
                                                 @if (routine.fifthperiodmode != 1)
@@ -287,10 +306,14 @@
                                                 <font color="green>">
                                                     <br /> <p>practical</p></font>
                                                     }
-                                                    @if (@routine.sixthperiodoff)
-                                                    {
-                                                        @*<br /><p>offperiod</p>*@
-                                                    }
+                                            @if ((@routine.sixthPeriodReplacedFaculty != string.Empty) && (@routine.sixthPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.sixthPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                             <font color="red">
                                                 @routine.sixthperiodstarttime - @routine.sixthperiodendtime</font>
                                                 @if (routine.sixthperiodmode != 1)
@@ -316,10 +339,14 @@
                                                     <font color="green">
                                                         <br /> <p>practical</p></font>
                                                         }
-                                                        @if (@routine.seventhperiodoff)
-                                                        {
-                                                            @*<br /><p>offperiod</p>*@
-                                                        }
+                                            @if ((@routine.seventhPeriodReplacedFaculty != string.Empty) && (@routine.seventhPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.seventhPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                             <font color="red">
                                                 @routine.seventhperiodstarttime - @routine.seventhperiodendtime</font>
                                                 @if (routine.seventhperiodmode != 1)
@@ -344,10 +371,14 @@
                                             { <font color="green">
                                                 <br /> <p>practical</p></font>
                                                 }
-                                                @if (@routine.eighthperiodoff)
-                                                {
-                                                    @*<br /><p>offperiod</p>*@
-                                                }
+                                            @if ((@routine.eighthPeriodReplacedFaculty != string.Empty) && (@routine.eighthPeriodReplacedFaculty != null))
+                                            {
+                                                <p>Replaced By</p>
+                                                <font color="blue">
+                                                    @routine.eighthPeriodReplacedFaculty<br />
+                                                </font>
+
+                                            }
                                             <font color="red">
                                                 @routine.eighthperiodstarttime - @routine.eighthperiodendtime</font>
                                                 @if (routine.eigthperiodmode != 1)

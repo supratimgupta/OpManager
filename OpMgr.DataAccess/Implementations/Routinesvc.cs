@@ -53,7 +53,7 @@ namespace OpMgr.DataAccess.Implementations
 
                     command.Connection = dbSvc.GetConnection() as MySqlConnection;
 
-                    selectClause = "select * from classroutine inner join routineperiod on classroutine.RoutinePeriodId=routineperiod.RoutinePeriodId where routineperiod.Active=1";
+                    selectClause = "select * from classroutine inner join routineperiod on classroutine.RoutinePeriodId=routineperiod.RoutinePeriodId left join (select routine_id,replaced_employee_id from replacementteacher where isActive = 1 and Date(replacement_date) >= curdate()  order by created_date desc) rt on ClassRoutineId = rt.routine_id where routineperiod.Active=1";
                     whereClause = " AND StandardSectionId=" + id + " AND LocationId=" + location;
 
                     command.CommandText = selectClause + whereClause;
@@ -82,7 +82,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.firstperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.firstperiodendtime= Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
                                     rtntbl.firstperiodmode = 1;
-                                    
+                                    rtntbl.firstPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "2")
                                 {
@@ -94,6 +94,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.secondperiodmode = 1;
                                     rtntbl.secondperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.secondperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.secondPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "3")
                                 {
@@ -105,6 +106,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.thirdperiodmode = 1;
                                     rtntbl.thirdperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.thirdperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.thirdPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "4")
                                 {
@@ -116,6 +118,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fourthperiodmode = 1;
                                     rtntbl.fourthperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fourthperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.fourthPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "5")
                                 {
@@ -127,6 +130,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fifthperiodmode = 1;
                                     rtntbl.fifthperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fifthperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.fifthPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "6")
                                 {
@@ -138,6 +142,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.sixthperiodmode = 1;
                                     rtntbl.sixthperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.sixthperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.sixthPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "7")
                                 {
@@ -149,6 +154,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.seventhperiodmode = 1;
                                     rtntbl.seventhperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.seventhperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.seventhPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredMonday.Rows[i]["periodschedule"].ToString() == "8")
                                 {
@@ -158,6 +164,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.eigthperiodpractical = Convert.ToInt32(tblFilteredMonday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.eigthPeriodFaculty = getteacher(tblFilteredMonday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.eigthperiodmode = 1;
+                                    rtntbl.eighthPeriodReplacedFaculty = getteacher(tblFilteredMonday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.eighthperiodstarttime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.eighthperiodendtime = Convert.ToString(tblFilteredMonday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -205,6 +212,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.firstperiodmode = 1;
                                     rtntbl.firstperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.firstperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
+                                    rtntbl.firstPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                 }
                                 if (tblFilteredTuesday.Rows[i]["periodschedule"].ToString() == "2")
                                 {
@@ -214,6 +222,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.secondperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.secondPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.secondperiodmode = 1;
+                                    rtntbl.secondPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.secondperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.secondperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -225,6 +234,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.thirdperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.thirdPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.thirdperiodmode = 1;
+                                    rtntbl.thirdPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.thirdperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.thirdperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -236,6 +246,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fourthperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fourthPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fourthperiodmode = 1;
+                                    rtntbl.fourthPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fourthperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fourthperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -247,6 +258,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fifthperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fifthPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fifthperiodmode = 1;
+                                    rtntbl.fifthPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fifthperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fifthperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -258,6 +270,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.sixthperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.sixthPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.sixthperiodmode = 1;
+                                    rtntbl.sixthPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.sixthperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.sixthperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -269,6 +282,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.seventhperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.seventhPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.seventhperiodmode = 1;
+                                    rtntbl.seventhPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.seventhperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.seventhperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -280,6 +294,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.eigthperiodpractical = Convert.ToInt32(tblFilteredTuesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.eigthPeriodFaculty = getteacher(tblFilteredTuesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.eigthperiodmode = 1;
+                                    rtntbl.eighthPeriodReplacedFaculty = getteacher(tblFilteredTuesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.eighthperiodstarttime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.eighthperiodendtime = Convert.ToString(tblFilteredTuesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -324,6 +339,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.firstperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.firstPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.firstperiodmode = 1;
+                                    rtntbl.firstPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.firstperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.firstperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -335,6 +351,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.secondperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.secondPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.secondperiodmode = 1;
+                                    rtntbl.secondPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.secondperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.secondperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -346,6 +363,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.thirdperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.thirdPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.thirdperiodmode = 1;
+                                    rtntbl.thirdPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.thirdperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.thirdperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -357,6 +375,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fourthperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fourthPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fourthperiodmode = 1;
+                                    rtntbl.fourthPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fourthperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fourthperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -368,6 +387,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fifthperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fifthPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fifthperiodmode = 1;
+                                    rtntbl.fifthPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fifthperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fifthperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -379,6 +399,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.sixthperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.sixthPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.sixthperiodmode = 1;
+                                    rtntbl.sixthPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.sixthperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.sixthperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -390,6 +411,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.seventhperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.seventhPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.seventhperiodmode = 1;
+                                    rtntbl.seventhPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.seventhperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.seventhperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -401,6 +423,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.eigthperiodpractical = Convert.ToInt32(tblFilteredWednesday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.eigthPeriodFaculty = getteacher(tblFilteredWednesday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.eigthperiodmode = 1;
+                                    rtntbl.eighthPeriodReplacedFaculty = getteacher(tblFilteredWednesday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.eighthperiodstarttime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.eighthperiodendtime = Convert.ToString(tblFilteredWednesday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -445,6 +468,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.firstperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.firstPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.firstperiodmode = 1;
+                                    rtntbl.firstPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.firstperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.firstperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -456,6 +480,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.secondperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.secondPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.secondperiodmode = 1;
+                                    rtntbl.secondPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.secondperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.secondperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -467,6 +492,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.thirdperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.thirdPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.thirdperiodmode = 1;
+                                    rtntbl.thirdPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.thirdperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.thirdperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -478,6 +504,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fourthperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fourthPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fourthperiodmode = 1;
+                                    rtntbl.fourthPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fourthperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fourthperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -489,6 +516,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fifthperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fifthPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fifthperiodmode = 1;
+                                    rtntbl.fifthPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fifthperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fifthperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -500,6 +528,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.sixthperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.sixthPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.sixthperiodmode = 1;
+                                    rtntbl.sixthPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.sixthperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.sixthperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -511,6 +540,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.seventhperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.seventhPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.seventhperiodmode = 1;
+                                    rtntbl.seventhPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.seventhperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.seventhperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -522,6 +552,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.eigthperiodpractical = Convert.ToInt32(tblFilteredThursday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.eigthPeriodFaculty = getteacher(tblFilteredThursday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.eigthperiodmode = 1;
+                                    rtntbl.eighthPeriodReplacedFaculty = getteacher(tblFilteredThursday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.eighthperiodstarttime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.eighthperiodendtime = Convert.ToString(tblFilteredThursday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -566,6 +597,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.firstperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.firstPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.firstperiodmode = 1;
+                                    rtntbl.firstPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.firstperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.firstperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -577,6 +609,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.secondperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.secondPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.secondperiodmode = 1;
+                                    rtntbl.secondPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.secondperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.secondperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -588,6 +621,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.thirdperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.thirdPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.thirdperiodmode = 1;
+                                    rtntbl.thirdPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.thirdperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.thirdperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -598,6 +632,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fourthperiodoff = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsOffPeriod"].ToString()) != 0;
                                     rtntbl.fourthperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fourthPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
+                                    rtntbl.fourthPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fourthperiodmode = 1;
                                     rtntbl.fourthperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fourthperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
@@ -610,6 +645,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fifthperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fifthPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fifthperiodmode = 1;
+                                    rtntbl.fifthPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fifthperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fifthperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -621,6 +657,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.sixthperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.sixthPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.sixthperiodmode = 1;
+                                    rtntbl.sixthPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.sixthperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.sixthperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -632,6 +669,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.seventhperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.seventhPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.seventhperiodmode = 1;
+                                    rtntbl.seventhPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.seventhperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.seventhperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -643,6 +681,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.eigthperiodpractical = Convert.ToInt32(tblFilteredFriday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.eigthPeriodFaculty = getteacher(tblFilteredFriday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.eigthperiodmode = 1;
+                                    rtntbl.eighthPeriodReplacedFaculty = getteacher(tblFilteredFriday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.eighthperiodstarttime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.eighthperiodendtime = Convert.ToString(tblFilteredFriday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -687,6 +726,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.firstperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.firstPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.firstperiodmode = 1;
+                                    rtntbl.firstPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.firstperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.firstperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -698,6 +738,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.secondperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.secondPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.secondperiodmode = 1;
+                                    rtntbl.secondPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.secondperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.secondperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -709,6 +750,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.thirdperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.thirdPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.thirdperiodmode = 1;
+                                    rtntbl.thirdPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.thirdperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.thirdperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -720,6 +762,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fourthperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fourthPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fourthperiodmode = 1;
+                                    rtntbl.fourthPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fourthperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fourthperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -731,6 +774,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.fifthperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.fifthPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.fifthperiodmode = 1;
+                                    rtntbl.fifthPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.fifthperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.fifthperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -742,6 +786,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.sixthperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.sixthPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.sixthperiodmode = 1;
+                                    rtntbl.sixthPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.sixthperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.sixthperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -753,6 +798,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.seventhperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.seventhPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.seventhperiodmode = 1;
+                                    rtntbl.seventhPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.seventhperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.seventhperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -764,6 +810,7 @@ namespace OpMgr.DataAccess.Implementations
                                     rtntbl.eigthperiodpractical = Convert.ToInt32(tblFilteredSaturday.Rows[i]["IsPractical"].ToString()) != 0;
                                     rtntbl.eigthPeriodFaculty = getteacher(tblFilteredSaturday.Rows[i]["EmployeeId"].ToString());
                                     rtntbl.eigthperiodmode = 1;
+                                    rtntbl.eighthPeriodReplacedFaculty = getteacher(tblFilteredSaturday.Rows[i]["replaced_employee_id"].ToString());
                                     rtntbl.eighthperiodstarttime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodStartTime"]);
                                     rtntbl.eighthperiodendtime = Convert.ToString(tblFilteredSaturday.Rows[i]["PeriodEndTime"]);
                                 }
@@ -883,6 +930,38 @@ namespace OpMgr.DataAccess.Implementations
                 return rtnedit;
             }
         }
+
+        public bool ReplaceTeachers(int id, int replacement_id)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+
+
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "ins_replacementdetails";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+                    command.Parameters.Add("@routineId", MySqlDbType.Int32).Value = id;
+                    command.Parameters.Add("@replacement_teacher_id", MySqlDbType.Int32).Value = replacement_id;
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+
+                }
+
+            }
+
+
+
+                   
+        }
+
         public List<subject> getSubject(string term)
         {
             List<subject> lstsbjct = new List<subject>();
