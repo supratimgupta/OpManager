@@ -125,7 +125,7 @@ namespace OpMgr.DataAccess.Implementations
             }
 
         }
-        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntryExcel(int LocationId, int StandardSectionId, int SubjectId, DateTime fromDate, DateTime toDate, int examTypeId, int examSubTypeId)
+        public StatusDTO<List<ExamMarksDTO>> GetStudentDetailsForMarksEntryExcel(int LocationId, int StandardSectionId, int SubjectId, DateTime fromDate, DateTime toDate, int examTypeId, int examSubTypeId, out string fileName)
         {
             StatusDTO<List<ExamMarksDTO>> examMarksList = new StatusDTO<List<ExamMarksDTO>>();
             int e = 1;
@@ -240,12 +240,14 @@ namespace OpMgr.DataAccess.Implementations
                         }
                     }
                     xlApp.DisplayAlerts = false;
-                    WorkBook.SaveAs("ExamMarks.xlsx", Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
-                    xlApp.Visible = true;
+                    fileName = @"C:\Shared\ExamMarks" + DateTime.UtcNow.ToString("ddMMyyyyhhss") + ".xlsx";
+                    WorkBook.SaveAs(fileName, Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, true, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                    WorkBook.Close();
                     return examMarksList;
                 }
                 catch (Exception exp)
                 {
+                    _logger.Log(exp);
                     throw exp;
                 }
             }

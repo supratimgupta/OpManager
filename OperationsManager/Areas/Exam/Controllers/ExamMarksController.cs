@@ -236,8 +236,10 @@ namespace OperationsManager.Areas.Exam.Controllers
             {
                 Models.ExamMarksVM examVM = null;
 
-                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntryExcel(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.CourseExam.ExamType.ExamTypeId, examMarksVM.CourseExam.ExamSubType.ExamSubTypeId);
+                string fileName = string.Empty;
 
+                StatusDTO<List<ExamMarksDTO>> status = _examMarksSvc.GetStudentDetailsForMarksEntryExcel(examMarksVM.CourseExam.CourseMapping.Location.LocationId, examMarksVM.CourseExam.CourseMapping.StandardSection.StandardSectionId, examMarksVM.CourseExam.CourseMapping.Subject.SubjectId, DateTime.Parse(examMarksVM.FromDateString), DateTime.Parse(examMarksVM.ToDateString), examMarksVM.CourseExam.ExamType.ExamTypeId, examMarksVM.CourseExam.ExamSubType.ExamSubTypeId, out fileName);
+                /*
                 examVM = examMarksVM;
                 examVM.IsSearchSuccessful = false;
                 examVM.IsRuleOk = false;
@@ -253,6 +255,11 @@ namespace OperationsManager.Areas.Exam.Controllers
                 examVM.AcademicSessions = _uiddlRepo.getAcademicSessionDropDown();
                 examVM.Grades = _uiddlRepo.getGradesDropDown(examMarksVM.CourseExam.CourseMapping.Location.LocationId);
                 return View(examVM);
+                */
+                byte[] fileBytes = System.IO.File.ReadAllBytes(fileName);
+                string downloadfileName = "ExamMarks.xlsx";
+                System.IO.File.Delete(fileName);
+                return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, downloadfileName);
             }
             else if (string.Equals(examMarksVM.Mode, "SAVE", StringComparison.OrdinalIgnoreCase))
             {

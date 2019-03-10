@@ -431,7 +431,34 @@ namespace OpMgr.DataAccess.Implementations
                 totMarksExpr = expression.Replace("{{" + totMarksExpr + "}}", fullMarks);
             }
             DataTable dtEvaluator = new DataTable();
-            var computedMarks = dtEvaluator.Compute(expression, "");
+            string modPart = string.Empty;
+            int modStartIndex = 0;
+            int modEndIndex = 0;
+            while(expression.Contains("[") && expression.Contains("]"))
+            {
+                modStartIndex = expression.IndexOf("[");
+                modEndIndex = expression.IndexOf("]", modStartIndex);
+
+                modPart = expression.Substring(modStartIndex + 1, modEndIndex - modStartIndex -1);
+
+                var modCalculated = dtEvaluator.Compute(modPart, "");
+                modCalculated = (int)Math.Round(Convert.ToDouble(modCalculated));
+
+                expression = expression.Substring(0, modStartIndex) + modCalculated.ToString() + expression.Substring(modEndIndex + 1);
+            }
+            while (totMarksExpr.Contains("[") && totMarksExpr.Contains("]"))
+            {
+                modStartIndex = totMarksExpr.IndexOf("[");
+                modEndIndex = totMarksExpr.IndexOf("]", modStartIndex);
+
+                modPart = totMarksExpr.Substring(modStartIndex + 1, modEndIndex - modStartIndex - 1);
+
+                var modCalculated = dtEvaluator.Compute(modPart, "");
+                modCalculated = (int)Math.Round(Convert.ToDouble(modCalculated));
+
+                totMarksExpr = totMarksExpr.Substring(0, modStartIndex) + modCalculated.ToString() + totMarksExpr.Substring(modEndIndex + 1);
+            }
+            var computedMarks = dtEvaluator.Compute(expression, ""); //need to modify
             computedMarks = (int)Math.Round(Convert.ToDouble(computedMarks));
             dtEvaluator = new DataTable();
             var totalMarks = dtEvaluator.Compute(totMarksExpr, "");
