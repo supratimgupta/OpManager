@@ -297,7 +297,7 @@ namespace OperationsManager.Areas.Exam.Controllers
                             else
                             {
                                 //batch was not working for insertion more than 1 record so reverting previous code
-                                _examMarksSvc.Delete(examMarksVM.ExamMarksList[i]);
+                                //_examMarksSvc.Delete(examMarksVM.ExamMarksList[i]);
                                 //commandList.Add(_examMarksSvc.GetDeleteMarksCommand(examMarksVM.ExamMarksList[i]));
                             }
                             //_examMarksSvc.Update(examMarksVM.ExamMarksList[i]);
