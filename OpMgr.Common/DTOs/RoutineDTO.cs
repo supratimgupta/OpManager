@@ -15,6 +15,7 @@ namespace OpMgr.Common.DTOs
             public string DayOfWeek { get; set; }
             public string firstPeriodName { get; set; }
             public string firstPeriodFaculty { get; set; }
+            public string firstPeriodReplacedFaculty { get; set; }
             public bool firstperiodpractical { get; set; }
             public bool firstperiodoff { get; set; }
             public int firstperiodmode { get; set; }
@@ -25,13 +26,15 @@ namespace OpMgr.Common.DTOs
             public string secondperiodstarttime { get; set; }
             public string secondperiodendtime { get; set; }
             public string secondPeriodFaculty { get; set; }
+            public string secondPeriodReplacedFaculty { get; set; }
             public bool secondperiodpractical { get; set; }
             public int secondperiodmode { get; set; }
             public bool secondperiodoff { get; set; }
             public int secondperiodid { get; set; }
             public string thirdPeriodName { get; set; }
             public string thirdPeriodFaculty { get; set; }
-            public bool thirdperiodpractical { get; set; }
+        public string thirdPeriodReplacedFaculty { get; set; }
+        public bool thirdperiodpractical { get; set; }
             public bool thirdperiodoff { get; set; }
             public int thirdperiodmode { get; set; }
             public int thirdperiodid { get; set; }
@@ -39,7 +42,8 @@ namespace OpMgr.Common.DTOs
             public string thirdperiodendtime { get; set; }
             public string fourthPeriodName { get; set; }
             public string fourthPeriodFaculty { get; set; }
-            public bool fourthperiodpractical { get; set; }
+        public string fourthPeriodReplacedFaculty { get; set; }
+        public bool fourthperiodpractical { get; set; }
             public bool fourthperiodoff { get; set; }
             public string fourthperiodstarttime { get; set; }
             public string fourthperiodendtime { get; set; }
@@ -47,7 +51,8 @@ namespace OpMgr.Common.DTOs
             public int fourthperiodid { get; set; }
             public string fifthPeriodName { get; set; }
             public string fifthPeriodFaculty { get; set; }
-            public bool fifthperiodpractical { get; set; }
+        public string fifthPeriodReplacedFaculty { get; set; }
+        public bool fifthperiodpractical { get; set; }
             public bool fifthperiodoff { get; set; }
             public int fifthperiodmode { get; set; }
             public string fifthperiodstarttime { get; set; }
@@ -55,7 +60,8 @@ namespace OpMgr.Common.DTOs
             public int fifthperiodid { get; set; }
             public string sixthPeriodName { get; set; }
             public string sixthPeriodFaculty { get; set; }
-            public bool sixthperiodpractical { get; set; }
+        public string sixthPeriodReplacedFaculty { get; set; }
+        public bool sixthperiodpractical { get; set; }
             public bool sixthperiodoff { get; set; }
             public int sixthperiodmode { get; set; }
             public string sixthperiodstarttime { get; set; }
@@ -63,7 +69,8 @@ namespace OpMgr.Common.DTOs
             public int sixthperiodid { get; set; }
             public string seventhPeriodName { get; set; }
             public string seventhPeriodFaculty { get; set; }
-            public bool seventhperiodpractical { get; set; }
+        public string seventhPeriodReplacedFaculty { get; set; }
+        public bool seventhperiodpractical { get; set; }
             public int seventhperiodmode { get; set; }
             public int seventhperiodid { get; set; }
             public string seventhperiodstarttime { get; set; }
@@ -71,7 +78,8 @@ namespace OpMgr.Common.DTOs
             public bool seventhperiodoff { get; set; }
             public string eigthPeriodName { get; set; }
             public string eigthPeriodFaculty { get; set; }
-            public bool eigthperiodpractical { get; set; }
+        public string eighthPeriodReplacedFaculty { get; set; }
+        public bool eigthperiodpractical { get; set; }
             public int eigthperiodmode { get; set; }
             public int eigthperiodid { get; set; }
             public bool eighthperiodoff { get; set; }
@@ -105,5 +113,6 @@ namespace OpMgr.Common.DTOs
     {
         public int employeeid { get; set; }
         public string employeename { get; set; }
+        
     }
 }

@@ -78,11 +78,13 @@ namespace OperationsManager.Areas.Academics.Controllers
                 routinetbl.firstperiodpractical = rtntbl[i].firstperiodpractical;
                 routinetbl.firstperiodmode = rtntbl[i].firstperiodmode;
                 routinetbl.firstperiodid = rtntbl[i].firstperiodid;
+                routinetbl.firstPeriodReplacedFaculty = rtntbl[i].firstPeriodReplacedFaculty;
                 routinetbl.firstperiodstarttime = rtntbl[i].firstperiodstarttime;
                 routinetbl.firstperiodendtime = rtntbl[i].firstperiodendtime;
                 routinetbl.secondPeriodName = rtntbl[i].secondPeriodName;
                 routinetbl.secondPeriodFaculty = rtntbl[i].secondPeriodFaculty;
                 routinetbl.secondperiodoff = rtntbl[i].secondperiodoff;
+                routinetbl.secondPeriodReplacedFaculty = rtntbl[i].secondPeriodReplacedFaculty;
                 routinetbl.secondperiodpractical = rtntbl[i].secondperiodpractical;
                 routinetbl.secondperiodmode = rtntbl[i].secondperiodmode;
                 routinetbl.secondperiodid = rtntbl[i].secondperiodid;
@@ -90,6 +92,7 @@ namespace OperationsManager.Areas.Academics.Controllers
                 routinetbl.secondperiodendtime = rtntbl[i].secondperiodendtime;
                 routinetbl.thirdPeriodName = rtntbl[i].thirdPeriodName;
                 routinetbl.thirdPeriodFaculty = rtntbl[i].thirdPeriodFaculty;
+                routinetbl.thirdPeriodReplacedFaculty = rtntbl[i].thirdPeriodReplacedFaculty;
                 routinetbl.thirdperiodoff = rtntbl[i].thirdperiodoff;
                 routinetbl.thirdperiodpractical = rtntbl[i].thirdperiodpractical;
                 routinetbl.thirdperiodmode = rtntbl[i].thirdperiodmode;
@@ -102,10 +105,12 @@ namespace OperationsManager.Areas.Academics.Controllers
                 routinetbl.fourthperiodpractical = rtntbl[i].fourthperiodpractical;
                 routinetbl.fourthperiodmode = rtntbl[i].fourthperiodmode;
                 routinetbl.fourthperiodid = rtntbl[i].fourthperiodid;
+                routinetbl.fourthPeriodReplacedFaculty = rtntbl[i].fourthPeriodReplacedFaculty;
                 routinetbl.fourthperiodstarttime = rtntbl[i].fourthperiodstarttime;
                 routinetbl.fourthperiodendtime = rtntbl[i].fourthperiodendtime;
                 routinetbl.fifthPeriodName = rtntbl[i].fifthPeriodName;
                 routinetbl.fifthPeriodFaculty = rtntbl[i].fifthPeriodFaculty;
+                routinetbl.fifthPeriodReplacedFaculty = rtntbl[i].fifthPeriodReplacedFaculty;
                 routinetbl.fifthperiodoff = rtntbl[i].fifthperiodoff;
                 routinetbl.fifthperiodpractical = rtntbl[i].fifthperiodpractical;
                 routinetbl.fifthperiodmode = rtntbl[i].fifthperiodmode;
@@ -117,11 +122,13 @@ namespace OperationsManager.Areas.Academics.Controllers
                 routinetbl.sixthperiodoff = rtntbl[i].sixthperiodoff;
                 routinetbl.sixthperiodpractical = rtntbl[i].sixthperiodpractical;
                 routinetbl.sixthperiodmode = rtntbl[i].sixthperiodmode;
+                routinetbl.sixthPeriodReplacedFaculty = rtntbl[i].sixthPeriodReplacedFaculty;
                 routinetbl.sixthperiodid = rtntbl[i].sixthperiodid;
                 routinetbl.sixthperiodstarttime = rtntbl[i].sixthperiodstarttime;
                 routinetbl.sixthperiodendtime = rtntbl[i].sixthperiodendtime;
                 routinetbl.seventhPeriodName = rtntbl[i].seventhPeriodName;
                 routinetbl.seventhPeriodFaculty = rtntbl[i].seventhPeriodFaculty;
+                routinetbl.seventhPeriodReplacedFaculty = rtntbl[i].seventhPeriodReplacedFaculty;
                 routinetbl.seventhperiodoff = rtntbl[i].seventhperiodoff;
                 routinetbl.seventhperiodpractical = rtntbl[i].seventhperiodpractical;
                 routinetbl.seventhperiodmode = rtntbl[i].seventhperiodmode;
@@ -133,6 +140,7 @@ namespace OperationsManager.Areas.Academics.Controllers
                 routinetbl.eighthperiodoff = rtntbl[i].eighthperiodoff;
                 routinetbl.eigthperiodpractical = rtntbl[i].eigthperiodpractical;
                 routinetbl.eigthperiodmode = rtntbl[i].eigthperiodmode;
+                routinetbl.eighthPeriodReplacedFaculty = rtntbl[i].eighthPeriodReplacedFaculty;
                 routinetbl.eigthperiodid = rtntbl[i].eigthperiodid;
                 routinetbl.eighthperiodstarttime = rtntbl[i].eighthperiodstarttime;
                 routinetbl.eighthperiodendtime = rtntbl[i].eighthperiodendtime;
@@ -147,7 +155,7 @@ namespace OperationsManager.Areas.Academics.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Replacement( string id, string dayofweek, string period, string location, string standardsectionid)
+        public ActionResult Replacement( string id, string replacement_id)
         {
             Models.Employee emp = new Models.Employee();
             List<Models.Employee> emplist= new List<Models.Employee>();
@@ -178,6 +186,7 @@ namespace OperationsManager.Areas.Academics.Controllers
                 });
             }
             emp.employeeList = selectList;
+            emp.id = id;
 
             return View(emp);
         }
@@ -266,6 +275,17 @@ namespace OperationsManager.Areas.Academics.Controllers
 
         //    return View();
         //}
+        
+        [AllowAnonymous]
+        
+        public ActionResult pstreplacement(string data)
+        {
+            var Editrtn = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Employee>(data);
+            bool result = false;
+                      
+            result = _rtnSvc.ReplaceTeachers(Convert.ToInt32(Editrtn.id),Editrtn.employeeid);
+            return Json(Editrtn,JsonRequestBehavior.AllowGet);
+        }
         [AllowAnonymous]
         [HttpPost]
         public JsonResult Subjectsearch(string term)

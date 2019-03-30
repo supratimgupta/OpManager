@@ -16,6 +16,7 @@ namespace OpMgr.Common.Contracts.Modules
         List<subject> getSubject(string term);
         List<Employee> getEmployee(string term,int location);
         List<Employee> GetReplacementTeacherList(int id);
+        bool ReplaceTeachers(int id, int replacement_id); 
 
     }
 }
