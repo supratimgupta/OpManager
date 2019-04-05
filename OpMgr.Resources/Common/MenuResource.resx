@@ -180,6 +180,9 @@
   <data name="Payment" xml:space="preserve">
     <value>FEES COLLECTION ENTRY</value>
   </data>
+  <data name="PMSAddEdit" xml:space="preserve">
+    <value>PMS Add Edit</value>
+  </data>
   <data name="PrincipalPanel" xml:space="preserve">
     <value>PRINCIPAL PANEL</value>
   </data>

@@ -39,6 +39,14 @@ namespace OperationsManager.Areas.PMS.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public ActionResult AddEditPMSData()
+        {
+            Models.PMSVM pmsVM = new Models.PMSVM();
+            return View(pmsVM);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult GoalSheetForAll(int? apprMasterId, int? designationId)
         {
             Models.PMSVM pmsVM = new Models.PMSVM();

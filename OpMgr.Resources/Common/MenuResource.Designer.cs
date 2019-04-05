@@ -250,6 +250,15 @@ namespace OpMgr.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PMS Add Edit.
+        /// </summary>
+        public static string PMSAddEdit {
+            get {
+                return ResourceManager.GetString("PMSAddEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PRINCIPAL PANEL.
         /// </summary>
         public static string PrincipalPanel {
