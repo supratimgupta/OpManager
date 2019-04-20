@@ -1194,6 +1194,7 @@
     <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Academics\Views\Attendance\AttendanceCollection.cshtml" />
     <Content Include="Areas\PMS\Views\PMS\AddEditPMSData.cshtml" />
+    <Content Include="Areas\PMS\Views\PMS\PmsTable.cshtml" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

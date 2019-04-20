@@ -19,9 +19,10 @@ namespace OpMgr.Common.Contracts.Modules
         void GetCompetencies(int appraisalMasterId, out List<KeyValuePair<string, string>> strengths, out List<KeyValuePair<string, string>> improvements);
         StatusDTO<List<EmployeeAppraisalMasterDTO>> SearchAppraisee(EmployeeAppraisalMasterDTO data);
         bool UpdateInitiativeandSupport(int apprMasterId, string IndividualInitiative, string InstitutionalSupport);
-
+        List<GoalAttributes> getGoals(int designationID);
         StatusDTO<List<PMSMasterDTO>> GetAppraisalDetails(int pmsMasterId);
         StatusDTO<List<EmployeeAppraisalMasterDTO>> GetAppraiseePMSLIst(int EmployeeId);
+        bool updategoal(GoalAttributes goalattributes);
         bool UpdateAppraiserFinalRating(int apprMasterId, decimal appraiserRating, string appraiserComment);
 
         bool UpdatePMSHeadApproval(EmployeeAppraisalMasterDTO employeemasterDTO);

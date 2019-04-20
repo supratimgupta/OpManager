@@ -1141,5 +1141,78 @@ namespace OpMgr.DataAccess.Implementations
                 }
             }
         }
+        public bool updategoal(GoalAttributes goalattributes)
+        {
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                try
+                {
+                    dbSvc.OpenConnection();
+                    MySqlCommand command = new MySqlCommand();
+                    command.CommandText = "update_goaldetails";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    command.Parameters.Add("@KRA", MySqlDbType.String).Value = goalattributes.KRA;
+                    command.Parameters.Add("@KPI", MySqlDbType.String).Value = goalattributes.KPI;
+                    command.Parameters.Add("@Target", MySqlDbType.String).Value = goalattributes.Target;
+                    command.Parameters.Add("@Weightage", MySqlDbType.Int32).Value = goalattributes.weightage;
+                    command.Parameters.Add("@glattribute", MySqlDbType.Int32).Value = goalattributes.GoalAttributeID;
+                    MySqlDataReader rdr = command.ExecuteReader(CommandBehavior.CloseConnection);
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+
+               
+                return true;
+        }
+        public List<GoalAttributes> getGoals(int designationID)
+        {
+            List<GoalAttributes> goalAttributes = new List<GoalAttributes>();
+            using (IDbSvc dbSvc = new DbSvc(_configSvc))
+            {
+                string selectClause = null;
+                string whereClause = null;
+                DataSet goalset = null;
+                
+                try
+                {
+                    dbSvc.OpenConnection();//openning the connection
+
+                    MySqlCommand command = new MySqlCommand();// creating my sql command for queries
+
+                    command.Connection = dbSvc.GetConnection() as MySqlConnection;
+
+                    selectClause = "select GoalDescription,Target,KPI,KRA,Weightage,ga.GoalAttributeId from goal gl inner join goalattribute ga inner join EmployeeGoal eg on eg.GoalAttributeId = ga.GoalAttributeId and ga.GoalId= gl.GoalId where gl.Active = 1 and ga.Active = 1 and eg.Active = 1";
+                    whereClause = " and DesignationId =" + designationID;
+
+                    command.CommandText = selectClause + whereClause;
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(command);
+                    goalset = new DataSet();
+                    da.Fill(goalset);
+                    DataTable table = goalset.Tables[0];
+                    for(int i=0;i< table.Rows.Count;i++)
+                    {
+                        GoalAttributes ga = new GoalAttributes();
+                        ga.GoalAttributeID = Convert.ToInt32(table.Rows[i]["GoalAttributeId"]);
+                        ga.Goal = table.Rows[i]["GoalDescription"].ToString();
+                        ga.Target = table.Rows[i]["Target"].ToString();
+                        ga.KPI= table.Rows[i]["KPI"].ToString();
+                        ga.KRA = table.Rows[i]["KRA"].ToString();
+                        ga.weightage = Convert.ToInt32(table.Rows[i]["Weightage"]);
+                        goalAttributes.Add(ga);
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+            }
+                return goalAttributes;
+        }
     }
 }

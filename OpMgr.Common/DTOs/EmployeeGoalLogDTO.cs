@@ -44,4 +44,15 @@ namespace OpMgr.Common.DTOs
 
         public PMSDesignationDTO PMSDesignation { get; set; }
     }
+
+    public class GoalAttributes
+    {
+        public int GoalAttributeID { get; set; }
+        public string Goal { get; set; }
+        public string Target { get; set; }
+        public string KPI { get; set; }
+        public string KRA { get; set; }
+        public int weightage { get; set; }
+        
+    }
 }

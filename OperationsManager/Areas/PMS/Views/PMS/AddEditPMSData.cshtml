@@ -1,4 +1,7 @@
-﻿
+﻿@using OpMgr.Resources.PMS
+@using OperationsManager.ExtendedHtmlHelpers
+@model OperationsManager.Areas.PMS.Models.Designation
+
 @{
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
@@ -7,11 +10,44 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>AddEditPMSData</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+        <title>AddEditPMSData</title>
 </head>
 <body>
-    <div> 
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-color panel-primary">
+                <div class="panel-heading">
+                <div class="panel-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <div class="row col-lg-12">
+
+                                <div class="col-lg-2">
+                                    @Html.OpMgrDropDownListFor(m => m.DesignationID, Model.PMSDesignationList, GoalSheetResource.Designation, new { @class = "form-control", id = "pmsdesignation" })
+                                </div>
+                               
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-2">
+                                    @*<button type="submit" name="Command" class="btn btn-primary btn-block" style="margin-top:7px">@StudentResource.SearchButton<i style="padding-left:7px; padding-top:1px"></i></button>*@
+                                    @Html.OpMgrSubmitButtonWithIcon("Command", GoalSheetResource.SearchAppraisalBtn, new { @class = "btn btn-pink btn-block" }, "fa fa-search")
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+
+        </div>
     </div>
 </body>
 </html>

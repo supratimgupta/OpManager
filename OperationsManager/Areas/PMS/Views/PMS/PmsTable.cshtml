@@ -1,0 +1,140 @@
+﻿@using OpMgr.Resources.PMS
+@using OperationsManager.ExtendedHtmlHelpers
+@model IEnumerable<OperationsManager.Areas.PMS.Models.GoalAttributes>
+@{
+
+    var grid = new WebGrid(Model);
+}
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
+    <title>PMSTable</title>
+    <style type="text/css">
+       
+    .webgrid-table
+    {
+        font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif;
+        font-size: 1.2em;
+        width: 100%;
+        display: table;
+        border-collapse: separate;
+        border: solid 1px #98BF21;
+        background-color: white;
+    }
+    .webgrid-table td, th
+    {
+        border: 1px solid #98BF21;
+        padding: 3px 7px 2px;
+    }
+    .webgrid-header
+    {
+        background-color: #A7C942;
+        color: #FFFFFF;
+        padding-bottom: 4px;
+        padding-top: 5px;
+        text-align: left;
+    }
+    .webgrid-footer
+    {
+    }
+    .webgrid-row-style
+    {
+        padding: 3px 7px 2px;
+    }
+    .webgrid-alternating-row
+    {
+        background-color: #EAF2D3;
+        padding: 3px 7px 2px;
+    }
+        </style>
+    <script type="text/javascript">
+
+        $(function () {
+         $('.edit-mode').hide();
+        $('.edit-user, .cancel-user').on('click', function () {
+            var tr = $(this).parents('tr:first');
+            tr.find('.edit-mode, .display-mode').toggle();
+        });
+
+        $('.save-user').on('click', function () {
+            debugger;
+            var tr = $(this).parents('tr:first');
+            var KRA = tr.find("#KRAtext").val();
+            var KPI = tr.find("#KPItext").val();
+            var Target = tr.find("#Targettext").val();
+            var Weightage = tr.find("#Weightagetext").val();
+            var UserID = tr.find("#UserID")[0].value;
+            var Goal = tr.find("#Goal").val();
+            tr.find("#KRA").text(KRA);
+            tr.find("#KPI").text(KPI);
+            tr.find("#Target").text(Target);
+            tr.find("#Weightage").text(Weightage);
+            tr.find('.edit-mode, .display-mode').toggle();
+            var UserModel =
+            {
+                Weightage:Weightage,
+                KRA: KRA,
+                KPI: KPI,
+                Goal:Goal,
+                Target: Target,
+                GoalAttributeId: UserID
+            };
+            $.ajax({
+                dataType: 'JSON',
+                type: "POST",
+                url: "ChangeUser?data=" + JSON.stringify(UserModel),
+                success: function (data) {
+                    alert("Saved "+data);
+                },
+                error: function (data) {
+                    alert("Error occured : "+data);
+                }
+            });
+
+        });
+    })
+    </script>
+</head>
+<body>
+
+
+    <div id="gridContent" style="padding:20px;">
+        @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+        mode: WebGridPagerModes.All,
+        columns:
+
+            grid.Columns(
+                grid.Column(null, null, format: @<input type="hidden" id="UserID" value="@item.GoalAttributeID" />),
+                grid.Column("Goal","Goal", format: @<text>  <span ><label id="lblName">@item.Goal</label></span> </text>, style: "col2Width", canSort: false),
+                grid.Column("KRA", "KRA", format: @<text>  <span class="display-mode"> <label id="KRA">@item.KRA</label> </span><textarea name="text" rows="14" cols="20" id="KRAtext" value="@item.KRA" class="edit-mode"  wrap="soft">@item.KRA</textarea></text>, style: "col2Width", canSort: false),
+                grid.Column("KPI", "KPI", format: @<text> <span class="display-mode"> <label id="KPI">@item.KPI</label> </span> <textarea name="text" rows="14" cols="20" id="KPItext" value="@item.KPI" class="edit-mode" wrap="soft"> @item.KPI</textarea> </text>, style: "col2Width", canSort: false),
+                grid.Column("Target", "Target", format: @<text> <span class="display-mode"> <label id="Target">@item.Target</label> </span>  <textarea name="text" rows="14" cols="20" id="Targettext" value="@item.Target" class="edit-mode" wrap="soft">@item.Target </textarea> </text>, style: "col2Width", canSort: false),
+                grid.Column("Weightage", "Weightage", format: @<text> <span class="display-mode"> <label id="Weightage">@item.Weightage</label> </span> <textarea name="text" rows="14" cols="20" id="Weightagetext" value="@item.Weightage" class="edit-mode" wrap="soft">@item.weightage</textarea> </text>, style: "col2Width", canSort: false),
+                grid.Column("Action", format: @<text>
+                    <button class="edit-user display-mode">Edit</button>
+                    <button class="save-user edit-mode">Save</button>
+                    <button class="cancel-user edit-mode">Cancel</button>
+                </text>, style: "col3Width", canSort: false)
+                ))
+</div>
+</body>
+</html>

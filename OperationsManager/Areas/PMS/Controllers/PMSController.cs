@@ -41,9 +41,66 @@ namespace OperationsManager.Areas.PMS.Controllers
         [AllowAnonymous]
         public ActionResult AddEditPMSData()
         {
-            Models.PMSVM pmsVM = new Models.PMSVM();
+            Models.Designation pmsVM = new Models.Designation();
+            pmsVM.PMSDesignationList = _uiddlRepo.getPMSDesignationDropDown();
             return View(pmsVM);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult AddEditPMSData(Designation pmsvm)
+        {
+            return RedirectToAction("PmsTable", new { designation = pmsvm.DesignationID });
+            
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PmsTable(int designation)
+        {
+           
+            List<Models.GoalAttributes> listga = new List<Models.GoalAttributes>();
+            List<OpMgr.Common.DTOs.GoalAttributes> galist = new List<OpMgr.Common.DTOs.GoalAttributes>();
+            galist = _pmsSvc.getGoals(designation);
+            for(int i=0; i< galist.Count;i++)
+            {
+                Models.GoalAttributes ga = new Models.GoalAttributes();
+                ga.Goal = galist[i].Goal;
+                ga.GoalAttributeID = galist[i].GoalAttributeID;
+                ga.KRA = galist[i].KRA;
+                ga.KPI = galist[i].KPI;
+                ga.Target = galist[i].Target;
+                ga.weightage = galist[i].weightage;
+                listga.Add(ga);
+
+            }
+            
+            List<UserModel> users = UserModel.getUsers();
+            return View(listga);
+            //return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult ChangeUser(string Data)
+        {
+            string message = "Failed";
+            var galist = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.GoalAttributes>(Data);
+            OpMgr.Common.DTOs.GoalAttributes ga = new OpMgr.Common.DTOs.GoalAttributes();
+            ga.Goal = galist.Goal;
+            ga.GoalAttributeID = galist.GoalAttributeID;
+            ga.KRA = galist.KRA;
+            ga.KPI = galist.KPI;
+            ga.Target = galist.Target;
+            ga.weightage = galist.weightage;
+            var result = _pmsSvc.updategoal(ga);
+            if (result)
+            {
+                 message= "Successfully";
+            }
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         [AllowAnonymous]
